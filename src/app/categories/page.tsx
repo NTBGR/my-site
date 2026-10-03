@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ArtTile from "@/components/ArtTile";
+import CategoryArt from "@/components/CategoryArt";
 import PageHeader from "@/components/PageHeader";
 import { categories, localizeCategory } from "@/data/categories";
 import { artists } from "@/data/artists";
@@ -43,9 +43,9 @@ export default function CategoriesPage() {
                   href={`/categories/${category.slug}`}
                   className="group block h-full rounded-[1.75rem] border border-border bg-surface p-2.5 transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl active:scale-[0.99]"
                 >
-                  <ArtTile
+                  <CategoryArt
+                    slug={category.slug}
                     color={tileColors[i % tileColors.length]}
-                    variant={i % 4}
                     className="aspect-[16/9] rounded-[1.25rem]"
                   />
                   <div className="px-2.5 pb-2 pt-4">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ArtTile from "@/components/ArtTile";
+import CategoryArt from "@/components/CategoryArt";
 import ArtistCard from "@/components/ArtistCard";
 import Marquee from "@/components/Marquee";
 import Reveal from "@/components/Reveal";
@@ -154,9 +155,9 @@ export default function Home() {
                 i === 0 ? "col-span-2 row-span-2 min-h-[18rem]" : "min-h-[11rem]"
               } ${i >= 3 ? "md:col-span-2" : ""}`}
             >
-              <ArtTile
+              <CategoryArt
+                slug={category.slug}
                 color={tileColors[i % tileColors.length]}
-                variant={i % 4}
                 className="absolute inset-0"
               />
               <div
