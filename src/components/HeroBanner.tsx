@@ -74,7 +74,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
 
   return (
     <div
-      className="relative overflow-hidden rounded-[2rem] text-white shadow-xl lg:rounded-[2.5rem]"
+      className="relative overflow-hidden rounded-[1.25rem] rounded-br-[2.75rem] rounded-tl-[2.75rem] text-white shadow-xl lg:rounded-[1.5rem] lg:rounded-br-[4rem] lg:rounded-tl-[4rem]"
       onMouseEnter={pause}
       onMouseLeave={() => resume()}
       onFocus={pause}
@@ -93,7 +93,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
           <div
             key={slide.id}
             aria-hidden={i !== active}
-            className="relative min-h-[21rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[27rem]"
+            className="relative min-h-[16.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[27rem]"
           >
             <div
               className="absolute inset-0"

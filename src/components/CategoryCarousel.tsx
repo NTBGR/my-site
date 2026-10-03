@@ -111,7 +111,7 @@ export default function CategoryCarousel({
               <CategoryArt
                 slug={slide.slug}
                 color={slide.color}
-                className="aspect-[4/5] w-full sm:aspect-[4/3]"
+                className="aspect-[4/3] w-full"
               />
               <div
                 aria-hidden

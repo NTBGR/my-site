@@ -57,7 +57,7 @@ export default function Home() {
           <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {t.title}
           </h1>
-          <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg">
             {t.text}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
@@ -84,7 +84,7 @@ export default function Home() {
           <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {banner.title}
           </h2>
-          <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg">
             {banner.text}
           </p>
           <div className="mt-5">
@@ -112,7 +112,7 @@ export default function Home() {
             <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2">
               <Link
                 href="/categories"
-                className="group relative block min-h-36 overflow-hidden rounded-[2rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[2.5rem]"
+                className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
                 <CategoryArt slug="sachuqrebi" color="#7a4e6a" className="absolute inset-0 h-full w-full" />
                 <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
@@ -127,7 +127,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/join"
-                className="group relative block min-h-36 overflow-hidden rounded-[2rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[2.5rem]"
+                className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
                 <ArtTile color="#c93f15" variant={3} className="absolute inset-0 h-full w-full" />
                 <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
@@ -199,7 +199,7 @@ export default function Home() {
         >
           {featured.map((artist) => (
             <li key={artist.slug} className="w-[78%] shrink-0 snap-center sm:w-auto">
-              <ArtistCard artist={artist} />
+              <ArtistCard artist={artist} artClassName="aspect-[4/3] sm:aspect-[4/5]" />
             </li>
           ))}
         </Reveal>

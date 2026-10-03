@@ -5,9 +5,11 @@ import ArtTile, { variantFor } from "@/components/ArtTile";
 export default function ArtistCard({
   artist,
   worksLabel,
+  artClassName = "aspect-[4/5]",
 }: {
   artist: Artist;
   worksLabel?: string;
+  artClassName?: string;
 }) {
   return (
     <Link
@@ -17,7 +19,7 @@ export default function ArtistCard({
       <ArtTile
         color={artist.works[0]?.color ?? "#c93f15"}
         variant={variantFor(artist.slug)}
-        className="aspect-[4/5] rounded-[1.1rem] sm:rounded-[1.25rem]"
+        className={`${artClassName} rounded-[1.1rem] sm:rounded-[1.25rem]`}
       >
         <span className="absolute left-2 top-2 rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md sm:left-3 sm:top-3 sm:px-3 sm:text-xs">
           {artist.category}
