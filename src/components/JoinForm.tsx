@@ -16,7 +16,6 @@ export default function JoinForm() {
   const t = useT().form;
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
-  const [open, setOpen] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,6 +25,10 @@ export default function JoinForm() {
     const data = new FormData(form);
 
     const files = (data.getAll("works") as File[]).filter((f) => f.size > 0);
+    if (files.length === 0) {
+      setError(t.errors.photos);
+      return;
+    }
     if (files.length > MAX_FILES) {
       setError(t.errors.tooMany(MAX_FILES));
       return;
@@ -68,14 +71,10 @@ export default function JoinForm() {
     );
   }
 
-  if (!open) {
-    return <Button onClick={() => setOpen(true)}>{t.open}</Button>;
-  }
-
   return (
     <form
       onSubmit={onSubmit}
-      className="grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-2"
+      className="grid grid-cols-1 gap-5 sm:grid-cols-2"
     >
       <label className="text-sm font-medium text-text">
         {t.name}
@@ -113,6 +112,7 @@ export default function JoinForm() {
         {t.instagram}
         <input
           name="instagram"
+          required
           maxLength={200}
           placeholder="https://instagram.com/..."
           className={inputClass}
@@ -123,6 +123,7 @@ export default function JoinForm() {
         {t.facebook}
         <input
           name="facebook"
+          required
           maxLength={200}
           placeholder="https://facebook.com/..."
           className={inputClass}
@@ -145,6 +146,7 @@ export default function JoinForm() {
         <input
           name="works"
           type="file"
+          required
           multiple
           accept="image/jpeg,image/png,image/webp"
           className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-accent file:px-3 file:py-1.5 file:text-sm file:text-on-accent`}

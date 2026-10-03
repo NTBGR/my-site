@@ -111,13 +111,6 @@ export default function Header() {
         <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:gap-5 lg:px-10">
           <LogoLink />
 
-          <form
-            onSubmit={onSearch}
-            className="hidden min-w-0 max-w-sm flex-1 xl:ml-4 xl:block 2xl:max-w-md"
-          >
-            {searchField}
-          </form>
-
           <nav
             className="hidden items-center gap-1 lg:ml-auto lg:flex"
             aria-label={t.nav.main}
@@ -143,6 +136,10 @@ export default function Header() {
               );
             })}
           </nav>
+
+          <form onSubmit={onSearch} className="hidden w-52 xl:block 2xl:w-64">
+            {searchField}
+          </form>
 
           <div className="hidden lg:block">
             <Preferences />

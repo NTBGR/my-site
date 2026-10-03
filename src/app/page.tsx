@@ -115,7 +115,7 @@ export default function Home() {
                 className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
                 <CategoryArt slug="sachuqrebi" color="#7a4e6a" className="absolute inset-0 h-full w-full" />
-                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6">
                   <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
                     {dictionary[lang].nav.categories}
@@ -129,7 +129,7 @@ export default function Home() {
                 href="/join"
                 className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
-                <ArtTile color="#c93f15" variant={3} className="absolute inset-0 h-full w-full" />
+                <ArtTile color="#d4623a" variant={3} className="absolute inset-0 h-full w-full" />
                 <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-6">
                   <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
@@ -240,7 +240,7 @@ export default function Home() {
       {/* შემოქმედის ბანერი */}
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-16 sm:px-6 lg:px-10 sm:pb-24 sm:pt-24">
         <Reveal>
-          <div className="relative isolate overflow-hidden rounded-[2rem] bg-accent px-6 py-10 text-on-accent sm:rounded-[2.25rem] sm:px-14 sm:py-20">
+          <div className="relative isolate overflow-hidden rounded-[2rem] bg-gradient-to-br from-accent to-[color-mix(in_srgb,var(--accent),#f2a37a_28%)] px-6 py-10 text-on-accent sm:rounded-[2.25rem] sm:px-14 sm:py-20">
             <div
               aria-hidden
               className="blob absolute -right-16 -top-20 -z-10 h-72 w-72 rounded-full bg-white/15 blur-2xl"

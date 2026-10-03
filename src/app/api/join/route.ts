@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   const instagram = field(data, "instagram");
   const facebook = field(data, "facebook");
 
-  if (!name || !email || !city || !category || !bio) {
+  if (!name || !email || !city || !category || !bio || !instagram || !facebook) {
     return NextResponse.json(
       { error: "required" },
       { status: 400 },
@@ -51,6 +51,12 @@ export async function POST(request: Request) {
     .getAll("works")
     .filter((f): f is File => f instanceof File && f.size > 0);
 
+  if (files.length === 0) {
+    return NextResponse.json(
+      { error: "photos" },
+      { status: 400 },
+    );
+  }
   if (files.length > MAX_FILES) {
     return NextResponse.json(
       { error: "tooMany" },

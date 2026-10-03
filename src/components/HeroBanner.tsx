@@ -93,12 +93,12 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
           <div
             key={slide.id}
             aria-hidden={i !== active}
-            className="relative min-h-[16.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[27rem]"
+            className="relative min-h-[17.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[22rem] lg:min-h-[24rem]"
           >
             <div
               className="absolute inset-0"
               style={{
-                background: `linear-gradient(135deg, color-mix(in srgb, ${slide.color}, white 14%), ${slide.color} 55%, color-mix(in srgb, ${slide.color}, black 34%))`,
+                background: `linear-gradient(135deg, color-mix(in srgb, ${slide.color}, white 14%), ${slide.color} 55%, color-mix(in srgb, ${slide.color}, black 18%))`,
               }}
             />
             <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[56%] lg:[mask-image:linear-gradient(90deg,transparent,#000_24%)]">
@@ -106,16 +106,16 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
             </div>
             <div
               aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10 lg:bg-gradient-to-r lg:from-black/45 lg:via-transparent lg:to-transparent"
+              className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent lg:bg-gradient-to-r lg:from-black/35 lg:via-transparent lg:to-transparent"
             />
-            <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-16 sm:p-10 sm:pb-20 lg:inset-y-0 lg:flex lg:w-[60%] lg:flex-col lg:justify-center lg:p-10 lg:pb-16">
+            <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-[4.75rem] sm:p-10 sm:pb-20 sm:pl-20 lg:inset-y-0 lg:flex lg:w-[60%] lg:flex-col lg:justify-center lg:p-10 lg:pb-16 lg:pl-20">
               {slide.content}
             </div>
           </div>
         ))}
       </div>
 
-      <div className="pointer-events-none absolute bottom-5 left-6 right-6 z-20 flex items-center justify-between gap-4 sm:left-10 sm:right-10 lg:left-14 lg:right-14">
+      <div className="pointer-events-none absolute bottom-5 left-6 right-6 z-20 flex items-center sm:left-10 sm:right-10 lg:left-20 lg:right-20">
         <div className="pointer-events-auto flex items-center gap-1.5" role="tablist">
           {slides.map((slide, i) => (
             <button
@@ -135,20 +135,26 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
             </button>
           ))}
         </div>
-        <div className="pointer-events-auto flex gap-2">
-          <ArrowButton
-            direction="prev"
-            variant="glass"
-            label={t.prev}
-            onClick={() => goTo(active - 1)}
-          />
-          <ArrowButton
-            direction="next"
-            variant="glass"
-            label={t.next}
-            onClick={() => goTo(active + 1)}
-          />
-        </div>
+      </div>
+
+      {/* ისრები გვერდებზე, შუაში (ტელეფონზე გადაფურცვლა საკმარისია) */}
+      <div className="pointer-events-none absolute inset-y-0 left-3 z-20 hidden items-center sm:flex lg:left-5">
+        <ArrowButton
+          direction="prev"
+          variant="glass"
+          label={t.prev}
+          className="pointer-events-auto"
+          onClick={() => goTo(active - 1)}
+        />
+      </div>
+      <div className="pointer-events-none absolute inset-y-0 right-3 z-20 hidden items-center sm:flex lg:right-5">
+        <ArrowButton
+          direction="next"
+          variant="glass"
+          label={t.next}
+          className="pointer-events-auto"
+          onClick={() => goTo(active + 1)}
+        />
       </div>
     </div>
   );
