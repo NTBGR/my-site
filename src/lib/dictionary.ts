@@ -82,8 +82,13 @@ const ka = {
   artists: {
     title: "ხელოვანები",
     text: "ადამიანები, რომლებიც ქმნიან.",
-    allCities: "ყველა ქალაქი",
-    emptyCity: "ამ ქალაქში ხელოვანი ვერ მოიძებნა.",
+    allCrafts: "ყველა",
+    searchPlaceholder: "მოძებნე ხელოვანი",
+    clearSearch: "გასუფთავება",
+    count: (n: number) => `${n} ხელოვანი`,
+    worksCount: (n: number) => `${n} ნამუშევარი`,
+    empty: "ხელოვანი ვერ მოიძებნა.",
+    reset: "ფილტრების გასუფთავება",
   },
   artist: {
     notFoundTitle: "ხელოვანი ვერ მოიძებნა",
@@ -91,7 +96,11 @@ const ka = {
     list: "ხელოვანების სია",
     back: "← ყველა ხელოვანი",
     instagram: "ინსტაგრამი",
+    facebook: "ფეისბუქი",
     works: "ნამუშევრები",
+    about: "ავტორის შესახებ",
+    close: "დახურვა",
+    openWork: "ნახვა",
   },
   categories: {
     title: "კატეგორიები",
@@ -154,6 +163,7 @@ const ka = {
     category: "მიმართულება *",
     categoryPlaceholder: "მაგ. მხატვარი, ფოტოგრაფი",
     instagram: "ინსტაგრამის ბმული",
+    facebook: "ფეისბუქის ბმული",
     bio: "მოკლე ბიოგრაფია *",
     works: "ნამუშევრები",
     worksHint: (n: number) =>
@@ -258,8 +268,13 @@ const en: Dict = {
   artists: {
     title: "Artists",
     text: "The people who make things.",
-    allCities: "All cities",
-    emptyCity: "No artists found in this city.",
+    allCrafts: "All",
+    searchPlaceholder: "Search artists",
+    clearSearch: "Clear",
+    count: (n: number) => `${n} ${n === 1 ? "artist" : "artists"}`,
+    worksCount: (n: number) => `${n} ${n === 1 ? "work" : "works"}`,
+    empty: "No artists found.",
+    reset: "Clear filters",
   },
   artist: {
     notFoundTitle: "Artist not found",
@@ -267,7 +282,11 @@ const en: Dict = {
     list: "Artist list",
     back: "← All artists",
     instagram: "Instagram",
+    facebook: "Facebook",
     works: "Works",
+    about: "About the artist",
+    close: "Close",
+    openWork: "View",
   },
   categories: {
     title: "Categories",
@@ -330,6 +349,7 @@ const en: Dict = {
     category: "Category *",
     categoryPlaceholder: "e.g. painter, photographer",
     instagram: "Instagram link",
+    facebook: "Facebook link",
     bio: "Short bio *",
     works: "Works",
     worksHint: (n: number) =>

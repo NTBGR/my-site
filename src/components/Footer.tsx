@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogoLink from "@/components/LogoLink";
 import { getT } from "@/lib/i18n";
 
 function FooterList({
@@ -61,13 +62,7 @@ export default function Footer() {
     <footer className="relative mt-0 overflow-hidden border-t border-border bg-surface-2">
       <div className="mx-auto grid max-w-7xl grid-cols-[repeat(2,minmax(0,1fr))] gap-x-6 gap-y-8 px-4 pb-6 pt-10 sm:gap-12 sm:px-6 lg:px-10 sm:pb-10 sm:pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="col-span-2 md:col-span-1">
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-serif text-3xl font-semibold tracking-tight text-text"
-          >
-            <span aria-hidden className="h-3.5 w-3.5 rounded-full bg-accent" />
-            khelovani
-          </Link>
+          <LogoLink size="lg" />
           <p className="mt-4 max-w-xs leading-relaxed text-muted">{f.tagline}</p>
         </div>
         <FooterList title={f.learnMore} links={learnMore} />

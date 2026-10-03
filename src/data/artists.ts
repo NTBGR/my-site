@@ -3,6 +3,13 @@ import type { Lang } from "@/lib/dictionary";
 export type ArtistWork = {
   title: string;
   color: string;
+  // ნამუშევრის ბმული (პოსტი ინსტაგრამზე, ფეისბუქზე და ა.შ.); თუ არ არის, ავტორის ინსტაგრამი/ფეისბუქი გამოიყენება
+  url?: string;
+  // ნამდვილი ფოტო: ფაილი public/artists/<slug>/..., მისი ზომები პიქსელებში (პროპორციისთვის).
+  // ბარათები ყოველთვის 9:16-ია (სთორისის ფორმატი); სრულეკრანიან ნახვაში ფოტო მთლიანად ჩანს.
+  image?: string;
+  width?: number;
+  height?: number;
 };
 
 type ArtistText = {
@@ -21,6 +28,7 @@ export type Artist = {
   categories: string[];
   bio: string;
   instagram: string;
+  facebook: string;
   works: ArtistWork[];
   en: ArtistText;
 };
@@ -33,11 +41,13 @@ export const artists: Artist[] = [
     category: "მხატვარი",
     categories: ["nakhatebi"],
     bio: "ფიქტიური პორტრეტისტი, რომელიც თბილისის უბნებს თბილი ფერებით ხატავს. ეს პროფილი სატესტო მონაცემია და რეალურ ადამიანს არ ეკუთვნის.",
-    instagram: "",
+    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
     works: [
-      { title: "დილა სოლოლაკში", color: "#c45c3e" },
-      { title: "ყვითელი აივანი", color: "#e0a45a" },
-      { title: "წვიმიანი ქუჩა", color: "#6b7c6a" },
+      { title: "დილა სოლოლაკში", color: "#c45c3e", width: 1080, height: 1920 },
+      { title: "ყვითელი აივანი", color: "#e0a45a", width: 1080, height: 1920 },
+      { title: "წვიმიანი ქუჩა", color: "#6b7c6a", width: 1080, height: 1920 },
     ],
     en: {
       name: "Elene Nimushi",
@@ -54,11 +64,13 @@ export const artists: Artist[] = [
     category: "ფოტოგრაფი",
     categories: ["nakhatebi"],
     bio: "სატესტო ფოტოგრაფი, რომელიც ზღვისპირა სინათლეს იღებს. სახელი და ბიოგრაფია სპეციალურად გამოგონილია.",
-    instagram: "",
+    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
     works: [
-      { title: "შავი ზღვის ჰორიზონტი", color: "#3d5a73" },
-      { title: "პალმის ჩრდილი", color: "#8a9a6b" },
-      { title: "საღამოს ტალღა", color: "#b07a4a" },
+      { title: "შავი ზღვის ჰორიზონტი", color: "#3d5a73", width: 1080, height: 1920 },
+      { title: "პალმის ჩრდილი", color: "#8a9a6b", width: 1080, height: 1920 },
+      { title: "საღამოს ტალღა", color: "#b07a4a", width: 1080, height: 1920 },
     ],
     en: {
       name: "Giorgi Magaliti",
@@ -75,11 +87,13 @@ export const artists: Artist[] = [
     category: "კერამიკოსი",
     categories: ["keramika", "saxlis-dekori"],
     bio: "გამოგონილი კერამიკოსი, რომელიც თიხასთან მუშაობს. ყველა დეტალი მხოლოდ დემონსტრაციისთვისაა.",
-    instagram: "",
+    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
     works: [
-      { title: "თიხის თასი", color: "#a65d3f" },
-      { title: "მწვანე ლანგარი", color: "#5e7a55" },
-      { title: "ღია ფერის ვაზა", color: "#d4b48a" },
+      { title: "თიხის თასი", color: "#a65d3f", width: 1080, height: 1920 },
+      { title: "მწვანე ლანგარი", color: "#5e7a55", width: 1080, height: 1920 },
+      { title: "ღია ფერის ვაზა", color: "#d4b48a", width: 1080, height: 1920 },
     ],
     en: {
       name: "Mariam Savardebeli",
@@ -96,11 +110,13 @@ export const artists: Artist[] = [
     category: "ილუსტრატორი",
     categories: ["nakhatebi", "sachuqrebi"],
     bio: "ფიქტიური ილუსტრატორი კახეთიდან. ეს ჩანაწერი რეალურ შემოქმედს არ ასახავს.",
-    instagram: "",
+    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
     works: [
-      { title: "ვენახის ესკიზი", color: "#7a4e6a" },
-      { title: "მთის ხაზი", color: "#4f6d5a" },
-      { title: "საღამოს ცა", color: "#c4785b" },
+      { title: "ვენახის ესკიზი", color: "#7a4e6a", width: 1080, height: 1920 },
+      { title: "მთის ხაზი", color: "#4f6d5a", width: 1080, height: 1920 },
+      { title: "საღამოს ცა", color: "#c4785b", width: 1080, height: 1920 },
     ],
     en: {
       name: "Leka Placeholderi",
@@ -117,11 +133,13 @@ export const artists: Artist[] = [
     category: "მოქანდაკე",
     categories: ["skulptura", "khis-nakethobebi"],
     bio: "სატესტო მოქანდაკე, რომელიც ქვისა და ხის ფორმებს იკვლევს. პროფილი გამოგონილია.",
-    instagram: "",
+    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
     works: [
-      { title: "ქვის სილუეტი", color: "#8b8174" },
-      { title: "ხის ფიგურა", color: "#9c6b45" },
-      { title: "ბრინჯაოს ესკიზი", color: "#6a5a48" },
+      { title: "ქვის სილუეტი", color: "#8b8174", width: 1080, height: 1920 },
+      { title: "ხის ფიგურა", color: "#9c6b45", width: 1080, height: 1920 },
+      { title: "ბრინჯაოს ესკიზი", color: "#6a5a48", width: 1080, height: 1920 },
     ],
     en: {
       name: "Nino Demoeli",
@@ -138,11 +156,13 @@ export const artists: Artist[] = [
     category: "მხატვარი",
     categories: ["nakhatebi", "saxlis-dekori"],
     bio: "ფიქტიური მხატვარი, რომელიც ფერად აბსტრაქციას ხატავს. ინსტაგრამის ბმული განზრახ ცარიელია.",
-    instagram: "",
+    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
+    instagram: "https://www.instagram.com/",
+    facebook: "https://www.facebook.com/",
     works: [
-      { title: "წითელი კომპოზიცია", color: "#b44532" },
-      { title: "ლურჯი ველი", color: "#4a6d8c" },
-      { title: "ოქროსფერი შუქი", color: "#d4a017" },
+      { title: "წითელი კომპოზიცია", color: "#b44532", width: 1080, height: 1920 },
+      { title: "ლურჯი ველი", color: "#4a6d8c", width: 1080, height: 1920 },
+      { title: "ოქროსფერი შუქი", color: "#d4a017", width: 1080, height: 1920 },
     ],
     en: {
       name: "Dato Testadze",

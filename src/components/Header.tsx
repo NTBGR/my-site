@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
 import CategoryBar from "@/components/CategoryBar";
+import LogoLink from "@/components/LogoLink";
 import { useT } from "@/components/LangProvider";
 
 const navHrefs = ["/artists", "/categories", "/blog"] as const;
@@ -108,16 +109,7 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:px-10">
-          <Link
-            href="/"
-            className="group flex min-h-11 items-center gap-2 font-serif text-lg font-semibold tracking-tight text-text min-[360px]:text-xl sm:text-2xl"
-          >
-            <span
-              aria-hidden
-              className="inline-block h-3 w-3 rounded-full bg-accent transition-transform duration-500 group-hover:rotate-180 group-hover:scale-125 max-[359px]:hidden"
-            />
-            khelovani
-          </Link>
+          <LogoLink />
 
           <form
             onSubmit={onSearch}

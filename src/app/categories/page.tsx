@@ -1,7 +1,7 @@
 import Link from "next/link";
 import CategoryArt from "@/components/CategoryArt";
 import PageHeader from "@/components/PageHeader";
-import { categories, localizeCategory } from "@/data/categories";
+import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { artists } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -10,18 +10,6 @@ export function generateMetadata() {
   return { title: dictionary[getLang()].categories.title };
 }
 
-const tileColors = [
-  "#c4553a",
-  "#3d5a73",
-  "#5e7a55",
-  "#7a4e6a",
-  "#b07a4a",
-  "#4a6d8c",
-  "#a65d3f",
-  "#6b7c6a",
-  "#8a6a9c",
-  "#b44532",
-];
 
 export default function CategoriesPage() {
   const lang = getLang();
@@ -32,7 +20,7 @@ export default function CategoriesPage() {
       <PageHeader title={t.title} text={t.text} />
       <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-10 sm:pb-24 sm:pt-14">
         <ul className="stagger grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-          {categories.map((raw, i) => {
+          {categories.map((raw) => {
             const category = localizeCategory(raw, lang);
             const count = artists.filter((artist) =>
               artist.categories.includes(category.slug),
@@ -45,7 +33,7 @@ export default function CategoriesPage() {
                 >
                   <CategoryArt
                     slug={category.slug}
-                    color={tileColors[i % tileColors.length]}
+                    color={categoryColor(raw.slug)}
                     className="aspect-[4/3] rounded-[1.1rem] sm:aspect-[16/9] sm:rounded-[1.25rem]"
                   />
                   <div className="px-1.5 pb-1.5 pt-3 sm:px-2.5 sm:pb-2 sm:pt-4">

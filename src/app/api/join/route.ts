@@ -32,6 +32,7 @@ export async function POST(request: Request) {
   const category = field(data, "category");
   const bio = field(data, "bio");
   const instagram = field(data, "instagram");
+  const facebook = field(data, "facebook");
 
   if (!name || !email || !city || !category || !bio) {
     return NextResponse.json(
@@ -69,7 +70,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const application = { name, email, city, category, instagram, bio };
+  const application = { name, email, city, category, instagram, facebook, bio };
 
   const telegramOn = Boolean(
     process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
@@ -101,6 +102,7 @@ type Application = {
   city: string;
   category: string;
   instagram: string;
+  facebook: string;
   bio: string;
 };
 
@@ -117,6 +119,7 @@ async function sendToTelegram(app: Application, files: File[]) {
     `<b>ქალაქი:</b> ${escapeHtml(app.city)}`,
     `<b>მიმართულება:</b> ${escapeHtml(app.category)}`,
     `<b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}`,
+    `<b>ფეისბუქი:</b> ${escapeHtml(app.facebook) || "—"}`,
     "",
     "<b>ბიოგრაფია:</b>",
     escapeHtml(app.bio),
@@ -182,6 +185,7 @@ async function sendToEmail(app: Application, files: File[]) {
     <p><b>ქალაქი:</b> ${escapeHtml(app.city)}</p>
     <p><b>მიმართულება:</b> ${escapeHtml(app.category)}</p>
     <p><b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}</p>
+    <p><b>ფეისბუქი:</b> ${escapeHtml(app.facebook) || "—"}</p>
     <p><b>ბიოგრაფია:</b><br>${escapeHtml(app.bio).replace(/\n/g, "<br>")}</p>
   `;
 

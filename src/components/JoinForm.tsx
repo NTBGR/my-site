@@ -109,12 +109,22 @@ export default function JoinForm() {
         />
       </label>
 
-      <label className="text-sm font-medium text-text sm:col-span-2">
+      <label className="text-sm font-medium text-text">
         {t.instagram}
         <input
           name="instagram"
           maxLength={200}
           placeholder="https://instagram.com/..."
+          className={inputClass}
+        />
+      </label>
+
+      <label className="text-sm font-medium text-text">
+        {t.facebook}
+        <input
+          name="facebook"
+          maxLength={200}
+          placeholder="https://facebook.com/..."
           className={inputClass}
         />
       </label>

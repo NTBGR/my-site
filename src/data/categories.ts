@@ -100,6 +100,25 @@ export const categories: Category[] = [
   },
 ];
 
+// კატეგორიის ფერი (ილუსტრაციებისთვის და ბანერებისთვის)
+const palette = [
+  "#c4553a",
+  "#3d5a73",
+  "#5e7a55",
+  "#7a4e6a",
+  "#b07a4a",
+  "#4a6d8c",
+  "#a65d3f",
+  "#6b7c6a",
+  "#8a6a9c",
+  "#b44532",
+];
+
+export function categoryColor(slug: string) {
+  const index = categories.findIndex((category) => category.slug === slug);
+  return palette[(index < 0 ? 0 : index) % palette.length];
+}
+
 export function localizeCategory(category: Category, lang: Lang): Category {
   return lang === "ka" ? category : { ...category, ...category.en };
 }

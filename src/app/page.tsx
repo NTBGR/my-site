@@ -6,18 +6,10 @@ import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
 import Reveal from "@/components/Reveal";
 import { getLocalizedArtists } from "@/data/artists";
-import { categories, localizeCategory } from "@/data/categories";
+import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
-const tileColors = [
-  "#c4553a",
-  "#3d5a73",
-  "#5e7a55",
-  "#7a4e6a",
-  "#b07a4a",
-  "#4a6d8c",
-];
 
 export default function Home() {
   const lang = getLang();
@@ -174,11 +166,11 @@ export default function Home() {
         <Reveal>
           <CategoryCarousel
             autoplay={false}
-            slides={cats.map((c, i) => ({
+            slides={cats.map((c) => ({
               slug: c.slug,
               name: c.name,
               description: c.description,
-              color: tileColors[i % tileColors.length],
+              color: categoryColor(c.slug),
             }))}
           />
         </Reveal>
