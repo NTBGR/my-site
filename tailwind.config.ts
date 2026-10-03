@@ -9,14 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "var(--bg)",
-        surface: "var(--surface)",
-        text: "var(--text)",
-        muted: "var(--muted)",
-        border: "var(--border)",
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        text: "rgb(var(--text) / <alpha-value>)",
+        muted: "rgb(var(--muted) / <alpha-value>)",
+        border: "rgb(var(--border) / <alpha-value>)",
         accent: {
-          DEFAULT: "var(--accent)",
-          hover: "var(--accent-hover)",
+          DEFAULT: "rgb(var(--accent) / <alpha-value>)",
+          hover: "rgb(var(--accent-hover) / <alpha-value>)",
         },
       },
       fontFamily: {

@@ -3,53 +3,49 @@
 import { useMemo, useState } from "react";
 import type { Artist } from "@/data/artists";
 import ArtistCard from "@/components/ArtistCard";
+import Chip from "@/components/ui/Chip";
 
 export default function ArtistsFilter({
   artists,
   cities,
+  query = "",
 }: {
   artists: Artist[];
   cities: string[];
+  query?: string;
 }) {
   const [city, setCity] = useState("all");
 
   const filtered = useMemo(() => {
-    if (city === "all") return artists;
-    return artists.filter((artist) => artist.city === city);
-  }, [artists, city]);
+    const q = query.trim().toLocaleLowerCase();
+    return artists.filter((artist) => {
+      if (city !== "all" && artist.city !== city) return false;
+      if (!q) return true;
+      return [artist.name, artist.city, artist.category].some((field) =>
+        field.toLocaleLowerCase().includes(q),
+      );
+    });
+  }, [artists, city, query]);
 
   return (
     <div>
       <div className="mb-8 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => setCity("all")}
-          className={`rounded-full px-4 py-2 text-sm transition ${
-            city === "all"
-              ? "bg-[#c45c3e] text-white"
-              : "bg-white text-[#4a4033] ring-1 ring-[#eadfd3] hover:ring-[#c45c3e]/50"
-          }`}
-        >
+        <Chip selected={city === "all"} onClick={() => setCity("all")}>
           ყველა ქალაქი
-        </button>
+        </Chip>
         {cities.map((item) => (
-          <button
-            type="button"
-            key={item}
-            onClick={() => setCity(item)}
-            className={`rounded-full px-4 py-2 text-sm transition ${
-              city === item
-                ? "bg-[#c45c3e] text-white"
-                : "bg-white text-[#4a4033] ring-1 ring-[#eadfd3] hover:ring-[#c45c3e]/50"
-            }`}
-          >
+          <Chip key={item} selected={city === item} onClick={() => setCity(item)}>
             {item}
-          </button>
+          </Chip>
         ))}
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-[#5c5348]">ამ ქალაქში ხელოვანი ვერ მოიძებნა.</p>
+        <p className="text-muted">
+          {query.trim()
+            ? `„${query.trim()}“ — ხელოვანი ვერ მოიძებნა.`
+            : "ამ ქალაქში ხელოვანი ვერ მოიძებნა."}
+        </p>
       ) : (
         <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((artist) => (

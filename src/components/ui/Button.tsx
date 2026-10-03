@@ -32,21 +32,28 @@ type ButtonAsLink = CommonProps & {
   href: string;
 };
 
-export default function Button(props: ButtonAsButton | ButtonAsLink) {
-  const { children, variant = "primary", className } = props;
+export default function Button({
+  children,
+  variant = "primary",
+  className,
+  ...rest
+}: ButtonAsButton | ButtonAsLink) {
   const classes = cn(baseClass, variantClass[variant], className);
 
-  if ("href" in props && props.href) {
+  if ("href" in rest && rest.href) {
     return (
-      <Link href={props.href} className={classes}>
+      <Link href={rest.href} className={classes}>
         {children}
       </Link>
     );
   }
 
-  const { type = "button", ...rest } = props as ButtonAsButton;
+  const { type = "button", ...buttonProps } = rest as Omit<
+    ButtonAsButton,
+    keyof CommonProps
+  >;
   return (
-    <button type={type} className={classes} {...rest}>
+    <button {...buttonProps} type={type} className={classes}>
       {children}
     </button>
   );

@@ -3,20 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --bg: #faf7f2;
-  --surface: #ffffff;
-  --text: #2b2623;
-  --muted: #6b625b;
-  --border: #e6dfd5;
-  --accent: #b4532a;
-  --accent-hover: #963f1c;
+  --bg: 250 247 242;
+  --surface: 255 255 255;
+  --text: 43 38 35;
+  --muted: 107 98 91;
+  --border: 230 223 213;
+  --accent: 180 83 42;
+  --accent-hover: 150 63 28;
 }
 
-/* Dark theme tokens can be added later, e.g. [data-theme="dark"] { ... } */
+/* Tokens are space-separated RGB channels so Tailwind opacity modifiers (e.g. bg-surface/90) work.
+   Dark theme tokens can be added later, e.g. [data-theme="dark"] { ... } */
 
 body {
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: rgb(var(--bg));
+  color: rgb(var(--text));
 }
 
 h1,
@@ -32,7 +33,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid rgb(var(--accent));
   outline-offset: 2px;
 }
 
