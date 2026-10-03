@@ -2,16 +2,18 @@
 
 import { useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
+import { useT } from "@/components/LangProvider";
 
 const MAX_FILES = 4;
 const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
 
 const inputClass =
-  "mt-1.5 w-full rounded-card border border-border bg-surface px-3.5 py-2.5 text-sm text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
+  "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-sm text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
 type Status = "idle" | "sending" | "success";
 
 export default function JoinForm() {
+  const t = useT().form;
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
@@ -25,11 +27,11 @@ export default function JoinForm() {
 
     const files = (data.getAll("works") as File[]).filter((f) => f.size > 0);
     if (files.length > MAX_FILES) {
-      setError(`მაქსიმუმ ${MAX_FILES} ფოტოს ატვირთვაა შესაძლებელი.`);
+      setError(t.errors.tooMany(MAX_FILES));
       return;
     }
     if (files.reduce((sum, f) => sum + f.size, 0) > MAX_TOTAL_BYTES) {
-      setError("ფოტოების ჯამური ზომა 4MB-ს არ უნდა აღემატებოდეს.");
+      setError(t.errors.size);
       return;
     }
 
@@ -38,14 +40,16 @@ export default function JoinForm() {
       const res = await fetch("/api/join", { method: "POST", body: data });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(json.error ?? "გაგზავნა ვერ მოხერხდა. სცადე მოგვიანებით.");
+        const code = json.error as keyof typeof t.errors | undefined;
+        const known = code && typeof t.errors[code] === "string";
+        setError(known ? (t.errors[code] as string) : t.errors.failed);
         setStatus("idle");
         return;
       }
       form.reset();
       setStatus("success");
     } catch {
-      setError("კავშირის შეცდომა. შეამოწმე ინტერნეტი და სცადე თავიდან.");
+      setError(t.errors.network);
       setStatus("idle");
     }
   }
@@ -56,16 +60,16 @@ export default function JoinForm() {
         role="status"
         className="max-w-2xl rounded-2xl border border-border bg-surface p-6"
       >
-        <h3 className="text-lg font-semibold text-text">გმადლობთ!</h3>
+        <h3 className="text-lg font-semibold text-text">{t.thanksTitle}</h3>
         <p className="mt-2 leading-relaxed text-muted">
-          განაცხადი მივიღეთ. ინფორმაციას გადავამოწმებთ და მალე დაგიკავშირდებით.
+          {t.thanksText}
         </p>
       </div>
     );
   }
 
   if (!open) {
-    return <Button onClick={() => setOpen(true)}>შეავსე განაცხადი</Button>;
+    return <Button onClick={() => setOpen(true)}>{t.open}</Button>;
   }
 
   return (
@@ -74,12 +78,12 @@ export default function JoinForm() {
       className="grid max-w-2xl grid-cols-1 gap-5 sm:grid-cols-2"
     >
       <label className="text-sm font-medium text-text">
-        სახელი და გვარი *
+        {t.name}
         <input name="name" required maxLength={100} className={inputClass} />
       </label>
 
       <label className="text-sm font-medium text-text">
-        ემაილი *
+        {t.email}
         <input
           name="email"
           type="email"
@@ -90,23 +94,23 @@ export default function JoinForm() {
       </label>
 
       <label className="text-sm font-medium text-text">
-        ქალაქი *
+        {t.city}
         <input name="city" required maxLength={80} className={inputClass} />
       </label>
 
       <label className="text-sm font-medium text-text">
-        მიმართულება *
+        {t.category}
         <input
           name="category"
           required
           maxLength={80}
-          placeholder="მაგ. მხატვარი, ფოტოგრაფი"
+          placeholder={t.categoryPlaceholder}
           className={inputClass}
         />
       </label>
 
       <label className="text-sm font-medium text-text sm:col-span-2">
-        ინსტაგრამის ბმული
+        {t.instagram}
         <input
           name="instagram"
           maxLength={200}
@@ -116,7 +120,7 @@ export default function JoinForm() {
       </label>
 
       <label className="text-sm font-medium text-text sm:col-span-2">
-        მოკლე ბიოგრაფია *
+        {t.bio}
         <textarea
           name="bio"
           required
@@ -127,16 +131,16 @@ export default function JoinForm() {
       </label>
 
       <label className="text-sm font-medium text-text sm:col-span-2">
-        ნამუშევრები
+        {t.works}
         <input
           name="works"
           type="file"
           multiple
           accept="image/jpeg,image/png,image/webp"
-          className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-accent file:px-3 file:py-1.5 file:text-sm file:text-white`}
+          className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-accent file:px-3 file:py-1.5 file:text-sm file:text-on-accent`}
         />
         <span className="mt-1.5 block text-xs font-normal text-muted">
-          მაქსიმუმ {MAX_FILES} ფოტო (JPG, PNG, WEBP), ჯამში 4MB-მდე.
+          {t.worksHint(MAX_FILES)}
         </span>
       </label>
 
@@ -157,7 +161,7 @@ export default function JoinForm() {
 
       <div className="sm:col-span-2">
         <Button type="submit" disabled={status === "sending"}>
-          {status === "sending" ? "იგზავნება..." : "გაგზავნა"}
+          {status === "sending" ? t.sending : t.submit}
         </Button>
       </div>
     </form>

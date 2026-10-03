@@ -1,75 +1,66 @@
 import Button from "@/components/ui/Button";
 import JoinForm from "@/components/JoinForm";
+import PageHeader from "@/components/PageHeader";
+import { dictionary } from "@/lib/dictionary";
+import { getLang } from "@/lib/i18n";
 
-export const metadata = {
-  title: "გახდი პარტნიორი",
-};
-
-const benefits = [
-  {
-    title: "საკუთარი პროფილი",
-    text: "შენი სახელი, ქალაქი, მიმართულება და მოკლე ბიოგრაფია ერთ გვერდზე.",
-  },
-  {
-    title: "ნამუშევრების გალერეა",
-    text: "აჩვენე საუკეთესო ნამუშევრები იმ ადამიანებს, ვინც ქართულ ხელოვნებას ეძებს.",
-  },
-  {
-    title: "პირდაპირი კავშირი",
-    text: "დაინტერესებული ადამიანი შენს ინსტაგრამ გვერდზე გადავა და უშუალოდ დაგიკავშირდება.",
-  },
-];
-
-const steps = [
-  "მოგვაწოდე სახელი, ქალაქი, მიმართულება და მოკლე ბიოგრაფია.",
-  "გამოგვიგზავნე რამდენიმე ნამუშევარი და ინსტაგრამის ბმული.",
-  "გადავამოწმებთ ინფორმაციას და გამოვაქვეყნებთ შენს პროფილს.",
-];
+export function generateMetadata() {
+  return { title: dictionary[getLang()].join.title };
+}
 
 export default function JoinPage() {
+  const t = dictionary[getLang()].join;
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <h1 className="text-3xl font-semibold text-[#2c2416] sm:text-4xl">
-        გახდი პარტნიორი
-      </h1>
-      <p className="mt-3 max-w-2xl leading-relaxed text-[#5c5348]">
-        ხარ მხატვარი, ფოტოგრაფი, ილუსტრატორი, კერამიკოსი ან სხვა მიმართულების
-        ხელოვანი? შემოგვიერთდი და გახადე შენი შემოქმედება თვალსაჩინო.
-      </p>
+    <>
+      <PageHeader title={t.title} text={t.text} />
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+        <ul className="stagger grid grid-cols-1 gap-5 md:grid-cols-3">
+          {t.benefits.map((item, i) => (
+            <li
+              key={item.title}
+              className="group rounded-[1.75rem] border border-border bg-surface p-7 transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl"
+            >
+              <span
+                aria-hidden
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-soft font-semibold text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent"
+              >
+                {i + 1}
+              </span>
+              <h3 className="mt-5 text-xl font-semibold tracking-tight text-text">
+                {item.title}
+              </h3>
+              <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
+            </li>
+          ))}
+        </ul>
 
-      <h2 className="mt-12 text-xl font-semibold text-[#2c2416]">რას მიიღებ</h2>
-      <ul className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">
-        {benefits.map((item) => (
-          <li
-            key={item.title}
-            className="rounded-2xl border border-[#eadfd3] bg-white p-5 shadow-sm"
-          >
-            <h3 className="text-lg font-semibold text-[#2c2416]">{item.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#5c5348]">
-              {item.text}
-            </p>
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-12 text-xl font-semibold text-[#2c2416]">
-        როგორ ხდება ჩართვა
-      </h2>
-      <ol className="mt-5 max-w-2xl list-decimal space-y-3 pl-5 leading-relaxed text-[#5c5348]">
-        {steps.map((step) => (
-          <li key={step}>{step}</li>
-        ))}
-      </ol>
-
-      <div className="mt-8">
-        <JoinForm />
+        <div className="mt-16 grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+              {t.stepsTitle}
+            </h2>
+            <ol className="stagger mt-6 space-y-4">
+              {t.steps.map((step, i) => (
+                <li key={step} className="flex gap-4 leading-relaxed text-muted">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-xs font-semibold text-text">
+                    {i + 1}
+                  </span>
+                  {step}
+                </li>
+              ))}
+            </ol>
+            <div className="mt-8">
+              <Button href="/artists" variant="secondary">
+                {t.existing}
+              </Button>
+            </div>
+          </div>
+          <div className="rounded-[1.75rem] border border-border bg-surface p-6 sm:p-8">
+            <JoinForm />
+          </div>
+        </div>
       </div>
-
-      <div className="mt-8">
-        <Button href="/artists" variant="secondary">
-          ნახე არსებული პროფილები
-        </Button>
-      </div>
-    </div>
+    </>
   );
 }

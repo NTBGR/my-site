@@ -3,16 +3,53 @@
 @tailwind utilities;
 
 :root {
-  --bg: #faf7f2;
-  --surface: #ffffff;
-  --text: #2b2623;
-  --muted: #6b625b;
-  --border: #e6dfd5;
-  --accent: #b4532a;
-  --accent-hover: #963f1c;
+  --bg: #f6f1ea;
+  --surface: #fffdf9;
+  --surface-2: #efe7dc;
+  --text: #1d1a17;
+  --muted: #6a6158;
+  --border: #e3d9cb;
+  --accent: #c93f15;
+  --accent-hover: #a5320e;
+  --accent-soft: #fbe2d6;
+  --on-accent: #ffffff;
+  color-scheme: light;
 }
 
-/* Dark theme tokens can be added later, e.g. [data-theme="dark"] { ... } */
+html[data-theme="dark"] {
+  --bg: #12100e;
+  --surface: #1b1815;
+  --surface-2: #17140f;
+  --text: #f4ede4;
+  --muted: #a99e91;
+  --border: #2e2823;
+  --accent: #ff7d50;
+  --accent-hover: #ff9a74;
+  --accent-soft: #35201a;
+  --on-accent: #1a0f09;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.theme-icon-moon {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-icon-sun {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-icon-moon {
+  display: inline;
+}
 
 body {
   background-color: var(--bg);
@@ -76,5 +113,206 @@ textarea:focus-visible {
   .page-enter,
   .menu-enter {
     animation: none;
+  }
+}
+
+/* ---------- ანიმაციები და ჰოვერები ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ბავშვები თანმიმდევრობით ამოდიან (ბარათების ბადეები, სექციის შიგთავსი) */
+.stagger > * {
+  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 70ms; }
+.stagger > *:nth-child(3) { animation-delay: 140ms; }
+.stagger > *:nth-child(4) { animation-delay: 210ms; }
+.stagger > *:nth-child(5) { animation-delay: 280ms; }
+.stagger > *:nth-child(6) { animation-delay: 350ms; }
+.stagger > *:nth-child(7) { animation-delay: 420ms; }
+.stagger > *:nth-child(8) { animation-delay: 490ms; }
+.stagger > *:nth-child(9) { animation-delay: 560ms; }
+.stagger > *:nth-child(n + 10) { animation-delay: 630ms; }
+
+/* თემის გადართვისას ფერები რბილად იცვლება */
+body,
+header,
+footer,
+main * {
+  transition-property: background-color, border-color, color, fill, stroke,
+    box-shadow, transform, opacity;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+
+/* ბარათის სურათი ჰოვერზე ოდნავ იზრდება */
+.zoom-on-hover {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .zoom-on-hover,
+.zoom-on-hover:hover {
+  transform: scale(1.06);
+}
+
+/* ისარი ჰოვერზე წინ მიდის */
+.arrow-slide {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+.group:hover .arrow-slide,
+a:hover > .arrow-slide {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger > *,
+  .page-enter,
+  .menu-enter {
+    animation: none;
+  }
+  .zoom-on-hover,
+  .arrow-slide {
+    transition: none;
+  }
+  .group:hover .zoom-on-hover,
+  .zoom-on-hover:hover,
+  .group:hover .arrow-slide {
+    transform: none;
+  }
+}
+
+/* ---------- რედიზაინი: დეკორი და ახალი ანიმაციები ---------- */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 1.5deg));
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(30px, -24px) scale(1.12);
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-dot {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+.float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.blob {
+  animation: drift 14s ease-in-out infinite;
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.8s ease-out infinite;
+}
+
+.marquee-track {
+  animation: marquee 45s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ფაქტურა ხელოვნების ბლოკებზე */
+.grain {
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* სათაურის შესვლა გვერდის ჩატვირთვისას */
+.hero-in > * {
+  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-in > *:nth-child(1) { animation-delay: 0ms; }
+.hero-in > *:nth-child(2) { animation-delay: 90ms; }
+.hero-in > *:nth-child(3) { animation-delay: 180ms; }
+.hero-in > *:nth-child(4) { animation-delay: 270ms; }
+.hero-in > *:nth-child(5) { animation-delay: 360ms; }
+
+/* სქროლზე გამოჩენა (მუშაობს, როცა JS ჩაირთვება) */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.js .reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.js .reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 80ms; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 240ms; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 320ms; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 400ms; }
+.reveal-stagger.is-visible > *:nth-child(n + 7) { transition-delay: 480ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .float,
+  .blob,
+  .pulse-dot,
+  .marquee-track,
+  .hero-in > * {
+    animation: none;
+  }
+  .js .reveal,
+  .js .reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

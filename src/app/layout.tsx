@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Noto_Sans_Georgian, Noto_Serif_Georgian } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { LangProvider } from "@/components/LangProvider";
+import { dictionary } from "@/lib/dictionary";
+import { getLang } from "@/lib/i18n";
 import "./globals.css";
 
 const notoSansGeorgian = Noto_Sans_Georgian({
@@ -16,25 +19,34 @@ const notoSerifGeorgian = Noto_Serif_Georgian({
   variable: "--font-serif",
 });
 
-export const metadata: Metadata = {
-  title: "ხელოვანი",
-  description:
-    "ქართველი ხელოვანების დირექტორია — იპოვე მხატვრები და შემოქმედები.",
-};
+export function generateMetadata(): Metadata {
+  const { meta } = dictionary[getLang()];
+  return { title: meta.title, description: meta.description };
+}
+
+// ადგენს თემას გვერდის ჩვენებამდე, რომ ფერები არ აციმციმდეს
+const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = getLang();
+
   return (
-    <html lang="ka">
+    <html lang={lang} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${notoSansGeorgian.variable} ${notoSerifGeorgian.variable} flex min-h-screen flex-col bg-bg font-sans text-text antialiased`}
       >
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <LangProvider lang={lang}>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </LangProvider>
       </body>
     </html>
   );

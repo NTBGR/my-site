@@ -1,55 +1,48 @@
+import PageHeader from "@/components/PageHeader";
 import Button from "@/components/ui/Button";
+import { dictionary } from "@/lib/dictionary";
+import { getLang } from "@/lib/i18n";
 
-export const metadata = {
-  title: "ბლოგა",
-};
-
-const topics = [
-  {
-    title: "ინტერვიუები ხელოვანებთან",
-    text: "საუბრები მხატვრებთან, ფოტოგრაფებთან და ხელოსნებთან მათ გზაზე, შთაგონებასა და სამუშაო პროცესზე.",
-  },
-  {
-    title: "ხელოვნება და ქალაქი",
-    text: "თბილისიდან თელავამდე: სად იქმნება თანამედროვე ქართული ხელოვნება და სად შეიძლება მისი ნახვა.",
-  },
-  {
-    title: "რჩევები დამწყებებისთვის",
-    text: "როგორ წარადგინო ნამუშევრები, როგორ შექმნა პორტფოლიო და როგორ მიაღწიო იმ ადამიანებამდე, ვისაც შენი ნამუშევრები აინტერესებს.",
-  },
-];
+export function generateMetadata() {
+  return { title: dictionary[getLang()].blog.title };
+}
 
 export default function BlogPage() {
+  const t = dictionary[getLang()].blog;
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <h1 className="text-3xl font-semibold text-[#2c2416] sm:text-4xl">ბლოგა</h1>
-      <p className="mt-3 max-w-2xl leading-relaxed text-[#5c5348]">
-        აქ გამოქვეყნდება ისტორიები, ინტერვიუები და სასარგებლო მასალები ქართული
-        ხელოვნების სამყაროდან. პირველი სტატიები მალე გამოჩნდება.
-      </p>
+    <>
+      <PageHeader title={t.title} text={t.text} />
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+        <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+          {t.topicsTitle}
+        </h2>
+        <ul className="stagger mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+          {t.topics.map((topic, i) => (
+            <li
+              key={topic.title}
+              className="group rounded-[1.75rem] border border-border bg-surface p-7 transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl"
+            >
+              <span
+                aria-hidden
+                className="font-serif text-5xl font-semibold leading-none text-accent opacity-25 transition-opacity duration-300 group-hover:opacity-100"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mt-5 text-xl font-semibold tracking-tight text-text">
+                {topic.title}
+              </h3>
+              <p className="mt-2 leading-relaxed text-muted">{topic.text}</p>
+            </li>
+          ))}
+        </ul>
 
-      <h2 className="mt-12 text-xl font-semibold text-[#2c2416]">
-        რას გამოაქვეყნებთ
-      </h2>
-      <ul className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3">
-        {topics.map((topic) => (
-          <li
-            key={topic.title}
-            className="rounded-2xl border border-[#eadfd3] bg-white p-5 shadow-sm"
-          >
-            <h3 className="text-lg font-semibold text-[#2c2416]">{topic.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#5c5348]">
-              {topic.text}
-            </p>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-12">
-        <Button href="/artists" variant="secondary">
-          გაეცანი ხელოვანებს
-        </Button>
+        <div className="mt-12">
+          <Button href="/artists" variant="secondary">
+            {t.cta}
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

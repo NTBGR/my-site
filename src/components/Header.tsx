@@ -4,12 +4,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import Button from "@/components/ui/Button";
+import Preferences from "@/components/Preferences";
+import { useT } from "@/components/LangProvider";
 
-const navLinks = [
-  { href: "/artists", label: "ხელოვანები" },
-  { href: "/categories", label: "კატეგორიები" },
-  { href: "/blog", label: "ბლოგა" },
-];
+const navHrefs = ["/artists", "/categories", "/blog"] as const;
 
 function HeartIcon() {
   return (
@@ -78,6 +76,12 @@ function MenuIcon({ open }: { open: boolean }) {
 
 export default function Header() {
   const router = useRouter();
+  const t = useT();
+  const navLinks = [
+    { href: navHrefs[0], label: t.nav.artists },
+    { href: navHrefs[1], label: t.nav.categories },
+    { href: navHrefs[2], label: t.nav.blog },
+  ];
   const pathname = usePathname();
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -99,19 +103,23 @@ export default function Header() {
       name="q"
       value={query}
       onChange={(event) => setQuery(event.target.value)}
-      placeholder="ძებნა..."
-      className="h-11 w-full rounded-card border border-border bg-surface px-4 text-sm text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-      aria-label="ძებნა"
+      placeholder={t.nav.search}
+      className="h-11 w-full rounded-full border border-border bg-surface px-5 text-sm text-text transition-shadow placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      aria-label={t.nav.searchLabel}
     />
   );
 
   return (
-    <header className="border-b border-border bg-surface/90 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
+    <header className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="font-serif text-xl font-semibold tracking-tight text-text sm:text-2xl"
+          className="group flex items-center gap-2 font-serif text-xl font-semibold tracking-tight text-text sm:text-2xl"
         >
+          <span
+            aria-hidden
+            className="inline-block h-3 w-3 rounded-full bg-accent transition-transform duration-500 group-hover:rotate-180 group-hover:scale-125"
+          />
           khelovani
         </Link>
 
@@ -119,7 +127,7 @@ export default function Header() {
           {searchField}
         </form>
 
-        <nav className="hidden items-center gap-5 md:flex" aria-label="მთავარი">
+        <nav className="hidden items-center gap-1 md:flex" aria-label={t.nav.main}>
           {navLinks.map((link) => {
             const active = isActive(link.href);
             return (
@@ -127,19 +135,13 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? "page" : undefined}
-                className={`group relative inline-flex min-h-11 items-center text-sm transition-colors ${
+                className={`inline-flex min-h-10 items-center rounded-full px-4 text-sm font-medium transition-colors ${
                   active
-                    ? "font-semibold text-accent-hover"
-                    : "text-accent hover:text-accent-hover"
+                    ? "bg-accent-soft text-accent"
+                    : "text-muted hover:bg-accent-soft hover:text-accent"
                 }`}
               >
                 {link.label}
-                <span
-                  aria-hidden
-                  className={`absolute inset-x-0 bottom-1.5 h-0.5 origin-left rounded-full bg-accent transition-transform duration-300 ${
-                    active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                  }`}
-                />
               </Link>
             );
           })}
@@ -147,20 +149,24 @@ export default function Header() {
 
         <Link
           href="/favorites"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-card text-text hover:text-accent"
-          aria-label="რჩეულები"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition hover:scale-110 hover:bg-accent-soft hover:text-accent active:scale-95"
+          aria-label={t.nav.favorites}
         >
           <HeartIcon />
         </Link>
 
         <div className="hidden md:block">
-          <Button href="/join">გახდი პარტნიორი</Button>
+          <Button href="/join">{t.nav.join}</Button>
+        </div>
+
+        <div className="hidden md:block">
+          <Preferences />
         </div>
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-card text-text md:hidden"
-          aria-label="ძებნა"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft md:hidden"
+          aria-label={t.nav.searchLabel}
           aria-expanded={searchOpen}
           onClick={() => {
             setSearchOpen((open) => !open);
@@ -172,8 +178,8 @@ export default function Header() {
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-card text-text md:hidden"
-          aria-label={menuOpen ? "მენიუს დახურვა" : "მენიუ"}
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft md:hidden"
+          aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           onClick={() => {
@@ -195,7 +201,7 @@ export default function Header() {
         <nav
           id="mobile-menu"
           className="menu-enter space-y-1 border-t border-border px-4 py-3 md:hidden"
-          aria-label="მობილური"
+          aria-label={t.nav.mobile}
         >
           {navLinks.map((link) => {
             const active = isActive(link.href);
@@ -204,10 +210,10 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-11 items-center border-l-2 pl-3 transition-colors ${
+                className={`flex min-h-12 items-center rounded-2xl px-4 text-base font-medium transition-colors ${
                   active
-                    ? "border-accent font-semibold text-accent-hover"
-                    : "border-transparent text-accent hover:text-accent-hover"
+                    ? "bg-accent-soft text-accent"
+                    : "text-text hover:bg-accent-soft hover:text-accent"
                 }`}
                 onClick={() => setMenuOpen(false)}
               >
@@ -218,17 +224,18 @@ export default function Header() {
           <Link
             href="/favorites"
             aria-current={isActive("/favorites") ? "page" : undefined}
-            className={`flex min-h-11 items-center border-l-2 pl-3 transition-colors ${
+            className={`flex min-h-12 items-center rounded-2xl px-4 text-base font-medium transition-colors ${
               isActive("/favorites")
-                ? "border-accent font-semibold text-accent-hover"
-                : "border-transparent text-accent hover:text-accent-hover"
+                ? "bg-accent-soft text-accent"
+                : "text-text hover:bg-accent-soft hover:text-accent"
             }`}
             onClick={() => setMenuOpen(false)}
           >
-            რჩეულები
+            {t.nav.favorites}
           </Link>
+          <Preferences />
           <Button href="/join" className="mt-2 w-full">
-            გახდი პარტნიორი
+            {t.nav.join}
           </Button>
         </nav>
       ) : null}

@@ -35,13 +35,13 @@ export async function POST(request: Request) {
 
   if (!name || !email || !city || !category || !bio) {
     return NextResponse.json(
-      { error: "შეავსე ყველა სავალდებულო ველი." },
+      { error: "required" },
       { status: 400 },
     );
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json(
-      { error: "ემაილის მისამართი არასწორია." },
+      { error: "email" },
       { status: 400 },
     );
   }
@@ -52,19 +52,19 @@ export async function POST(request: Request) {
 
   if (files.length > MAX_FILES) {
     return NextResponse.json(
-      { error: `მაქსიმუმ ${MAX_FILES} ფოტოს ატვირთვაა შესაძლებელი.` },
+      { error: "tooMany" },
       { status: 400 },
     );
   }
   if (files.some((f) => !ALLOWED_TYPES.includes(f.type))) {
     return NextResponse.json(
-      { error: "დაშვებულია მხოლოდ JPG, PNG ან WEBP ფორმატი." },
+      { error: "type" },
       { status: 400 },
     );
   }
   if (files.reduce((sum, f) => sum + f.size, 0) > MAX_TOTAL_BYTES) {
     return NextResponse.json(
-      { error: "ფოტოების ჯამური ზომა 4MB-ს არ უნდა აღემატებოდეს." },
+      { error: "size" },
       { status: 400 },
     );
   }
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
   if (!apiKey || !to) {
     console.error("RESEND_API_KEY ან JOIN_TO_EMAIL არ არის მითითებული");
     return NextResponse.json(
-      { error: "გაგზავნა დროებით შეუძლებელია. სცადე მოგვიანებით." },
+      { error: "unavailable" },
       { status: 500 },
     );
   }
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
   if (!res.ok) {
     console.error("Resend შეცდომა", res.status, await res.text());
     return NextResponse.json(
-      { error: "გაგზავნა ვერ მოხერხდა. სცადე მოგვიანებით." },
+      { error: "failed" },
       { status: 502 },
     );
   }

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Artist } from "@/data/artists";
 import ArtistCard from "@/components/ArtistCard";
+import { useT } from "@/components/LangProvider";
 
 export default function ArtistsFilter({
   artists,
@@ -11,6 +12,7 @@ export default function ArtistsFilter({
   artists: Artist[];
   cities: string[];
 }) {
+  const t = useT().artists;
   const [city, setCity] = useState("all");
 
   const filtered = useMemo(() => {
@@ -24,23 +26,23 @@ export default function ArtistsFilter({
         <button
           type="button"
           onClick={() => setCity("all")}
-          className={`rounded-full px-4 py-2 text-sm transition ${
+          className={`rounded-full px-5 py-2.5 text-sm font-medium transition duration-300 active:scale-95 ${
             city === "all"
-              ? "bg-[#c45c3e] text-white"
-              : "bg-white text-[#4a4033] ring-1 ring-[#eadfd3] hover:ring-[#c45c3e]/50"
+              ? "bg-accent text-on-accent"
+              : "bg-surface text-muted ring-1 ring-border hover:text-accent hover:ring-accent"
           }`}
         >
-          ყველა ქალაქი
+          {t.allCities}
         </button>
         {cities.map((item) => (
           <button
             type="button"
             key={item}
             onClick={() => setCity(item)}
-            className={`rounded-full px-4 py-2 text-sm transition ${
+            className={`rounded-full px-5 py-2.5 text-sm font-medium transition duration-300 active:scale-95 ${
               city === item
-                ? "bg-[#c45c3e] text-white"
-                : "bg-white text-[#4a4033] ring-1 ring-[#eadfd3] hover:ring-[#c45c3e]/50"
+                ? "bg-accent text-on-accent"
+                : "bg-surface text-muted ring-1 ring-border hover:text-accent hover:ring-accent"
             }`}
           >
             {item}
@@ -49,9 +51,12 @@ export default function ArtistsFilter({
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-[#5c5348]">ამ ქალაქში ხელოვანი ვერ მოიძებნა.</p>
+        <p className="text-muted">{t.emptyCity}</p>
       ) : (
-        <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul
+          key={city}
+          className="stagger grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {filtered.map((artist) => (
             <li key={artist.slug}>
               <ArtistCard artist={artist} />

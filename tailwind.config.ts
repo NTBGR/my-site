@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         bg: "var(--bg)",
         surface: "var(--surface)",
+        "surface-2": "var(--surface-2)",
+        "on-accent": "var(--on-accent)",
+        "accent-soft": "var(--accent-soft)",
         text: "var(--text)",
         muted: "var(--muted)",
         border: "var(--border)",
@@ -24,7 +27,7 @@ const config: Config = {
         serif: ["var(--font-serif)", "serif"],
       },
       borderRadius: {
-        card: "12px",
+        card: "16px",
       },
     },
   },
