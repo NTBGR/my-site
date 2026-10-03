@@ -43,37 +43,44 @@ const ka = {
   home: {
     badge: "ხელნაკეთი საქართველოდან",
     title: "ხელნაკეთი ნივთები ერთ სივრცეში",
-    text: "ქართველი ხელოვანების ნახატები, კერამიკა, სამკაული და დეკორი. იპოვე ის, რაც სხვას არ აქვს, და გაიცანი ადამიანი, ვინც ის შექმნა.",
+    text: "ქართველი ხელოვანების ნახატები, კერამიკა, სამკაული და დეკორი.",
     ctaPrimary: "დაათვალიერე კატეგორიები",
     ctaSecondary: "გაიცანი ხელოვანები",
     perks: ["ხელნაკეთი", "უნიკალური", "პირდაპირ ავტორისგან"],
     categoriesTitle: "აღმოაჩინე კატეგორიით",
     allCategories: "ყველა კატეგორია",
+    browse: "დაათვალიერე",
+    banners: [
+      { slug: "keramika", title: "კერამიკა და ჭურჭელი", text: "ხელნაკეთი თასები, ლანგრები და ვაზები." },
+      { slug: "nakhatebi", title: "ნახატები", text: "ორიგინალი ნამუშევრები ქართველი მხატვრებისგან." },
+      { slug: "samkauli", title: "სამკაული", text: "ვერცხლი, ოქრო და ქვები, ხელით დამუშავებული." },
+    ],
+    prev: "წინა",
+    next: "შემდეგი",
     featured: "ხელოვანები, რომლებიც გვიყვარს",
     fullList: "სრული სია",
     how: "როგორ მუშაობს",
-    howText: "სამი მარტივი ნაბიჯი ნივთამდე და მისი ავტორამდე.",
+    howText: "",
     steps: [
       {
-        title: "აირჩიე ნივთი ან ავტორი",
-        text: "დაათვალიერე კატეგორიები ან გაეცანი ხელოვანებს ქალაქისა და მიმართულების მიხედვით.",
+        title: "აირჩიე ნივთი",
+        text: "კატეგორიით ან ავტორით.",
       },
       {
-        title: "გაიგე ნივთის ამბავი",
-        text: "ნახე ავტორის ბიოგრაფია და მისი ნამუშევრები ერთ გვერდზე.",
+        title: "გაიცანი ავტორი",
+        text: "ბიოგრაფია და ნამუშევრები.",
       },
       {
-        title: "დაუკავშირდი ავტორს",
-        text: "მიწერე პირდაპირ ინსტაგრამზე და შეთანხმდით დეტალებზე.",
+        title: "დაუკავშირდი",
+        text: "პირდაპირ ინსტაგრამზე.",
       },
     ],
     bannerTitle: "ხარ შემოქმედი?",
-    bannerText:
-      "გახადე შენი ნამუშევრები თვალსაჩინო იმ ადამიანებისთვის, ვინც ქართულ ხელოვნებას ეძებს.",
+    bannerText: "გახადე შენი ნამუშევრები თვალსაჩინო.",
   },
   artists: {
     title: "ხელოვანები",
-    text: "ადამიანები, რომლებიც ქმნიან. გაფილტრე ქალაქით და იპოვე შენთვის საინტერესო ავტორი.",
+    text: "ადამიანები, რომლებიც ქმნიან.",
     allCities: "ყველა ქალაქი",
     emptyCity: "ამ ქალაქში ხელოვანი ვერ მოიძებნა.",
   },
@@ -87,14 +94,14 @@ const ka = {
   },
   categories: {
     title: "კატეგორიები",
-    text: "აირჩიე კატეგორია და ნახე ამ ტიპის ნივთების ავტორები.",
+    text: "აირჩიე კატეგორია.",
     back: "← ყველა კატეგორია",
     empty: "ამ კატეგორიაში ნივთები ჯერ არ არის.",
     count: (n: number) => `${n} ხელოვანი`,
   },
   blog: {
     title: "ბლოგი",
-    text: "აქ გამოქვეყნდება ისტორიები, ინტერვიუები და სასარგებლო მასალები ქართული ხელოვნების სამყაროდან. პირველი სტატიები მალე გამოჩნდება.",
+    text: "ისტორიები და ინტერვიუები ქართული ხელოვნების სამყაროდან. პირველი სტატიები მალე გამოჩნდება.",
     topicsTitle: "რას გამოაქვეყნებთ",
     topics: [
       {
@@ -114,7 +121,7 @@ const ka = {
   },
   join: {
     title: "გახდი პარტნიორი",
-    text: "ხარ მხატვარი, ფოტოგრაფი, ილუსტრატორი, კერამიკოსი ან სხვა მიმართულების ხელოვანი? შემოგვიერთდი და გახადე შენი შემოქმედება თვალსაჩინო.",
+    text: "შემოგვიერთდი და გახადე შენი ნამუშევრები თვალსაჩინო.",
     benefitsTitle: "რას მიიღებ",
     benefits: [
       {
@@ -211,37 +218,44 @@ const en: Dict = {
   home: {
     badge: "Handmade in Georgia",
     title: "Handmade goods in one place",
-    text: "Paintings, ceramics, jewelry and decor by Georgian artists. Find something no one else has, and meet the person who made it.",
+    text: "Paintings, ceramics, jewelry and decor by Georgian artists.",
     ctaPrimary: "Browse categories",
     ctaSecondary: "Meet the artists",
     perks: ["Handmade", "One of a kind", "Straight from the maker"],
     categoriesTitle: "Shop by category",
     allCategories: "All categories",
+    browse: "Browse",
+    banners: [
+      { slug: "keramika", title: "Ceramics & tableware", text: "Handmade bowls, platters and vases." },
+      { slug: "nakhatebi", title: "Paintings", text: "Original works by Georgian painters." },
+      { slug: "samkauli", title: "Jewelry", text: "Silver, gold and gemstones, worked by hand." },
+    ],
+    prev: "Previous",
+    next: "Next",
     featured: "Artists we love",
     fullList: "Full list",
     how: "How it works",
-    howText: "Three simple steps to a piece and the person behind it.",
+    howText: "",
     steps: [
       {
-        title: "Pick a piece or a maker",
-        text: "Browse categories or meet the artists by city and craft.",
+        title: "Pick a piece",
+        text: "By category or by maker.",
       },
       {
-        title: "Learn its story",
-        text: "See the maker's bio and their work on one page.",
+        title: "Meet the maker",
+        text: "Bio and works in one place.",
       },
       {
         title: "Get in touch",
-        text: "Message them directly on Instagram and agree on the details.",
+        text: "Directly on Instagram.",
       },
     ],
     bannerTitle: "Are you a maker?",
-    bannerText:
-      "Put your work in front of people who are looking for Georgian art.",
+    bannerText: "Put your work in front of the right people.",
   },
   artists: {
     title: "Artists",
-    text: "The people who make things. Filter by city and find a maker you like.",
+    text: "The people who make things.",
     allCities: "All cities",
     emptyCity: "No artists found in this city.",
   },
@@ -255,14 +269,14 @@ const en: Dict = {
   },
   categories: {
     title: "Categories",
-    text: "Pick a category and see who makes these items.",
+    text: "Pick a category.",
     back: "← All categories",
     empty: "There are no items in this category yet.",
     count: (n: number) => `${n} ${n === 1 ? "artist" : "artists"}`,
   },
   blog: {
     title: "Blog",
-    text: "Stories, interviews and useful material from the world of Georgian art will be published here. The first articles are coming soon.",
+    text: "Stories and interviews from the world of Georgian art. First articles coming soon.",
     topicsTitle: "What we will publish",
     topics: [
       {
@@ -282,7 +296,7 @@ const en: Dict = {
   },
   join: {
     title: "Become a partner",
-    text: "Are you a painter, photographer, illustrator, ceramicist or another kind of maker? Join us and make your work visible.",
+    text: "Join us and make your work visible.",
     benefitsTitle: "What you get",
     benefits: [
       {

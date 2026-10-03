@@ -1,8 +1,9 @@
 import Link from "next/link";
 import ArtTile from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
+import CategoryCarousel from "@/components/CategoryCarousel";
+import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
-import Marquee from "@/components/Marquee";
 import Reveal from "@/components/Reveal";
 import { getLocalizedArtists } from "@/data/artists";
 import { categories, localizeCategory } from "@/data/categories";
@@ -24,107 +25,131 @@ export default function Home() {
   const artists = getLocalizedArtists(lang);
   const featured = artists.slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));
-  const bento = cats.slice(0, 6);
+
+  const glassButton =
+    "hidden min-h-12 items-center rounded-full border border-white/35 bg-white/10 px-7 text-sm font-medium text-white backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-black active:scale-95 sm:inline-flex";
+  const whiteButton =
+    "group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95";
+  const arrow = (
+    <span className="arrow-slide" aria-hidden>
+      →
+    </span>
+  );
+
+  const bannerSlides: BannerSlide[] = [
+    {
+      id: "main",
+      color: "#c4553a",
+      art: (
+        <div className="relative hidden h-full w-full lg:block" aria-hidden>
+          <div
+            className="float absolute left-[22%] top-[8%] w-[34%] rounded-[1.5rem] shadow-2xl"
+            style={{ ["--r" as string]: "-6deg" }}
+          >
+            <ArtTile color={artists[0].works[0].color} variant={0} className="aspect-[3/4] rounded-[1.5rem]" />
+          </div>
+          <div
+            className="float absolute right-[7%] top-[5%] w-[28%] rounded-[1.5rem] shadow-2xl [animation-delay:-2.5s]"
+            style={{ ["--r" as string]: "5deg" }}
+          >
+            <ArtTile color={artists[1].works[0].color} variant={2} className="aspect-[4/5] rounded-[1.5rem]" />
+          </div>
+          <div
+            className="float absolute right-[30%] top-[46%] w-[22%] rounded-full shadow-2xl [animation-delay:-4.5s]"
+            style={{ ["--r" as string]: "-3deg" }}
+          >
+            <ArtTile color={artists[2].works[0].color} variant={3} className="aspect-square rounded-full" />
+          </div>
+        </div>
+      ),
+      content: (
+        <div className="hero-in">
+          <p className="inline-flex items-center gap-2.5 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-md">
+            <span className="pulse-dot h-2 w-2 rounded-full bg-white" />
+            {t.badge}
+          </p>
+          <h1 className="mt-4 text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
+            {t.title}
+          </h1>
+          <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
+            {t.text}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href="/categories" className={whiteButton}>
+              {t.ctaPrimary}
+              {arrow}
+            </Link>
+            <Link href="/artists" className={glassButton}>
+              {t.ctaSecondary}
+            </Link>
+          </div>
+        </div>
+      ),
+    },
+    ...t.banners.map((banner, i): BannerSlide => ({
+      id: banner.slug,
+      color: ["#5e7a55", "#3d5a73", "#b07a4a"][i],
+      art: (
+        <CategoryArt
+          slug={banner.slug}
+          color={["#5e7a55", "#3d5a73", "#b07a4a"][i]}
+          className="absolute inset-0 h-full w-full"
+        />
+      ),
+      content: (
+        <div>
+          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
+            {banner.title}
+          </h2>
+          <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
+            {banner.text}
+          </p>
+          <div className="mt-5">
+            <Link href={`/categories/${banner.slug}`} className={whiteButton}>
+              {t.browse}
+              {arrow}
+            </Link>
+          </div>
+        </div>
+      ),
+    })),
+    {
+      id: "join",
+      color: "#a5320e",
+      art: (
+        <ArtTile color="#c93f15" variant={3} className="absolute inset-0 h-full w-full" />
+      ),
+      content: (
+        <div>
+          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
+            {t.bannerTitle}
+          </h2>
+          <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
+            {t.bannerText}
+          </p>
+          <div className="mt-5">
+            <Link href="/join" className={`${whiteButton} glow-btn`}>
+              {dictionary[lang].nav.join}
+              {arrow}
+            </Link>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div>
-      {/* ჰერო */}
+      {/* ჰერო: მბრუნავი ბანერები */}
       <section className="relative isolate overflow-hidden">
         <div
           aria-hidden
           className="blob pointer-events-none absolute -left-32 -top-24 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent-soft blur-3xl"
         />
-        <div
-          aria-hidden
-          className="blob pointer-events-none absolute -bottom-40 right-[-8rem] -z-10 h-[26rem] w-[26rem] rounded-full blur-3xl [animation-delay:-6s]"
-          style={{ background: "color-mix(in srgb, var(--accent) 22%, transparent)" }}
-        />
-
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-12 pt-10 sm:gap-14 sm:px-6 sm:pb-20 sm:pt-20 lg:min-h-[calc(100svh-11rem)] lg:grid-cols-[1.05fr_0.95fr] lg:gap-20 lg:px-10 xl:gap-28 lg:pb-24 lg:pt-16">
-          <div className="hero-in">
-            <p className="inline-flex items-center gap-2.5 rounded-full border border-border bg-surface px-4 py-1.5 text-sm font-medium text-text shadow-sm">
-              <span className="pulse-dot h-2 w-2 rounded-full bg-accent" />
-              {t.badge}
-            </p>
-            <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-text sm:mt-6 sm:text-6xl lg:text-6xl xl:text-7xl">
-              {t.title}
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-              {t.text}
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                href="/categories"
-                className="group inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-7 text-sm font-medium text-on-accent transition duration-300 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-lg active:scale-95"
-              >
-                {t.ctaPrimary}
-                <span className="arrow-slide" aria-hidden>
-                  →
-                </span>
-              </Link>
-              <Link
-                href="/artists"
-                className="inline-flex min-h-12 items-center rounded-full border border-border bg-surface px-7 text-sm font-medium text-text transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent active:scale-95"
-              >
-                {t.ctaSecondary}
-              </Link>
-            </div>
-            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted sm:mt-10">
-              {t.perks.map((perk) => (
-                <li key={perk} className="flex items-center gap-2">
-                  <span className="text-accent" aria-hidden>
-                    ✦
-                  </span>
-                  {perk}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* ხელოვნების კოლაჟი */}
-          <div className="relative mx-auto hidden h-[24rem] w-full max-w-lg sm:block sm:h-[30rem] lg:h-[34rem] lg:max-w-md xl:max-w-lg" aria-hidden>
-            <div
-              className="float absolute left-0 top-6 w-[58%] rounded-[2rem] shadow-2xl"
-              style={{ ["--r" as string]: "-6deg" }}
-            >
-              <ArtTile
-                color={artists[0].works[0].color}
-                variant={0}
-                className="aspect-[3/4] rounded-[2rem]"
-              />
-            </div>
-            <div
-              className="float absolute right-0 top-0 w-[46%] rounded-[2rem] shadow-2xl [animation-delay:-2.5s]"
-              style={{ ["--r" as string]: "5deg" }}
-            >
-              <ArtTile
-                color={artists[1].works[0].color}
-                variant={2}
-                className="aspect-[4/5] rounded-[2rem]"
-              />
-            </div>
-            <div
-              className="float absolute bottom-0 right-[10%] w-[42%] rounded-full shadow-2xl [animation-delay:-4.5s]"
-              style={{ ["--r" as string]: "-3deg" }}
-            >
-              <ArtTile
-                color={artists[2].works[0].color}
-                variant={3}
-                className="aspect-square rounded-full"
-              />
-            </div>
-            <div
-              className="float absolute bottom-6 left-[6%] flex h-24 w-24 items-center justify-center rounded-full bg-accent text-3xl text-on-accent shadow-xl [animation-delay:-1s]"
-              style={{ ["--r" as string]: "10deg" }}
-            >
-              ✦
-            </div>
-          </div>
+        <div className="mx-auto max-w-7xl px-4 pb-10 pt-5 sm:px-6 sm:pb-14 sm:pt-8 lg:px-10">
+          <HeroBanner slides={bannerSlides} />
         </div>
       </section>
-
-      {/* კატეგორიების ბეჭედი */}
-      <Marquee items={cats.map((c) => c.name)} />
 
       {/* კატეგორიები */}
       <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 sm:pt-24">
@@ -143,51 +168,16 @@ export default function Home() {
           </Link>
         </Reveal>
 
-        <Reveal
-          stagger
-          className="grid grid-cols-2 gap-3 sm:gap-4 md:auto-rows-[13rem] md:grid-cols-4"
-        >
-          {bento.map((category, i) => (
-            <Link
-              key={category.slug}
-              href={`/categories/${category.slug}`}
-              className={`group relative block overflow-hidden rounded-[1.75rem] transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] ${
-                i === 0 ? "col-span-2 row-span-2 min-h-[14rem] sm:min-h-[18rem]" : "min-h-[9rem] sm:min-h-[11rem]"
-              } ${i >= 3 ? "md:col-span-2" : ""}`}
-            >
-              <CategoryArt
-                slug={category.slug}
-                color={tileColors[i % tileColors.length]}
-                className="absolute inset-0"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-black/5 to-transparent"
-              />
-              <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 text-white sm:p-6">
-                <div>
-                  <h3
-                    className={`font-semibold leading-tight tracking-tight ${
-                      i === 0 ? "text-3xl sm:text-4xl" : "text-xl"
-                    }`}
-                  >
-                    {category.name}
-                  </h3>
-                  {i === 0 ? (
-                    <p className="mt-2 max-w-xs text-sm text-white/80">
-                      {category.description}
-                    </p>
-                  ) : null}
-                </div>
-                <span
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition duration-300 group-hover:bg-white group-hover:text-black"
-                  aria-hidden
-                >
-                  <span className="arrow-slide">→</span>
-                </span>
-              </div>
-            </Link>
-          ))}
+        <Reveal>
+          <CategoryCarousel
+            autoplay={false}
+            slides={cats.map((c, i) => ({
+              slug: c.slug,
+              name: c.name,
+              description: c.description,
+              color: tileColors[i % tileColors.length],
+            }))}
+          />
         </Reveal>
       </section>
 
@@ -226,7 +216,6 @@ export default function Home() {
           <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
             {t.how}
           </h2>
-          <p className="mt-4 text-lg text-muted">{t.howText}</p>
         </Reveal>
         <Reveal
           as="ol"

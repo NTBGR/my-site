@@ -316,3 +316,56 @@ a:hover > .arrow-slide {
     transition: none;
   }
 }
+
+/* გამორჩეული ღილაკი: ციმციმა შუქი და მბრწყინავი გადავლება */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent),
+      0 0 16px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent,
+      0 0 16px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent,
+      0 0 16px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+}
+
+@keyframes shine {
+  0%,
+  55% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+.glow-btn {
+  position: relative;
+  overflow: hidden;
+  animation: glow 2.2s ease-out infinite;
+}
+.glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.5) 50%,
+    transparent 70%
+  );
+  transform: translateX(-130%);
+  animation: shine 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-btn,
+  .glow-btn::after {
+    animation: none;
+  }
+}

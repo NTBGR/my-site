@@ -111,14 +111,14 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6">
         <Link
           href="/"
-          className="group flex min-h-11 items-center gap-2 font-serif text-xl font-semibold tracking-tight text-text sm:text-2xl"
+          className="group flex min-h-11 items-center gap-2 font-serif text-lg font-semibold tracking-tight text-text min-[360px]:text-xl sm:text-2xl"
         >
           <span
             aria-hidden
-            className="inline-block h-3 w-3 rounded-full bg-accent transition-transform duration-500 group-hover:rotate-180 group-hover:scale-125"
+            className="inline-block h-3 w-3 rounded-full bg-accent transition-transform duration-500 max-[359px]:hidden group-hover:rotate-180 group-hover:scale-125"
           />
           khelovani
         </Link>
@@ -149,14 +149,16 @@ export default function Header() {
 
         <Link
           href="/favorites"
-          className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition hover:scale-110 hover:bg-accent-soft hover:text-accent active:scale-95 lg:ml-0"
+          className="hidden h-11 w-11 items-center justify-center rounded-full text-text transition hover:scale-110 hover:bg-accent-soft hover:text-accent active:scale-95 lg:inline-flex"
           aria-label={t.nav.favorites}
         >
           <HeartIcon />
         </Link>
 
         <div className="hidden lg:block">
-          <Button href="/join">{t.nav.join}</Button>
+          <Button href="/join" className="glow-btn">
+            {t.nav.join}
+          </Button>
         </div>
 
         <div className="hidden lg:block">
@@ -165,7 +167,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft xl:hidden"
+          className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:ml-0 xl:hidden"
           aria-label={t.nav.searchLabel}
           aria-expanded={searchOpen}
           onClick={() => {
