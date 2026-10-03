@@ -142,12 +142,12 @@ export default function ArtistPage({
           <p className="mb-2 text-sm font-medium text-muted">{t.buyHint}</p>
           <div className="flex gap-2">
             <SocialLink
-              href={artist.instagram || undefined}
+              href={artist.instagram ? `/go/${artist.slug}/instagram` : undefined}
               icon={<InstagramIcon />}
               label={t.instagram}
             />
             <SocialLink
-              href={artist.facebook || undefined}
+              href={artist.facebook ? `/go/${artist.slug}/facebook` : undefined}
               icon={<FacebookIcon />}
               label={t.facebook}
             />
@@ -162,7 +162,7 @@ export default function ArtistPage({
             title: work.title,
             color: work.color,
             variant: (variantFor(artist.slug) + i) % 4,
-            url: work.url || artist.instagram || artist.facebook || undefined,
+            url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
             image: work.image,
             width: work.width,
             height: work.height,
