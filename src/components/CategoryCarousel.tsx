@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CategoryArt from "@/components/CategoryArt";
 import { useT } from "@/components/LangProvider";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 export type CarouselSlide = {
   slug: string;
@@ -156,22 +157,16 @@ export default function CategoryCarousel({
           ))}
         </div>
         <div className="flex gap-2">
-          <button
-            type="button"
+          <ArrowButton
+            direction="prev"
+            label={t.prev}
             onClick={() => goTo(active - 1)}
-            aria-label={t.prev}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-text transition hover:border-accent hover:text-accent active:scale-90"
-          >
-            ←
-          </button>
-          <button
-            type="button"
+          />
+          <ArrowButton
+            direction="next"
+            label={t.next}
             onClick={() => goTo(active + 1)}
-            aria-label={t.next}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-text transition hover:border-accent hover:text-accent active:scale-90"
-          >
-            →
-          </button>
+          />
         </div>
       </div>
     </div>

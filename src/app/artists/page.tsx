@@ -15,7 +15,7 @@ export default function ArtistsPage() {
   return (
     <>
       <PageHeader title={t.title} text={t.text} />
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-10 sm:pb-24 sm:pt-14">
         <ArtistsFilter
           artists={getLocalizedArtists(lang)}
           cities={getCities(lang)}

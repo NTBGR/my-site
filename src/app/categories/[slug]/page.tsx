@@ -36,7 +36,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           {t.back}
         </Link>
       </PageHeader>
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-10 sm:pb-24 sm:pt-14">
         {items.length === 0 ? (
           <p className="rounded-[1.75rem] border border-dashed border-border bg-surface p-10 text-center text-muted">
             {t.empty}

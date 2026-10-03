@@ -9,6 +9,7 @@ const ka = {
       "ქართველი ხელოვანების ხელნაკეთი ნივთების მაღაზია — იპოვე ნამუშევრები და შემოქმედები.",
   },
   nav: {
+    home: "მთავარი",
     artists: "ხელოვანები",
     categories: "კატეგორიები",
     blog: "ბლოგი",
@@ -57,7 +58,7 @@ const ka = {
     ],
     prev: "წინა",
     next: "შემდეგი",
-    featured: "ხელოვანები, რომლებიც გვიყვარს",
+    featured: "ხალხის ფავორიტი ხელოვანები",
     fullList: "სრული სია",
     how: "როგორ მუშაობს",
     howText: "",
@@ -184,6 +185,7 @@ const en: Dict = {
       "A shop for handmade goods by Georgian artists — discover works and the makers behind them.",
   },
   nav: {
+    home: "Home",
     artists: "Artists",
     categories: "Categories",
     blog: "Blog",
@@ -232,7 +234,7 @@ const en: Dict = {
     ],
     prev: "Previous",
     next: "Next",
-    featured: "Artists we love",
+    featured: "People's favorite artists",
     fullList: "Full list",
     how: "How it works",
     howText: "",

@@ -13,6 +13,8 @@
   --accent-hover: #a5320e;
   --accent-soft: #fbe2d6;
   --on-accent: #ffffff;
+  --highlight: #0f766e;
+  --on-highlight: #ffffff;
   color-scheme: light;
 }
 
@@ -27,6 +29,8 @@ html[data-theme="dark"] {
   --accent-hover: #ff9a74;
   --accent-soft: #35201a;
   --on-accent: #1a0f09;
+  --highlight: #34d3be;
+  --on-highlight: #06201c;
   color-scheme: dark;
 }
 
@@ -333,39 +337,11 @@ a:hover > .arrow-slide {
   }
 }
 
-@keyframes shine {
-  0%,
-  55% {
-    transform: translateX(-130%);
-  }
-  100% {
-    transform: translateX(130%);
-  }
-}
-
 .glow-btn {
-  position: relative;
-  overflow: hidden;
-  animation: glow 2.2s ease-out infinite;
+  animation: glow 2.4s ease-out infinite;
 }
-.glow-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    110deg,
-    transparent 30%,
-    rgb(255 255 255 / 0.5) 50%,
-    transparent 70%
-  );
-  transform: translateX(-130%);
-  animation: shine 3.6s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .glow-btn,
-  .glow-btn::after {
+  .glow-btn {
     animation: none;
   }
 }

@@ -26,8 +26,6 @@ export default function Home() {
   const featured = artists.slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));
 
-  const glassButton =
-    "hidden min-h-12 items-center rounded-full border border-white/35 bg-white/10 px-7 text-sm font-medium text-white backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-black active:scale-95 sm:inline-flex";
   const whiteButton =
     "group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95";
   const arrow = (
@@ -64,11 +62,7 @@ export default function Home() {
       ),
       content: (
         <div className="hero-in">
-          <p className="inline-flex items-center gap-2.5 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur-md">
-            <span className="pulse-dot h-2 w-2 rounded-full bg-white" />
-            {t.badge}
-          </p>
-          <h1 className="mt-4 text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
+          <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {t.title}
           </h1>
           <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
@@ -78,9 +72,6 @@ export default function Home() {
             <Link href="/categories" className={whiteButton}>
               {t.ctaPrimary}
               {arrow}
-            </Link>
-            <Link href="/artists" className={glassButton}>
-              {t.ctaSecondary}
             </Link>
           </div>
         </div>
@@ -98,7 +89,7 @@ export default function Home() {
       ),
       content: (
         <div>
-          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
+          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {banner.title}
           </h2>
           <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
@@ -113,53 +104,65 @@ export default function Home() {
         </div>
       ),
     })),
-    {
-      id: "join",
-      color: "#a5320e",
-      art: (
-        <ArtTile color="#c93f15" variant={3} className="absolute inset-0 h-full w-full" />
-      ),
-      content: (
-        <div>
-          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">
-            {t.bannerTitle}
-          </h2>
-          <p className="mt-3 max-w-md text-base leading-relaxed text-white/85 sm:text-lg">
-            {t.bannerText}
-          </p>
-          <div className="mt-5">
-            <Link href="/join" className={`${whiteButton} glow-btn`}>
-              {dictionary[lang].nav.join}
-              {arrow}
-            </Link>
-          </div>
-        </div>
-      ),
-    },
   ];
 
   return (
     <div>
       {/* ჰერო: მბრუნავი ბანერები */}
-      <section className="relative isolate overflow-hidden">
+      <section className="relative isolate overflow-x-clip">
         <div
           aria-hidden
-          className="blob pointer-events-none absolute -left-32 -top-24 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent-soft blur-3xl"
+          className="blob pointer-events-none absolute -left-32 top-0 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent-soft blur-3xl"
         />
-        <div className="mx-auto max-w-7xl px-4 pb-10 pt-5 sm:px-6 sm:pb-14 sm:pt-8 lg:px-10">
-          <HeroBanner slides={bannerSlides} />
+        <div className="mx-auto max-w-7xl px-4 pb-0 pt-5 sm:px-6 sm:pt-8 lg:px-10">
+          <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
+            <HeroBanner slides={bannerSlides} />
+            <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2">
+              <Link
+                href="/categories"
+                className="group relative block min-h-36 overflow-hidden rounded-[2rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[2.5rem]"
+              >
+                <CategoryArt slug="sachuqrebi" color="#7a4e6a" className="absolute inset-0 h-full w-full" />
+                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6">
+                  <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                    {dictionary[lang].nav.categories}
+                  </h2>
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition duration-300 group-hover:bg-white group-hover:text-black" aria-hidden>
+                    <span className="arrow-slide">→</span>
+                  </span>
+                </div>
+              </Link>
+              <Link
+                href="/join"
+                className="group relative block min-h-36 overflow-hidden rounded-[2rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[2.5rem]"
+              >
+                <ArtTile color="#c93f15" variant={3} className="absolute inset-0 h-full w-full" />
+                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-6">
+                  <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                    {t.bannerTitle}
+                  </h2>
+                  <span className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
+                    {dictionary[lang].nav.join}
+                    {arrow}
+                  </span>
+                </div>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* კატეგორიები */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 sm:pt-24">
+      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-10 sm:pt-24">
         <Reveal className="mb-6 sm:mb-10 flex items-end justify-between gap-4">
           <h2 className="max-w-xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
             {t.categoriesTitle}
           </h2>
           <Link
             href="/categories"
-            className="group hidden shrink-0 items-center gap-1 text-sm font-medium text-accent hover:underline sm:inline-flex"
+            className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
           >
             {t.allCategories}
             <span className="arrow-slide" aria-hidden>
@@ -182,14 +185,14 @@ export default function Home() {
       </section>
 
       {/* რჩეული ხელოვანები */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 sm:pt-28">
+      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-10 sm:pt-24">
         <Reveal className="mb-6 sm:mb-10 flex items-end justify-between gap-4">
           <h2 className="max-w-xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
             {t.featured}
           </h2>
           <Link
             href="/artists"
-            className="group inline-flex shrink-0 items-center gap-1 text-sm font-medium text-accent hover:underline"
+            className="group inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent"
           >
             {t.fullList}
             <span className="arrow-slide" aria-hidden>
@@ -211,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* როგორ მუშაობს */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 sm:pt-28">
+      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-10 sm:pt-24">
         <Reveal className="mb-6 sm:mb-10 max-w-xl">
           <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
             {t.how}
@@ -243,7 +246,7 @@ export default function Home() {
       </section>
 
       {/* შემოქმედის ბანერი */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 sm:pt-28">
+      <section className="mx-auto max-w-7xl px-4 pb-16 pt-16 sm:px-6 lg:px-10 sm:pb-24 sm:pt-24">
         <Reveal>
           <div className="relative isolate overflow-hidden rounded-[2rem] bg-accent px-6 py-10 text-on-accent sm:rounded-[2.25rem] sm:px-14 sm:py-20">
             <div

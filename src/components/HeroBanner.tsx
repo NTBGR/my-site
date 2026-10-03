@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useT } from "@/components/LangProvider";
+import ArrowButton from "@/components/ui/ArrowButton";
 
 export type BannerSlide = {
   id: string;
@@ -48,7 +49,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
 
   return (
     <div
-      className="relative min-h-[24rem] overflow-hidden rounded-[2rem] text-white shadow-xl sm:min-h-[28rem] lg:min-h-[25rem] lg:rounded-[2.5rem]"
+      className="relative min-h-[21rem] overflow-hidden rounded-[2rem] text-white shadow-xl sm:min-h-[24rem] lg:min-h-[27rem] lg:rounded-[2.5rem]"
       style={{ background: slides[active].color, transition: "background 0.8s ease" }}
       onMouseEnter={pause}
       onMouseLeave={() => resume()}
@@ -96,7 +97,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
               aria-hidden
               className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/10 lg:bg-gradient-to-r lg:from-black/45 lg:via-transparent lg:to-transparent"
             />
-            <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-16 sm:p-10 sm:pb-20 lg:inset-y-0 lg:flex lg:w-[54%] lg:flex-col lg:justify-center lg:p-12 lg:pb-16">
+            <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-16 sm:p-10 sm:pb-20 lg:inset-y-0 lg:flex lg:w-[60%] lg:flex-col lg:justify-center lg:p-10 lg:pb-16">
               {slide.content}
             </div>
           </div>
@@ -124,22 +125,18 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
           ))}
         </div>
         <div className="flex gap-2">
-          <button
-            type="button"
+          <ArrowButton
+            direction="prev"
+            variant="glass"
+            label={t.prev}
             onClick={() => goTo(active - 1)}
-            aria-label={t.prev}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur-md transition hover:bg-white hover:text-black active:scale-90"
-          >
-            ←
-          </button>
-          <button
-            type="button"
+          />
+          <ArrowButton
+            direction="next"
+            variant="glass"
+            label={t.next}
             onClick={() => goTo(active + 1)}
-            aria-label={t.next}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 backdrop-blur-md transition hover:bg-white hover:text-black active:scale-90"
-          >
-            →
-          </button>
+          />
         </div>
       </div>
     </div>

@@ -51,7 +51,7 @@ export default function ArtistPage({
         </div>
       </PageHeader>
 
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-10 sm:pb-24 sm:pt-14">
         <p className="max-w-2xl text-xl leading-relaxed text-text">{artist.bio}</p>
 
         <h2 className="mt-10 text-2xl sm:mt-16 sm:text-2xl font-semibold tracking-tight text-text sm:text-3xl">

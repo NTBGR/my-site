@@ -58,8 +58,8 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-16 overflow-hidden sm:mt-24 border-t border-border bg-surface-2">
-      <div className="mx-auto grid max-w-7xl grid-cols-[repeat(2,minmax(0,1fr))] gap-x-6 gap-y-8 px-4 pb-6 pt-10 sm:gap-12 sm:px-6 sm:pb-10 sm:pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer className="relative mt-0 overflow-hidden border-t border-border bg-surface-2">
+      <div className="mx-auto grid max-w-7xl grid-cols-[repeat(2,minmax(0,1fr))] gap-x-6 gap-y-8 px-4 pb-6 pt-10 sm:gap-12 sm:px-6 lg:px-10 sm:pb-10 sm:pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div className="col-span-2 md:col-span-1">
           <Link
             href="/"
@@ -81,7 +81,7 @@ export default function Footer() {
         khelovani
       </div>
       <div className="border-t border-border">
-        <p className="mx-auto max-w-7xl px-4 py-6 text-sm text-muted sm:px-6">
+        <p className="mx-auto max-w-7xl px-4 py-6 text-sm text-muted sm:px-6 lg:px-10">
           {f.copyright}
         </p>
       </div>
