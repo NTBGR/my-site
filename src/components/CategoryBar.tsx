@@ -34,10 +34,27 @@ export default function CategoryBar() {
     };
   }, [update, lang]);
 
-  // აქტიური კატეგორია ხილულ არეში მოვიდეს
+  // ჩატვირთვისას ზოლი თავიდან იწყება; გვერდის შეცვლისას კი მხოლოდ იმდენს
+  // გადაინაცვლებს, რომ აქტიური ღილაკი ხილვად არეში მოხვდეს
+  const firstRun = useRef(true);
   useEffect(() => {
-    const active = listRef.current?.querySelector<HTMLElement>('[aria-current="page"]');
-    active?.scrollIntoView({ block: "nearest", inline: "center" });
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    const list = listRef.current;
+    const active = list?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!list || !active) return;
+    const listBox = list.getBoundingClientRect();
+    const box = active.getBoundingClientRect();
+    const left = box.left - listBox.left + list.scrollLeft;
+    const right = left + box.width;
+    const pad = 24;
+    if (left < list.scrollLeft) {
+      list.scrollTo({ left: Math.max(0, left - pad), behavior: "smooth" });
+    } else if (right > list.scrollLeft + list.clientWidth) {
+      list.scrollTo({ left: right - list.clientWidth + pad, behavior: "smooth" });
+    }
   }, [pathname]);
 
   function scrollBy(direction: 1 | -1) {
