@@ -99,15 +99,25 @@ export default function Home() {
       id: banner.slug,
       color: ["#5e7a55", "#3d5a73", "#b07a4a"][i],
       art: (
-        <CategoryArt
-          slug={banner.slug}
-          color={["#5e7a55", "#3d5a73", "#b07a4a"][i]}
-          className="absolute inset-0 h-full w-full"
-        />
+        <>
+          {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაცია კუთხეში, როგორც პირველ სლაიდზე */}
+          <div
+            aria-hidden
+            className="float absolute right-4 top-4 w-[42%] max-w-[13rem] overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:right-8 sm:top-6 sm:w-[30%] lg:hidden"
+            style={{ ["--r" as string]: ["5deg", "-5deg", "4deg"][i] }}
+          >
+            <CategoryArt slug={banner.slug} color={categoryColor(banner.slug)} className="aspect-[4/3]" />
+          </div>
+          <CategoryArt
+            slug={banner.slug}
+            color={["#5e7a55", "#3d5a73", "#b07a4a"][i]}
+            className="absolute inset-0 hidden h-full w-full lg:block"
+          />
+        </>
       ),
       content: (
         <div>
-          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
+          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-4xl xl:text-5xl">
             {banner.title}
           </h2>
           <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg">
