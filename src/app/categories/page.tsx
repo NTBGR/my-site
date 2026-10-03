@@ -1,6 +1,6 @@
 import Link from "next/link";
 import CategoryArt from "@/components/CategoryArt";
-import PageHeader from "@/components/PageHeader";
+import PageBanner from "@/components/PageBanner";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { artists } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
@@ -10,57 +10,58 @@ export function generateMetadata() {
   return { title: dictionary[getLang()].categories.title };
 }
 
-
 export default function CategoriesPage() {
   const lang = getLang();
-  const t = dictionary[lang].categories;
+  const t = dictionary[lang];
 
   return (
-    <>
-      <PageHeader title={t.title} text={t.text} />
-      <div className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-10 sm:pb-24 sm:pt-14">
-        <ul className="stagger grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-          {categories.map((raw) => {
-            const category = localizeCategory(raw, lang);
-            const count = artists.filter((artist) =>
-              artist.categories.includes(category.slug),
-            ).length;
-            return (
-              <li key={category.slug}>
-                <Link
-                  href={`/categories/${category.slug}`}
-                  className="group block h-full rounded-[1.5rem] border border-border bg-surface p-2 transition duration-300 hover:-translate-y-1.5 sm:rounded-[1.75rem] sm:p-2.5 hover:border-accent hover:shadow-xl active:scale-[0.99]"
-                >
-                  <CategoryArt
-                    slug={category.slug}
-                    color={categoryColor(raw.slug)}
-                    className="aspect-[4/3] rounded-[1.1rem] sm:aspect-[16/9] sm:rounded-[1.25rem]"
-                  />
-                  <div className="px-1.5 pb-1.5 pt-3 sm:px-2.5 sm:pb-2 sm:pt-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <h2 className="text-[15px] font-semibold leading-snug tracking-tight text-text sm:text-lg">
-                        {category.name}
-                      </h2>
-                      <span
-                        className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft sm:flex text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent"
-                        aria-hidden
-                      >
-                        <span className="arrow-slide">→</span>
-                      </span>
-                    </div>
-                    <p className="mt-1.5 hidden text-sm leading-relaxed text-muted sm:block">
-                      {category.description}
-                    </p>
-                    <p className="mt-1.5 text-xs font-medium uppercase tracking-wider text-muted sm:mt-3">
-                      {t.count(count)}
-                    </p>
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
+      <PageBanner
+        title={t.categories.title}
+        text={t.categories.text}
+        badge={`${t.categories.total(categories.length)} · ${t.artists.count(artists.length)}`}
+        collage={["keramika", "nakhatebi", "samkauli"]}
+      />
+
+      <ul className="stagger mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+        {categories.map((raw) => {
+          const category = localizeCategory(raw, lang);
+          const count = artists.filter((artist) =>
+            artist.categories.includes(category.slug),
+          ).length;
+          return (
+            <li key={category.slug}>
+              <Link
+                href={`/categories/${category.slug}`}
+                className="group flex h-full flex-col rounded-[1.25rem] border border-border bg-surface p-2 transition duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.5rem]"
+              >
+                <CategoryArt
+                  slug={category.slug}
+                  color={categoryColor(raw.slug)}
+                  className="aspect-[4/3] rounded-[0.9rem] sm:rounded-[1.1rem]"
+                />
+                <div className="flex flex-1 flex-col px-1.5 pb-1 pt-3">
+                  <h2 className="text-[15px] font-semibold leading-snug tracking-tight text-text">
+                    {category.name}
+                  </h2>
+                  <p className="mt-1 hidden text-sm leading-snug text-muted sm:line-clamp-2 lg:hidden">
+                    {category.description}
+                  </p>
+                  <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+                    <span className="text-xs font-medium text-muted">{t.categories.count(count)}</span>
+                    <span
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent"
+                      aria-hidden
+                    >
+                      <span className="arrow-slide">→</span>
+                    </span>
                   </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </>
+                </div>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

@@ -51,12 +51,20 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           background: `linear-gradient(135deg, color-mix(in srgb, ${color}, white 14%), ${color} 55%, color-mix(in srgb, ${color}, black 34%))`,
         }}
       >
-        <div className="absolute inset-y-0 right-0 w-full sm:w-3/5 sm:[mask-image:linear-gradient(90deg,transparent,#000_30%)]">
+        <div className="absolute inset-y-0 right-0 hidden w-3/5 [mask-image:linear-gradient(90deg,transparent,#000_30%)] sm:block">
           <CategoryArt
             slug={category.slug}
             color={color}
             className="absolute inset-0 h-full w-full"
           />
+        </div>
+        {/* მობილურზე: პატარა ილუსტრაცია კუთხეში, რომ ტექსტს არ ეფარებოდეს */}
+        <div
+          aria-hidden
+          className="float absolute right-5 top-5 z-10 w-24 overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:hidden"
+          style={{ ["--r" as string]: "5deg" }}
+        >
+          <CategoryArt slug={category.slug} color={color} className="aspect-[4/3]" />
         </div>
         <div
           aria-hidden

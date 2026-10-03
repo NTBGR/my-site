@@ -43,7 +43,7 @@ function SocialLink({
   label: string;
 }) {
   const base =
-    "inline-flex h-11 min-w-11 items-center justify-center gap-2.5 rounded-full border border-border bg-surface px-3 text-sm font-medium sm:px-5";
+    "inline-flex h-11 min-w-11 items-center justify-center gap-2.5 rounded-full border border-border bg-surface px-4 text-sm font-medium sm:px-5";
 
   // ბმული ჯერ არ არის: ღილაკი მაინც ჩანს, ოღონდ მკრთალია
   if (!href) {
@@ -54,7 +54,7 @@ function SocialLink({
         className={`${base} cursor-not-allowed text-muted opacity-50`}
       >
         {icon}
-        <span className="hidden sm:inline">{label}</span>
+        <span>{label}</span>
       </span>
     );
   }
@@ -69,7 +69,7 @@ function SocialLink({
       className={`group ${base} text-text transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-md`}
     >
       {icon}
-      <span className="hidden sm:inline">{label}</span>
+      <span>{label}</span>
       <span
         className="-ml-1 hidden translate-x-0 opacity-50 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 sm:inline"
         aria-hidden
@@ -138,17 +138,20 @@ export default function ArtistPage({
           </h1>
         </div>
 
-        <div className="flex gap-2">
-          <SocialLink
-            href={artist.instagram || undefined}
-            icon={<InstagramIcon />}
-            label={t.instagram}
-          />
-          <SocialLink
-            href={artist.facebook || undefined}
-            icon={<FacebookIcon />}
-            label={t.facebook}
-          />
+        <div>
+          <p className="mb-2 text-sm font-medium text-muted">{t.buyHint}</p>
+          <div className="flex gap-2">
+            <SocialLink
+              href={artist.instagram || undefined}
+              icon={<InstagramIcon />}
+              label={t.instagram}
+            />
+            <SocialLink
+              href={artist.facebook || undefined}
+              icon={<FacebookIcon />}
+              label={t.facebook}
+            />
+          </div>
         </div>
       </div>
 
