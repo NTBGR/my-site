@@ -5,8 +5,11 @@ export const LANG_COOKIE = "lang";
 const ka = {
   meta: {
     title: "ხელოვანი",
+    homeTitle: "ხელოვანი — ხელნაკეთი ნივთები ქართველი ხელოვანებისგან",
+    ogTagline: "ხელით შექმნილი",
+    ogText: "ნახატები, კერამიკა, სამკაული და დეკორი",
     description:
-      "ქართველი ხელოვანების ხელნაკეთი ნივთების მაღაზია — იპოვე ნამუშევრები და შემოქმედები.",
+      "ქართველი ხელოვანების ნახატები, კერამიკა, სამკაული და დეკორი. გაიცანი ავტორები და დაუკავშირდი პირდაპირ.",
   },
   nav: {
     home: "მთავარი",
@@ -193,8 +196,11 @@ type Dict = typeof ka;
 const en: Dict = {
   meta: {
     title: "Khelovani",
+    homeTitle: "Khelovani — handmade goods by Georgian artists",
+    ogTagline: "Made by hand",
+    ogText: "Paintings, ceramics, jewelry and decor",
     description:
-      "A shop for handmade goods by Georgian artists — discover works and the makers behind them.",
+      "Paintings, ceramics, jewelry and decor by Georgian artists. Meet the makers and contact them directly.",
   },
   nav: {
     home: "Home",

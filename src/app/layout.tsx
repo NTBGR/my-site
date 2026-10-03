@@ -19,9 +19,25 @@ const notoSerifGeorgian = Noto_Serif_Georgian({
   variable: "--font-serif",
 });
 
+const SITE_URL = "https://khelovani.vercel.app";
+
 export function generateMetadata(): Metadata {
-  const { meta } = dictionary[getLang()];
-  return { title: meta.title, description: meta.description };
+  const lang = getLang();
+  const { meta } = dictionary[lang];
+  return {
+    metadataBase: new URL(SITE_URL),
+    // ქვეგვერდები: „ხელოვანები · ხელოვანი“; მთავარი: სრული სათაური
+    title: { default: meta.homeTitle, template: `%s · ${meta.title}` },
+    description: meta.description,
+    openGraph: {
+      type: "website",
+      siteName: meta.title,
+      title: meta.homeTitle,
+      description: meta.description,
+      locale: lang === "ka" ? "ka_GE" : "en_US",
+    },
+    twitter: { card: "summary_large_image" },
+  };
 }
 
 // ადგენს თემას გვერდის ჩვენებამდე, რომ ფერები არ აციმციმდეს

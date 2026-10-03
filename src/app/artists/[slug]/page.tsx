@@ -83,6 +83,18 @@ function SocialLink({
 const chipClass =
   "inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted sm:text-sm";
 
+export function generateMetadata({ params }: { params: { slug: string } }) {
+  const raw = getArtistBySlug(params.slug);
+  if (!raw) return {};
+  const artist = localizeArtist(raw, getLang());
+  const title = `${artist.name} — ${artist.category}`;
+  return {
+    title,
+    description: artist.bio,
+    openGraph: { title, description: artist.bio, type: "profile", images: ["/opengraph-image"] },
+  };
+}
+
 export default function ArtistPage({
   params,
 }: {

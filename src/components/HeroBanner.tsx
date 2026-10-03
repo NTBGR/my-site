@@ -93,7 +93,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
           <div
             key={slide.id}
             aria-hidden={i !== active}
-            className="relative min-h-[17.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[22rem] lg:min-h-[24rem]"
+            className="relative min-h-[22rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[24rem]"
           >
             <div
               className="absolute inset-0"

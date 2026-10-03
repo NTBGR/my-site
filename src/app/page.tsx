@@ -32,6 +32,23 @@ export default function Home() {
       id: "main",
       color: "#c4553a",
       art: (
+        <>
+        {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაციები ზედა მარჯვენა კუთხეში */}
+        <div className="absolute right-4 top-4 h-28 w-40 sm:right-8 sm:top-6 sm:w-48 lg:hidden" aria-hidden>
+          {[
+            { slug: "bechdebi", pos: "left-0 top-2 w-[34%]", r: "-7deg", delay: "" },
+            { slug: "keramika", pos: "left-[33%] top-0 w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
+            { slug: "samkauli", pos: "right-0 top-5 w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
+          ].map((tile) => (
+            <div
+              key={tile.slug}
+              className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
+              style={{ ["--r" as string]: tile.r }}
+            >
+              <CategoryArt slug={tile.slug} color={categoryColor(tile.slug)} className="aspect-[3/4]" />
+            </div>
+          ))}
+        </div>
         <div className="relative hidden h-full w-full lg:block" aria-hidden>
           <div
             className="float absolute left-[24%] top-[10%] w-[32%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15"
@@ -52,6 +69,7 @@ export default function Home() {
             <CategoryArt slug="samkauli" color={categoryColor("samkauli")} className="aspect-[4/3]" />
           </div>
         </div>
+        </>
       ),
       content: (
         <div className="hero-in">
@@ -119,7 +137,7 @@ export default function Home() {
             <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2">
               <Link
                 href="/categories"
-                className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
+                className="group relative block min-h-36 overflow-hidden sm:min-h-44 rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
                 <div
                   aria-hidden
@@ -149,7 +167,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/artists"
-                className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
+                className="group relative block min-h-36 overflow-hidden sm:min-h-44 rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
                 <div
                   aria-hidden

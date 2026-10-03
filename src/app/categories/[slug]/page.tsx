@@ -15,6 +15,21 @@ export function generateStaticParams() {
   return categories.map((category) => ({ slug: category.slug }));
 }
 
+export function generateMetadata({ params }: { params: { slug: string } }) {
+  const raw = getCategoryBySlug(params.slug);
+  if (!raw) return {};
+  const category = localizeCategory(raw, getLang());
+  return {
+    title: category.name,
+    description: category.description,
+    openGraph: {
+      title: category.name,
+      description: category.description,
+      images: ["/opengraph-image"],
+    },
+  };
+}
+
 export default function CategoryPage({ params }: { params: { slug: string } }) {
   const lang = getLang();
   const t = dictionary[lang];
