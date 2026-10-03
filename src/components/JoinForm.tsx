@@ -8,7 +8,7 @@ const MAX_FILES = 4;
 const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
 
 const inputClass =
-  "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-sm text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
+  "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
 type Status = "idle" | "sending" | "success";
 

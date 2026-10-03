@@ -104,7 +104,7 @@ export default function Header() {
       value={query}
       onChange={(event) => setQuery(event.target.value)}
       placeholder={t.nav.search}
-      className="h-11 w-full rounded-full border border-border bg-surface px-5 text-sm text-text transition-shadow placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="h-11 w-full rounded-full border border-border bg-surface px-5 text-base text-text transition-shadow sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       aria-label={t.nav.searchLabel}
     />
   );
@@ -114,7 +114,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6">
         <Link
           href="/"
-          className="group flex items-center gap-2 font-serif text-xl font-semibold tracking-tight text-text sm:text-2xl"
+          className="group flex min-h-11 items-center gap-2 font-serif text-xl font-semibold tracking-tight text-text sm:text-2xl"
         >
           <span
             aria-hidden

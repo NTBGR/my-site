@@ -4,12 +4,14 @@ import { getT } from "@/lib/i18n";
 function FooterList({
   title,
   links,
+  className = "",
 }: {
   title: string;
   links: { href: string; label: string }[];
+  className?: string;
 }) {
   return (
-    <div>
+    <div className={className}>
       <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">
         {title}
       </h2>
@@ -18,11 +20,11 @@ function FooterList({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="group inline-flex min-h-10 items-center gap-1 text-base text-text transition-colors hover:text-accent"
+              className="group inline-flex min-h-10 items-center gap-1 break-words text-[15px] text-text sm:text-base transition-colors hover:text-accent"
             >
               {link.label}
               <span
-                className="-translate-x-1 opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                className="hidden -translate-x-1 opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100 sm:inline"
                 aria-hidden
               >
                 ↗
@@ -57,8 +59,8 @@ export default function Footer() {
 
   return (
     <footer className="relative mt-16 overflow-hidden sm:mt-24 border-t border-border bg-surface-2">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 pb-6 pt-10 sm:gap-12 sm:pb-10 sm:pt-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div>
+      <div className="mx-auto grid max-w-7xl grid-cols-[repeat(2,minmax(0,1fr))] gap-x-6 gap-y-8 px-4 pb-6 pt-10 sm:gap-12 sm:px-6 sm:pb-10 sm:pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="col-span-2 md:col-span-1">
           <Link
             href="/"
             className="flex items-center gap-2 font-serif text-3xl font-semibold tracking-tight text-text"
@@ -70,11 +72,11 @@ export default function Footer() {
         </div>
         <FooterList title={f.learnMore} links={learnMore} />
         <FooterList title={f.help} links={help} />
-        <FooterList title={f.social} links={social} />
+        <FooterList title={f.social} links={social} className="col-span-2 md:col-span-1" />
       </div>
       <div
         aria-hidden
-        className="pointer-events-none select-none px-4 text-center font-serif text-[22vw] font-semibold leading-none tracking-tighter text-text opacity-[0.05] sm:text-[14rem]"
+        className="pointer-events-none select-none px-4 text-center font-serif text-[17vw] font-semibold leading-none tracking-tighter text-text opacity-[0.05] sm:text-[14rem]"
       >
         khelovani
       </div>

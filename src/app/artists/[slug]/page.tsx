@@ -54,12 +54,12 @@ export default function ArtistPage({
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
         <p className="max-w-2xl text-xl leading-relaxed text-text">{artist.bio}</p>
 
-        <h2 className="mt-16 text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+        <h2 className="mt-10 text-2xl sm:mt-16 sm:text-2xl font-semibold tracking-tight text-text sm:text-3xl">
           {t.works}
         </h2>
-        <ul className="stagger mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <ul className="stagger -mx-4 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:mt-8 sm:grid sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
           {artist.works.map((work, i) => (
-            <li key={work.title} className="group">
+            <li key={work.title} className="group w-[72%] shrink-0 snap-center sm:w-auto">
               <ArtTile
                 color={work.color}
                 variant={(variantFor(artist.slug) + i) % 4}

@@ -31,7 +31,7 @@ export default function CategoriesPage() {
     <>
       <PageHeader title={t.title} text={t.text} />
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
-        <ul className="stagger grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="stagger grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
           {categories.map((raw, i) => {
             const category = localizeCategory(raw, lang);
             const count = artists.filter((artist) =>
@@ -41,29 +41,29 @@ export default function CategoriesPage() {
               <li key={category.slug}>
                 <Link
                   href={`/categories/${category.slug}`}
-                  className="group block h-full rounded-[1.75rem] border border-border bg-surface p-2.5 transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl active:scale-[0.99]"
+                  className="group block h-full rounded-[1.5rem] border border-border bg-surface p-2 transition duration-300 hover:-translate-y-1.5 sm:rounded-[1.75rem] sm:p-2.5 hover:border-accent hover:shadow-xl active:scale-[0.99]"
                 >
                   <CategoryArt
                     slug={category.slug}
                     color={tileColors[i % tileColors.length]}
-                    className="aspect-[16/9] rounded-[1.25rem]"
+                    className="aspect-[4/3] rounded-[1.1rem] sm:aspect-[16/9] sm:rounded-[1.25rem]"
                   />
-                  <div className="px-2.5 pb-2 pt-4">
+                  <div className="px-1.5 pb-1.5 pt-3 sm:px-2.5 sm:pb-2 sm:pt-4">
                     <div className="flex items-start justify-between gap-3">
-                      <h2 className="text-lg font-semibold tracking-tight text-text">
+                      <h2 className="text-[15px] font-semibold leading-snug tracking-tight text-text sm:text-lg">
                         {category.name}
                       </h2>
                       <span
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent"
+                        className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft sm:flex text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent"
                         aria-hidden
                       >
                         <span className="arrow-slide">→</span>
                       </span>
                     </div>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                    <p className="mt-1.5 hidden text-sm leading-relaxed text-muted sm:block">
                       {category.description}
                     </p>
-                    <p className="mt-3 text-xs font-medium uppercase tracking-wider text-muted">
+                    <p className="mt-1.5 text-xs font-medium uppercase tracking-wider text-muted sm:mt-3">
                       {t.count(count)}
                     </p>
                   </div>

@@ -15,27 +15,31 @@ export default function JoinPage() {
     <>
       <PageHeader title={t.title} text={t.text} />
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
-        <ul className="stagger grid grid-cols-1 gap-5 md:grid-cols-3">
+        <ul className="stagger grid grid-cols-1 gap-3 sm:gap-5 md:grid-cols-3">
           {t.benefits.map((item, i) => (
             <li
               key={item.title}
-              className="group rounded-[1.75rem] border border-border bg-surface p-7 transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl"
+              className="group flex gap-4 rounded-[1.5rem] border border-border bg-surface p-4 transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl sm:block sm:rounded-[1.75rem] sm:p-7"
             >
               <span
                 aria-hidden
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-soft font-semibold text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft font-semibold text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent sm:h-11 sm:w-11"
               >
                 {i + 1}
               </span>
-              <h3 className="mt-5 text-xl font-semibold tracking-tight text-text">
-                {item.title}
-              </h3>
-              <p className="mt-2 leading-relaxed text-muted">{item.text}</p>
+              <div>
+                <h3 className="text-lg font-semibold tracking-tight text-text sm:mt-5 sm:text-xl">
+                  {item.title}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted sm:mt-2 sm:text-base">
+                  {item.text}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="mt-10 grid gap-8 sm:mt-16 sm:gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
               {t.stepsTitle}
