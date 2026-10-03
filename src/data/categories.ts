@@ -6,29 +6,54 @@ export type Category = {
 
 export const categories: Category[] = [
   {
-    slug: "mkhatvari",
-    name: "მხატვარი",
-    description: "ფერწერა, გრაფიკა და სხვა სახვითი ხელოვნება.",
+    slug: "nakhatebi",
+    name: "ნახატები",
+    description: "ტილო, აკვარელი და გრაფიკა ორიგინალ ნამუშევრებად.",
   },
   {
-    slug: "potografi",
-    name: "ფოტოგრაფი",
-    description: "პორტრეტი, პეიზაჟი და დოკუმენტური ფოტო.",
+    slug: "bechdebi",
+    name: "ბეჭდები",
+    description: "ხელნაკეთი ბეჭდები ვერცხლში, ოქროსა და ქვებით.",
   },
   {
-    slug: "ilustratori",
-    name: "ილუსტრატორი",
-    description: "წიგნის, პრესისა და ციფრული ილუსტრაცია.",
+    slug: "keramika",
+    name: "კერამიკა და ჭურჭელი",
+    description: "ხელნაკეთი თიხის თასები, ლანგრები და ვაზები.",
   },
   {
-    slug: "keramikosi",
-    name: "კერამიკოსი",
-    description: "ხელნაკეთი თიხის ნაკეთობები და ჭურჭელი.",
+    slug: "skulptura",
+    name: "სკულპტურა და ფიგურები",
+    description: "ქვის, ხისა და ლითონის ფიგურები და კომპოზიციები.",
   },
   {
-    slug: "mokandake",
-    name: "მოქანდაკე",
-    description: "სკულპტურა ქვაში, ხეში და ლითონში.",
+    slug: "samkauli",
+    name: "სამკაული",
+    description: "ხელნაკეთი სამკაული ვერცხლში, ოქროსა და სხვა მასალაში.",
+  },
+  {
+    slug: "tekstili",
+    name: "ტექსტილი",
+    description: "შარფები, ხალიჩები, ნაქარგი და ქსოვილზე დაბეჭდილი ნივთები.",
+  },
+  {
+    slug: "tyavi",
+    name: "ტყავის ნაწარმი",
+    description: "ხელნაკეთი ჩანთები, საფულეები და აქსესუარები.",
+  },
+  {
+    slug: "khis-nakethobebi",
+    name: "ხის ნაკეთობები",
+    description: "კოვზები, დაფები, ყუთები და სხვა ხის ნივთები.",
+  },
+  {
+    slug: "saxlis-dekori",
+    name: "სახლის დეკორი",
+    description: "სანთლები, ვაზები, ჩარჩოები და სხვა ინტერიერის ნივთები.",
+  },
+  {
+    slug: "sachuqrebi",
+    name: "საჩუქრები და ბარათები",
+    description: "ხელნაკეთი ბარათები და პატარა საჩუქრები.",
   },
 ];
 

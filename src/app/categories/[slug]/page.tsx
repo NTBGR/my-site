@@ -12,7 +12,9 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const category = getCategoryBySlug(params.slug);
   if (!category) notFound();
 
-  const items = artists.filter((artist) => artist.category === category.name);
+  const items = artists.filter((artist) =>
+    artist.categories.includes(category.slug),
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -25,7 +27,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       <p className="mt-3 max-w-2xl text-[#5c5348]">{category.description}</p>
 
       {items.length === 0 ? (
-        <p className="mt-8 text-[#5c5348]">ამ კატეგორიაში ხელოვანი ჯერ არ არის.</p>
+        <p className="mt-8 text-[#5c5348]">ამ კატეგორიაში ნივთები ჯერ არ არის.</p>
       ) : (
         <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((artist) => (

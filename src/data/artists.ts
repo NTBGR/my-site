@@ -8,6 +8,7 @@ export type Artist = {
   name: string;
   city: string;
   category: string;
+  categories: string[];
   bio: string;
   instagram: string;
   works: ArtistWork[];
@@ -19,6 +20,7 @@ export const artists: Artist[] = [
     name: "ელენე ნიმუში",
     city: "თბილისი",
     category: "მხატვარი",
+    categories: ["nakhatebi"],
     bio: "ფიქტიური პორტრეტისტი, რომელიც თბილისის უბნებს თბილი ფერებით ხატავს. ეს პროფილი სატესტო მონაცემია და რეალურ ადამიანს არ ეკუთვნის.",
     instagram: "",
     works: [
@@ -32,6 +34,7 @@ export const artists: Artist[] = [
     name: "გიორგი მაგალითი",
     city: "ბათუმი",
     category: "ფოტოგრაფი",
+    categories: ["nakhatebi"],
     bio: "სატესტო ფოტოგრაფი, რომელიც ზღვისპირა სინათლეს იღებს. სახელი და ბიოგრაფია სპეციალურად გამოგონილია.",
     instagram: "",
     works: [
@@ -45,6 +48,7 @@ export const artists: Artist[] = [
     name: "მარიამ სავარდებელი",
     city: "ქუთაისი",
     category: "კერამიკოსი",
+    categories: ["keramika", "saxlis-dekori"],
     bio: "გამოგონილი კერამიკოსი, რომელიც თიხასთან მუშაობს. ყველა დეტალი მხოლოდ დემონსტრაციისთვისაა.",
     instagram: "",
     works: [
@@ -58,6 +62,7 @@ export const artists: Artist[] = [
     name: "ლეკა ფლეისჰოლდერი",
     city: "თელავი",
     category: "ილუსტრატორი",
+    categories: ["nakhatebi", "sachuqrebi"],
     bio: "ფიქტიური ილუსტრატორი კახეთიდან. ეს ჩანაწერი რეალურ შემოქმედს არ ასახავს.",
     instagram: "",
     works: [
@@ -71,6 +76,7 @@ export const artists: Artist[] = [
     name: "ნინო დემოელი",
     city: "თბილისი",
     category: "მოქანდაკე",
+    categories: ["skulptura", "khis-nakethobebi"],
     bio: "სატესტო მოქანდაკე, რომელიც ქვისა და ხის ფორმებს იკვლევს. პროფილი გამოგონილია.",
     instagram: "",
     works: [
@@ -84,6 +90,7 @@ export const artists: Artist[] = [
     name: "დათო ტესტაძე",
     city: "ბათუმი",
     category: "მხატვარი",
+    categories: ["nakhatebi", "saxlis-dekori"],
     bio: "ფიქტიური მხატვარი, რომელიც ფერად აბსტრაქციას ხატავს. ინსტაგრამის ბმული განზრახ ცარიელია.",
     instagram: "",
     works: [

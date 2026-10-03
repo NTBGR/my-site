@@ -13,13 +13,13 @@ export default function CategoriesPage() {
         კატეგორიები
       </h1>
       <p className="mt-3 max-w-2xl text-[#5c5348]">
-        აირჩიე მიმართულება და ნახე ამ კატეგორიის ხელოვანები.
+        აირჩიე კატეგორია და ნახე ამ ტიპის ნივთების ავტორები.
       </p>
 
       <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => {
           const count = artists.filter(
-            (artist) => artist.category === category.name,
+            (artist) => artist.categories.includes(category.slug),
           ).length;
           return (
             <li key={category.slug}>
