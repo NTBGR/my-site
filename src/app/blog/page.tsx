@@ -1,7 +1,7 @@
 import Button from "@/components/ui/Button";
 
 export const metadata = {
-  title: "ბლოგი",
+  title: "ბლოგა",
 };
 
 const topics = [
@@ -22,7 +22,7 @@ const topics = [
 export default function BlogPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-      <h1 className="text-3xl font-semibold text-[#2c2416] sm:text-4xl">ბლოგი</h1>
+      <h1 className="text-3xl font-semibold text-[#2c2416] sm:text-4xl">ბლოგა</h1>
       <p className="mt-3 max-w-2xl leading-relaxed text-[#5c5348]">
         აქ გამოქვეყნდება ისტორიები, ინტერვიუები და სასარგებლო მასალები ქართული
         ხელოვნების სამყაროდან. პირველი სტატიები მალე გამოჩნდება.

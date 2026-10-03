@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 const navLinks = [
   { href: "/artists", label: "ხელოვანები" },
   { href: "/categories", label: "კატეგორიები" },
-  { href: "/blog", label: "ბლოგი" },
+  { href: "/blog", label: "ბლოგა" },
 ];
 
 function HeartIcon() {

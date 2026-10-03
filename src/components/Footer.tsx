@@ -3,7 +3,7 @@ import Link from "next/link";
 const learnMore = [
   { href: "/about", label: "ჩვენ შესახებ" },
   { href: "/how-it-works", label: "როგორ მუშაობს" },
-  { href: "/blog", label: "ბლოგი" },
+  { href: "/blog", label: "ბლოგა" },
   { href: "/faq", label: "კითხვები" },
 ];
 
