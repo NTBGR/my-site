@@ -1,10 +1,15 @@
 import { createHash } from "node:crypto";
 
 // გადასვლების დათვლა Upstash Redis-ში (REST API, ბიბლიოთეკის გარეშე).
-// Vercel-ის Upstash ინტეგრაცია ამატებს KV_REST_API_URL/KV_REST_API_TOKEN-ს;
+// Vercel-ის Upstash ინტეგრაცია ცვლადებს პრეფიქსით ამატებს (KV_REST_API_URL, STORAGE_REST_API_URL...);
 // ხელით შექმნილ ბაზას UPSTASH_REDIS_REST_URL/UPSTASH_REDIS_REST_TOKEN აქვს.
-const URL_ = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-const TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+function findEnv(suffix: string, fallback: string) {
+  if (process.env[fallback]) return process.env[fallback];
+  const key = Object.keys(process.env).find((k) => k.endsWith(suffix) && !k.includes("READ_ONLY"));
+  return key ? process.env[key] : undefined;
+}
+const URL_ = process.env.KV_REST_API_URL || findEnv("_REST_API_URL", "UPSTASH_REDIS_REST_URL");
+const TOKEN = process.env.KV_REST_API_TOKEN || findEnv("_REST_API_TOKEN", "UPSTASH_REDIS_REST_TOKEN");
 
 export const clicksEnabled = Boolean(URL_ && TOKEN);
 
