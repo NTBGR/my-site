@@ -57,13 +57,19 @@ export default function Home() {
           <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {t.title}
           </h1>
-          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg">
+          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg lg:hidden xl:block">
             {t.text}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="/categories" className={whiteButton}>
+            <Link href="/categories" className={`${whiteButton} whitespace-nowrap`}>
               {t.ctaPrimary}
               {arrow}
+            </Link>
+            <Link
+              href="/join"
+              className="hidden min-h-12 items-center whitespace-nowrap rounded-full border border-white/60 sm:inline-flex px-7 text-sm font-medium text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white/15 active:scale-95"
+            >
+              {t.ctaMaker}
             </Link>
           </div>
         </div>
@@ -126,17 +132,17 @@ export default function Home() {
                 </div>
               </Link>
               <Link
-                href="/join"
+                href="/artists"
                 className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
                 <ArtTile color="#d4623a" variant={3} className="absolute inset-0 h-full w-full" />
                 <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-6">
                   <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                    {t.bannerTitle}
+                    {t.ctaSecondary}
                   </h2>
                   <span className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
-                    {dictionary[lang].nav.join}
+                    {dictionary[lang].nav.artists}
                     {arrow}
                   </span>
                 </div>
@@ -147,9 +153,9 @@ export default function Home() {
       </section>
 
       {/* კატეგორიები */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-10 sm:pt-24">
-        <Reveal className="mb-6 sm:mb-10 flex items-end justify-between gap-4">
-          <h2 className="max-w-xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
+      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
+        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
+          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.categoriesTitle}
           </h2>
           <Link
@@ -177,9 +183,9 @@ export default function Home() {
       </section>
 
       {/* რჩეული ხელოვანები */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-10 sm:pt-24">
-        <Reveal className="mb-6 sm:mb-10 flex items-end justify-between gap-4">
-          <h2 className="max-w-xl text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
+      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
+        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
+          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.featured}
           </h2>
           <Link
@@ -199,65 +205,76 @@ export default function Home() {
         >
           {featured.map((artist) => (
             <li key={artist.slug} className="w-[78%] shrink-0 snap-center sm:w-auto">
-              <ArtistCard artist={artist} artClassName="aspect-[4/3] sm:aspect-[4/5]" />
+              <ArtistCard
+                artist={artist}
+                artClassName="aspect-[4/3]"
+                worksLabel={`${artist.city} · ${dictionary[lang].artists.worksCount(artist.works.length)}`}
+              />
             </li>
           ))}
         </Reveal>
       </section>
 
       {/* როგორ მუშაობს */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-10 sm:pt-24">
-        <Reveal className="mb-6 sm:mb-10 max-w-xl">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-5xl">
+      <section
+        id="how-it-works"
+        className="mx-auto max-w-7xl scroll-mt-24 px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20"
+      >
+        <Reveal className="mb-5 sm:mb-8">
+          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.how}
           </h2>
         </Reveal>
         <Reveal
           as="ol"
           stagger
-          className="grid grid-cols-1 gap-5 md:grid-cols-3"
+          className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-3"
         >
           {t.steps.map((step, i) => (
             <li
               key={step.title}
-              className="group relative overflow-hidden rounded-[1.75rem] border border-border bg-surface p-5 transition sm:p-7 duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+              className="flex items-start gap-4 rounded-[1.25rem] border border-border bg-surface p-4 sm:p-5"
             >
               <span
                 aria-hidden
-                className="font-serif text-5xl font-semibold sm:text-7xl leading-none text-accent opacity-25 transition-opacity duration-300 group-hover:opacity-100"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif text-base font-semibold text-accent"
               >
-                {String(i + 1).padStart(2, "0")}
+                {i + 1}
               </span>
-              <h3 className="mt-3 text-xl font-semibold tracking-tight text-text sm:mt-6">
-                {step.title}
-              </h3>
-              <p className="mt-2 leading-relaxed text-muted">{step.text}</p>
+              <div>
+                <h3 className="text-base font-semibold tracking-tight text-text sm:text-lg">
+                  {step.title}
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{step.text}</p>
+              </div>
             </li>
           ))}
         </Reveal>
       </section>
 
       {/* შემოქმედის ბანერი */}
-      <section className="mx-auto max-w-7xl px-4 pb-16 pt-16 sm:px-6 lg:px-10 sm:pb-24 sm:pt-24">
+      <section className="mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 lg:px-10 sm:pb-20 sm:pt-20">
         <Reveal>
-          <div className="relative isolate overflow-hidden rounded-[2rem] bg-gradient-to-br from-accent to-[color-mix(in_srgb,var(--accent),#f2a37a_28%)] px-6 py-10 text-on-accent sm:rounded-[2.25rem] sm:px-14 sm:py-20">
+          <div className="relative isolate flex flex-col gap-6 overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-accent to-[color-mix(in_srgb,var(--accent),#f2a37a_28%)] px-6 py-8 text-on-accent sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:py-10">
             <div
               aria-hidden
-              className="blob absolute -right-16 -top-20 -z-10 h-72 w-72 rounded-full bg-white/15 blur-2xl"
+              className="blob absolute -right-16 -top-20 -z-10 h-56 w-56 rounded-full bg-white/15 blur-2xl"
             />
             <div
               aria-hidden
-              className="absolute -bottom-24 right-24 -z-10 h-64 w-64 rounded-full border-[28px] border-white/10"
+              className="absolute -bottom-20 right-1/3 -z-10 h-44 w-44 rounded-full border-[20px] border-white/10"
             />
-            <h2 className="max-w-lg text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-6xl">
-              {t.bannerTitle}
-            </h2>
-            <p className="mt-5 max-w-md text-lg leading-relaxed opacity-85">
-              {t.bannerText}
-            </p>
+            <div>
+              <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">
+                {t.bannerTitle}
+              </h2>
+              <p className="mt-2 max-w-md leading-relaxed opacity-85">
+                {t.bannerText}
+              </p>
+            </div>
             <Link
               href="/join"
-              className="group mt-9 inline-flex min-h-12 items-center gap-2 rounded-full bg-on-accent px-7 text-sm font-medium text-accent transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
+              className="group inline-flex min-h-12 shrink-0 self-start sm:self-auto items-center gap-2 rounded-full bg-on-accent px-7 text-sm font-medium text-accent transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
             >
               {dictionary[lang].nav.join}
               <span className="arrow-slide" aria-hidden>

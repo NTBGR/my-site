@@ -2,34 +2,35 @@ import Link from "next/link";
 import LogoLink from "@/components/LogoLink";
 import { getT } from "@/lib/i18n";
 
+// საიტის სოციალური ქსელები: ჩაწერე ბმული და ფუტერში გამოჩნდება
+const SOCIAL_LINKS = {
+  instagram: "",
+  facebook: "",
+};
+
 function FooterList({
   title,
   links,
-  className = "",
+  external = false,
 }: {
   title: string;
   links: { href: string; label: string }[];
-  className?: string;
+  external?: boolean;
 }) {
   return (
-    <div className={className}>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted">
+    <div>
+      <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
         {title}
       </h2>
-      <ul className="space-y-1">
+      <ul>
         {links.map((link) => (
           <li key={link.label}>
             <Link
               href={link.href}
-              className="group inline-flex min-h-10 items-center gap-1 break-words text-[15px] text-text sm:text-base transition-colors hover:text-accent"
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="inline-flex min-h-10 items-center text-[15px] text-text transition-colors hover:text-accent"
             >
               {link.label}
-              <span
-                className="hidden -translate-x-1 opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100 sm:inline"
-                aria-hidden
-              >
-                ↗
-              </span>
             </Link>
           </li>
         ))}
@@ -41,42 +42,40 @@ function FooterList({
 export default function Footer() {
   const { footer: f, nav } = getT();
 
-  const learnMore = [
-    { href: "/about", label: f.about },
-    { href: "/how-it-works", label: f.howItWorks },
+  const explore = [
+    { href: "/artists", label: nav.artists },
+    { href: "/categories", label: nav.categories },
     { href: "/blog", label: nav.blog },
-    { href: "/faq", label: f.faq },
-  ];
-  const help = [
-    { href: "/contact", label: f.contact },
-    { href: "/privacy", label: f.privacy },
-    { href: "/terms", label: f.terms },
-    { href: "/takedown", label: f.takedown },
+    { href: "/#how-it-works", label: f.howItWorks },
+    { href: "/join", label: nav.join },
   ];
   const social = [
-    { href: "#", label: f.instagram },
-    { href: "#", label: f.facebook },
-  ];
+    { href: SOCIAL_LINKS.instagram, label: f.instagram },
+    { href: SOCIAL_LINKS.facebook, label: f.facebook },
+  ].filter((link) => link.href);
 
   return (
     <footer className="relative mt-0 overflow-hidden border-t border-border bg-surface-2">
-      <div className="mx-auto grid max-w-7xl grid-cols-[repeat(2,minmax(0,1fr))] gap-x-6 gap-y-8 px-4 pb-6 pt-10 sm:gap-12 sm:px-6 lg:px-10 sm:pb-10 sm:pt-16 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div className="col-span-2 md:col-span-1">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-4 pt-10 sm:flex-row sm:justify-between sm:gap-12 sm:px-6 sm:pt-14 lg:px-10">
+        <div>
           <LogoLink size="lg" />
-          <p className="mt-4 max-w-xs leading-relaxed text-muted">{f.tagline}</p>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">{f.tagline}</p>
         </div>
-        <FooterList title={f.learnMore} links={learnMore} />
-        <FooterList title={f.help} links={help} />
-        <FooterList title={f.social} links={social} className="col-span-2 md:col-span-1" />
+        <div className="flex gap-12 sm:gap-16">
+          <FooterList title={f.learnMore} links={explore} />
+          {social.length > 0 ? (
+            <FooterList title={f.social} links={social} external />
+          ) : null}
+        </div>
       </div>
       <div
         aria-hidden
-        className="pointer-events-none select-none px-4 text-center font-serif text-[17vw] font-semibold leading-none tracking-tighter text-text opacity-[0.05] sm:text-[14rem]"
+        className="pointer-events-none select-none px-4 text-center font-serif text-[16vw] font-semibold leading-none tracking-tighter text-text opacity-[0.05] sm:text-[9rem]"
       >
         ხელოვანი
       </div>
       <div className="border-t border-border">
-        <p className="mx-auto max-w-7xl px-4 py-6 text-sm text-muted sm:px-6 lg:px-10">
+        <p className="mx-auto max-w-7xl px-4 py-5 text-sm text-muted sm:px-6 lg:px-10">
           {f.copyright}
         </p>
       </div>

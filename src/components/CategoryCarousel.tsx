@@ -97,12 +97,12 @@ export default function CategoryCarousel({
     >
       <ul
         ref={trackRef}
-        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
+        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 lg:grid lg:grid-cols-5 lg:overflow-visible [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide) => (
           <li
             key={slide.slug}
-            className="w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-[31.5%]"
+            className="w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-auto"
           >
             <Link
               href={`/categories/${slide.slug}`}
@@ -111,20 +111,20 @@ export default function CategoryCarousel({
               <CategoryArt
                 slug={slide.slug}
                 color={slide.color}
-                className="aspect-[4/3] w-full"
+                className="aspect-[4/3] w-full lg:aspect-[4/5]"
               />
               <div
                 aria-hidden
                 className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/5 to-transparent"
               />
               <div className="absolute inset-x-0 bottom-0 z-20 p-5 text-white sm:p-6">
-                <h3 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+                <h3 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl lg:text-lg">
                   {slide.name}
                 </h3>
-                <p className="mt-1.5 hidden max-w-xs text-sm text-white/80 sm:block">
+                <p className="mt-1.5 hidden max-w-xs text-sm text-white/80 sm:block lg:hidden">
                   {slide.description}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
+                <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium lg:mt-3 lg:px-3 lg:py-1.5 lg:text-xs text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
                   {t.browse}
                   <span className="arrow-slide" aria-hidden>
                     →
@@ -136,7 +136,7 @@ export default function CategoryCarousel({
         ))}
       </ul>
 
-      <div className="mt-6 flex items-center justify-between gap-4">
+      <div className="mt-6 flex items-center justify-between gap-4 lg:hidden">
         <div className="flex items-center gap-1.5" role="tablist" aria-label={t.categoriesTitle}>
           {slides.map((slide, i) => (
             <button

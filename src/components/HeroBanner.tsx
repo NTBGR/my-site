@@ -93,7 +93,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
           <div
             key={slide.id}
             aria-hidden={i !== active}
-            className="relative min-h-[17.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[22rem] lg:min-h-[24rem]"
+            className="relative min-h-[17.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[22rem] lg:min-h-[28rem]"
           >
             <div
               className="absolute inset-0"
@@ -108,7 +108,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
               aria-hidden
               className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent lg:bg-gradient-to-r lg:from-black/35 lg:via-transparent lg:to-transparent"
             />
-            <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-[4.75rem] sm:p-10 sm:pb-20 sm:pl-20 lg:inset-y-0 lg:flex lg:w-[60%] lg:flex-col lg:justify-center lg:p-10 lg:pb-16 lg:pl-20">
+            <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-[4.75rem] sm:p-10 sm:pb-20 sm:pl-20 lg:inset-y-0 lg:flex lg:w-[64%] lg:flex-col lg:justify-center lg:p-10 lg:pb-20 lg:pl-20">
               {slide.content}
             </div>
           </div>

@@ -146,7 +146,7 @@ export default function Header() {
           </div>
 
           <div className="hidden lg:block">
-            <Button href="/join" className="glow-btn">
+            <Button href="/join" variant="secondary">
               {t.nav.join}
             </Button>
           </div>
