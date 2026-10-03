@@ -1,5 +1,4 @@
 import Link from "next/link";
-import ArtTile from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
@@ -16,6 +15,8 @@ export default function Home() {
   const t = dictionary[lang].home;
   const artists = getLocalizedArtists(lang);
   const featured = artists.slice(0, 3);
+  // ხელოვანების სხვადასხვა ხელობა „გაიცანი ხელოვანები“ ქარდისთვის
+  const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));
 
   const whiteButton =
@@ -33,22 +34,22 @@ export default function Home() {
       art: (
         <div className="relative hidden h-full w-full lg:block" aria-hidden>
           <div
-            className="float absolute left-[22%] top-[8%] w-[34%] rounded-[1.5rem] shadow-2xl"
+            className="float absolute left-[24%] top-[10%] w-[32%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15"
             style={{ ["--r" as string]: "-6deg" }}
           >
-            <ArtTile color={artists[0].works[0].color} variant={0} className="aspect-[3/4] rounded-[1.5rem]" />
+            <CategoryArt slug="bechdebi" color={categoryColor("bechdebi")} className="aspect-[3/4]" />
           </div>
           <div
-            className="float absolute right-[7%] top-[5%] w-[28%] rounded-[1.5rem] shadow-2xl [animation-delay:-2.5s]"
+            className="float absolute right-[6%] top-[6%] w-[30%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-2.5s]"
             style={{ ["--r" as string]: "5deg" }}
           >
-            <ArtTile color={artists[1].works[0].color} variant={2} className="aspect-[4/5] rounded-[1.5rem]" />
+            <CategoryArt slug="keramika" color={categoryColor("keramika")} className="aspect-[4/5]" />
           </div>
           <div
-            className="float absolute right-[30%] top-[46%] w-[22%] rounded-full shadow-2xl [animation-delay:-4.5s]"
+            className="float absolute right-[24%] top-[50%] w-[28%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-4.5s]"
             style={{ ["--r" as string]: "-3deg" }}
           >
-            <ArtTile color={artists[2].works[0].color} variant={3} className="aspect-square rounded-full" />
+            <CategoryArt slug="samkauli" color={categoryColor("samkauli")} className="aspect-[4/3]" />
           </div>
         </div>
       ),
@@ -57,17 +58,17 @@ export default function Home() {
           <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {t.title}
           </h1>
-          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg lg:hidden xl:block">
+          <p className="mt-2 max-w-md text-sm leading-relaxed text-white/85 sm:mt-3 sm:text-lg">
             {t.text}
           </p>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
             <Link href="/categories" className={`${whiteButton} whitespace-nowrap`}>
               {t.ctaPrimary}
               {arrow}
             </Link>
             <Link
               href="/join"
-              className="hidden min-h-12 items-center whitespace-nowrap rounded-full border border-white/60 sm:inline-flex px-7 text-sm font-medium text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white/15 active:scale-95"
+              className="hidden whitespace-nowrap text-sm font-medium text-white/90 underline decoration-white/40 underline-offset-4 transition hover:text-white hover:decoration-white sm:inline"
             >
               {t.ctaMaker}
             </Link>
@@ -120,8 +121,23 @@ export default function Home() {
                 href="/categories"
                 className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
-                <CategoryArt slug="sachuqrebi" color="#7a4e6a" className="absolute inset-0 h-full w-full" />
-                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+                <div
+                  aria-hidden
+                  className="grain absolute inset-0"
+                  style={{ background: "linear-gradient(150deg, #8f6580, #7a4e6a 52%, #4f3245)" }}
+                />
+                <div aria-hidden className="absolute inset-x-5 top-5 z-10 grid grid-cols-4 gap-2 sm:inset-x-6 sm:top-6">
+                  {["nakhatebi", "keramika", "bechdebi", "tyavi"].map((slug, i) => (
+                    <div
+                      key={slug}
+                      className="overflow-hidden rounded-xl shadow-lg ring-2 ring-white/15 transition duration-300 group-hover:-translate-y-0.5"
+                      style={{ transform: `rotate(${[-4, 3, -2, 4][i]}deg)` }}
+                    >
+                      <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-square" />
+                    </div>
+                  ))}
+                </div>
+                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6">
                   <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
                     {dictionary[lang].nav.categories}
@@ -135,15 +151,29 @@ export default function Home() {
                 href="/artists"
                 className="group relative block min-h-36 overflow-hidden rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
               >
-                <ArtTile color="#d4623a" variant={3} className="absolute inset-0 h-full w-full" />
-                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/55 via-black/5 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 z-20 p-5 sm:p-6">
+                <div
+                  aria-hidden
+                  className="grain absolute inset-0"
+                  style={{ background: "linear-gradient(150deg, #e07a52, #d4623a 52%, #8f3b1f)" }}
+                />
+                <div aria-hidden className="absolute left-5 top-5 z-10 flex sm:left-6 sm:top-6">
+                  {crafts.map((slug, i) => (
+                    <span
+                      key={slug}
+                      className="-ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#d4623a] transition duration-300 first:ml-0 group-hover:translate-x-1"
+                      style={{ transitionDelay: `${i * 40}ms` }}
+                    >
+                      <CategoryArt slug={slug} color={categoryColor(slug)} className="h-full w-full" />
+                    </span>
+                  ))}
+                </div>
+                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6">
                   <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
                     {t.ctaSecondary}
                   </h2>
-                  <span className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
-                    {dictionary[lang].nav.artists}
-                    {arrow}
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition duration-300 group-hover:bg-white group-hover:text-black" aria-hidden>
+                    <span className="arrow-slide">→</span>
                   </span>
                 </div>
               </Link>

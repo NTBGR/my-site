@@ -43,7 +43,7 @@ const ka = {
   },
   home: {
     badge: "ხელნაკეთი საქართველოდან",
-    title: "ხელნაკეთი ქართველი ხელოვანებისგან",
+    title: "ხელით შექმნილი",
     text: "ნახატები, კერამიკა, სამკაული და დეკორი.",
     ctaPrimary: "დაათვალიერე ნამუშევრები",
     ctaSecondary: "გაიცანი ხელოვანები",
@@ -231,7 +231,7 @@ const en: Dict = {
   },
   home: {
     badge: "Handmade in Georgia",
-    title: "Handmade by Georgian artists",
+    title: "Made by hand",
     text: "Paintings, ceramics, jewelry and decor.",
     ctaPrimary: "Browse the work",
     ctaSecondary: "Meet the artists",
