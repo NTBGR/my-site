@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import Button from "@/components/ui/Button";
 
@@ -78,6 +78,9 @@ function MenuIcon({ open }: { open: boolean }) {
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -117,15 +120,29 @@ export default function Header() {
         </form>
 
         <nav className="hidden items-center gap-5 md:flex" aria-label="მთავარი">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="inline-flex min-h-11 items-center text-sm text-accent hover:text-accent-hover"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={`group relative inline-flex min-h-11 items-center text-sm transition-colors ${
+                  active
+                    ? "font-semibold text-accent-hover"
+                    : "text-accent hover:text-accent-hover"
+                }`}
+              >
+                {link.label}
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-0 bottom-1.5 h-0.5 origin-left rounded-full bg-accent transition-transform duration-300 ${
+                    active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </nav>
 
         <Link
@@ -169,7 +186,7 @@ export default function Header() {
       </div>
 
       {searchOpen ? (
-        <div className="border-t border-border px-4 py-3 md:hidden">
+        <div className="menu-enter border-t border-border px-4 py-3 md:hidden">
           <form onSubmit={onSearch}>{searchField}</form>
         </div>
       ) : null}
@@ -177,22 +194,35 @@ export default function Header() {
       {menuOpen ? (
         <nav
           id="mobile-menu"
-          className="space-y-1 border-t border-border px-4 py-3 md:hidden"
+          className="menu-enter space-y-1 border-t border-border px-4 py-3 md:hidden"
           aria-label="მობილური"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="flex min-h-11 items-center text-accent hover:text-accent-hover"
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={`flex min-h-11 items-center border-l-2 pl-3 transition-colors ${
+                  active
+                    ? "border-accent font-semibold text-accent-hover"
+                    : "border-transparent text-accent hover:text-accent-hover"
+                }`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <Link
             href="/favorites"
-            className="flex min-h-11 items-center text-accent hover:text-accent-hover"
+            aria-current={isActive("/favorites") ? "page" : undefined}
+            className={`flex min-h-11 items-center border-l-2 pl-3 transition-colors ${
+              isActive("/favorites")
+                ? "border-accent font-semibold text-accent-hover"
+                : "border-transparent text-accent hover:text-accent-hover"
+            }`}
             onClick={() => setMenuOpen(false)}
           >
             რჩეულები

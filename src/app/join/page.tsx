@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button";
+import JoinForm from "@/components/JoinForm";
 
 export const metadata = {
   title: "გახდი პარტნიორი",
@@ -60,11 +61,8 @@ export default function JoinPage() {
         ))}
       </ol>
 
-      <div className="mt-8 max-w-2xl rounded-2xl border border-[#eadfd3] bg-[#fbf6f0] p-5">
-        <p className="leading-relaxed text-[#5c5348]">
-          განაცხადის ფორმა მალე დაემატება. ჯერ-ჯერობით საიტი დემო რეჟიმში
-          მუშაობს, ამიტომ პროფილების გამოქვეყნება ჯერ არ არის შესაძლებელი.
-        </p>
+      <div className="mt-8">
+        <JoinForm />
       </div>
 
       <div className="mt-8">
