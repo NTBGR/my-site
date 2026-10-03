@@ -69,16 +69,106 @@ export async function POST(request: Request) {
     );
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.JOIN_TO_EMAIL;
-  if (!apiKey || !to) {
-    console.error("RESEND_API_KEY ან JOIN_TO_EMAIL არ არის მითითებული");
-    return NextResponse.json(
-      { error: "unavailable" },
-      { status: 500 },
+  const application = { name, email, city, category, instagram, bio };
+
+  const telegramOn = Boolean(
+    process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
+  );
+  const emailOn = Boolean(process.env.RESEND_API_KEY && process.env.JOIN_TO_EMAIL);
+
+  if (!telegramOn && !emailOn) {
+    console.error(
+      "მიწოდება არ არის მორგებული: მიუთითე TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID ან RESEND_API_KEY + JOIN_TO_EMAIL",
     );
+    return NextResponse.json({ error: "unavailable" }, { status: 500 });
   }
 
+  const results = await Promise.all([
+    telegramOn ? sendToTelegram(application, files) : Promise.resolve(false),
+    emailOn ? sendToEmail(application, files) : Promise.resolve(false),
+  ]);
+
+  if (!results.some(Boolean)) {
+    return NextResponse.json({ error: "failed" }, { status: 502 });
+  }
+
+  return NextResponse.json({ ok: true });
+}
+
+type Application = {
+  name: string;
+  email: string;
+  city: string;
+  category: string;
+  instagram: string;
+  bio: string;
+};
+
+async function sendToTelegram(app: Application, files: File[]) {
+  const token = process.env.TELEGRAM_BOT_TOKEN as string;
+  const chatId = process.env.TELEGRAM_CHAT_ID as string;
+  const api = (method: string) => `https://api.telegram.org/bot${token}/${method}`;
+
+  const text = [
+    "<b>ახალი განაცხადი</b>",
+    "",
+    `<b>სახელი:</b> ${escapeHtml(app.name)}`,
+    `<b>ემაილი:</b> ${escapeHtml(app.email)}`,
+    `<b>ქალაქი:</b> ${escapeHtml(app.city)}`,
+    `<b>მიმართულება:</b> ${escapeHtml(app.category)}`,
+    `<b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}`,
+    "",
+    "<b>ბიოგრაფია:</b>",
+    escapeHtml(app.bio),
+  ].join("\n");
+
+  try {
+    const res = await fetch(api("sendMessage"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        parse_mode: "HTML",
+        disable_web_page_preview: true,
+      }),
+    });
+    if (!res.ok) {
+      console.error("Telegram შეცდომა", res.status, await res.text());
+      return false;
+    }
+
+    // ფოტოები ცალკე ეგზავნება; თუ ვერ გაიგზავნა, ტექსტი მაინც მიღებულია
+    if (files.length > 0) {
+      const form = new FormData();
+      form.append("chat_id", chatId);
+      if (files.length === 1) {
+        form.append("photo", files[0], files[0].name);
+        const photoRes = await fetch(api("sendPhoto"), { method: "POST", body: form });
+        if (!photoRes.ok) {
+          console.error("Telegram ფოტოს შეცდომა", photoRes.status, await photoRes.text());
+        }
+      } else {
+        const media = files.map((file, i) => ({
+          type: "photo",
+          media: `attach://photo${i}`,
+        }));
+        form.append("media", JSON.stringify(media));
+        files.forEach((file, i) => form.append(`photo${i}`, file, file.name));
+        const groupRes = await fetch(api("sendMediaGroup"), { method: "POST", body: form });
+        if (!groupRes.ok) {
+          console.error("Telegram ფოტოების შეცდომა", groupRes.status, await groupRes.text());
+        }
+      }
+    }
+    return true;
+  } catch (error) {
+    console.error("Telegram ქსელის შეცდომა", error);
+    return false;
+  }
+}
+
+async function sendToEmail(app: Application, files: File[]) {
   const attachments = await Promise.all(
     files.map(async (f) => ({
       filename: f.name,
@@ -87,37 +177,37 @@ export async function POST(request: Request) {
   );
 
   const html = `
-    <h2>ახალი განაცხადი: ${escapeHtml(name)}</h2>
-    <p><b>ემაილი:</b> ${escapeHtml(email)}</p>
-    <p><b>ქალაქი:</b> ${escapeHtml(city)}</p>
-    <p><b>მიმართულება:</b> ${escapeHtml(category)}</p>
-    <p><b>ინსტაგრამი:</b> ${escapeHtml(instagram) || "—"}</p>
-    <p><b>ბიოგრაფია:</b><br>${escapeHtml(bio).replace(/\n/g, "<br>")}</p>
+    <h2>ახალი განაცხადი: ${escapeHtml(app.name)}</h2>
+    <p><b>ემაილი:</b> ${escapeHtml(app.email)}</p>
+    <p><b>ქალაქი:</b> ${escapeHtml(app.city)}</p>
+    <p><b>მიმართულება:</b> ${escapeHtml(app.category)}</p>
+    <p><b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}</p>
+    <p><b>ბიოგრაფია:</b><br>${escapeHtml(app.bio).replace(/\n/g, "<br>")}</p>
   `;
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: process.env.JOIN_FROM_EMAIL || "ხელოვანი <onboarding@resend.dev>",
-      to: [to],
-      reply_to: email,
-      subject: `ახალი განაცხადი: ${name}`,
-      html,
-      attachments,
-    }),
-  });
-
-  if (!res.ok) {
-    console.error("Resend შეცდომა", res.status, await res.text());
-    return NextResponse.json(
-      { error: "failed" },
-      { status: 502 },
-    );
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: process.env.JOIN_FROM_EMAIL || "ხელოვანი <onboarding@resend.dev>",
+        to: [process.env.JOIN_TO_EMAIL],
+        reply_to: app.email,
+        subject: `ახალი განაცხადი: ${app.name}`,
+        html,
+        attachments,
+      }),
+    });
+    if (!res.ok) {
+      console.error("Resend შეცდომა", res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Resend ქსელის შეცდომა", error);
+    return false;
   }
-
-  return NextResponse.json({ ok: true });
 }
