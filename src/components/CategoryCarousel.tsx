@@ -109,25 +109,18 @@ export default function CategoryCarousel({
           >
             <Link
               href={`/categories/${slide.slug}`}
-              className="group relative block overflow-hidden rounded-[1.75rem] transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.99]"
+              className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] text-white transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.99]"
+              style={{ background: `color-mix(in srgb, ${slide.color}, black 34%)` }}
             >
-              <CategoryArt
-                slug={slide.slug}
-                color={slide.color}
-                className="aspect-square w-full [--scene-lift:-26px] sm:aspect-[4/3] sm:[--scene-lift:0px] lg:aspect-[4/5]"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 z-10 bg-gradient-to-t from-black/65 via-black/5 to-transparent"
-              />
-              <div className="absolute inset-x-0 bottom-0 z-20 p-5 text-white sm:p-6">
-                <h3 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl lg:text-lg">
+              <CategoryArt slug={slide.slug} color={slide.color} className="aspect-[16/10] w-full sm:aspect-[4/3]" />
+              <div className="flex flex-1 flex-col items-start gap-3 p-4 sm:p-5">
+                <h3 className="text-lg font-semibold leading-tight tracking-tight sm:text-xl lg:text-base xl:text-lg">
                   {slide.name}
                 </h3>
-                <p className="mt-1.5 hidden max-w-xs text-sm text-white/80 sm:block lg:hidden">
+                <p className="mt-1 hidden max-w-xs text-sm text-white/75 sm:block lg:hidden">
                   {slide.description}
                 </p>
-                <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium lg:mt-3 lg:px-3 lg:py-1.5 lg:text-xs text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
+                <span className="mt-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent lg:px-3 lg:py-1.5 lg:text-xs">
                   {t.browse}
                   <span className="arrow-slide" aria-hidden>
                     →
