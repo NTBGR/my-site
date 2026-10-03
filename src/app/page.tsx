@@ -69,11 +69,6 @@ export default function Home() {
                 {t.ctaSecondary}
               </Link>
             </div>
-            <div className="mt-8 grid grid-cols-3 gap-3 sm:hidden" aria-hidden>
-              <ArtTile color={artists[0].works[0].color} variant={0} className="aspect-[4/5] rounded-3xl" />
-              <ArtTile color={artists[1].works[0].color} variant={2} className="aspect-[4/5] rounded-3xl" />
-              <ArtTile color={artists[2].works[0].color} variant={3} className="aspect-[4/5] rounded-3xl" />
-            </div>
             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted sm:mt-10">
               {t.perks.map((perk) => (
                 <li key={perk} className="flex items-center gap-2">
