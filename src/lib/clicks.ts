@@ -44,14 +44,14 @@ export function isBot(userAgent: string | null) {
 
 /**
  * ერთი გადასვლის ჩაწერა.
- * total: ყველა დაწკაპუნება; unique: ერთი ადამიანი (IP+ბრაუზერი) ერთ დღეში ერთხელ ითვლება.
- * IP არსად ინახება, მხოლოდ მისი ჰეში 1 დღით, დუბლიკატების გასაფილტრად.
+ * total: ყველა დაწკაპუნება; unique: ერთი ადამიანი (ბრაუზერის ქუქი, ან IP+ბრაუზერი) ერთ დღეში ერთხელ ითვლება.
+ * ვინაობა არსად ინახება, მხოლოდ მისი ჰეში 1 დღით, დუბლიკატების გასაფილტრად.
  */
-export async function recordClick(slug: string, target: ClickTarget, ip: string, userAgent: string) {
+export async function recordClick(slug: string, target: ClickTarget, visitorId: string) {
   if (!clicksEnabled) return;
   const month = monthOf();
   const day = dayOf();
-  const visitor = createHash("sha256").update(`${ip}|${userAgent}|${day}`).digest("hex").slice(0, 24);
+  const visitor = createHash("sha256").update(`${visitorId}|${day}`).digest("hex").slice(0, 24);
   const seenKey = `seen:${day}:${slug}:${target}:${visitor}`;
 
   const [seen] = await pipeline([

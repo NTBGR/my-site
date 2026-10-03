@@ -4,6 +4,7 @@ import { clicksEnabled, monthOf, monthStats } from "@/lib/clicks";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const MONTHS = [
   "იანვარ", "თებერვალ", "მარტ", "აპრილ", "მაის", "ივნის",
@@ -65,21 +66,39 @@ export async function GET(req: NextRequest) {
         `• ${escapeHtml(r.artist.name)}: <b>${r.people}</b> (ინსტა ${r.instagram}, ფბ ${r.facebook}; დაწკაპუნება ${r.total})`,
     ),
     "",
-    "ქვემოთ თითო ხელოვანზე მზა ტექსტია, დააკოპირე და გაუგზავნე.",
+    "ქვემოთ თითო ხელოვანზე მზა ტექსტია: შეეხე ბლოკს, დაკოპირდება, და გაუგზავნე.",
   ].join("\n");
   await telegram(summary);
 
-  for (const r of rows) {
-    const lines = [
-      `გამარჯობა, ${escapeHtml(r.artist.name)}! 👋`,
-      "",
-      `${inMonth(month)} „ხელოვანიდან“ შენს გვერდზე გადმოვიდა <b>${r.people}</b> ადამიანი:`,
-      `• ინსტაგრამზე: ${r.instagram}`,
-      `• ფეისბუქზე: ${r.facebook}`,
-      "",
-      "მადლობა, რომ ჩვენთან ხარ! 🧡",
-    ];
-    await telegram(lines.join("\n"));
+  // თითო ხელოვანის ტექსტი <pre> ბლოკშია: ტელეგრამში ერთი შეხებით კოპირდება.
+  // რამდენიმე ხელოვანი ერთ შეტყობინებაში (ლიმიტი 4096 სიმბოლო), რომ ტელეგრამის სიჩქარის ლიმიტს არ გადავაჭარბოთ
+  const blocks = rows.map((r) =>
+    [
+      `<b>${escapeHtml(r.artist.name)}</b>`,
+      "<pre>" +
+        escapeHtml(
+          [
+            `გამარჯობა, ${r.artist.name}! 👋`,
+            "",
+            `${inMonth(month)} „ხელოვანიდან“ შენს გვერდზე გადმოვიდა ${r.people} ადამიანი:`,
+            `• ინსტაგრამზე: ${r.instagram}`,
+            `• ფეისბუქზე: ${r.facebook}`,
+            "",
+            "მადლობა, რომ ჩვენთან ხარ! 🧡",
+          ].join("\n"),
+        ) +
+        "</pre>",
+    ].join("\n"),
+  );
+  const messages: string[] = [];
+  for (const block of blocks) {
+    const last = messages[messages.length - 1];
+    if (last && last.length + block.length + 2 < 3800) messages[messages.length - 1] = `${last}\n\n${block}`;
+    else messages.push(block);
+  }
+  for (let i = 0; i < messages.length; i++) {
+    if (i > 0) await new Promise((resolve) => setTimeout(resolve, 1100));
+    await telegram(messages[i]);
   }
 
   return NextResponse.json({ ok: true, month, artists: rows.length, totalPeople });
