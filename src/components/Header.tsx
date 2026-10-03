@@ -108,12 +108,12 @@ export default function Header() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:px-10">
+        <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:gap-5 lg:px-10">
           <LogoLink />
 
           <form
             onSubmit={onSearch}
-            className="hidden min-w-0 max-w-xl flex-1 xl:block"
+            className="hidden min-w-0 max-w-sm flex-1 xl:ml-4 xl:block 2xl:max-w-md"
           >
             {searchField}
           </form>
@@ -215,9 +215,8 @@ export default function Header() {
           }`}
         >
           <div className="mb-3 flex items-center justify-between">
-            <span className="flex items-center gap-2 font-serif text-xl font-semibold tracking-tight text-text">
-              <span aria-hidden className="h-3 w-3 rounded-full bg-accent" />
-              khelovani
+            <span className="font-serif text-2xl font-semibold leading-none tracking-tight text-text">
+              ხელოვანი<span className="text-accent">.</span>
             </span>
             <button
               type="button"

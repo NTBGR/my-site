@@ -101,10 +101,10 @@ export default function CategoryBar() {
             <Link
               href="/categories"
               aria-current={allActive ? "page" : undefined}
-              className={`inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-colors ${
+              className={`inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
                 allActive
-                  ? "border-transparent bg-accent text-on-accent"
-                  : "border-border bg-surface text-text shadow-sm hover:border-accent hover:text-accent"
+                  ? "bg-accent text-on-accent"
+                  : "text-muted hover:bg-accent-soft hover:text-accent"
               }`}
             >
               <svg

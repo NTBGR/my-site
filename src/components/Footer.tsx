@@ -73,7 +73,7 @@ export default function Footer() {
         aria-hidden
         className="pointer-events-none select-none px-4 text-center font-serif text-[17vw] font-semibold leading-none tracking-tighter text-text opacity-[0.05] sm:text-[14rem]"
       >
-        khelovani
+        ხელოვანი
       </div>
       <div className="border-t border-border">
         <p className="mx-auto max-w-7xl px-4 py-6 text-sm text-muted sm:px-6 lg:px-10">

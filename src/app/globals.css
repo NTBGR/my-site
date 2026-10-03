@@ -341,3 +341,23 @@ a:hover > .arrow-slide {
     animation: none;
   }
 }
+
+/* ლოგოს ხაზი: ჰოვერზე თავიდან იხატება */
+@keyframes swoosh {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.group:hover .logo-swoosh {
+  animation: swoosh 0.55s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .logo-swoosh {
+    animation: none;
+  }
+}

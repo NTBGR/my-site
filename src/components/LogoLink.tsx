@@ -3,33 +3,51 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// ლოგო: მთავარ გვერდზე დაჭერისას ზემოთ აგვიყვანს (სხვაგან მთავარზე გადაგვიყვანს)
+// ლოგო: ქართული სახელი, ტერაკოტის წერტილი და ხელით დახაზული ხაზი.
+// მთავარ გვერდზე დაჭერისას ზემოთ აგვიყვანს (სხვაგან მთავარზე გადაგვიყვანს)
 export default function LogoLink({ size = "md" }: { size?: "md" | "lg" }) {
   const pathname = usePathname();
 
   return (
     <Link
       href="/"
-      aria-label="khelovani"
+      aria-label="ხელოვანი"
       onClick={(event) => {
         if (pathname === "/") {
           event.preventDefault();
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       }}
-      className={`group flex min-h-11 w-fit items-center gap-2 font-serif font-semibold tracking-tight text-text transition duration-300 hover:text-accent active:scale-95 ${
-        size === "lg"
-          ? "text-3xl"
-          : "text-lg min-[360px]:text-xl sm:text-2xl"
-      }`}
+      className="group flex min-h-11 w-fit items-center font-serif font-semibold tracking-tight text-text transition duration-300 hover:text-accent active:scale-95"
     >
-      <span
-        aria-hidden
-        className={`inline-block shrink-0 rounded-full bg-accent transition-transform duration-500 group-hover:rotate-180 group-hover:scale-125 max-[359px]:hidden ${
-          size === "lg" ? "h-3.5 w-3.5" : "h-3 w-3"
-        }`}
-      />
-      khelovani
+      <span className="relative inline-flex flex-col items-start">
+        <span
+          className={`leading-none ${
+            size === "lg"
+              ? "text-4xl sm:text-5xl"
+              : "text-[1.35rem] min-[360px]:text-2xl sm:text-[1.7rem] lg:text-[2.15rem]"
+          }`}
+        >
+          ხელოვანი<span className="text-accent">.</span>
+        </span>
+        <svg
+          viewBox="0 0 86 7"
+          preserveAspectRatio="none"
+          className="mt-1 h-[6px] w-full text-accent lg:h-[7px]"
+          aria-hidden
+        >
+          <path
+            className="logo-swoosh"
+            d="M2 5 C20 1, 40 1, 84 3"
+            stroke="currentColor"
+            strokeWidth="2.8"
+            fill="none"
+            strokeLinecap="round"
+            pathLength={1}
+            strokeDasharray={1}
+          />
+        </svg>
+      </span>
     </Link>
   );
 }
