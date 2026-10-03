@@ -146,7 +146,8 @@ export default function Header() {
           </div>
 
           <div className="hidden lg:block">
-            <Button href="/join" variant="secondary">
+            <Button href="/join" className="glow-btn gap-2">
+              <span aria-hidden>✦</span>
               {t.nav.join}
             </Button>
           </div>
