@@ -13,25 +13,53 @@ export type BannerSlide = {
 
 const AUTOPLAY_MS = 6000;
 
+// სლაიდერი მშობლიურ გადაფურცვლაზეა აგებული (scroll-snap): ტელეფონზე სლაიდი
+// თითს მიჰყვება და ბოლოს გლუვად ჯდება ადგილზე
 export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
   const t = useT().home;
-  const [active, setActive] = useState(0);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const activeRef = useRef(0);
   const pausedRef = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [active, setActive] = useState(0);
 
   const goTo = useCallback(
-    (index: number) => setActive((index + slides.length) % slides.length),
+    (index: number) => {
+      const track = trackRef.current;
+      if (!track) return;
+      const next = (index + slides.length) % slides.length;
+      track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
+    },
     [slides.length],
   );
 
+  // აქტიური წერტილი სქროლის მიხედვით
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const onScroll = () => {
+      const width = track.clientWidth;
+      if (width <= 0) return;
+      const index = Math.min(
+        slides.length - 1,
+        Math.max(0, Math.round(track.scrollLeft / width)),
+      );
+      activeRef.current = index;
+      setActive(index);
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, [slides.length]);
+
+  // ავტომატური გადასვლა (პაუზა ჰოვერზე/შეხებაზე, არ ირთვება თუ ანიმაცია გამორთულია)
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => {
       if (pausedRef.current || document.hidden) return;
-      setActive((a) => (a + 1) % slides.length);
+      goTo(activeRef.current + 1);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [slides.length]);
+  }, [goTo]);
 
   const pause = () => {
     pausedRef.current = true;
@@ -44,45 +72,28 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
     }, delay);
   };
 
-  // მობილურზე მარცხნივ/მარჯვნივ გადაფურცვლა
-  const touchStart = useRef<number | null>(null);
-
   return (
     <div
-      className="relative min-h-[21rem] overflow-hidden rounded-[2rem] text-white shadow-xl sm:min-h-[24rem] lg:min-h-[27rem] lg:rounded-[2.5rem]"
-      style={{ background: slides[active].color, transition: "background 0.8s ease" }}
+      className="relative overflow-hidden rounded-[2rem] text-white shadow-xl lg:rounded-[2.5rem]"
       onMouseEnter={pause}
       onMouseLeave={() => resume()}
       onFocus={pause}
       onBlur={() => resume()}
-      onTouchStart={(e) => {
-        pause();
-        touchStart.current = e.touches[0].clientX;
-      }}
-      onTouchEnd={(e) => {
-        const start = touchStart.current;
-        if (start !== null) {
-          const dx = e.changedTouches[0].clientX - start;
-          if (Math.abs(dx) > 50) goTo(active + (dx < 0 ? 1 : -1));
-        }
-        touchStart.current = null;
-        resume(8000);
-      }}
+      onTouchStart={pause}
+      onTouchEnd={() => resume(8000)}
       role="region"
       aria-roledescription="carousel"
       aria-label={t.badge}
     >
-      {slides.map((slide, i) => {
-        const isActive = i === active;
-        return (
+      <div
+        ref={trackRef}
+        className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {slides.map((slide, i) => (
           <div
             key={slide.id}
-            aria-hidden={!isActive}
-            className={`absolute inset-0 transition-all duration-700 ease-out ${
-              isActive
-                ? "visible translate-x-0 opacity-100"
-                : "invisible translate-x-6 opacity-0"
-            }`}
+            aria-hidden={i !== active}
+            className="relative min-h-[21rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[27rem]"
           >
             <div
               className="absolute inset-0"
@@ -101,11 +112,11 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
               {slide.content}
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
 
-      <div className="absolute bottom-5 left-6 right-6 z-20 flex items-center justify-between gap-4 sm:left-10 sm:right-10 lg:left-14 lg:right-14">
-        <div className="flex items-center gap-1.5" role="tablist">
+      <div className="pointer-events-none absolute bottom-5 left-6 right-6 z-20 flex items-center justify-between gap-4 sm:left-10 sm:right-10 lg:left-14 lg:right-14">
+        <div className="pointer-events-auto flex items-center gap-1.5" role="tablist">
           {slides.map((slide, i) => (
             <button
               key={slide.id}
@@ -124,7 +135,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
             </button>
           ))}
         </div>
-        <div className="flex gap-2">
+        <div className="pointer-events-auto flex gap-2">
           <ArrowButton
             direction="prev"
             variant="glass"
