@@ -101,12 +101,27 @@ export default function CategoryBar() {
             <Link
               href="/categories"
               aria-current={allActive ? "page" : undefined}
-              className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-semibold transition-colors ${
+              className={`inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-sm font-semibold transition-colors ${
                 allActive
-                  ? "bg-accent text-on-accent"
-                  : "bg-highlight text-on-highlight hover:bg-accent hover:text-on-accent"
+                  ? "border-transparent bg-accent text-on-accent"
+                  : "border-border bg-surface text-text shadow-sm hover:border-accent hover:text-accent"
               }`}
             >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <rect x="4" y="4" width="6.5" height="6.5" rx="1.5" />
+                <rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5" />
+                <rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5" />
+                <rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5" />
+              </svg>
               {t.home.allCategories}
             </Link>
           </li>
