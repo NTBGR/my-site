@@ -177,6 +177,8 @@ const ka = {
     works: "ნამუშევრები *",
     worksHint: (n: number) =>
       `მინიმუმ 1, მაქსიმუმ ${n} ფოტო (JPG, PNG, WEBP), ჯამში 4MB-მდე.`,
+    consent: "გაგზავნით ეთანხმები",
+    consentLink: "კონფიდენციალურობის წესებს",
     submit: "გაგზავნა",
     sending: "იგზავნება...",
     thanksTitle: "გმადლობთ!",
@@ -373,6 +375,8 @@ const en: Dict = {
     works: "Works *",
     worksHint: (n: number) =>
       `At least 1, up to ${n} photos (JPG, PNG, WEBP), 4MB in total.`,
+    consent: "By sending, you agree to our",
+    consentLink: "privacy policy",
     submit: "Send",
     sending: "Sending...",
     thanksTitle: "Thank you!",

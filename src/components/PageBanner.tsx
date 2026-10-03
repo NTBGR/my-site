@@ -48,7 +48,7 @@ export default function PageBanner({
             {badge}
           </p>
         ) : null}
-        <h1 className="text-balance text-3xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
+        <h1 className="text-balance text-[min(1.875rem,6.8vw)] font-semibold leading-[1.1] tracking-tight sm:text-4xl xl:text-5xl">
           {title}
         </h1>
         {text ? <p className="mt-2 max-w-md text-sm text-white/85 sm:text-lg">{text}</p> : null}

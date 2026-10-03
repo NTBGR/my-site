@@ -75,9 +75,12 @@ export default function Footer() {
         ხელოვანი
       </div>
       <div className="border-t border-border">
-        <p className="mx-auto max-w-7xl px-4 py-5 text-sm text-muted sm:px-6 lg:px-10">
-          {f.copyright}
-        </p>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-5 text-sm text-muted sm:px-6 lg:px-10">
+          <p>{f.copyright}</p>
+          <Link href="/privacy" className="inline-flex min-h-10 items-center transition-colors hover:text-accent">
+            {f.privacy}
+          </Link>
+        </div>
       </div>
     </footer>
   );

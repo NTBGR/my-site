@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import { useT } from "@/components/LangProvider";
@@ -171,10 +172,17 @@ export default function JoinForm() {
         </p>
       )}
 
-      <div className="sm:col-span-2">
+      <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:gap-5">
         <Button type="submit" disabled={status === "sending"}>
           {status === "sending" ? t.sending : t.submit}
         </Button>
+        <p className="text-xs leading-relaxed text-muted">
+          {t.consent}{" "}
+          <Link href="/privacy" target="_blank" className="underline underline-offset-2 hover:text-accent">
+            {t.consentLink}
+          </Link>
+          .
+        </p>
       </div>
     </form>
   );
