@@ -155,7 +155,7 @@ export default function CategoryArt({
         <circle cx="352" cy="70" r="6" fill={palette.light} opacity=".5" />
         <circle cx="330" cy="248" r="3" fill={palette.cream} opacity=".6" />
         <circle cx="64" cy="236" r="5" fill={palette.light} opacity=".45" />
-        {scene(slug, palette)}
+        <g style={{ transform: "translateY(var(--scene-lift, 0px))" }}>{scene(slug, palette)}</g>
       </svg>
       {children ? <div className="relative z-10 h-full">{children}</div> : null}
     </div>

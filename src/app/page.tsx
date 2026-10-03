@@ -3,6 +3,7 @@ import CategoryArt from "@/components/CategoryArt";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
+import ArtistsCarousel from "@/components/ArtistsCarousel";
 import Reveal from "@/components/Reveal";
 import { getLocalizedArtists } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
@@ -246,20 +247,17 @@ export default function Home() {
             </span>
           </Link>
         </Reveal>
-        <Reveal
-          as="ul"
-          stagger
-          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
-        >
-          {featured.map((artist) => (
-            <li key={artist.slug} className="w-[78%] shrink-0 snap-center sm:w-auto">
+        <Reveal>
+          <ArtistsCarousel>
+            {featured.map((artist) => (
               <ArtistCard
+                key={artist.slug}
                 artist={artist}
                 artClassName="aspect-[4/3]"
                 worksLabel={`${artist.city} · ${dictionary[lang].artists.worksCount(artist.works.length)}`}
               />
-            </li>
-          ))}
+            ))}
+          </ArtistsCarousel>
         </Reveal>
       </section>
 

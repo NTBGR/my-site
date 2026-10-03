@@ -50,7 +50,10 @@ export default function CategoryCarousel({
     if (!track) return;
     const onScroll = () => {
       const s = step();
-      if (s > 0) setActive(Math.min(slides.length - 1, Math.round(track.scrollLeft / s)));
+      if (s <= 0) return;
+      // ბოლო ბარათი სქროლის ბოლოს თავში ვერ დგება, ამიტომ ბოლოს ბოლო წერტილი გავანათოთ
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      setActive(atEnd ? slides.length - 1 : Math.min(slides.length - 1, Math.round(track.scrollLeft / s)));
     };
     track.addEventListener("scroll", onScroll, { passive: true });
     return () => track.removeEventListener("scroll", onScroll);
@@ -111,7 +114,7 @@ export default function CategoryCarousel({
               <CategoryArt
                 slug={slide.slug}
                 color={slide.color}
-                className="aspect-[4/3] w-full lg:aspect-[4/5]"
+                className="aspect-square w-full [--scene-lift:-26px] sm:aspect-[4/3] sm:[--scene-lift:0px] lg:aspect-[4/5]"
               />
               <div
                 aria-hidden
