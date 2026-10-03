@@ -123,11 +123,11 @@ export default function Header() {
           khelovani
         </Link>
 
-        <form onSubmit={onSearch} className="hidden min-w-0 flex-1 md:block">
+        <form onSubmit={onSearch} className="hidden min-w-0 flex-1 xl:block">
           {searchField}
         </form>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label={t.nav.main}>
+        <nav className="hidden items-center gap-1 lg:ml-auto lg:flex xl:ml-0" aria-label={t.nav.main}>
           {navLinks.map((link) => {
             const active = isActive(link.href);
             return (
@@ -149,23 +149,23 @@ export default function Header() {
 
         <Link
           href="/favorites"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition hover:scale-110 hover:bg-accent-soft hover:text-accent active:scale-95"
+          className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition hover:scale-110 hover:bg-accent-soft hover:text-accent active:scale-95 lg:ml-0"
           aria-label={t.nav.favorites}
         >
           <HeartIcon />
         </Link>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Button href="/join">{t.nav.join}</Button>
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Preferences />
         </div>
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft xl:hidden"
           aria-label={t.nav.searchLabel}
           aria-expanded={searchOpen}
           onClick={() => {
@@ -178,7 +178,7 @@ export default function Header() {
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft md:hidden"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:hidden"
           aria-label={menuOpen ? t.nav.menuClose : t.nav.menu}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
@@ -192,7 +192,7 @@ export default function Header() {
       </div>
 
       {searchOpen ? (
-        <div className="menu-enter border-t border-border px-4 py-3 md:hidden">
+        <div className="menu-enter border-t border-border px-4 py-3 xl:hidden">
           <form onSubmit={onSearch}>{searchField}</form>
         </div>
       ) : null}
@@ -200,7 +200,7 @@ export default function Header() {
       {menuOpen ? (
         <nav
           id="mobile-menu"
-          className="menu-enter space-y-1 border-t border-border px-4 py-3 md:hidden"
+          className="menu-enter space-y-1 border-t border-border px-4 py-3 lg:hidden"
           aria-label={t.nav.mobile}
         >
           {navLinks.map((link) => {

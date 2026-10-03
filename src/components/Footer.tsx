@@ -56,8 +56,8 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-24 overflow-hidden border-t border-border bg-surface-2">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 pb-10 pt-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <footer className="relative mt-16 overflow-hidden sm:mt-24 border-t border-border bg-surface-2">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 pb-6 pt-10 sm:gap-12 sm:pb-10 sm:pt-16 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <Link
             href="/"

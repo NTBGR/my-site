@@ -19,7 +19,7 @@ export default function Marquee({ items }: { items: string[] }) {
   );
 
   return (
-    <div className="marquee relative overflow-hidden border-y border-border bg-surface-2 py-6 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+    <div className="marquee relative overflow-hidden border-y border-border bg-surface-2 py-4 sm:py-6 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
       <div className="marquee-track flex w-max">
         {row(false)}
         {row(true)}
