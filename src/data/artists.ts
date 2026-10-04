@@ -60,8 +60,6 @@ export const artists: ArtistData[] = [
       { title: "ბეჭედი „ტიტა“", color: "#8a6fbf", image: "/artists/zhuzha-ceramics/ring-tulip.jpg", width: 844, height: 1125 },
       { title: "ბეჭედი „AMORE“", color: "#c9a3ad", image: "/artists/zhuzha-ceramics/ring-amore.jpg", width: 844, height: 1125 },
       { title: "ბროში „გული“", color: "#d9573f", image: "/artists/zhuzha-ceramics/brooch-heart.jpg", width: 1125, height: 1500 },
-      { title: "ზოდიაქოს გულსაკიდები", color: "#2e2a8a", image: "/artists/zhuzha-ceramics/pendants-zodiac.jpg", width: 1125, height: 1500 },
-      { title: "ფინჯანი „სხეული“", color: "#a89f97", image: "/artists/zhuzha-ceramics/mug-body.jpg", width: 1125, height: 1500 },
     ],
     en: {
       name: "ZHU-ZHA Ceramics",
@@ -75,8 +73,6 @@ export const artists: ArtistData[] = [
         "Ring \"Tulip\"",
         "Ring \"AMORE\"",
         "Brooch \"Heart\"",
-        "Zodiac pendants",
-        "Mug \"Body\"",
       ],
     },
   },
