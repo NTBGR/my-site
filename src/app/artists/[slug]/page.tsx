@@ -1,8 +1,8 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
-import PageHeader from "@/components/PageHeader";
 import BannerPhotos from "@/components/BannerPhotos";
 import CopyLink from "@/components/CopyLink";
 import WorksGallery from "@/components/WorksGallery";
@@ -104,18 +104,7 @@ export default async function ArtistPage({
   const raw = getArtistBySlug(slug);
   const artist = raw ? localizeArtist(raw, lang) : undefined;
 
-  if (!artist) {
-    return (
-      <PageHeader title={t.notFoundTitle} text={t.notFoundText}>
-        <Link
-          href="/artists"
-          className="inline-flex items-center rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition duration-300 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-lg"
-        >
-          {t.list}
-        </Link>
-      </PageHeader>
-    );
-  }
+  if (!artist) notFound();
 
   const main = artist.categories[0] ?? "nakhatebi";
   // ბანერის ფილაში ქავერი (ან პირველი ნამუშევრის ფოტო); თუ არცერთია, კატეგორიის ილუსტრაცია

@@ -3,6 +3,13 @@ export type Lang = "ka" | "en";
 export const LANG_COOKIE = "lang";
 
 const ka = {
+  // 404: არარსებული მისამართი
+  notFoundPage: {
+    title: "გვერდი ვერ მოიძებნა",
+    text: "ამ მისამართზე გვერდი არ არსებობს ან გადატანილია. დაბრუნდი მთავარზე ან გაეცანი ხელოვანებს.",
+    home: "მთავარი გვერდი",
+    artists: "ყველა ხელოვანი",
+  },
   meta: {
     title: "ხელოვანი",
     homeTitle: "ხელოვანი — ხელნაკეთი ნივთები ქართველი ხელოვანებისგან",
@@ -217,6 +224,12 @@ const ka = {
 type Dict = typeof ka;
 
 const en: Dict = {
+  notFoundPage: {
+    title: "Page not found",
+    text: "There is no page at this address, or it has moved. Go back home or browse the artists.",
+    home: "Home",
+    artists: "All artists",
+  },
   meta: {
     title: "Khelovani",
     homeTitle: "Khelovani — handmade goods by Georgian artists",
