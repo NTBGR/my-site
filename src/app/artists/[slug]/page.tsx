@@ -121,7 +121,8 @@ export default function ArtistPage({
   const main = artist.categories[0] ?? "nakhatebi";
   // ბანერის ფილაში ქავერი (ან პირველი ნამუშევრის ფოტო); თუ არცერთია, კატეგორიის ილუსტრაცია
   const firstPhoto = artist.works.find((work) => work.image)?.image;
-  const cover = artist.cover || firstPhoto ? { image: artist.cover || firstPhoto } : undefined;
+  const bannerPhoto = artist.banner || artist.cover || firstPhoto;
+  const cover = bannerPhoto ? { image: bannerPhoto } : undefined;
   const color = categoryColor(main);
   const cats = artist.categories
     .map((slug) => getCategoryBySlug(slug))

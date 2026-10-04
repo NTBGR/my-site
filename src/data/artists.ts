@@ -29,6 +29,8 @@ export type ArtistData = {
   categories: string[];
   // გარე ფოტო: ხელოვანის ბარათზე სიებში (მაგ. ლოგო). თუ არ არის, პირველი ნამუშევრის ფოტო ან ილუსტრაცია
   cover?: string;
+  // ხელოვანის გვერდის ბანერის ფოტო (ბანერის ფერს რომ მოუხდეს). თუ არ არის, ქავერი
+  banner?: string;
   bio: string;
   instagram: string;
   facebook: string;
@@ -43,10 +45,10 @@ export const artists: ArtistData[] = [
   {
     slug: "zhuzha-ceramics",
     name: "ZHUZHA Ceramics",
-    // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
-    city: "",
+    city: "თბილისი",
     categories: ["keramika", "samkauli"],
     cover: "/artists/zhuzha-ceramics/ring-amore.jpg",
+    banner: "/artists/zhuzha-ceramics/necklace-green-star.jpg",
     bio: "ZHUZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს და ნივთებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს, ბროშებს, ზოდიაქოს გულსაკიდებს და ფინჯნებს.",
     instagram: "https://www.instagram.com/zhuzhaceramics/",
     facebook: "https://www.facebook.com/profile.php?id=61580098836416",
@@ -63,7 +65,7 @@ export const artists: ArtistData[] = [
     ],
     en: {
       name: "ZHUZHA Ceramics",
-      city: "",
+      city: "Tbilisi",
       bio: "ZHUZHA Ceramics makes ceramic accessories and objects by hand: starfish necklaces with colourful beads, rings, brooches, zodiac pendants and mugs.",
       workTitles: [
         "Necklace \"Blue Star\"",
