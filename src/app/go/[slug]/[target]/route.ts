@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getArtistBySlug } from "@/data/artists";
 import { isBot, recordClick, type ClickTarget } from "@/lib/clicks";
+import { allowed, clientIp } from "@/lib/ratelimit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,6 +24,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   // ნამუშევრის ბმული ითვლება იმ ქსელად, სადაც მიდის
   const target: ClickTarget = /facebook\.com|fb\.com|fb\.me/i.test(url) ? "facebook" : "instagram";
   const ua = req.headers.get("user-agent");
+  // ერთი IP-დან საათში 60 გადასვლაზე მეტი დათვლაში აღარ მიდის (კლიკების გაბერვის წინააღმდეგ), გადასვლა კი ჩვეულებრივ მუშაობს (იხ. allowed ქვემოთ)
   if (!isBot(ua)) {
     // ადამიანის ამოცნობა: ბრაუზერის ანონიმური ქუქი; თუ ქუქი არ არის (დაბლოკილია), IP + ბრაუზერი
     const cookieId = req.cookies.get("vid")?.value;
@@ -31,7 +33,9 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     try {
       // დათვლის შეცდომამ გადასვლა არ უნდა შეაფერხოს
       await Promise.race([
-        recordClick(artist.slug, target, visitor),
+        (async () => {
+          if (await allowed(`go:ip:${clientIp(req.headers)}`, 60, 3600)) await recordClick(artist.slug, target, visitor);
+        })(),
         new Promise((resolve) => setTimeout(resolve, 1500)),
       ]);
     } catch (error) {

@@ -209,6 +209,7 @@ const ka = {
       unavailable: "გაგზავნა დროებით შეუძლებელია. სცადე მოგვიანებით.",
       failed: "გაგზავნა ვერ მოხერხდა. სცადე მოგვიანებით.",
       network: "კავშირის შეცდომა. შეამოწმე ინტერნეტი და სცადე თავიდან.",
+      rateLimited: "ძალიან ბევრი მცდელობაა. სცადე ცოტა ხანში.",
     },
   },
 };
@@ -421,6 +422,7 @@ const en: Dict = {
       unavailable: "Sending is temporarily unavailable. Please try again later.",
       failed: "Sending failed. Please try again later.",
       network: "Connection error. Check your internet and try again.",
+      rateLimited: "Too many attempts. Please try again a bit later.",
     },
   },
 };

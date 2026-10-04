@@ -17,7 +17,7 @@ export type ClickTarget = "instagram" | "facebook";
 
 type RedisResult = { result?: unknown; error?: string };
 
-async function pipeline(commands: (string | number)[][]): Promise<RedisResult[]> {
+export async function pipeline(commands: (string | number)[][]): Promise<RedisResult[]> {
   const res = await fetch(`${URL_}/pipeline`, {
     method: "POST",
     headers: { Authorization: `Bearer ${TOKEN}`, "Content-Type": "application/json" },

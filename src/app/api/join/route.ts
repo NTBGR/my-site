@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { categoryNameKa, cities } from "@/data/join-options";
+import { allowed, clientIp } from "@/lib/ratelimit";
 
 export const runtime = "nodejs";
 
@@ -20,6 +21,12 @@ function escapeHtml(text: string) {
 }
 
 export async function POST(request: Request) {
+  // ბოტებისგან დაცვა: ერთი IP-დან საათში 5 განაცხადი, ყველასგან ერთად საათში 60 (გამოგზავნის სპამი Telegram-ს არ უნდა აავსოს)
+  const ip = clientIp(request.headers);
+  if (!(await allowed(`join:ip:${ip}`, 5, 3600)) || !(await allowed("join:all", 60, 3600))) {
+    return NextResponse.json({ error: "rateLimited" }, { status: 429 });
+  }
+
   const data = await request.formData();
 
   // ანტისპამ ხაფანგი: ადამიანი ამ ველს ვერ ხედავს
