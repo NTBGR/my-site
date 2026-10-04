@@ -157,7 +157,8 @@ main * {
 
 /* ბარათის სურათი ჰოვერზე ოდნავ იზრდება */
 .zoom-on-hover {
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  /* ბარათის აწევის (0.3 წმ) იგივე ხანგრძლივობა და მრუდი, რომ ჰოვერის დასრულების შემდეგ ფოტო დამატებით აღარ მოძრაობდეს */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .group:hover .zoom-on-hover,
 .zoom-on-hover:hover {
@@ -167,7 +168,7 @@ main * {
 /* ისარი ჰოვერზე წინ მიდის */
 .arrow-slide {
   display: inline-block;
-  transition: transform 0.25s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .group:hover .arrow-slide,
 a:hover > .arrow-slide {

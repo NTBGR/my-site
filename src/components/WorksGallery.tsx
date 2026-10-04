@@ -86,7 +86,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                     alt={work.title}
                     fill
                     sizes="(min-width: 1280px) 240px, (min-width: 1024px) 290px, (min-width: 640px) 33vw, 50vw"
-                    className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                    className="object-cover transition duration-300 group-hover:scale-[1.04]"
                   />
                 ) : (
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
