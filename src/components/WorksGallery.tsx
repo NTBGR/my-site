@@ -18,7 +18,7 @@ export type GalleryWork = {
   height?: number;
 };
 
-const FALLBACK_RATIO = 9 / 16;
+const FALLBACK_RATIO = 3 / 4;
 
 function ratioOf(work: GalleryWork) {
   return work.width && work.height ? work.width / work.height : FALLBACK_RATIO;
@@ -61,7 +61,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
 
   return (
     <>
-      {/* ერთნაირი 9:16 ბარათები; სრული ფოტო იხსნება დაჭერით */}
+      {/* ერთნაირი 3:4 ბარათები (ტელეფონის ფოტოს ფორმატი); სრული ფოტო იხსნება დაჭერით */}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
         {works.map((work, i) => (
           <li key={`${work.title}-${i}`}>
@@ -69,7 +69,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
               type="button"
               onClick={() => setOpen(i)}
               aria-label={work.title}
-              className="group relative block aspect-[9/16] w-full overflow-hidden rounded-[1.25rem] bg-surface text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl sm:rounded-[1.75rem]"
+              className="group relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl sm:rounded-[1.75rem]"
             >
               {work.image ? (
                 <Image

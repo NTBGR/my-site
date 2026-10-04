@@ -7,7 +7,7 @@ export type ArtistWork = {
   // ნამუშევრის ბმული (პოსტი ინსტაგრამზე, ფეისბუქზე და ა.შ.); თუ არ არის, ავტორის ინსტაგრამი/ფეისბუქი გამოიყენება
   url?: string;
   // ნამდვილი ფოტო: ფაილი public/artists/<slug>/..., მისი ზომები პიქსელებში (პროპორციისთვის).
-  // ბარათები ყოველთვის 9:16-ია (სთორისის ფორმატი); სრულეკრანიან ნახვაში ფოტო მთლიანად ჩანს.
+  // ბარათები 3:4-ია (ტელეფონის ვერტიკალური ფოტო); სრულეკრანიან ნახვაში ფოტო მთლიანად ჩანს.
   image?: string;
   width?: number;
   height?: number;
@@ -27,6 +27,8 @@ export type ArtistData = {
   name: string;
   city: string;
   categories: string[];
+  // გარე ფოტო: ხელოვანის ბარათზე სიებში (მაგ. ლოგო). თუ არ არის, პირველი ნამუშევრის ფოტო ან ილუსტრაცია
+  cover?: string;
   bio: string;
   instagram: string;
   facebook: string;
@@ -38,6 +40,44 @@ export type ArtistData = {
 export type Artist = ArtistData & { category: string };
 
 export const artists: ArtistData[] = [
+  {
+    slug: "zhuzha-ceramics",
+    name: "ZHUZHA Ceramics",
+    // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
+    city: "",
+    categories: ["keramika", "samkauli"],
+    cover: "/artists/zhuzha-ceramics/logo.jpg",
+    bio: "ZHUZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს და ნივთებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს, ბროშებს, ზოდიაქოს გულსაკიდებს და ფინჯნებს.",
+    instagram: "https://www.instagram.com/zhuzhaceramics/",
+    facebook: "https://www.facebook.com/profile.php?id=61580098836416",
+    works: [
+      { title: "ყელსაბამი „ცისფერი ვარსკვლავი“", color: "#3f9fd6", image: "/artists/zhuzha-ceramics/necklace-blue-star.jpg", width: 1200, height: 1600 },
+      { title: "ყელსაბამი „ყვითელი ვარსკვლავი“", color: "#d4402c", image: "/artists/zhuzha-ceramics/necklace-yellow-star.jpg", width: 1200, height: 1600 },
+      { title: "ყელსაბამი „მწვანე ვარსკვლავი“", color: "#3f7a3a", image: "/artists/zhuzha-ceramics/necklace-green-star.jpg", width: 1200, height: 1600 },
+      { title: "ყელსაბამი „წითელი ვარსკვლავი“", color: "#e0452d", image: "/artists/zhuzha-ceramics/necklace-red-star.jpg", width: 1200, height: 1600 },
+      { title: "ბეჭედი „ტიტა“", color: "#8a6fbf", image: "/artists/zhuzha-ceramics/ring-tulip.jpg", width: 844, height: 1125 },
+      { title: "ბეჭედი „AMORE“", color: "#c9a3ad", image: "/artists/zhuzha-ceramics/ring-amore.jpg", width: 844, height: 1125 },
+      { title: "ბროში „გული“", color: "#d9573f", image: "/artists/zhuzha-ceramics/brooch-heart.jpg", width: 1125, height: 1500 },
+      { title: "ზოდიაქოს გულსაკიდები", color: "#2e2a8a", image: "/artists/zhuzha-ceramics/pendants-zodiac.jpg", width: 1125, height: 1500 },
+      { title: "ფინჯანი „სხეული“", color: "#a89f97", image: "/artists/zhuzha-ceramics/mug-body.jpg", width: 1125, height: 1500 },
+    ],
+    en: {
+      name: "ZHUZHA Ceramics",
+      city: "",
+      bio: "ZHUZHA Ceramics makes ceramic accessories and objects by hand: starfish necklaces with colourful beads, rings, brooches, zodiac pendants and mugs.",
+      workTitles: [
+        "Necklace \"Blue Star\"",
+        "Necklace \"Yellow Star\"",
+        "Necklace \"Green Star\"",
+        "Necklace \"Red Star\"",
+        "Ring \"Tulip\"",
+        "Ring \"AMORE\"",
+        "Brooch \"Heart\"",
+        "Zodiac pendants",
+        "Mug \"Body\"",
+      ],
+    },
+  },
   {
     slug: "elene-nimushi",
     name: "ელენე ნიმუში",
@@ -78,27 +118,6 @@ export const artists: ArtistData[] = [
       city: "Batumi",
       bio: "A test photographer who captures seaside light. The name and bio are invented on purpose.",
       workTitles: ["Black Sea Horizon", "Palm Shadow", "Evening Wave"],
-    },
-  },
-  {
-    slug: "mariam-savardebeli",
-    name: "მარიამ სავარდებელი",
-    city: "ქუთაისი",
-    categories: ["keramika", "saxlis-dekori"],
-    bio: "გამოგონილი კერამიკოსი, რომელიც თიხასთან მუშაობს. ყველა დეტალი მხოლოდ დემონსტრაციისთვისაა.",
-    // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
-    instagram: "https://www.instagram.com/",
-    facebook: "https://www.facebook.com/",
-    works: [
-      { title: "თიხის თასი", color: "#a65d3f", width: 1080, height: 1920 },
-      { title: "მწვანე ლანგარი", color: "#5e7a55", width: 1080, height: 1920 },
-      { title: "ღია ფერის ვაზა", color: "#d4b48a", width: 1080, height: 1920 },
-    ],
-    en: {
-      name: "Mariam Savardebeli",
-      city: "Kutaisi",
-      bio: "A made-up ceramicist who works with clay. Every detail is for demonstration only.",
-      workTitles: ["Clay Bowl", "Green Platter", "Light Vase"],
     },
   },
   {

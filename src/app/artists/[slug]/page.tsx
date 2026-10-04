@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
@@ -118,6 +119,8 @@ export default function ArtistPage({
   }
 
   const main = artist.categories[0] ?? "nakhatebi";
+  // ბანერის ფილაში ნამდვილი ფოტო, თუ აქვს; თუ არა, კატეგორიის ილუსტრაცია
+  const cover = artist.works.find((work) => work.image);
   const color = categoryColor(main);
   const cats = artist.categories
     .map((slug) => getCategoryBySlug(slug))
@@ -143,12 +146,21 @@ export default function ArtistPage({
         }}
       >
         {/* დესკტოპი/პლანშეტი: მცურავი ფილა მარჯვნივ, მთლიანად ჩანს */}
-        <div aria-hidden className="absolute right-[6%] top-1/2 hidden w-[24%] max-w-[15rem] -translate-y-1/2 sm:block">
+        <div
+          aria-hidden
+          className={`absolute right-[6%] top-1/2 hidden -translate-y-1/2 sm:block ${cover ? "w-[16%] max-w-[10rem]" : "w-[24%] max-w-[15rem]"}`}
+        >
           <div
             className="float overflow-hidden rounded-[1.25rem] shadow-2xl ring-4 ring-white/15"
             style={{ ["--r" as string]: "4deg" }}
           >
-            <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
+            {cover?.image ? (
+              <div className="relative aspect-[3/4]">
+                <Image src={cover.image} alt="" fill sizes="160px" className="object-cover" priority />
+              </div>
+            ) : (
+              <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
+            )}
           </div>
         </div>
         {/* მობილურზე: პატარა ილუსტრაცია კუთხეში */}
@@ -157,7 +169,13 @@ export default function ArtistPage({
           className="float absolute right-4 top-4 z-10 w-[4.5rem] overflow-hidden rounded-xl shadow-xl ring-2 ring-white/20 sm:hidden"
           style={{ ["--r" as string]: "5deg" }}
         >
-          <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
+          {cover?.image ? (
+            <div className="relative aspect-[3/4]">
+              <Image src={cover.image} alt="" fill sizes="72px" className="object-cover" />
+            </div>
+          ) : (
+            <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
+          )}
         </div>
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent" />
 
@@ -166,9 +184,11 @@ export default function ArtistPage({
             <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
               {artist.category}
             </span>
-            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
-              {artist.city}
-            </span>
+            {artist.city ? (
+              <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
+                {artist.city}
+              </span>
+            ) : null}
           </div>
           <h1 className="mt-2 pr-20 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
             {artist.name}

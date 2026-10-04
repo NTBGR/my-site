@@ -13,8 +13,13 @@ export default function ArtistCard({
   worksLabel?: string;
   artClassName?: string;
 }) {
-  // ნამდვილი ფოტო თუ აქვს, პირველი ნამუშევარი ჩანს; თუ არა, მისი მთავარი კატეგორიის ილუსტრაცია
-  const photo = artist.works.find((work) => work.image);
+  // გარე ფოტო (მაგ. ლოგო) > პირველი ნამუშევრის ფოტო > მთავარი კატეგორიის ილუსტრაცია
+  const firstWork = artist.works.find((work) => work.image);
+  const photo = artist.cover
+    ? { image: artist.cover, title: artist.name }
+    : firstWork?.image
+      ? { image: firstWork.image, title: firstWork.title }
+      : undefined;
   const main = artist.categories[0] ?? "nakhatebi";
 
   return (
