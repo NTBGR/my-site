@@ -8,15 +8,16 @@ export const dynamic = "force-dynamic";
 
 // /go/<ხელოვანი>/instagram | facebook | w<ნომერი> (ნამუშევარი)
 // ითვლის გადასვლას და მაშინვე გადაჰყავს ხელოვანის გვერდზე
-export async function GET(req: NextRequest, { params }: { params: { slug: string; target: string } }) {
-  const artist = getArtistBySlug(params.slug);
+export async function GET(req: NextRequest, { params }: { params: Promise<{ slug: string; target: string }> }) {
+  const { slug, target: linkTarget } = await params;
+  const artist = getArtistBySlug(slug);
   if (!artist) return NextResponse.redirect(new URL("/artists", req.url));
 
   let url: string | undefined;
-  if (params.target === "instagram") url = artist.instagram;
-  else if (params.target === "facebook") url = artist.facebook;
-  else if (/^w\d+$/.test(params.target)) {
-    const work = artist.works[Number(params.target.slice(1))];
+  if (linkTarget === "instagram") url = artist.instagram;
+  else if (linkTarget === "facebook") url = artist.facebook;
+  else if (/^w\d+$/.test(linkTarget)) {
+    const work = artist.works[Number(linkTarget.slice(1))];
     url = work?.url || artist.instagram || artist.facebook;
   }
   if (!url) return NextResponse.redirect(new URL(`/artists/${artist.slug}`, req.url));
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
   if (!isBot(ua)) {
     // ადამიანის ამოცნობა: ბრაუზერის ანონიმური ქუქი; თუ ქუქი არ არის (დაბლოკილია), IP + ბრაუზერი
     const cookieId = req.cookies.get("vid")?.value;
-    const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || req.ip || "unknown";
+    const ip = clientIp(req.headers);
     const visitor = cookieId ? `c:${cookieId}` : `ip:${ip}|${ua}`;
     try {
       // დათვლის შეცდომამ გადასვლა არ უნდა შეაფერხოს

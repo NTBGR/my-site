@@ -3,6 +3,7 @@ import { Noto_Sans_Georgian, Noto_Serif_Georgian } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LangProvider } from "@/components/LangProvider";
+import ScrollToTop from "@/components/ScrollToTop";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import "./globals.css";
@@ -21,8 +22,8 @@ const notoSerifGeorgian = Noto_Serif_Georgian({
 
 const SITE_URL = "https://khelovani.vercel.app";
 
-export function generateMetadata(): Metadata {
-  const lang = getLang();
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLang();
   const { meta } = dictionary[lang];
   return {
     metadataBase: new URL(SITE_URL),
@@ -41,17 +42,18 @@ export function generateMetadata(): Metadata {
 }
 
 // ადგენს თემას გვერდის ჩვენებამდე, რომ ფერები არ აციმციმდეს
-const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
+// refresh-ზე ბრაუზერი ძველ ასქროლვის პოზიციას თვითონ აბრუნებს ჩვენი კოდის მერე: ვთიშავთ მხოლოდ refresh-ისთვის
+const themeScript = `try{var n=performance.getEntriesByType("navigation")[0];if(n&&n.type==="reload"){history.scrollRestoration="manual"}}catch(e){}try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const lang = getLang();
+  const lang = await getLang();
 
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang={lang} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
@@ -59,6 +61,7 @@ export default function RootLayout({
         className={`${notoSansGeorgian.variable} ${notoSerifGeorgian.variable} flex min-h-screen flex-col bg-bg font-sans text-text antialiased`}
       >
         <LangProvider lang={lang}>
+          <ScrollToTop />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

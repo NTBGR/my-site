@@ -79,10 +79,11 @@ function SocialLink({
   );
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const raw = getArtistBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const raw = getArtistBySlug(slug);
   if (!raw) return {};
-  const artist = localizeArtist(raw, getLang());
+  const artist = localizeArtist(raw, await getLang());
   const title = `${artist.name} — ${artist.category}`;
   return {
     title,
@@ -91,15 +92,16 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   };
 }
 
-export default function ArtistPage({
+export default async function ArtistPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const lang = getLang();
+  const lang = await getLang();
   const all = dictionary[lang];
   const t = all.artist;
-  const raw = getArtistBySlug(params.slug);
+  const { slug } = await params;
+  const raw = getArtistBySlug(slug);
   const artist = raw ? localizeArtist(raw, lang) : undefined;
 
   if (!artist) {

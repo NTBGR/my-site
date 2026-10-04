@@ -4,12 +4,12 @@ import PageBanner from "@/components/PageBanner";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
-export function generateMetadata() {
-  return { title: dictionary[getLang()].join.title };
+export async function generateMetadata() {
+  return { title: dictionary[await getLang()].join.title };
 }
 
-export default function JoinPage() {
-  const all = dictionary[getLang()];
+export default async function JoinPage() {
+  const all = dictionary[await getLang()];
   const t = all.join;
 
   return (

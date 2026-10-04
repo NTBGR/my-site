@@ -5,23 +5,24 @@ import { categories, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
-export function generateMetadata() {
-  return { title: dictionary[getLang()].artists.title };
+export async function generateMetadata() {
+  return { title: dictionary[await getLang()].artists.title };
 }
 
-export default function ArtistsPage({
+export default async function ArtistsPage({
   searchParams,
 }: {
-  searchParams: { q?: string | string[] };
+  searchParams: Promise<{ q?: string | string[] }>;
 }) {
-  const lang = getLang();
+  const lang = await getLang();
   const t = dictionary[lang].artists;
   const artists = getLocalizedArtists(lang);
   // ფილტრის ღილაკები: პროფესიები („კერამიკოსები“), კატეგორიებიდან, სადაც ერთი ხელოვანი მაინც არის
   const crafts = categories
     .filter((c) => artists.some((a) => a.categories.includes(c.slug)))
     .map((c) => ({ slug: c.slug, name: localizeCategory(c, lang).makers }));
-  const q = Array.isArray(searchParams.q) ? searchParams.q[0] : searchParams.q ?? "";
+  const { q: rawQ } = await searchParams;
+  const q = Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "";
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
