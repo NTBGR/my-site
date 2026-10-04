@@ -44,12 +44,12 @@ export type Artist = ArtistData & { category: string };
 export const artists: ArtistData[] = [
   {
     slug: "zhuzha-ceramics",
-    name: "ZHUZHA Ceramics",
+    name: "ZHU-ZHA Ceramics",
     city: "თბილისი",
     categories: ["keramika", "samkauli"],
     cover: "/artists/zhuzha-ceramics/ring-amore.jpg",
     banner: "/artists/zhuzha-ceramics/necklace-green-star.jpg",
-    bio: "ZHUZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს და ნივთებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს, ბროშებს, ზოდიაქოს გულსაკიდებს და ფინჯნებს.",
+    bio: "ZHU-ZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს და ნივთებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს, ბროშებს, ზოდიაქოს გულსაკიდებს და ფინჯნებს.",
     instagram: "https://www.instagram.com/zhuzhaceramics/",
     facebook: "https://www.facebook.com/profile.php?id=61580098836416",
     works: [
@@ -64,9 +64,9 @@ export const artists: ArtistData[] = [
       { title: "ფინჯანი „სხეული“", color: "#a89f97", image: "/artists/zhuzha-ceramics/mug-body.jpg", width: 1125, height: 1500 },
     ],
     en: {
-      name: "ZHUZHA Ceramics",
+      name: "ZHU-ZHA Ceramics",
       city: "Tbilisi",
-      bio: "ZHUZHA Ceramics makes ceramic accessories and objects by hand: starfish necklaces with colourful beads, rings, brooches, zodiac pendants and mugs.",
+      bio: "ZHU-ZHA Ceramics makes ceramic accessories and objects by hand: starfish necklaces with colourful beads, rings, brooches, zodiac pendants and mugs.",
       workTitles: [
         "Necklace \"Blue Star\"",
         "Necklace \"Yellow Star\"",

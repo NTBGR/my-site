@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
 import PageHeader from "@/components/PageHeader";
+import BannerPhotos from "@/components/BannerPhotos";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
 import { getArtistBySlug, localizeArtist } from "@/data/artists";
@@ -118,6 +118,10 @@ export default function ArtistPage({
   const firstPhoto = artist.works.find((work) => work.image)?.image;
   const bannerPhoto = artist.banner || artist.cover || firstPhoto;
   const cover = bannerPhoto ? { image: bannerPhoto } : undefined;
+  // ბანერში ტრიალებს ქავერი (პირველი) და ხელოვანის ყველა ნამუშევარი
+  const bannerImages = bannerPhoto
+    ? [bannerPhoto, ...artist.works.map((work) => work.image).filter((src): src is string => !!src && src !== bannerPhoto)]
+    : [];
   const color = categoryColor(main);
   const cats = artist.categories
     .map((slug) => getCategoryBySlug(slug))
@@ -152,9 +156,7 @@ export default function ArtistPage({
             style={{ ["--r" as string]: "4deg" }}
           >
             {cover?.image ? (
-              <div className="relative aspect-[3/4]">
-                <Image src={cover.image} alt="" fill sizes="160px" className="object-cover" priority />
-              </div>
+              <BannerPhotos images={bannerImages} sizes="160px" priority />
             ) : (
               <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
             )}
@@ -167,9 +169,7 @@ export default function ArtistPage({
           style={{ ["--r" as string]: "5deg" }}
         >
           {cover?.image ? (
-            <div className="relative aspect-[3/4]">
-              <Image src={cover.image} alt="" fill sizes="72px" className="object-cover" />
-            </div>
+            <BannerPhotos images={bannerImages} sizes="88px" />
           ) : (
             <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
           )}
