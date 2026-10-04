@@ -5,6 +5,9 @@ import type { Artist } from "@/data/artists";
 import ArtistCard from "@/components/ArtistCard";
 import { useT } from "@/components/LangProvider";
 
+// ამაზე ნაკლებ ხელოვანზე კატეგორიების ფილტრი დამალულია
+const MIN_ARTISTS_FOR_FILTER = 6;
+
 const chipBase =
   "inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-sm font-medium transition duration-300 active:scale-95";
 
@@ -66,7 +69,8 @@ export default function ArtistsFilter({
         </p>
       </div>
 
-      {/* მიმართულების ღილაკები */}
+      {/* მიმართულების ღილაკები: მხოლოდ მაშინ, როცა ხელოვანები საკმარისად ბევრია (ორ-სამ ხელოვანზე ფილტრი უსარგებლოა) */}
+      {artists.length >= MIN_ARTISTS_FOR_FILTER ? (
       <div
         className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden"
         role="group"
@@ -90,6 +94,7 @@ export default function ArtistsFilter({
           );
         })}
       </div>
+      ) : null}
 
       {filtered.length === 0 ? (
         <div className="mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-10 text-center">

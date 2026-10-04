@@ -49,7 +49,7 @@ export const artists: ArtistData[] = [
     categories: ["keramika", "samkauli"],
     cover: "/artists/zhuzha-ceramics/ring-amore.jpg",
     banner: "/artists/zhuzha-ceramics/necklace-green-star.jpg",
-    bio: "ZHU-ZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს და ნივთებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს, ბროშებს, ზოდიაქოს გულსაკიდებს და ფინჯნებს.",
+    bio: "ZHU-ZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს და ბროშებს.",
     instagram: "https://www.instagram.com/zhuzhaceramics/",
     facebook: "https://www.facebook.com/profile.php?id=61580098836416",
     works: [
@@ -64,7 +64,7 @@ export const artists: ArtistData[] = [
     en: {
       name: "ZHU-ZHA Ceramics",
       city: "Tbilisi",
-      bio: "ZHU-ZHA Ceramics makes ceramic accessories and objects by hand: starfish necklaces with colourful beads, rings, brooches, zodiac pendants and mugs.",
+      bio: "ZHU-ZHA Ceramics makes ceramic accessories by hand: starfish necklaces with colourful beads, rings and brooches.",
       workTitles: [
         "Necklace \"Blue Star\"",
         "Necklace \"Yellow Star\"",
