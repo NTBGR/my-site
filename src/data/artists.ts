@@ -1,3 +1,4 @@
+import { makerOf } from "@/data/categories";
 import type { Lang } from "@/lib/dictionary";
 
 export type ArtistWork = {
@@ -15,16 +16,16 @@ export type ArtistWork = {
 type ArtistText = {
   name: string;
   city: string;
-  category: string;
   bio: string;
   workTitles: string[];
 };
 
-export type Artist = {
+// მონაცემები, როგორც ფაილში წერია. პირველი კატეგორია ხელოვანის მთავარია:
+// მისგან ავტომატურად ამოდის პროფესია (მაგ. keramika → „კერამიკოსი“)
+export type ArtistData = {
   slug: string;
   name: string;
   city: string;
-  category: string;
   categories: string[];
   bio: string;
   instagram: string;
@@ -33,12 +34,14 @@ export type Artist = {
   en: ArtistText;
 };
 
-export const artists: Artist[] = [
+// საიტზე გამოსაყენებელი ხელოვანი: + პროფესია (category) მიმდინარე ენაზე
+export type Artist = ArtistData & { category: string };
+
+export const artists: ArtistData[] = [
   {
     slug: "elene-nimushi",
     name: "ელენე ნიმუში",
     city: "თბილისი",
-    category: "მხატვარი",
     categories: ["nakhatebi"],
     bio: "ფიქტიური პორტრეტისტი, რომელიც თბილისის უბნებს თბილი ფერებით ხატავს. ეს პროფილი სატესტო მონაცემია და რეალურ ადამიანს არ ეკუთვნის.",
     // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
@@ -52,7 +55,6 @@ export const artists: Artist[] = [
     en: {
       name: "Elene Nimushi",
       city: "Tbilisi",
-      category: "Painter",
       bio: "A fictional portrait painter who paints Tbilisi's neighbourhoods in warm colours. This profile is test data and does not belong to a real person.",
       workTitles: ["Morning in Sololaki", "Yellow Balcony", "Rainy Street"],
     },
@@ -61,7 +63,6 @@ export const artists: Artist[] = [
     slug: "giorgi-magaliti",
     name: "გიორგი მაგალითი",
     city: "ბათუმი",
-    category: "ფოტოგრაფი",
     categories: ["nakhatebi"],
     bio: "სატესტო ფოტოგრაფი, რომელიც ზღვისპირა სინათლეს იღებს. სახელი და ბიოგრაფია სპეციალურად გამოგონილია.",
     // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
@@ -75,7 +76,6 @@ export const artists: Artist[] = [
     en: {
       name: "Giorgi Magaliti",
       city: "Batumi",
-      category: "Photographer",
       bio: "A test photographer who captures seaside light. The name and bio are invented on purpose.",
       workTitles: ["Black Sea Horizon", "Palm Shadow", "Evening Wave"],
     },
@@ -84,7 +84,6 @@ export const artists: Artist[] = [
     slug: "mariam-savardebeli",
     name: "მარიამ სავარდებელი",
     city: "ქუთაისი",
-    category: "კერამიკოსი",
     categories: ["keramika", "saxlis-dekori"],
     bio: "გამოგონილი კერამიკოსი, რომელიც თიხასთან მუშაობს. ყველა დეტალი მხოლოდ დემონსტრაციისთვისაა.",
     // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
@@ -98,7 +97,6 @@ export const artists: Artist[] = [
     en: {
       name: "Mariam Savardebeli",
       city: "Kutaisi",
-      category: "Ceramicist",
       bio: "A made-up ceramicist who works with clay. Every detail is for demonstration only.",
       workTitles: ["Clay Bowl", "Green Platter", "Light Vase"],
     },
@@ -107,7 +105,6 @@ export const artists: Artist[] = [
     slug: "leka-placeholderi",
     name: "ლეკა ფლეისჰოლდერი",
     city: "თელავი",
-    category: "ილუსტრატორი",
     categories: ["nakhatebi", "sachuqrebi"],
     bio: "ფიქტიური ილუსტრატორი კახეთიდან. ეს ჩანაწერი რეალურ შემოქმედს არ ასახავს.",
     // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
@@ -121,7 +118,6 @@ export const artists: Artist[] = [
     en: {
       name: "Leka Placeholderi",
       city: "Telavi",
-      category: "Illustrator",
       bio: "A fictional illustrator from Kakheti. This entry does not reflect a real maker.",
       workTitles: ["Vineyard Sketch", "Mountain Line", "Evening Sky"],
     },
@@ -130,7 +126,6 @@ export const artists: Artist[] = [
     slug: "nino-demoeli",
     name: "ნინო დემოელი",
     city: "თბილისი",
-    category: "მოქანდაკე",
     categories: ["skulptura", "khis-nakethobebi"],
     bio: "სატესტო მოქანდაკე, რომელიც ქვისა და ხის ფორმებს იკვლევს. პროფილი გამოგონილია.",
     // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
@@ -144,7 +139,6 @@ export const artists: Artist[] = [
     en: {
       name: "Nino Demoeli",
       city: "Tbilisi",
-      category: "Sculptor",
       bio: "A test sculptor who explores forms in stone and wood. The profile is invented.",
       workTitles: ["Stone Silhouette", "Wooden Figure", "Bronze Study"],
     },
@@ -153,7 +147,6 @@ export const artists: Artist[] = [
     slug: "dato-testadze",
     name: "დათო ტესტაძე",
     city: "ბათუმი",
-    category: "მხატვარი",
     categories: ["nakhatebi", "saxlis-dekori"],
     bio: "ფიქტიური მხატვარი, რომელიც ფერად აბსტრაქციას ხატავს. ინსტაგრამის ბმული განზრახ ცარიელია.",
     // დემო ბმულები: ჩაანაცვლე ავტორის რეალური პროფილებით
@@ -167,21 +160,21 @@ export const artists: Artist[] = [
     en: {
       name: "Dato Testadze",
       city: "Batumi",
-      category: "Painter",
       bio: "A fictional painter of colourful abstraction. The Instagram link is intentionally empty.",
       workTitles: ["Red Composition", "Blue Field", "Golden Light"],
     },
   },
 ];
 
-export function localizeArtist(artist: Artist, lang: Lang): Artist {
-  if (lang === "ka") return artist;
+export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
+  const category = makerOf(artist.categories[0], lang);
+  if (lang === "ka") return { ...artist, category };
   const { en } = artist;
   return {
     ...artist,
     name: en.name,
     city: en.city,
-    category: en.category,
+    category,
     bio: en.bio,
     works: artist.works.map((work, i) => ({
       ...work,
@@ -194,7 +187,7 @@ export function getLocalizedArtists(lang: Lang): Artist[] {
   return artists.map((artist) => localizeArtist(artist, lang));
 }
 
-export function getArtistBySlug(slug: string): Artist | undefined {
+export function getArtistBySlug(slug: string): ArtistData | undefined {
   return artists.find((artist) => artist.slug === slug);
 }
 

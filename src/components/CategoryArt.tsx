@@ -40,6 +40,30 @@ function scene(slug: string, c: Palette) {
         <path d="M140 224V198Q176 176 210 196T260 192V224Z" fill={dark} opacity=".9" />
       </>
     ),
+    // კედელზე ლენტით მიკრული პოსტერი თამამი გრაფიკით + დახვეული პოსტერი
+    posterebi: (
+      <>
+        <Shadow c={c} cx={276} rx={44} />
+        <rect x="128" y="50" width="132" height="182" rx="3" fill={deep} opacity=".28" transform="rotate(-3 194 141)" />
+        <g transform="rotate(-3 194 141)">
+          <rect x="122" y="44" width="132" height="182" rx="3" fill={cream} />
+          <rect x="134" y="56" width="108" height="110" fill={light} />
+          <circle cx="188" cy="102" r="30" fill={cream} />
+          <path d="M134 166V138L164 116L196 144L220 126L242 142V166Z" fill={dark} opacity=".85" />
+          <rect x="134" y="178" width="78" height="9" rx="2" fill={dark} opacity=".75" />
+          <rect x="134" y="194" width="54" height="6" rx="2" fill={dark} opacity=".4" />
+          <rect x="134" y="206" width="66" height="6" rx="2" fill={dark} opacity=".4" />
+          <rect x="112" y="36" width="34" height="14" rx="2" fill={light} opacity=".75" transform="rotate(-28 129 43)" />
+          <rect x="230" y="36" width="34" height="14" rx="2" fill={light} opacity=".75" transform="rotate(28 247 43)" />
+        </g>
+        <g transform="rotate(12 276 196)">
+          <rect x="262" y="132" width="28" height="112" rx="14" fill={light} />
+          <ellipse cx="276" cy="134" rx="14" ry="6" fill={cream} />
+          <ellipse cx="276" cy="134" rx="6" ry="2.5" fill={dark} opacity=".35" />
+          <path d="M262 168H290M262 206H290" stroke={dark} strokeWidth="3" opacity=".3" />
+        </g>
+      </>
+    ),
     // ორი ჩაკეტილი ბეჭედი თვლით, ყუთზე
     bechdebi: (
       <>
@@ -183,11 +207,14 @@ export default function CategoryArt({
   slug,
   color,
   className = "",
+  fit = "cover",
   children,
 }: {
   slug: string;
   color: string;
   className?: string;
+  // cover: ავსებს და კიდეებს ჭრის; contain: სცენა მთლიანად ჩანს (ვიწრო/მაღალ ბარათებზე)
+  fit?: "cover" | "contain";
   children?: ReactNode;
 }) {
   const palette: Palette = {
@@ -206,7 +233,7 @@ export default function CategoryArt({
     >
       <svg
         viewBox="0 0 400 300"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio={fit === "contain" ? "xMidYMid meet" : "xMidYMid slice"}
         className="zoom-on-hover absolute inset-0 h-full w-full"
         aria-hidden
       >

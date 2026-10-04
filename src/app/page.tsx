@@ -97,20 +97,20 @@ export default function Home() {
     },
     ...t.banners.map((banner, i): BannerSlide => ({
       id: banner.slug,
-      color: ["#5e7a55", "#3d5a73", "#b07a4a"][i],
+      color: ["#2f6b6f", "#5e7a55", "#3d5a73", "#b07a4a"][i],
       art: (
         <>
           {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაცია კუთხეში, როგორც პირველ სლაიდზე */}
           <div
             aria-hidden
             className="float absolute right-4 top-4 w-[42%] max-w-[13rem] overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:right-8 sm:top-6 sm:w-[30%] lg:hidden"
-            style={{ ["--r" as string]: ["5deg", "-5deg", "4deg"][i] }}
+            style={{ ["--r" as string]: ["-4deg", "5deg", "-5deg", "4deg"][i] }}
           >
             <CategoryArt slug={banner.slug} color={categoryColor(banner.slug)} className="aspect-[4/3]" />
           </div>
           <CategoryArt
             slug={banner.slug}
-            color={["#5e7a55", "#3d5a73", "#b07a4a"][i]}
+            color={["#2f6b6f", "#5e7a55", "#3d5a73", "#b07a4a"][i]}
             className="absolute inset-0 hidden h-full w-full lg:block"
           />
         </>
@@ -120,7 +120,7 @@ export default function Home() {
           <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-4xl xl:text-5xl">
             {banner.title}
           </h2>
-          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:text-lg">
+          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
             {banner.text}
           </p>
           <div className="mt-5">
@@ -156,7 +156,7 @@ export default function Home() {
                   style={{ background: "linear-gradient(150deg, #8f6580, #7a4e6a 52%, #4f3245)" }}
                 />
                 <div aria-hidden className="absolute inset-x-5 top-5 z-10 grid grid-cols-4 gap-2 sm:inset-x-6 sm:top-6">
-                  {["nakhatebi", "keramika", "bechdebi", "tyavi"].map((slug, i) => (
+                  {["nakhatebi", "posterebi", "keramika", "tyavi"].map((slug, i) => (
                     <div
                       key={slug}
                       className="overflow-hidden rounded-xl shadow-lg ring-2 ring-white/15 transition duration-300 group-hover:-translate-y-0.5"

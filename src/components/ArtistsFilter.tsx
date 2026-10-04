@@ -14,7 +14,8 @@ export default function ArtistsFilter({
   initialQuery = "",
 }: {
   artists: Artist[];
-  crafts: string[];
+  // ფილტრი საიტის კატეგორიებით (მხოლოდ ის, სადაც ხელოვანი არის)
+  crafts: { slug: string; name: string }[];
   initialQuery?: string;
 }) {
   const t = useT().artists;
@@ -24,7 +25,7 @@ export default function ArtistsFilter({
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return artists.filter((artist) => {
-      if (craft !== "all" && artist.category !== craft) return false;
+      if (craft !== "all" && !artist.categories.includes(craft)) return false;
       return !needle || artist.name.toLowerCase().includes(needle);
     });
   }, [artists, craft, query]);
@@ -70,21 +71,21 @@ export default function ArtistsFilter({
         className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden"
         role="group"
       >
-        {["all", ...crafts].map((item) => {
-          const active = craft === item;
+        {[{ slug: "all", name: t.allCrafts }, ...crafts].map((item) => {
+          const active = craft === item.slug;
           return (
             <button
-              key={item}
+              key={item.slug}
               type="button"
               aria-pressed={active}
-              onClick={() => setCraft(item)}
+              onClick={() => setCraft(item.slug)}
               className={`${chipBase} ${
                 active
                   ? "border-transparent bg-accent text-on-accent"
                   : "border-border bg-surface text-text hover:border-accent hover:text-accent"
               }`}
             >
-              {item === "all" ? t.allCrafts : item}
+              {item.name}
             </button>
           );
         })}
