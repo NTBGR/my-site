@@ -2,13 +2,13 @@ import PageBanner from "@/components/PageBanner";
 import { getLang } from "@/lib/i18n";
 import { CONTACT_EMAIL, privacy } from "./content";
 
-export function generateMetadata() {
-  const p = privacy[getLang()];
+export async function generateMetadata() {
+  const p = privacy[await getLang()];
   return { title: p.title, description: p.intro };
 }
 
-export default function PrivacyPage() {
-  const p = privacy[getLang()];
+export default async function PrivacyPage() {
+  const p = privacy[await getLang()];
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">

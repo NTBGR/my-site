@@ -21,8 +21,8 @@ const notoSerifGeorgian = Noto_Serif_Georgian({
 
 const SITE_URL = "https://khelovani.vercel.app";
 
-export function generateMetadata(): Metadata {
-  const lang = getLang();
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLang();
   const { meta } = dictionary[lang];
   return {
     metadataBase: new URL(SITE_URL),
@@ -43,12 +43,12 @@ export function generateMetadata(): Metadata {
 // ადგენს თემას გვერდის ჩვენებამდე, რომ ფერები არ აციმციმდეს
 const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const lang = getLang();
+  const lang = await getLang();
 
   return (
     <html lang={lang} suppressHydrationWarning>

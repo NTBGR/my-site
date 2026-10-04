@@ -15,10 +15,11 @@ export function generateStaticParams() {
   return categories.map((category) => ({ slug: category.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const raw = getCategoryBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const raw = getCategoryBySlug(slug);
   if (!raw) return {};
-  const category = localizeCategory(raw, getLang());
+  const category = localizeCategory(raw, await getLang());
   return {
     title: category.name,
     description: category.description,
@@ -30,10 +31,11 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
   };
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const lang = getLang();
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const lang = await getLang();
   const t = dictionary[lang];
-  const raw = getCategoryBySlug(params.slug);
+  const { slug } = await params;
+  const raw = getCategoryBySlug(slug);
   if (!raw) notFound();
 
   const category = localizeCategory(raw, lang);

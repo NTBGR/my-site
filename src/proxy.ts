@@ -4,7 +4,7 @@ const VISITOR_COOKIE = "vid";
 
 // ყოველ ბრაუზერს ანონიმური შემთხვევითი კოდი (ქუქი), რომ გადასვლების დათვლისას
 // ერთ IP-ზე მყოფი სხვადასხვა ადამიანი (მობილური ოპერატორები) ცალ-ცალკე ჩაითვალოს
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const res = NextResponse.next();
   if (!req.cookies.get(VISITOR_COOKIE)) {
     res.cookies.set(VISITOR_COOKIE, crypto.randomUUID(), {

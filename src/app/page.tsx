@@ -11,8 +11,8 @@ import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
 
-export default function Home() {
-  const lang = getLang();
+export default async function Home() {
+  const lang = await getLang();
   const t = dictionary[lang].home;
   const artists = getLocalizedArtists(lang);
   const featured = artists.slice(0, 3);

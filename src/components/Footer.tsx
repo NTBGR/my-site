@@ -39,8 +39,8 @@ function FooterList({
   );
 }
 
-export default function Footer() {
-  const { footer: f, nav } = getT();
+export default async function Footer() {
+  const { footer: f, nav } = await getT();
 
   const explore = [
     { href: "/about", label: f.about },

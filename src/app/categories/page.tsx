@@ -6,12 +6,12 @@ import { artists } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
-export function generateMetadata() {
-  return { title: dictionary[getLang()].categories.title };
+export async function generateMetadata() {
+  return { title: dictionary[await getLang()].categories.title };
 }
 
-export default function CategoriesPage() {
-  const lang = getLang();
+export default async function CategoriesPage() {
+  const lang = await getLang();
   const t = dictionary[lang];
 
   return (

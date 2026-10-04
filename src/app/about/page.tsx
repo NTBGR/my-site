@@ -5,13 +5,13 @@ import { getLang } from "@/lib/i18n";
 import { CONTACT_EMAIL } from "../privacy/content";
 import { about } from "./content";
 
-export function generateMetadata() {
-  const a = about[getLang()];
+export async function generateMetadata() {
+  const a = about[await getLang()];
   return { title: a.title, description: a.intro };
 }
 
-export default function AboutPage() {
-  const lang = getLang();
+export default async function AboutPage() {
+  const lang = await getLang();
   const a = about[lang];
   const nav = dictionary[lang].nav;
 

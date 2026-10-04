@@ -3,12 +3,12 @@ import PageBanner from "@/components/PageBanner";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
-export function generateMetadata() {
-  return { title: dictionary[getLang()].blog.title };
+export async function generateMetadata() {
+  return { title: dictionary[await getLang()].blog.title };
 }
 
-export default function BlogPage() {
-  const all = dictionary[getLang()];
+export default async function BlogPage() {
+  const all = dictionary[await getLang()];
   const t = all.blog;
 
   return (
