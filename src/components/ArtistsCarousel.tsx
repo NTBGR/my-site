@@ -46,10 +46,10 @@ export default function ArtistsCarousel({ children }: { children: ReactNode }) {
     <div>
       <ul
         ref={trackRef}
-        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden"
+        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 lg:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-5 [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, i) => (
-          <li key={i} className="w-[78%] shrink-0 snap-start sm:w-auto">
+          <li key={i} className="w-[58%] shrink-0 snap-start sm:w-auto">
             {item}
           </li>
         ))}

@@ -251,7 +251,7 @@ export default async function Home() {
 
       {/* რჩეული ხელოვანები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
-        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
+        <Reveal className="mb-5 sm:mb-8 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
           <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.featured}
           </h2>
@@ -272,7 +272,7 @@ export default async function Home() {
                 key={artist.slug}
                 artist={artist}
                 artClassName="aspect-[4/5] sm:aspect-square"
-                worksLabel={[artist.city, dictionary[lang].artists.worksCount(artist.works.length)].filter(Boolean).join(" · ")}
+                worksLabel={dictionary[lang].artists.worksCount(artist.works.length)}
               />
             ))}
           </ArtistsCarousel>

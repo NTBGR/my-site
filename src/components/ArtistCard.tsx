@@ -25,7 +25,7 @@ export default function ArtistCard({
   return (
     <Link
       href={`/artists/${artist.slug}`}
-      className="group block rounded-[1.5rem] border border-border bg-surface p-2 will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.75rem] sm:p-2.5"
+      className="group block h-full rounded-[1.5rem] border border-border bg-surface p-2 will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.75rem] sm:p-2.5"
     >
       <div className={`relative overflow-hidden rounded-[1.1rem] bg-surface-2 sm:rounded-[1.25rem] ${artClassName}`}>
         {photo?.image ? (

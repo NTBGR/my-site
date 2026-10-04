@@ -33,15 +33,15 @@ export default async function CategoriesPage() {
             <li key={category.slug}>
               <Link
                 href={`/categories/${category.slug}`}
-                className="group flex h-full flex-col rounded-[1.25rem] border border-border bg-surface p-2 transition duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.5rem]"
+                className="group flex h-full flex-col rounded-[1.25rem] border border-border bg-surface p-2 lg:overflow-hidden lg:p-0 transition duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.5rem]"
               >
                 <CategoryArt
                   slug={category.slug}
                   color={categoryColor(raw.slug)}
-                  className="aspect-[4/3] rounded-[0.9rem] sm:rounded-[1.1rem]"
+                  className="aspect-[4/3] rounded-[0.9rem] sm:rounded-[1.1rem] lg:rounded-none"
                 />
-                <div className="flex flex-1 flex-col px-1.5 pb-1 pt-3">
-                  <h2 className="text-[15px] font-semibold leading-snug tracking-tight text-text">
+                <div className="flex flex-1 flex-col px-1.5 pb-1 pt-3 lg:px-4 lg:pb-4 lg:pt-4">
+                  <h2 className="text-[15px] font-semibold leading-snug tracking-tight text-text lg:text-lg">
                     {category.name}
                   </h2>
                   <p className="mt-1 hidden text-sm leading-snug text-muted sm:line-clamp-2 lg:hidden">

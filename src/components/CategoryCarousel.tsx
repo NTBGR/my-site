@@ -105,7 +105,7 @@ export default function CategoryCarousel({
         {slides.map((slide) => (
           <li
             key={slide.slug}
-            className="w-[82%] shrink-0 snap-start sm:w-[46%] lg:w-auto"
+            className="w-[58%] shrink-0 snap-start sm:w-[46%] lg:w-auto"
           >
             <Link
               href={`/categories/${slide.slug}`}
