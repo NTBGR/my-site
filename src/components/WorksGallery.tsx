@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import ArtTile from "@/components/ArtTile";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import { copyText } from "@/lib/copy";
 import { socialVariant } from "@/components/ui/socialStyles";
 
 export type GalleryWork = {
@@ -22,30 +23,6 @@ export type GalleryWork = {
 };
 
 const FALLBACK_RATIO = 3 / 4;
-
-// დაკოპირება დაჭერისთანავე. iPhone-ზე ბრაუზერი ბუფერში ჩაწერას მხოლოდ დაჭერის წამშივე უშვებს და თუ გვერდი სხვა აპში
-// (Instagram) გადადის, ასინქრონული navigator.clipboard ხშირად არ ასწრებს. ამიტომ ჯერ სინქრონულად textarea-ით ვაკოპირებთ,
-// navigator.clipboard მხოლოდ სათადარიგოა.
-function copyText(text: string): boolean {
-  let ok = false;
-  const area = document.createElement("textarea");
-  area.value = text;
-  // readonly არ უნდა იყოს: iOS-ზე ასეთი ველი არ მონიშნება; 16px, რომ iPhone-მა გვერდი არ გაზარდოს
-  area.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px";
-  document.body.appendChild(area);
-  area.focus();
-  area.select();
-  area.setSelectionRange(0, text.length);
-  try {
-    ok = document.execCommand("copy");
-  } catch {}
-  area.remove();
-  if (!ok && navigator.clipboard?.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {});
-    ok = true;
-  }
-  return ok;
-}
 
 function ratioOf(work: GalleryWork) {
   return work.width && work.height ? work.width / work.height : FALLBACK_RATIO;

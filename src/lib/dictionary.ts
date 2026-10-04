@@ -111,6 +111,7 @@ const ka = {
     about: "ავტორის შესახებ",
     close: "დახურვა",
     openWork: "ნახე და შეუკვეთე",
+    dmMessageArtist: "გამარჯობა! საიტ „khelovani.ge“-ზე ვნახე თქვენი გვერდი. მაინტერესებს თქვენი ნამუშევრები: რა ღირს და როგორ შემიძლია შეკვეთა?",
     messageOnInstagram: "მიწერე ავტორს ინსტაგრამზე",
     messageOnFacebook: "მიწერე ავტორს ფეისბუქზე",
     // ავტორისთვის მზა შეტყობინება: ჩანს, რომ მყიდველი ჩვენგან მივიდა
@@ -323,6 +324,7 @@ const en: Dict = {
     about: "About the artist",
     close: "Close",
     openWork: "View & order",
+    dmMessageArtist: "Hi! I saw your page on khelovani.ge. I'm interested in your work: how much is it and how can I order?",
     messageOnInstagram: "Message the maker on Instagram",
     messageOnFacebook: "Message the maker on Facebook",
     dmMessage: (work: string) => `Hi! I saw your piece on khelovani.ge: ${work}. I'm interested. How much is it and how can I order?`,

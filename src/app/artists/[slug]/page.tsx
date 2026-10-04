@@ -4,6 +4,7 @@ import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
 import PageHeader from "@/components/PageHeader";
 import BannerPhotos from "@/components/BannerPhotos";
+import CopyLink from "@/components/CopyLink";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
 import { getArtistBySlug, localizeArtist } from "@/data/artists";
@@ -42,8 +43,10 @@ function SocialLink({
   icon,
   label,
   variant,
+  message,
 }: {
   href?: string;
+  message: string;
   icon: ReactNode;
   label: string;
   variant: keyof typeof socialVariant;
@@ -62,10 +65,9 @@ function SocialLink({
   }
 
   return (
-    <a
+    <CopyLink
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      message={message}
       className={`group ${base} ${socialVariant[variant]} transition duration-300 hover:-translate-y-0.5 active:scale-95`}
     >
       {icon}
@@ -73,7 +75,7 @@ function SocialLink({
       <span className="-ml-1 hidden opacity-60 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 sm:inline" aria-hidden>
         ↗
       </span>
-    </a>
+    </CopyLink>
   );
 }
 
@@ -196,8 +198,8 @@ export default function ArtistPage({
 
           <p className="mt-4 text-sm font-medium text-white/85">{t.buyHint}</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" />
-            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" />
+            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
+            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
           </div>
         </div>
       </section>
@@ -247,8 +249,8 @@ export default function ArtistPage({
           <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>
           <p className="mt-2 leading-relaxed text-text/75">{t.ctaText}</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" />
-            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" />
+            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
+            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
           </div>
         </div>
       </section>
