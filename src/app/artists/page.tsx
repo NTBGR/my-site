@@ -17,10 +17,10 @@ export default function ArtistsPage({
   const lang = getLang();
   const t = dictionary[lang].artists;
   const artists = getLocalizedArtists(lang);
-  // ფილტრის ღილაკები: საიტის კატეგორიები, რომლებშიც ერთი ხელოვანი მაინც არის
+  // ფილტრის ღილაკები: პროფესიები („კერამიკოსები“), კატეგორიებიდან, სადაც ერთი ხელოვანი მაინც არის
   const crafts = categories
     .filter((c) => artists.some((a) => a.categories.includes(c.slug)))
-    .map((c) => ({ slug: c.slug, name: localizeCategory(c, lang).name }));
+    .map((c) => ({ slug: c.slug, name: localizeCategory(c, lang).makers }));
   const q = Array.isArray(searchParams.q) ? searchParams.q[0] : searchParams.q ?? "";
 
   return (

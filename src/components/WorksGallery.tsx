@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import ArtTile from "@/components/ArtTile";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
@@ -26,6 +27,10 @@ function ratioOf(work: GalleryWork) {
 export default function WorksGallery({ works }: { works: GalleryWork[] }) {
   const t = useT();
   const [open, setOpen] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const touchX = useRef<number | null>(null);
+
+  useEffect(() => setMounted(true), []);
 
   const close = useCallback(() => setOpen(null), []);
   const step = useCallback(
@@ -93,98 +98,125 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
         ))}
       </ul>
 
-      {/* სრულეკრანიანი ნახვა */}
-      {current ? (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={current.title}
-          className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
-          onClick={close}
-        >
-          <div
-            className="flex max-h-full max-w-5xl flex-col items-center gap-4"
-            onClick={(event) => event.stopPropagation()}
-          >
-            {current.image ? (
-              <Image
-                src={current.image}
-                alt={current.title}
-                width={current.width ?? 1000}
-                height={current.height ?? 1250}
-                sizes="90vw"
-                className="h-auto max-h-[72vh] w-auto max-w-full rounded-2xl object-contain"
-                priority
-              />
-            ) : (
-              <div
-                className="max-w-full overflow-hidden rounded-2xl"
-                style={{
-                  aspectRatio: ratioOf(current),
-                  height: "min(72vh, 640px)",
-                }}
-              >
-                <ArtTile
-                  color={current.color}
-                  variant={current.variant}
-                  className="h-full w-full"
-                />
-              </div>
-            )}
-            <div className="flex flex-wrap items-center justify-center gap-3 text-white">
-              <p className="text-lg font-semibold tracking-tight">{current.title}</p>
-              {current.url ? (
-                <a
-                  href={current.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-white/30 bg-white/10 px-4 text-sm font-medium backdrop-blur-md transition hover:bg-white hover:text-black"
-                >
-                  {t.artist.openWork} ↗
-                </a>
-              ) : null}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={close}
-            aria-label={t.artist.close}
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/15 text-white backdrop-blur-md transition hover:bg-white hover:text-black"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.9"
-              strokeLinecap="round"
-              aria-hidden
+      {/* სრულეკრანიანი ნახვა: პორტალით body-ში, რომ გვერდის ანიმაცია (transform) პოზიციას არ ცვლიდეს */}
+      {current && mounted
+        ? createPortal(
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label={current.title}
+              className="fixed inset-0 z-[100] flex flex-col bg-black/90 text-white backdrop-blur-sm"
+              onClick={close}
+              onTouchStart={(event) => {
+                touchX.current = event.touches[0].clientX;
+              }}
+              onTouchEnd={(event) => {
+                if (touchX.current === null) return;
+                const dx = event.changedTouches[0].clientX - touchX.current;
+                touchX.current = null;
+                // გასმა: ფურცვლა და არა დახურვა
+                if (Math.abs(dx) > 50 && works.length > 1) {
+                  event.preventDefault();
+                  step(dx < 0 ? 1 : -1);
+                }
+              }}
             >
-              <path d="M6 6l12 12M18 6 6 18" />
-            </svg>
-          </button>
+              {/* ზედა ზოლი: მრიცხველი და დახურვა */}
+              <div
+                className="flex shrink-0 items-center justify-between px-4 pb-2 pt-[max(1rem,env(safe-area-inset-top))] sm:px-6"
+                onClick={(event) => event.stopPropagation()}
+              >
+                <span className="text-sm font-medium text-white/70 tabular-nums">
+                  {open! + 1} / {works.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={close}
+                  aria-label={t.artist.close}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 backdrop-blur-md transition hover:bg-white hover:text-black"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden>
+                    <path d="M6 6l12 12M18 6 6 18" />
+                  </svg>
+                </button>
+              </div>
 
-          {works.length > 1 ? (
-            <>
-              <ArrowButton
-                direction="prev"
-                variant="glass"
-                label={t.home.prev}
-                onClick={() => step(-1)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 sm:left-6"
-              />
-              <ArrowButton
-                direction="next"
-                variant="glass"
-                label={t.home.next}
-                onClick={() => step(1)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 sm:right-6"
-              />
-            </>
-          ) : null}
-        </div>
-      ) : null}
+              {/* სურათი: ყოველთვის მთლიანად ეტევა ეკრანზე */}
+              <div className="relative flex min-h-0 flex-1 items-center justify-center px-4 sm:px-20">
+                <div
+                  className="flex h-full w-full items-center justify-center"
+                  onClick={(event) => {
+                    if (event.target !== event.currentTarget) event.stopPropagation();
+                  }}
+                >
+                  {current.image ? (
+                    <Image
+                      key={current.image}
+                      src={current.image}
+                      alt={current.title}
+                      width={current.width ?? 1000}
+                      height={current.height ?? 1250}
+                      sizes="(min-width: 1024px) 70vw, 95vw"
+                      className="h-auto max-h-full w-auto max-w-full rounded-2xl object-contain shadow-2xl"
+                      priority
+                    />
+                  ) : (
+                    <div
+                      className="max-h-full max-w-full overflow-hidden rounded-2xl shadow-2xl"
+                      style={{ aspectRatio: ratioOf(current), height: "100%" }}
+                    >
+                      <ArtTile color={current.color} variant={current.variant} className="h-full w-full" />
+                    </div>
+                  )}
+                </div>
+
+                {works.length > 1 ? (
+                  <div onClick={(event) => event.stopPropagation()}>
+                    <ArrowButton
+                      direction="prev"
+                      variant="glass"
+                      label={t.home.prev}
+                      onClick={() => step(-1)}
+                      className="absolute left-6 top-1/2 hidden -translate-y-1/2 sm:flex"
+                    />
+                    <ArrowButton
+                      direction="next"
+                      variant="glass"
+                      label={t.home.next}
+                      onClick={() => step(1)}
+                      className="absolute right-6 top-1/2 hidden -translate-y-1/2 sm:flex"
+                    />
+                  </div>
+                ) : null}
+              </div>
+
+              {/* ქვედა ზოლი: სახელი, ყიდვის ღილაკი, მობილურზე ისრები */}
+              <div
+                className="flex shrink-0 flex-wrap items-center justify-center gap-3 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4"
+                onClick={(event) => event.stopPropagation()}
+              >
+                {works.length > 1 ? (
+                  <ArrowButton direction="prev" variant="glass" size="sm" label={t.home.prev} onClick={() => step(-1)} className="sm:hidden" />
+                ) : null}
+                <p className="min-w-0 text-center text-base font-semibold tracking-tight sm:text-lg">{current.title}</p>
+                {works.length > 1 ? (
+                  <ArrowButton direction="next" variant="glass" size="sm" label={t.home.next} onClick={() => step(1)} className="sm:hidden" />
+                ) : null}
+                {current.url ? (
+                  <a
+                    href={current.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full bg-white px-5 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+                  >
+                    {t.artist.openWork} ↗
+                  </a>
+                ) : null}
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

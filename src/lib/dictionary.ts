@@ -66,6 +66,7 @@ const ka = {
     featured: "გამორჩეული ხელოვანები",
     fullList: "სრული სია",
     how: "როგორ მუშაობს",
+    aboutLink: "გაიგე მეტი ჩვენ შესახებ",
     howText: "",
     steps: [
       {
@@ -104,9 +105,12 @@ const ka = {
     facebook: "ფეისბუქი",
     works: "ნამუშევრები",
     buyHint: "შესაძენად მიწერე ავტორს:",
+    ctaTitle: "მოგეწონა?",
+    ctaText: "მიწერე ავტორს და შეუკვეთე პირდაპირ, შუამავლის გარეშე.",
+    alsoIn: "კატეგორიები:",
     about: "ავტორის შესახებ",
     close: "დახურვა",
-    openWork: "ნახვა",
+    openWork: "ნახე და შეუკვეთე",
   },
   categories: {
     title: "კატეგორიები",
@@ -141,7 +145,7 @@ const ka = {
   },
   join: {
     title: "გახდი პარტნიორი",
-    text: "ყიდი ხელნაკეთს ინსტაგრამზე ან ფეისბუქზე? განათავსე შენი ნამუშევრები აქ და იპოვე ახალი მყიდველები.",
+    text: "ყიდი ხელნაკეთს ინსტაგრამზე? აქ ახალ მყიდველებს იპოვი.",
     benefitsTitle: "რას მიიღებ",
     benefits: [
       {
@@ -265,6 +269,7 @@ const en: Dict = {
     featured: "Featured artists",
     fullList: "Full list",
     how: "How it works",
+    aboutLink: "More about us",
     howText: "",
     steps: [
       {
@@ -303,9 +308,12 @@ const en: Dict = {
     facebook: "Facebook",
     works: "Works",
     buyHint: "To buy, message the maker:",
+    ctaTitle: "Like what you see?",
+    ctaText: "Message the maker and order directly, no middleman.",
+    alsoIn: "Categories:",
     about: "About the artist",
     close: "Close",
-    openWork: "View",
+    openWork: "View & order",
   },
   categories: {
     title: "Categories",
@@ -340,7 +348,7 @@ const en: Dict = {
   },
   join: {
     title: "Become a partner",
-    text: "Selling handmade on Instagram or Facebook? List your work here and reach new buyers.",
+    text: "Selling handmade on Instagram? Find new buyers here.",
     benefitsTitle: "What you get",
     benefits: [
       {

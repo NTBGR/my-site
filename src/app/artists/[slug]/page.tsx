@@ -1,9 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
+import CategoryArt from "@/components/CategoryArt";
 import PageHeader from "@/components/PageHeader";
 import WorksGallery from "@/components/WorksGallery";
 import { getArtistBySlug, localizeArtist } from "@/data/artists";
+import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
@@ -32,27 +34,31 @@ function FacebookIcon() {
   );
 }
 
-// ტელეფონზე მხოლოდ ხატულა, უფრო დიდ ეკრანზე ხატულა + სახელი
+// ყიდვის ღილაკი: solid (თეთრი, მთავარი), glass (ბანერზე, მეორეხარისხოვანი), accent (ღია ფონზე)
+const socialVariant = {
+  solid: "border-transparent bg-white text-black hover:shadow-xl",
+  glass: "border-white/40 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-black",
+  accent: "border-transparent bg-accent text-on-accent hover:shadow-lg",
+} as const;
+
 function SocialLink({
   href,
   icon,
   label,
+  variant,
 }: {
   href?: string;
   icon: ReactNode;
   label: string;
+  variant: keyof typeof socialVariant;
 }) {
   const base =
-    "inline-flex h-11 min-w-11 items-center justify-center gap-2.5 rounded-full border border-border bg-surface px-4 text-sm font-medium sm:px-5";
+    "inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border px-3.5 text-sm font-medium sm:gap-2.5 sm:px-5";
 
   // ბმული ჯერ არ არის: ღილაკი მაინც ჩანს, ოღონდ მკრთალია
   if (!href) {
     return (
-      <span
-        aria-disabled="true"
-        title={label}
-        className={`${base} cursor-not-allowed text-muted opacity-50`}
-      >
+      <span aria-disabled="true" title={label} className={`${base} ${socialVariant[variant]} cursor-not-allowed opacity-40`}>
         {icon}
         <span>{label}</span>
       </span>
@@ -64,24 +70,16 @@ function SocialLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={label}
-      title={label}
-      className={`group ${base} text-text transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-md`}
+      className={`group ${base} ${socialVariant[variant]} transition duration-300 hover:-translate-y-0.5 active:scale-95`}
     >
       {icon}
       <span>{label}</span>
-      <span
-        className="-ml-1 hidden translate-x-0 opacity-50 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 sm:inline"
-        aria-hidden
-      >
+      <span className="-ml-1 hidden opacity-60 transition duration-300 group-hover:translate-x-0.5 group-hover:opacity-100 sm:inline" aria-hidden>
         ↗
       </span>
     </a>
   );
 }
-
-const chipClass =
-  "inline-flex items-center rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted sm:text-sm";
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const raw = getArtistBySlug(params.slug);
@@ -101,7 +99,8 @@ export default function ArtistPage({
   params: { slug: string };
 }) {
   const lang = getLang();
-  const t = dictionary[lang].artist;
+  const all = dictionary[lang];
+  const t = all.artist;
   const raw = getArtistBySlug(params.slug);
   const artist = raw ? localizeArtist(raw, lang) : undefined;
 
@@ -118,9 +117,17 @@ export default function ArtistPage({
     );
   }
 
+  const main = artist.categories[0] ?? "nakhatebi";
+  const color = categoryColor(main);
+  const cats = artist.categories
+    .map((slug) => getCategoryBySlug(slug))
+    .filter((c) => c !== undefined)
+    .map((c) => localizeCategory(c, lang));
+  const instagram = artist.instagram ? `/go/${artist.slug}/instagram` : undefined;
+  const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
+
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
-      {/* კომპაქტური სათაური */}
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-4 sm:px-6 sm:pb-24 sm:pt-8 lg:px-10">
       <Link
         href="/artists"
         className="inline-flex min-h-10 items-center text-sm font-medium text-muted transition-colors hover:text-accent"
@@ -128,56 +135,104 @@ export default function ArtistPage({
         {t.back}
       </Link>
 
-      <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
-        <div>
-          <div className="flex flex-wrap gap-2">
-            <span className={chipClass}>{artist.category}</span>
+      {/* ბანერი ხელოვანის მთავარი კატეგორიის ფერში */}
+      <section
+        className="relative isolate mt-2 overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
+        style={{
+          background: `linear-gradient(135deg, color-mix(in srgb, ${color}, white 14%), ${color} 55%, color-mix(in srgb, ${color}, black 34%))`,
+        }}
+      >
+        {/* დესკტოპი/პლანშეტი: მცურავი ფილა მარჯვნივ, მთლიანად ჩანს */}
+        <div aria-hidden className="absolute right-[6%] top-1/2 hidden w-[24%] max-w-[15rem] -translate-y-1/2 sm:block">
+          <div
+            className="float overflow-hidden rounded-[1.25rem] shadow-2xl ring-4 ring-white/15"
+            style={{ ["--r" as string]: "4deg" }}
+          >
+            <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
           </div>
-          <h1 className="mt-3 text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-text sm:text-5xl">
+        </div>
+        {/* მობილურზე: პატარა ილუსტრაცია კუთხეში */}
+        <div
+          aria-hidden
+          className="float absolute right-4 top-4 z-10 w-[4.5rem] overflow-hidden rounded-xl shadow-xl ring-2 ring-white/20 sm:hidden"
+          style={{ ["--r" as string]: "5deg" }}
+        >
+          <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
+        </div>
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent" />
+
+        <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[15rem] sm:max-w-[62%] sm:px-10 sm:py-8">
+          <div className="flex flex-wrap gap-2 pr-20 text-xs font-medium sm:pr-0">
+            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
+              {artist.category}
+            </span>
+            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
+              {artist.city}
+            </span>
+          </div>
+          <h1 className="mt-2 pr-20 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
             {artist.name}
           </h1>
-        </div>
+          <p className="mt-1 text-sm text-white/80">
+            {all.artists.worksCount(artist.works.length)}
+          </p>
 
-        <div>
-          <p className="mb-2 text-sm font-medium text-muted">{t.buyHint}</p>
-          <div className="flex gap-2">
-            <SocialLink
-              href={artist.instagram ? `/go/${artist.slug}/instagram` : undefined}
-              icon={<InstagramIcon />}
-              label={t.instagram}
-            />
-            <SocialLink
-              href={artist.facebook ? `/go/${artist.slug}/facebook` : undefined}
-              icon={<FacebookIcon />}
-              label={t.facebook}
-            />
+          <p className="mt-4 text-sm font-medium text-white/85">{t.buyHint}</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="solid" />
+            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="glass" />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ნამუშევრები ჯერ: ერთნაირი 9:16 ბარათები */}
-      <div className="mt-6 sm:mt-8">
-        <WorksGallery
-          works={artist.works.map((work, i) => ({
-            title: work.title,
-            color: work.color,
-            variant: (variantFor(artist.slug) + i) % 4,
-            url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
-            image: work.image,
-            width: work.width,
-            height: work.height,
-          }))}
-        />
-      </div>
+      {/* ნამუშევრები */}
+      <section className="mt-10 sm:mt-14">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.works}</h2>
+          {cats.length > 1 ? (
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="text-muted">{t.alsoIn}</span>
+              {cats.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/categories/${c.slug}`}
+                  className="inline-flex min-h-9 items-center rounded-full border border-border bg-surface px-3 font-medium text-text transition hover:border-accent hover:text-accent"
+                >
+                  {c.name}
+                </Link>
+              ))}
+            </div>
+          ) : null}
+        </div>
+        <div className="mt-5">
+          <WorksGallery
+            works={artist.works.map((work, i) => ({
+              title: work.title,
+              color: work.color,
+              variant: (variantFor(artist.slug) + i) % 4,
+              url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
+              image: work.image,
+              width: work.width,
+              height: work.height,
+            }))}
+          />
+        </div>
+      </section>
 
-      {/* აღწერა ქვემოთ */}
-      <section className="mt-10 max-w-3xl sm:mt-14">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
-          {t.about}
-        </h2>
-        <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">
-          {artist.bio}
-        </p>
+      {/* ავტორის შესახებ + ყიდვის ბლოკი */}
+      <section className="mt-10 grid gap-4 sm:mt-14 lg:grid-cols-[3fr_2fr]">
+        <div className="rounded-[1.75rem] border border-border bg-surface p-6 sm:p-8">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">{t.about}</h2>
+          <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">{artist.bio}</p>
+        </div>
+        <div className="flex flex-col justify-center rounded-[1.75rem] bg-accent-soft p-6 sm:p-8">
+          <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>
+          <p className="mt-2 leading-relaxed text-text/75">{t.ctaText}</p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="accent" />
+            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="solid" />
+          </div>
+        </div>
       </section>
     </div>
   );

@@ -23,7 +23,7 @@ export default function JoinPage() {
       >
         <a
           href="#apply"
-          className="group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
+          className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
         >
           {all.form.open}
           <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">

@@ -306,6 +306,15 @@ export default function Home() {
             </li>
           ))}
         </Reveal>
+        <Link
+          href="/about"
+          className="group mt-5 inline-flex min-h-10 items-center gap-2 text-sm font-medium text-accent"
+        >
+          {t.aboutLink}
+          <span className="arrow-slide" aria-hidden>
+            →
+          </span>
+        </Link>
       </section>
 
       {/* შემოქმედის ბანერი */}

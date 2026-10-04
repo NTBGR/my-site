@@ -43,6 +43,7 @@ export default function Footer() {
   const { footer: f, nav } = getT();
 
   const explore = [
+    { href: "/about", label: f.about },
     { href: "/artists", label: nav.artists },
     { href: "/categories", label: nav.categories },
     { href: "/blog", label: nav.blog },

@@ -9,7 +9,7 @@ import CategoryBar from "@/components/CategoryBar";
 import LogoLink from "@/components/LogoLink";
 import { useT } from "@/components/LangProvider";
 
-const navHrefs = ["/artists", "/categories", "/blog"] as const;
+const navHrefs = ["/artists", "/categories", "/blog", "/about"] as const;
 
 function SearchIcon() {
   return (
@@ -58,7 +58,8 @@ export default function Header() {
     { href: "/", label: t.nav.home },
     { href: navHrefs[0], label: t.nav.artists },
     { href: navHrefs[1], label: t.nav.categories },
-    { href: navHrefs[2], label: t.nav.blog },
+    // ბლოგი ჰედერში ჯერ არ ჩანს (ფუტერშია), სანამ სტატიები გამოჩნდება
+    { href: navHrefs[3], label: t.footer.about },
   ];
   const isActive = (href: string) =>
     href === "/"
