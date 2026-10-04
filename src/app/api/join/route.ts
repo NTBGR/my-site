@@ -8,9 +8,19 @@ const MAX_FILES = 10;
 const MAX_TOTAL_BYTES = 4 * 1024 * 1024; // Vercel-ის მოთხოვნის ლიმიტი ~4.5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-function field(data: FormData, name: string) {
+// ფაილის ტიპს სათაურზე არ ვენდობით (გამგზავნს შეუძლია ცრუ ტიპი მიუთითოს): პირველი ბაიტებით ვამოწმებთ, ნამდვილად სურათია თუ არა
+async function looksLikeImage(file: File) {
+  const b = new Uint8Array(await file.slice(0, 12).arrayBuffer());
+  const jpeg = b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff;
+  const png = b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47;
+  const webp = b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50;
+  return jpeg || png || webp;
+}
+
+// ველის მაქსიმალური სიგრძე სერვერზეც (ბრაუზერის maxLength მხოლოდ ადამიანისთვის მუშაობს, ბოტი მას გვერდს უვლის)
+function field(data: FormData, name: string, max = 200) {
   const value = data.get(name);
-  return typeof value === "string" ? value.trim() : "";
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
 function escapeHtml(text: string) {
@@ -34,15 +44,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const name = field(data, "name");
-  const email = field(data, "email");
+  const name = field(data, "name", 100);
+  const email = field(data, "email", 150);
   const cityValue = field(data, "city");
   const city = cities.some((c) => c.value === cityValue) ? cityValue : "";
   const categoryName = categoryNameKa(field(data, "category"));
-  const bio = field(data, "bio");
+  const bio = field(data, "bio", 2000);
   const instagram = field(data, "instagram");
   const facebook = field(data, "facebook");
-  const comment = field(data, "comment").slice(0, 1000);
+  const comment = field(data, "comment", 1000);
 
   if (!name || !email || !city || !categoryName || !bio || !instagram) {
     return NextResponse.json(
@@ -73,7 +83,8 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
-  if (files.some((f) => !ALLOWED_TYPES.includes(f.type))) {
+  const realImages = await Promise.all(files.map(looksLikeImage));
+  if (files.some((f) => !ALLOWED_TYPES.includes(f.type)) || realImages.some((ok) => !ok)) {
     return NextResponse.json(
       { error: "type" },
       { status: 400 },
