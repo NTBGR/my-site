@@ -111,6 +111,10 @@ const ka = {
     about: "ავტორის შესახებ",
     close: "დახურვა",
     openWork: "ნახე და შეუკვეთე",
+    // ავტორისთვის მზა შეტყობინება: ჩანს, რომ მყიდველი ჩვენგან მივიდა
+    dmMessage: (work: string) => `გამარჯობა! „ხელოვანიდან“ გწერთ, მაინტერესებს: ${work}`,
+    dmHint: "შეტყობინება დაკოპირდება — ჩასვი ავტორის DM-ში",
+    dmCopied: "დაკოპირდა ✓ ჩასვი ავტორის DM-ში",
   },
   categories: {
     title: "კატეგორიები",
@@ -314,6 +318,9 @@ const en: Dict = {
     about: "About the artist",
     close: "Close",
     openWork: "View & order",
+    dmMessage: (work: string) => `Hi! I found you on Khelovani and I'm interested in: ${work}`,
+    dmHint: "A message will be copied — paste it into the maker's DM",
+    dmCopied: "Copied ✓ paste it into the maker's DM",
   },
   categories: {
     title: "Categories",

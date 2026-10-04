@@ -20,6 +20,25 @@ export type GalleryWork = {
 
 const FALLBACK_RATIO = 3 / 4;
 
+// დაკოპირება დაჭერისთანავე (iOS-ზე მხოლოდ მომხმარებლის მოქმედებისას მუშაობს); ძველ ბრაუზერებში textarea-ით
+function copyText(text: string) {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+    return;
+  }
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.select();
+  try {
+    document.execCommand("copy");
+  } catch {}
+  area.remove();
+}
+
 function ratioOf(work: GalleryWork) {
   return work.width && work.height ? work.width / work.height : FALLBACK_RATIO;
 }
@@ -28,9 +47,12 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
   const t = useT();
   const [open, setOpen] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [copied, setCopied] = useState(false);
   const touchX = useRef<number | null>(null);
 
   useEffect(() => setMounted(true), []);
+  // სხვა ნამუშევარზე გადასვლისას „დაკოპირდა“ ქრება
+  useEffect(() => setCopied(false), [open]);
 
   const close = useCallback(() => setOpen(null), []);
   const step = useCallback(
@@ -202,14 +224,24 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                   ) : null}
                 </div>
                 {current.url ? (
-                  <a
-                    href={current.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-1.5 rounded-full bg-white px-5 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
-                  >
-                    {t.artist.openWork} ↗
-                  </a>
+                  <div className="flex w-full shrink-0 flex-col items-center gap-1.5 sm:w-auto">
+                    {/* დაჭერისას მზა შეტყობინება კოპირდება, მერე იხსნება ავტორის გვერდი */}
+                    <a
+                      href={current.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        copyText(t.artist.dmMessage(current.title));
+                        setCopied(true);
+                      }}
+                      className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full bg-white px-5 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+                    >
+                      {t.artist.openWork} ↗
+                    </a>
+                    <span aria-live="polite" className={`text-xs ${copied ? "text-white" : "text-white/60"}`}>
+                      {copied ? t.artist.dmCopied : t.artist.dmHint}
+                    </span>
+                  </div>
                 ) : null}
               </div>
             </div>,
