@@ -23,23 +23,28 @@ export type GalleryWork = {
 
 const FALLBACK_RATIO = 3 / 4;
 
-// დაკოპირება დაჭერისთანავე (iOS-ზე მხოლოდ მომხმარებლის მოქმედებისას მუშაობს); ძველ ბრაუზერებში textarea-ით
-function copyText(text: string) {
-  if (navigator.clipboard?.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {});
-    return;
-  }
+// დაკოპირება დაჭერისთანავე. iPhone-ზე ბრაუზერი ბუფერში ჩაწერას მხოლოდ დაჭერის წამშივე უშვებს და თუ გვერდი სხვა აპში
+// (Instagram) გადადის, ასინქრონული navigator.clipboard ხშირად არ ასწრებს. ამიტომ ჯერ სინქრონულად textarea-ით ვაკოპირებთ,
+// navigator.clipboard მხოლოდ სათადარიგოა.
+function copyText(text: string): boolean {
+  let ok = false;
   const area = document.createElement("textarea");
   area.value = text;
-  area.setAttribute("readonly", "");
-  area.style.position = "fixed";
-  area.style.opacity = "0";
+  // readonly არ უნდა იყოს: iOS-ზე ასეთი ველი არ მონიშნება; 16px, რომ iPhone-მა გვერდი არ გაზარდოს
+  area.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px";
   document.body.appendChild(area);
+  area.focus();
   area.select();
+  area.setSelectionRange(0, text.length);
   try {
-    document.execCommand("copy");
+    ok = document.execCommand("copy");
   } catch {}
   area.remove();
+  if (!ok && navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+    ok = true;
+  }
+  return ok;
 }
 
 function ratioOf(work: GalleryWork) {
@@ -234,8 +239,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => {
-                        copyText(t.artist.dmMessage(current.title));
-                        setCopied(true);
+                        setCopied(copyText(t.artist.dmMessage(current.title)));
                       }}
                       className={`inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full border px-5 text-sm font-medium transition duration-300 hover:-translate-y-0.5 active:scale-95 sm:w-auto ${socialVariant[current.network ?? "instagram"]}`}
                     >
