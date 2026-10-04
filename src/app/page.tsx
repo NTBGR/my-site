@@ -15,7 +15,8 @@ export default async function Home() {
   const lang = await getLang();
   const t = dictionary[lang].home;
   const artists = getLocalizedArtists(lang);
-  const featured = artists.slice(0, 3);
+  // ტელეფონზე ფურცვლით ჩანს ექვსამდე ხელოვანი და ბოლოს „ყველა ხელოვანი“ ბარათი; დესკტოპზე ხუთამდე (ერთი რიგი)
+  const featured = artists.slice(0, 6);
   // ხელოვანების სხვადასხვა ხელობა „გაიცანი ხელოვანები“ ქარდისთვის
   const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));
@@ -251,13 +252,13 @@ export default async function Home() {
 
       {/* რჩეული ხელოვანები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
-        <Reveal className="mb-5 sm:mb-8 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
           <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.featured}
           </h2>
           <Link
             href="/artists"
-            className="group inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent"
+            className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
           >
             {t.fullList}
             <span className="arrow-slide" aria-hidden>
