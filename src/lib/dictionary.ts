@@ -114,7 +114,7 @@ const ka = {
     messageOnInstagram: "მიწერე ავტორს ინსტაგრამზე",
     messageOnFacebook: "მიწერე ავტორს ფეისბუქზე",
     // ავტორისთვის მზა შეტყობინება: ჩანს, რომ მყიდველი ჩვენგან მივიდა
-    dmMessage: (work: string) => `გამარჯობა! „ხელოვანიდან“ გწერთ, მაინტერესებს: ${work}`,
+    dmMessage: (work: string) => `გამარჯობა! საიტ „khelovani.ge“-ზე ვნახე თქვენი ნამუშევარი: ${work}. მაინტერესებს, რა ღირს და როგორ შემიძლია შეკვეთა?`,
     dmCopied: "დაკოპირდა ✓ ჩასვი ავტორის DM-ში",
   },
   categories: {
@@ -325,7 +325,7 @@ const en: Dict = {
     openWork: "View & order",
     messageOnInstagram: "Message the maker on Instagram",
     messageOnFacebook: "Message the maker on Facebook",
-    dmMessage: (work: string) => `Hi! I found you on Khelovani and I'm interested in: ${work}`,
+    dmMessage: (work: string) => `Hi! I saw your piece on khelovani.ge: ${work}. I'm interested. How much is it and how can I order?`,
     dmCopied: "Copied ✓ paste it into the maker's DM",
   },
   categories: {
