@@ -135,10 +135,10 @@ export default async function ArtistPage({
   const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-4 sm:px-6 sm:pb-24 sm:pt-8 lg:px-10">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <Link
         href="/artists"
-        className="inline-flex min-h-10 items-center text-sm font-medium text-muted transition-colors hover:text-accent"
+        className="inline-flex min-h-9 items-center text-sm font-medium text-muted transition-colors hover:text-accent"
       >
         {t.back}
       </Link>
@@ -180,7 +180,7 @@ export default async function ArtistPage({
         </div>
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent" />
 
-        <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[15rem] sm:max-w-[62%] sm:px-10 sm:py-8">
+        <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[13rem] sm:max-w-[62%] sm:px-10 sm:py-6">
           <div className="flex flex-wrap gap-2 pr-24 text-xs font-medium sm:pr-0">
             <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
               {artist.category}
@@ -207,7 +207,7 @@ export default async function ArtistPage({
       </section>
 
       {/* ნამუშევრები */}
-      <section className="mt-10 sm:mt-14">
+      <section className="mt-8 sm:mt-10">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.works}</h2>
           {cats.length > 1 ? (
