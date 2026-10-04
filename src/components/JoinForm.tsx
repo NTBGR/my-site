@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
-import { useT } from "@/components/LangProvider";
+import { useLang, useT } from "@/components/LangProvider";
+import { categories } from "@/data/categories";
+import { cities, OTHER_CATEGORY } from "@/data/join-options";
 
-const MAX_FILES = 4;
+const MAX_FILES = 10;
 const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
 
 const inputClass =
@@ -13,8 +15,32 @@ const inputClass =
 
 type Status = "idle" | "sending" | "success";
 
+const MAX_SIDE = 1600;
+
+// ტელეფონის ფოტო 3-6MB-ია: ვაპატარავებთ (გრძელი გვერდი 1600px, JPEG), რომ 10 ფოტო ერთად ეტეოდეს. შეცდომისას ორიგინალი გადის.
+async function shrink(file: File): Promise<File> {
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.82));
+    if (!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
+  } catch {
+    return file;
+  }
+}
+
 export default function JoinForm() {
   const t = useT().form;
+  const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -25,21 +51,26 @@ export default function JoinForm() {
     const form = event.currentTarget;
     const data = new FormData(form);
 
-    const files = (data.getAll("works") as File[]).filter((f) => f.size > 0);
-    if (files.length === 0) {
+    const picked = (data.getAll("works") as File[]).filter((f) => f.size > 0);
+    if (picked.length === 0) {
       setError(t.errors.photos);
       return;
     }
-    if (files.length > MAX_FILES) {
+    if (picked.length > MAX_FILES) {
       setError(t.errors.tooMany(MAX_FILES));
-      return;
-    }
-    if (files.reduce((sum, f) => sum + f.size, 0) > MAX_TOTAL_BYTES) {
-      setError(t.errors.size);
       return;
     }
 
     setStatus("sending");
+    const files = await Promise.all(picked.map(shrink));
+    if (files.reduce((sum, f) => sum + f.size, 0) > MAX_TOTAL_BYTES) {
+      setError(t.errors.size);
+      setStatus("idle");
+      return;
+    }
+    data.delete("works");
+    files.forEach((file) => data.append("works", file));
+
     try {
       const res = await fetch("/api/join", { method: "POST", body: data });
       const json = await res.json().catch(() => ({}));
@@ -95,18 +126,31 @@ export default function JoinForm() {
 
       <label className="text-sm font-medium text-text">
         {t.city}
-        <input name="city" required maxLength={80} className={inputClass} />
+        <select name="city" required defaultValue="" className={inputClass}>
+          <option value="" disabled>
+            {t.cityPlaceholder}
+          </option>
+          {cities.map((city) => (
+            <option key={city.value} value={city.value}>
+              {lang === "ka" ? city.value : city.en}
+            </option>
+          ))}
+        </select>
       </label>
 
       <label className="text-sm font-medium text-text">
         {t.category}
-        <input
-          name="category"
-          required
-          maxLength={80}
-          placeholder={t.categoryPlaceholder}
-          className={inputClass}
-        />
+        <select name="category" required defaultValue="" className={inputClass}>
+          <option value="" disabled>
+            {t.categoryPlaceholder}
+          </option>
+          {categories.map((category) => (
+            <option key={category.slug} value={category.slug}>
+              {lang === "ka" ? category.name : category.en.name}
+            </option>
+          ))}
+          <option value={OTHER_CATEGORY}>{t.otherCategory}</option>
+        </select>
       </label>
 
       <label className="text-sm font-medium text-text">
@@ -124,7 +168,6 @@ export default function JoinForm() {
         {t.facebook}
         <input
           name="facebook"
-          required
           maxLength={200}
           placeholder="https://facebook.com/..."
           className={inputClass}
@@ -138,6 +181,17 @@ export default function JoinForm() {
           required
           rows={5}
           maxLength={2000}
+          className={inputClass}
+        />
+      </label>
+
+      <label className="text-sm font-medium text-text sm:col-span-2">
+        {t.comment}
+        <textarea
+          name="comment"
+          rows={3}
+          maxLength={1000}
+          placeholder={t.commentPlaceholder}
           className={inputClass}
         />
       </label>

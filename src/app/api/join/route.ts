@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
+import { categoryNameKa, cities } from "@/data/join-options";
 
 export const runtime = "nodejs";
 
-const MAX_FILES = 4;
+const MAX_FILES = 10;
 const MAX_TOTAL_BYTES = 4 * 1024 * 1024; // Vercel-ის მოთხოვნის ლიმიტი ~4.5MB
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
@@ -28,13 +29,15 @@ export async function POST(request: Request) {
 
   const name = field(data, "name");
   const email = field(data, "email");
-  const city = field(data, "city");
-  const category = field(data, "category");
+  const cityValue = field(data, "city");
+  const city = cities.some((c) => c.value === cityValue) ? cityValue : "";
+  const categoryName = categoryNameKa(field(data, "category"));
   const bio = field(data, "bio");
   const instagram = field(data, "instagram");
   const facebook = field(data, "facebook");
+  const comment = field(data, "comment").slice(0, 1000);
 
-  if (!name || !email || !city || !category || !bio || !instagram || !facebook) {
+  if (!name || !email || !city || !categoryName || !bio || !instagram) {
     return NextResponse.json(
       { error: "required" },
       { status: 400 },
@@ -76,7 +79,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const application = { name, email, city, category, instagram, facebook, bio };
+  const application = { name, email, city, category: categoryName, instagram, facebook, bio, comment };
 
   const telegramOn = Boolean(
     process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
@@ -110,6 +113,7 @@ type Application = {
   instagram: string;
   facebook: string;
   bio: string;
+  comment: string;
 };
 
 async function sendToTelegram(app: Application, files: File[]) {
@@ -129,6 +133,7 @@ async function sendToTelegram(app: Application, files: File[]) {
     "",
     "<b>ბიოგრაფია:</b>",
     escapeHtml(app.bio),
+    ...(app.comment ? ["", "<b>კომენტარი:</b>", escapeHtml(app.comment)] : []),
   ].join("\n");
 
   try {
@@ -193,6 +198,7 @@ async function sendToEmail(app: Application, files: File[]) {
     <p><b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}</p>
     <p><b>ფეისბუქი:</b> ${escapeHtml(app.facebook) || "—"}</p>
     <p><b>ბიოგრაფია:</b><br>${escapeHtml(app.bio).replace(/\n/g, "<br>")}</p>
+    ${app.comment ? `<p><b>კომენტარი:</b><br>${escapeHtml(app.comment).replace(/\n/g, "<br>")}</p>` : ""}
   `;
 
   try {
