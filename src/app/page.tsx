@@ -263,7 +263,7 @@ export default function Home() {
               <ArtistCard
                 key={artist.slug}
                 artist={artist}
-                artClassName="aspect-[4/3]"
+                artClassName="aspect-[4/5] sm:aspect-[4/3]"
                 worksLabel={[artist.city, dictionary[lang].artists.worksCount(artist.works.length)].filter(Boolean).join(" · ")}
               />
             ))}
