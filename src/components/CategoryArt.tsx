@@ -224,6 +224,9 @@ export default function CategoryArt({
     deep: mix(color, "black", 60),
   };
 
+  // ყოველ ილუსტრაციას საკუთარი ფაზა, რომ გვერდზე ყველა ერთდროულად ერთნაირად არ ირხეოდეს
+  const phase = Array.from(slug).reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 6;
+
   return (
     <div
       className={`grain ${className.includes("absolute") ? "" : "relative"} overflow-hidden ${className}`.trim()}
@@ -237,11 +240,13 @@ export default function CategoryArt({
         className="zoom-on-hover absolute inset-0 h-full w-full"
         aria-hidden
       >
-        <circle cx="52" cy="48" r="3" fill={palette.cream} opacity=".5" />
-        <circle cx="352" cy="64" r="4" fill={palette.light} opacity=".45" />
-        <circle cx="336" cy="254" r="2.5" fill={palette.cream} opacity=".5" />
-        <circle cx="62" cy="238" r="3.5" fill={palette.light} opacity=".4" />
-        {scene(slug, palette)}
+        <circle className="art-twinkle" style={{ animationDelay: `-${phase}s` }} cx="52" cy="48" r="3" fill={palette.cream} opacity=".5" />
+        <circle className="art-twinkle" style={{ animationDelay: `-${phase + 1.2}s` }} cx="352" cy="64" r="4" fill={palette.light} opacity=".45" />
+        <circle className="art-twinkle" style={{ animationDelay: `-${phase + 2.1}s` }} cx="336" cy="254" r="2.5" fill={palette.cream} opacity=".5" />
+        <circle className="art-twinkle" style={{ animationDelay: `-${phase + 0.6}s` }} cx="62" cy="238" r="3.5" fill={palette.light} opacity=".4" />
+        <g className="art-bob" style={{ animationDelay: `-${phase}s` }}>
+          {scene(slug, palette)}
+        </g>
       </svg>
       {children ? <div className="relative z-10 h-full">{children}</div> : null}
     </div>

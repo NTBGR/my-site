@@ -233,6 +233,44 @@ a:hover > .arrow-slide {
   animation: float 7s ease-in-out infinite;
 }
 
+/* ილუსტრაციები (კატეგორიების სცენები) ნელა ირხევა და ციმციმებს: ყველგან, სადაც CategoryArt გამოიყენება */
+@keyframes art-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(0.9deg);
+  }
+}
+
+@keyframes art-twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.art-bob {
+  animation: art-bob 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.art-twinkle {
+  animation: art-twinkle 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .art-bob,
+  .art-twinkle {
+    animation: none;
+  }
+}
+
 .blob {
   animation: drift 14s ease-in-out infinite;
 }
