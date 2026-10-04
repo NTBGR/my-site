@@ -6,12 +6,15 @@ import { createPortal } from "react-dom";
 import ArtTile from "@/components/ArtTile";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import { socialVariant } from "@/components/ui/socialStyles";
 
 export type GalleryWork = {
   title: string;
   color: string;
   variant: number;
   url?: string;
+  // სად მიდის ბმული: ღილაკის წარწერისთვის
+  network?: "instagram" | "facebook";
   // ნამდვილი ფოტო (public საქაღალდიდან) და მისი ზომები; თუ არ არის, ჩანს ადგილმჭერი
   image?: string;
   width?: number;
@@ -209,7 +212,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
 
               {/* ქვედა ზოლი: [←] სახელი [→] ერთ რიგში (მობილურზე ისრებით), ქვეშ ყიდვის ღილაკი */}
               <div
-                className="flex shrink-0 flex-col items-center gap-3 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 sm:flex-row sm:justify-center"
+                className="flex shrink-0 flex-col items-center gap-3 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4"
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="flex w-full items-center gap-3 sm:w-auto">
@@ -234,12 +237,13 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                         copyText(t.artist.dmMessage(current.title));
                         setCopied(true);
                       }}
-                      className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full bg-white px-5 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+                      className={`inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full border px-5 text-sm font-medium transition duration-300 hover:-translate-y-0.5 active:scale-95 sm:w-auto ${socialVariant[current.network ?? "instagram"]}`}
                     >
-                      {t.artist.openWork} ↗
+                      {current.network === "facebook" ? t.artist.messageOnFacebook : current.network === "instagram" ? t.artist.messageOnInstagram : t.artist.openWork} ↗
                     </a>
-                    <span aria-live="polite" className={`text-xs ${copied ? "text-white" : "text-white/60"}`}>
-                      {copied ? t.artist.dmCopied : t.artist.dmHint}
+                    {/* წარწერა მხოლოდ დაჭერის შემდეგ: ავტორის გვერდიდან რომ დაბრუნდები, ნახავ, რომ ტექსტი დაკოპირდა */}
+                    <span aria-live="polite" className="text-xs text-white/80">
+                      {copied ? t.artist.dmCopied : null}
                     </span>
                   </div>
                 ) : null}

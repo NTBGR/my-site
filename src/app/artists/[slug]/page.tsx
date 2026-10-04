@@ -5,6 +5,7 @@ import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
 import PageHeader from "@/components/PageHeader";
 import WorksGallery from "@/components/WorksGallery";
+import { socialVariant } from "@/components/ui/socialStyles";
 import { getArtistBySlug, localizeArtist } from "@/data/artists";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
@@ -35,12 +36,6 @@ function FacebookIcon() {
   );
 }
 
-// ბრენდული ღილაკები: ინსტაგრამის გრადიენტი და ფეისბუქის ლურჯი, რომ ადვილად ამოიცნონ
-const socialVariant = {
-  instagram:
-    "border-transparent bg-[linear-gradient(45deg,#f09433_0%,#e6683c_25%,#dc2743_50%,#cc2366_75%,#bc1888_100%)] text-white hover:shadow-xl hover:shadow-[#dc2743]/30",
-  facebook: "border-transparent bg-[#1877F2] text-white hover:bg-[#1468d6] hover:shadow-xl hover:shadow-[#1877F2]/30",
-} as const;
 
 function SocialLink({
   href,
@@ -233,6 +228,7 @@ export default function ArtistPage({
               color: work.color,
               variant: (variantFor(artist.slug) + i) % 4,
               url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
+              network: /facebook\.com|fb\.com|fb\.me/i.test(work.url || artist.instagram || artist.facebook) ? "facebook" as const : "instagram" as const,
               image: work.image,
               width: work.width,
               height: work.height,

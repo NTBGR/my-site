@@ -26,6 +26,10 @@ const config: Config = {
         sans: ["var(--font-sans)", "sans-serif"],
         serif: ["var(--font-serif)", "serif"],
       },
+      // ქართულ ასოებს სუნთქვა უნდა: ვიწრო ინტერვალი სათაურებს „მიბრტყელებულს“ ხდიდა
+      letterSpacing: {
+        tight: "0",
+      },
       borderRadius: {
         card: "16px",
       },
