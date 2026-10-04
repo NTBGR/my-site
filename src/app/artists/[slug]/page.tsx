@@ -119,8 +119,9 @@ export default function ArtistPage({
   }
 
   const main = artist.categories[0] ?? "nakhatebi";
-  // ბანერის ფილაში ნამდვილი ფოტო, თუ აქვს; თუ არა, კატეგორიის ილუსტრაცია
-  const cover = artist.works.find((work) => work.image);
+  // ბანერის ფილაში ქავერი (ან პირველი ნამუშევრის ფოტო); თუ არცერთია, კატეგორიის ილუსტრაცია
+  const firstPhoto = artist.works.find((work) => work.image)?.image;
+  const cover = artist.cover || firstPhoto ? { image: artist.cover || firstPhoto } : undefined;
   const color = categoryColor(main);
   const cats = artist.categories
     .map((slug) => getCategoryBySlug(slug))
@@ -166,7 +167,7 @@ export default function ArtistPage({
         {/* მობილურზე: პატარა ილუსტრაცია კუთხეში */}
         <div
           aria-hidden
-          className="float absolute right-4 top-4 z-10 w-[4.5rem] overflow-hidden rounded-xl shadow-xl ring-2 ring-white/20 sm:hidden"
+          className={`float absolute right-4 top-4 z-10 overflow-hidden rounded-xl shadow-xl ring-2 ring-white/20 sm:hidden ${cover ? "w-[5.5rem]" : "w-[4.5rem]"}`}
           style={{ ["--r" as string]: "5deg" }}
         >
           {cover?.image ? (
@@ -180,7 +181,7 @@ export default function ArtistPage({
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent" />
 
         <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[15rem] sm:max-w-[62%] sm:px-10 sm:py-8">
-          <div className="flex flex-wrap gap-2 pr-20 text-xs font-medium sm:pr-0">
+          <div className="flex flex-wrap gap-2 pr-24 text-xs font-medium sm:pr-0">
             <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
               {artist.category}
             </span>
@@ -190,7 +191,7 @@ export default function ArtistPage({
               </span>
             ) : null}
           </div>
-          <h1 className="mt-2 pr-20 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
+          <h1 className="mt-2 pr-24 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
             {artist.name}
           </h1>
           <p className="mt-1 text-sm text-white/80">

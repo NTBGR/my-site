@@ -46,7 +46,7 @@ export const artists: ArtistData[] = [
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
     city: "",
     categories: ["keramika", "samkauli"],
-    cover: "/artists/zhuzha-ceramics/logo.jpg",
+    cover: "/artists/zhuzha-ceramics/ring-amore.jpg",
     bio: "ZHUZHA Ceramics ხელით ქმნის კერამიკულ აქსესუარებს და ნივთებს: ზღვის ვარსკვლავის ყელსაბამებს ფერადი მძივებით, ბეჭდებს, ბროშებს, ზოდიაქოს გულსაკიდებს და ფინჯნებს.",
     instagram: "https://www.instagram.com/zhuzhaceramics/",
     facebook: "https://www.facebook.com/profile.php?id=61580098836416",

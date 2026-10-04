@@ -62,35 +62,30 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
   return (
     <>
       {/* ერთნაირი 3:4 ბარათები (ტელეფონის ფოტოს ფორმატი); სრული ფოტო იხსნება დაჭერით */}
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+      <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
         {works.map((work, i) => (
           <li key={`${work.title}-${i}`}>
+            {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
             <button
               type="button"
               onClick={() => setOpen(i)}
               aria-label={work.title}
-              className="group relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-2xl sm:rounded-[1.75rem]"
+              className="group block w-full text-left"
             >
-              {work.image ? (
-                <Image
-                  src={work.image}
-                  alt={work.title}
-                  fill
-                  sizes="(min-width: 1280px) 240px, (min-width: 1024px) 290px, (min-width: 640px) 33vw, 50vw"
-                  className="object-cover transition duration-500 group-hover:scale-[1.04]"
-                />
-              ) : (
-                <ArtTile
-                  color={work.color}
-                  variant={work.variant}
-                  className="absolute inset-0 h-full w-full"
-                />
-              )}
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-              />
-              <span className="absolute inset-x-0 bottom-0 p-3 text-sm font-semibold tracking-tight text-white sm:p-4 sm:text-base">
+              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl sm:rounded-[1.5rem]">
+                {work.image ? (
+                  <Image
+                    src={work.image}
+                    alt={work.title}
+                    fill
+                    sizes="(min-width: 1280px) 240px, (min-width: 1024px) 290px, (min-width: 640px) 33vw, 50vw"
+                    className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                  />
+                ) : (
+                  <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
+                )}
+              </span>
+              <span className="mt-2 block px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base">
                 {work.title}
               </span>
             </button>
@@ -190,24 +185,28 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                 ) : null}
               </div>
 
-              {/* ქვედა ზოლი: სახელი, ყიდვის ღილაკი, მობილურზე ისრები */}
+              {/* ქვედა ზოლი: [←] სახელი [→] ერთ რიგში (მობილურზე ისრებით), ქვეშ ყიდვის ღილაკი */}
               <div
-                className="flex shrink-0 flex-wrap items-center justify-center gap-3 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4"
+                className="flex shrink-0 flex-col items-center gap-3 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 sm:flex-row sm:justify-center"
                 onClick={(event) => event.stopPropagation()}
               >
-                {works.length > 1 ? (
-                  <ArrowButton direction="prev" variant="glass" size="sm" label={t.home.prev} onClick={() => step(-1)} className="sm:hidden" />
-                ) : null}
-                <p className="min-w-0 text-center text-base font-semibold tracking-tight sm:text-lg">{current.title}</p>
-                {works.length > 1 ? (
-                  <ArrowButton direction="next" variant="glass" size="sm" label={t.home.next} onClick={() => step(1)} className="sm:hidden" />
-                ) : null}
+                <div className="flex w-full items-center gap-3 sm:w-auto">
+                  {works.length > 1 ? (
+                    <ArrowButton direction="prev" variant="glass" size="sm" label={t.home.prev} onClick={() => step(-1)} className="shrink-0 sm:hidden" />
+                  ) : null}
+                  <p className="line-clamp-2 min-w-0 flex-1 text-center text-base font-semibold leading-snug tracking-tight sm:text-lg">
+                    {current.title}
+                  </p>
+                  {works.length > 1 ? (
+                    <ArrowButton direction="next" variant="glass" size="sm" label={t.home.next} onClick={() => step(1)} className="shrink-0 sm:hidden" />
+                  ) : null}
+                </div>
                 {current.url ? (
                   <a
                     href={current.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full bg-white px-5 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
+                    className="inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-1.5 rounded-full bg-white px-5 text-sm font-medium text-black transition hover:-translate-y-0.5 hover:shadow-xl sm:w-auto"
                   >
                     {t.artist.openWork} ↗
                   </a>
