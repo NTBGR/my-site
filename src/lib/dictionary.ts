@@ -56,10 +56,10 @@ const ka = {
     allCategories: "ყველა კატეგორია",
     browse: "დაათვალიერე",
     banners: [
-      { slug: "posterebi", title: "პოსტერები", text: "ქართველი ავტორების ილუსტრაციები და გრაფიკა შენი კედლისთვის." },
       { slug: "keramika", title: "კერამიკა და ჭურჭელი", text: "ხელნაკეთი თასები, ლანგრები და ვაზები." },
       { slug: "nakhatebi", title: "ნახატები", text: "ორიგინალი ნამუშევრები ქართველი მხატვრებისგან." },
       { slug: "samkauli", title: "სამკაული", text: "ვერცხლი, ოქრო და ქვები, ხელით დამუშავებული." },
+      { slug: "posterebi", title: "პოსტერები", text: "ქართველი ავტორების ილუსტრაციები და გრაფიკა შენი კედლისთვის." },
     ],
     prev: "წინა",
     next: "შემდეგი",
@@ -259,10 +259,10 @@ const en: Dict = {
     allCategories: "All categories",
     browse: "Browse",
     banners: [
-      { slug: "posterebi", title: "Posters", text: "Illustrations and graphic art by Georgian makers, for your wall." },
       { slug: "keramika", title: "Ceramics & tableware", text: "Handmade bowls, platters and vases." },
       { slug: "nakhatebi", title: "Paintings", text: "Original works by Georgian painters." },
       { slug: "samkauli", title: "Jewelry", text: "Silver, gold and gemstones, worked by hand." },
+      { slug: "posterebi", title: "Posters", text: "Illustrations and graphic art by Georgian makers, for your wall." },
     ],
     prev: "Previous",
     next: "Next",

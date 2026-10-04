@@ -28,6 +28,14 @@ export default function Home() {
     </span>
   );
 
+  // სლაიდის ფონი და მასში მცურავი ფილა ერთი ფერისაა, რომ ერთმანეთს ეხამებოდეს
+  const slideColor: Record<string, string> = {
+    keramika: "#5e7a55",
+    nakhatebi: "#3d5a73",
+    samkauli: "#b07a4a",
+    posterebi: "#2f6b6f",
+  };
+
   const bannerSlides: BannerSlide[] = [
     {
       id: "main",
@@ -97,20 +105,20 @@ export default function Home() {
     },
     ...t.banners.map((banner, i): BannerSlide => ({
       id: banner.slug,
-      color: ["#2f6b6f", "#5e7a55", "#3d5a73", "#b07a4a"][i],
+      color: slideColor[banner.slug],
       art: (
         <>
           {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაცია კუთხეში, როგორც პირველ სლაიდზე */}
           <div
             aria-hidden
             className="float absolute right-4 top-4 w-[42%] max-w-[13rem] overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:right-8 sm:top-6 sm:w-[30%] lg:hidden"
-            style={{ ["--r" as string]: ["-4deg", "5deg", "-5deg", "4deg"][i] }}
+            style={{ ["--r" as string]: ["5deg", "-5deg", "4deg", "-4deg"][i] }}
           >
-            <CategoryArt slug={banner.slug} color={categoryColor(banner.slug)} className="aspect-[4/3]" />
+            <CategoryArt slug={banner.slug} color={slideColor[banner.slug]} className="aspect-[4/3]" />
           </div>
           <CategoryArt
             slug={banner.slug}
-            color={["#2f6b6f", "#5e7a55", "#3d5a73", "#b07a4a"][i]}
+            color={slideColor[banner.slug]}
             className="absolute inset-0 hidden h-full w-full lg:block"
           />
         </>
@@ -263,7 +271,7 @@ export default function Home() {
               <ArtistCard
                 key={artist.slug}
                 artist={artist}
-                artClassName="aspect-[4/5] sm:aspect-[4/3]"
+                artClassName="aspect-[4/5] sm:aspect-square"
                 worksLabel={[artist.city, dictionary[lang].artists.worksCount(artist.works.length)].filter(Boolean).join(" · ")}
               />
             ))}

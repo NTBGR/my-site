@@ -35,11 +35,11 @@ function FacebookIcon() {
   );
 }
 
-// ყიდვის ღილაკი: solid (თეთრი, მთავარი), glass (ბანერზე, მეორეხარისხოვანი), accent (ღია ფონზე)
+// ბრენდული ღილაკები: ინსტაგრამის გრადიენტი და ფეისბუქის ლურჯი, რომ ადვილად ამოიცნონ
 const socialVariant = {
-  solid: "border-transparent bg-white text-black hover:shadow-xl",
-  glass: "border-white/40 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-black",
-  accent: "border-transparent bg-accent text-on-accent hover:shadow-lg",
+  instagram:
+    "border-transparent bg-[linear-gradient(45deg,#f09433_0%,#e6683c_25%,#dc2743_50%,#cc2366_75%,#bc1888_100%)] text-white hover:shadow-xl hover:shadow-[#dc2743]/30",
+  facebook: "border-transparent bg-[#1877F2] text-white hover:bg-[#1468d6] hover:shadow-xl hover:shadow-[#1877F2]/30",
 } as const;
 
 function SocialLink({
@@ -201,8 +201,8 @@ export default function ArtistPage({
 
           <p className="mt-4 text-sm font-medium text-white/85">{t.buyHint}</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="solid" />
-            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="glass" />
+            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" />
+            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" />
           </div>
         </div>
       </section>
@@ -251,8 +251,8 @@ export default function ArtistPage({
           <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>
           <p className="mt-2 leading-relaxed text-text/75">{t.ctaText}</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="accent" />
-            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="solid" />
+            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" />
+            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" />
           </div>
         </div>
       </section>
