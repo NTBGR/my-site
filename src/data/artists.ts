@@ -121,6 +121,47 @@ export const artists: ArtistData[] = [
       ],
     },
   },
+  {
+    slug: "tamus-shop",
+    name: "Tamus Shop",
+    // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
+    city: "",
+    categories: ["tekstili", "sachuqrebi"],
+    cover: "/artists/tamus-shop/bouquet-pink-blooms.jpg",
+    banner: "/artists/tamus-shop/bouquet-pink-blooms.jpg",
+    bio: "Tamus Shop ხელით ქსოვს ძაფის თაიგულებს: ტიტებს, ვარდებს, ფუმფულა ძაფის თაიგულებს და ამიგურუმის პატარა თოჯინებს. ასეთი თაიგული არ ჭკნება და საჩუქრად დიდხანს ინახება.",
+    instagram: "https://www.instagram.com/tamusshop3/",
+    facebook: "https://www.facebook.com/profile.php?id=100071936977915",
+    works: [
+      { title: "თაიგული „ვარდისფერი ყვავილები“", color: "#e58fb0", image: "/artists/tamus-shop/bouquet-pink-blooms.jpg", width: 1200, height: 1598 },
+      { title: "ფუმფულა თაიგული „ყვითელი“", color: "#f2a900", image: "/artists/tamus-shop/plush-yellow.jpg", width: 1200, height: 1598 },
+      { title: "ფუმფულა თაიგული „ვარდისფერი ვარდები“", color: "#e8559a", image: "/artists/tamus-shop/plush-pink-roses.jpg", width: 1200, height: 1598 },
+      { title: "თაიგული „ყვითელი ტიტები თოჯინით“", color: "#f0b400", image: "/artists/tamus-shop/tulips-yellow-doll.jpg", width: 1200, height: 1598 },
+      { title: "თაიგული „ტიტები და სიმინდი“", color: "#1f9c86", image: "/artists/tamus-shop/tulips-teal-corn.jpg", width: 1200, height: 1598 },
+      { title: "თაიგული „ცისფერი ტიტები“", color: "#2d9fd0", image: "/artists/tamus-shop/tulips-blue-doll.jpg", width: 1200, height: 1600 },
+      { title: "თაიგული „ვარდისფერი ტიტები“", color: "#f0a0b8", image: "/artists/tamus-shop/tulips-pink.jpg", width: 1200, height: 1598 },
+      { title: "თაიგული „ნარინჯისფერი ტიტები“", color: "#e8501c", image: "/artists/tamus-shop/tulips-orange.jpg", width: 1200, height: 1598 },
+      { title: "ფუმფულა თაიგული „წითელი ვარდები“", color: "#c8102e", image: "/artists/tamus-shop/plush-red-roses.jpg", width: 1200, height: 1598 },
+      { title: "ფუმფულა თაიგული „წითელი ყვავილები“", color: "#d8201c", image: "/artists/tamus-shop/plush-red-flowers.jpg", width: 1200, height: 1598 },
+    ],
+    en: {
+      name: "Tamus Shop",
+      city: "",
+      bio: "Tamus Shop crochets yarn bouquets by hand: tulips, roses, plush-yarn bouquets and small amigurumi dolls. A crocheted bouquet never wilts and keeps for years as a gift.",
+      workTitles: [
+        "Bouquet \"Pink Blooms\"",
+        "Plush bouquet \"Yellow\"",
+        "Plush bouquet \"Pink Roses\"",
+        "Bouquet \"Yellow Tulips with a Doll\"",
+        "Bouquet \"Tulips and Corn\"",
+        "Bouquet \"Blue Tulips\"",
+        "Bouquet \"Pink Tulips\"",
+        "Bouquet \"Orange Tulips\"",
+        "Plush bouquet \"Red Roses\"",
+        "Plush bouquet \"Red Flowers\"",
+      ],
+    },
+  },
 ];
 
 export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
