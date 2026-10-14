@@ -106,6 +106,7 @@ export default async function Home() {
     // სლაიდი მხოლოდ იმ კატეგორიას აქვს, რომელსაც ნამდვილი ფოტო ჰყავს
     ...t.banners.filter((banner) => hasCategoryPhoto(banner.slug)).map((banner, i): BannerSlide => ({
       id: banner.slug,
+      framed: true,
       color: slideColor(banner.slug),
       art: (
         <>
@@ -126,7 +127,7 @@ export default async function Home() {
       ),
       content: (
         <div>
-          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-4xl xl:text-5xl">
+          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
             {banner.title}
           </h2>
           <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
