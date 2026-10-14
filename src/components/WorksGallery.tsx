@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import ArtTile from "@/components/ArtTile";
@@ -15,8 +14,6 @@ export type GalleryWork = {
   color: string;
   variant: number;
   url?: string;
-  // ნამუშევრის საკუთარი გვერდი
-  pageHref?: string;
   // სად მიდის ბმული: ღილაკის წარწერისთვის
   network?: "instagram" | "facebook";
   // ნამდვილი ფოტო (public საქაღალდიდან) და მისი ზომები; თუ არ არის, ჩანს ადგილმჭერი
@@ -226,11 +223,6 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                       {current.network === "facebook" ? t.artist.messageOnFacebook : current.network === "instagram" ? t.artist.messageOnInstagram : t.artist.openWork} ↗
                     </a>
                     {/* წარწერა მხოლოდ დაჭერის შემდეგ: ავტორის გვერდიდან რომ დაბრუნდები, ნახავ, რომ ტექსტი დაკოპირდა */}
-                    {current.pageHref ? (
-                      <Link href={current.pageHref} className="text-sm font-medium text-white/85 underline underline-offset-4 hover:text-white">
-                        {t.workPage.openPage} →
-                      </Link>
-                    ) : null}
                     <span aria-live="polite" className="text-xs text-white/80">
                       {copied ? t.artist.dmCopied : null}
                     </span>

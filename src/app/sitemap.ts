@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { artists, getWorkEntries } from "@/data/artists";
+import { artists } from "@/data/artists";
 import { categories } from "@/data/categories";
 
 const SITE_URL = "https://khelovani.vercel.app";
@@ -11,6 +11,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...pages.map((path) => ({ url: `${SITE_URL}${path}` })),
     ...categories.map((category) => ({ url: `${SITE_URL}/categories/${category.slug}` })),
     ...artists.map((artist) => ({ url: `${SITE_URL}/artists/${artist.slug}` })),
-    ...getWorkEntries("ka").map((e) => ({ url: `${SITE_URL}/works/${e.artist.slug}/${e.id}` })),
   ];
 }

@@ -1,3 +1,0 @@
-// ფოტოს ჩატვირთვამდე ბუნდოვანი თბილი ფონი (ერთი პატარა SVG ყველა სურათზე)
-export const BLUR_DATA_URL =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDEwIj48ZmlsdGVyIGlkPSJiIj48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iMTAiIGZpbGw9IiNlOWRmZDIiLz48cmVjdCB4PSIxIiB5PSIyIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiBmaWxsPSIjZDljOWI4IiBmaWx0ZXI9InVybCgjYikiLz48L3N2Zz4=";

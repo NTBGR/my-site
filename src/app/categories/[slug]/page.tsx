@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
-import WorksBrowser from "@/components/WorksBrowser";
-import { toWorkCards } from "@/lib/workCard";
+import ArtistCard from "@/components/ArtistCard";
 import CategoryArt from "@/components/CategoryArt";
-import { getLocalizedArtists, getWorkEntries } from "@/data/artists";
+import { getLocalizedArtists } from "@/data/artists";
 import {
   categories,
   categoryColor,
@@ -23,7 +22,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const category = localizeCategory(raw, await getLang());
   return {
     title: category.name,
-    alternates: { canonical: `/categories/${category.slug}` },
     description: category.description,
     openGraph: {
       title: category.name,
@@ -45,10 +43,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const items = getLocalizedArtists(lang).filter((artist) =>
     artist.categories.includes(category.slug),
   );
-
-  const allEntries = getWorkEntries(lang);
-  const order = new Map(allEntries.map((e, i) => [`${e.artist.slug}/${e.id}`, i]));
-  const workCards = toWorkCards(allEntries.filter((e) => e.artist.categories.includes(category.slug))).map((c) => ({ ...c, order: order.get(c.key) ?? 0 }));
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
@@ -93,12 +87,21 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
 
-      {workCards.length === 0 ? (
+      {items.length === 0 ? (
         <p className="mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-10 text-center text-muted">
           {t.categories.empty}
         </p>
       ) : (
-        <WorksBrowser cards={workCards} emptyHint={t.searchPage.none.replace(/:$/, "")} />
+        <ul className="stagger mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+          {items.map((artist) => (
+            <li key={artist.slug}>
+              <ArtistCard
+                artist={artist}
+                worksLabel={t.artists.worksCount(artist.works.length)}
+              />
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
