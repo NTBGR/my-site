@@ -67,7 +67,7 @@ export default async function GiftPage({ params }: { params: Promise<{ slug: str
                   <ArtTile color={work.color} variant={0} className="absolute inset-0 h-full w-full" />
                 )}
               </span>
-              <span className="mt-2 block line-clamp-2 h-[3em] px-1 text-sm font-medium leading-snug text-text sm:text-base">{work.title}</span>
+              <span className="mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug text-text sm:text-base">{work.title}</span>
               {work.price ? <span className="block px-1 text-sm font-semibold text-text sm:text-base">{work.price} ₾</span> : null}
               <span className="block truncate px-1 text-xs text-muted sm:text-sm">{artist.name}</span>
             </Link>

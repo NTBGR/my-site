@@ -93,7 +93,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
                 )}
               </span>
-              <span className="mt-2 block line-clamp-2 h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base">
+              <span className="mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base">
                 {work.title}
               </span>
               {work.price ? <span className="mt-0.5 block px-1 text-sm font-semibold text-text sm:text-base">{work.price} ₾</span> : null}
