@@ -11,27 +11,33 @@ export const contentType = "image/png";
 // ბილდმა ფონტები რომ იპოვოს, მისამართები სტატიკური უნდა იყოს
 const loadFont = (url: URL) => fetch(url).then((res) => res.arrayBuffer());
 
+const toDataUrl = async (url: URL) => {
+  const buffer: ArrayBuffer = await (await fetch(url)).arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return "data:image/jpeg;base64," + btoa(binary);
+};
+
 const BG = "#f6f1ea";
 const TEXT = "#1d1a17";
 const MUTED = "#6a6158";
 const ACCENT = "#a84f2c";
 
-function Tile({
-  color,
+function Photo({
+  src,
   rotate,
   top,
   left,
   width,
   height,
-  children,
 }: {
-  color: string;
+  src: string;
   rotate: number;
   top: number;
   left: number;
   width: number;
   height: number;
-  children: React.ReactNode;
 }) {
   return (
     <div
@@ -42,27 +48,31 @@ function Tile({
         width,
         height,
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 36,
-        background: color,
+        borderRadius: 34,
+        overflow: "hidden",
         transform: `rotate(${rotate}deg)`,
-        boxShadow: "0 30px 60px rgba(60, 30, 10, 0.25)",
-        border: "6px solid rgba(255,255,255,0.35)",
+        boxShadow: "0 28px 56px rgba(60, 40, 20, 0.28)",
+        border: "8px solid #fffdf9",
+        background: "#fffdf9",
       }}
     >
-      {children}
+      {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+      <img src={src} width={width - 16} height={height - 16} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 26 }} />
     </div>
   );
 }
 
 export default async function OpengraphImage() {
+  const [photoA, photoB, photoC] = await Promise.all([
+    toDataUrl(new URL("../assets/og-images/a.jpg", import.meta.url)),
+    toDataUrl(new URL("../assets/og-images/b.jpg", import.meta.url)),
+    toDataUrl(new URL("../assets/og-images/c.jpg", import.meta.url)),
+  ]);
   const [serif, sans] = await Promise.all([
     loadFont(new URL("../assets/og-fonts/NotoSerifGeorgian-Bold.ttf", import.meta.url)),
     loadFont(new URL("../assets/og-fonts/NotoSansGeorgian-Medium.ttf", import.meta.url)),
   ]);
   const { meta } = dictionary.ka;
-  const cream = "#fbf3e6";
 
   return new ImageResponse(
     (
@@ -121,27 +131,10 @@ export default async function OpengraphImage() {
           <div style={{ fontSize: 24, color: MUTED }}>{SITE_HOST}</div>
         </div>
 
-        {/* ილუსტრაციები: ბეჭდები, კერამიკა, ნახატი */}
-        <Tile color="#3d5a73" rotate={-7} top={70} left={700} width={230} height={290}>
-          <svg width="170" height="150" viewBox="0 0 170 150">
-            <polygon points="85,6 105,24 85,50 65,24" fill={cream} />
-            <circle cx="62" cy="96" r="40" fill="none" stroke={cream} strokeWidth="11" />
-            <circle cx="108" cy="96" r="40" fill="none" stroke="#9fb3c4" strokeWidth="11" />
-          </svg>
-        </Tile>
-        <Tile color="#5e7a55" rotate={6} top={110} left={940} width={210} height={260}>
-          <svg width="150" height="180" viewBox="0 0 150 180">
-            <path d="M20 170C-5 120 30 95 45 80V45H70V80C88 95 110 120 88 170Z" fill={cream} />
-            <path d="M100 170C85 135 102 115 112 103V40H130V103C142 115 155 140 140 170Z" fill="#b5c7ad" />
-          </svg>
-        </Tile>
-        <Tile color="#c4553a" rotate={-3} top={360} left={790} width={250} height={200}>
-          <svg width="150" height="140" viewBox="0 0 150 140">
-            <rect x="10" y="6" width="130" height="128" rx="6" fill="none" stroke={cream} strokeWidth="8" />
-            <circle cx="75" cy="50" r="20" fill={cream} />
-            <path d="M18 126V95Q50 65 78 90T132 82V126Z" fill="#e8a48f" />
-          </svg>
-        </Tile>
+        {/* ფოტოები: კერამიკა, ნახატი, სამკაული */}
+        <Photo src={photoA} rotate={-6} top={64} left={690} width={270} height={340} />
+        <Photo src={photoB} rotate={5} top={96} left={950} width={220} height={285} />
+        <Photo src={photoC} rotate={-3} top={372} left={760} width={290} height={235} />
       </div>
     ),
     {
