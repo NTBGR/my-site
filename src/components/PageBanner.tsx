@@ -28,7 +28,7 @@ export default function PageBanner({
       className="relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
       style={{
         background:
-          "linear-gradient(135deg, color-mix(in srgb, var(--accent), white 14%), var(--accent) 55%, color-mix(in srgb, var(--accent), black 34%))",
+          "linear-gradient(135deg, #9a826b, #7f6a56 55%, #54443a)",
       }}
     >
       <div className="absolute inset-0 hidden sm:block" aria-hidden>

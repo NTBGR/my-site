@@ -207,13 +207,13 @@ export default async function Home() {
                 <div
                   aria-hidden
                   className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #e07a52, #d4623a 52%, #8f3b1f)" }}
+                  style={{ background: "linear-gradient(150deg, #b97b58, #9d6044 52%, #5e3a2a)" }}
                 />
                 <div aria-hidden className="absolute left-5 top-5 z-10 flex sm:left-6 sm:top-6">
                   {crafts.map((slug, i) => (
                     <span
                       key={slug}
-                      className="-ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#d4623a] transition duration-300 first:ml-0 group-hover:translate-x-1"
+                      className="-ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#9d6044] transition duration-300 first:ml-0 group-hover:translate-x-1"
                       style={{ transitionDelay: `${i * 40}ms` }}
                     >
                       <CategoryArt slug={slug} color={categoryColor(slug)} className="h-full w-full" />
