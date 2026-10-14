@@ -5,7 +5,8 @@ import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
 import ArtistsCarousel from "@/components/ArtistsCarousel";
 import Reveal from "@/components/Reveal";
-import { getLocalizedArtists } from "@/data/artists";
+import WorkCard from "@/components/WorkCard";
+import { getLocalizedArtists, interleavedWorks } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -20,6 +21,8 @@ export default async function Home() {
   // ხელოვანების სხვადასხვა ხელობა „გაიცანი ხელოვანები“ ქარდისთვის
   const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));
+  // რეალური ნამუშევრები: ავტორები მონაცვლეობით (ტელეფონზე 6, დიდ ეკრანზე 8)
+  const showcase = interleavedWorks(lang, 8);
 
   const whiteButton =
     "group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95";
@@ -218,6 +221,33 @@ export default async function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* ნამუშევრები: რეალური ფოტოები, მყიდველი ნივთებს ეძებს */}
+      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
+        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
+          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
+            {t.worksTitle}
+          </h2>
+          <Link
+            href="/search"
+            className="group inline-flex min-h-10 shrink-0 items-center gap-1.5 text-sm font-medium text-accent transition duration-300 hover:text-accent-hover"
+          >
+            {t.allWorks}
+            <span className="arrow-slide" aria-hidden>
+              →
+            </span>
+          </Link>
+        </Reveal>
+        <Reveal>
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4">
+            {showcase.map((entry, i) => (
+              <li key={`${entry.artist.slug}-${entry.id}`} className={i >= 6 ? "hidden lg:block" : undefined}>
+                <WorkCard entry={entry} />
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </section>
 
       {/* კატეგორიები */}

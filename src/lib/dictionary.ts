@@ -3,6 +3,26 @@ export type Lang = "ka" | "en";
 export const LANG_COOKIE = "lang";
 
 const ka = {
+  // ნამუშევრის გვერდი და ძებნა
+  workPage: {
+    home: "მთავარი",
+    aboutMaker: "გაიცანი ავტორი",
+    viewProfile: "ავტორის გვერდი",
+    moreFrom: (name: string) => `${name}-ის სხვა ნამუშევრები`,
+    howToBuy: "ყიდვა პირდაპირ ავტორთან: მიწერე და შეუკვეთე, შუამავლის გარეშე.",
+    from: "ავტორი",
+  },
+  searchPage: {
+    title: "ძებნა",
+    placeholder: "მოძებნე ნამუშევარი, ავტორი ან კატეგორია",
+    button: "ძებნა",
+    allWorks: "ყველა ნამუშევარი",
+    resultsFor: (q: string) => `შედეგები: „${q}“`,
+    works: "ნამუშევრები",
+    artists: "ხელოვანები",
+    none: "ვერაფერი მოიძებნა. სცადე სხვა სიტყვა ან აირჩიე კატეგორია:",
+    count: (n: number) => `${n} ნამუშევარი`,
+  },
   // 404: არარსებული მისამართი
   notFoundPage: {
     title: "გვერდი ვერ მოიძებნა",
@@ -72,6 +92,8 @@ const ka = {
     next: "შემდეგი",
     featured: "გამორჩეული ხელოვანები",
     fullList: "ყველა ხელოვანი",
+    worksTitle: "ნამუშევრები",
+    allWorks: "ყველა ნამუშევარი",
     how: "როგორ მუშაობს",
     aboutLink: "გაიგე მეტი ჩვენ შესახებ",
     howText: "",
@@ -224,6 +246,25 @@ const ka = {
 type Dict = typeof ka;
 
 const en: Dict = {
+  workPage: {
+    home: "Home",
+    aboutMaker: "Meet the maker",
+    viewProfile: "Maker profile",
+    moreFrom: (name: string) => `More from ${name}`,
+    howToBuy: "Buy straight from the maker: message them and order, no middleman.",
+    from: "By",
+  },
+  searchPage: {
+    title: "Search",
+    placeholder: "Search for a work, a maker or a category",
+    button: "Search",
+    allWorks: "All works",
+    resultsFor: (q: string) => `Results for "${q}"`,
+    works: "Works",
+    artists: "Artists",
+    none: "Nothing found. Try another word or pick a category:",
+    count: (n: number) => `${n} ${n === 1 ? "work" : "works"}`,
+  },
   notFoundPage: {
     title: "Page not found",
     text: "There is no page at this address, or it has moved. Go back home or browse the artists.",
@@ -292,6 +333,8 @@ const en: Dict = {
     next: "Next",
     featured: "Featured artists",
     fullList: "All artists",
+    worksTitle: "Works",
+    allWorks: "All works",
     how: "How it works",
     aboutLink: "More about us",
     howText: "",

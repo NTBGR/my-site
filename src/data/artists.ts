@@ -153,3 +153,37 @@ export function getCities(lang: Lang): string[] {
     new Set(artists.map((artist) => localizeArtist(artist, lang).city)),
   );
 }
+
+// ნამუშევრის მისამართის კოდი: ფოტოს ფაილის სახელი (მაგ. "ring-amore"); ფოტოს გარეშე რიგითი ნომერი.
+// მისამართი სტაბილურია, ნამუშევრების რიგი რომ შეიცვალოს.
+export function workId(work: ArtistWork, index: number): string {
+  const file = work.image?.split("/").pop()?.replace(/\.[^.]+$/, "");
+  return file || `w${index}`;
+}
+
+export type WorkEntry = { artist: Artist; work: ArtistWork; index: number; id: string };
+
+// ყველა ნამუშევარი ერთ სიაში (ავტორთან ერთად)
+export function getWorkEntries(lang: Lang): WorkEntry[] {
+  return getLocalizedArtists(lang).flatMap((artist) =>
+    artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })),
+  );
+}
+
+export function getWorkEntry(lang: Lang, artistSlug: string, id: string): WorkEntry | undefined {
+  return getWorkEntries(lang).find((entry) => entry.artist.slug === artistSlug && entry.id === id);
+}
+
+// მთავარი გვერდისთვის: ავტორები ერთმანეთს მონაცვლეობით (ერთი ავტორის ნამუშევრები ზედიზედ არ დაიდოს)
+export function interleavedWorks(lang: Lang, limit: number): WorkEntry[] {
+  const lists = getLocalizedArtists(lang)
+    .map((artist) => artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })))
+    .filter((list) => list.length > 0);
+  const out: WorkEntry[] = [];
+  for (let round = 0; out.length < limit && lists.some((l) => l[round]); round++) {
+    for (const list of lists) {
+      if (list[round] && out.length < limit) out.push(list[round]);
+    }
+  }
+  return out;
+}

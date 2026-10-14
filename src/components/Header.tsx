@@ -91,7 +91,7 @@ export default function Header() {
     const q = query.trim();
     setMenuOpen(false);
     setSearchOpen(false);
-    router.push(q ? `/artists?q=${encodeURIComponent(q)}` : "/artists");
+    router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
   }
 
   const searchField = (
