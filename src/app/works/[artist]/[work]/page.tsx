@@ -106,21 +106,19 @@ export default async function WorkPage({ params }: { params: Params }) {
 
         <div className="flex flex-col">
           {/* ფასი → სათაური → ავტორი */}
-          <p className="text-2xl font-semibold text-text sm:text-3xl">
-            {work.price ? formatPrice(work.price) : <span className="text-lg font-normal text-muted sm:text-xl">{t.ui.priceOnRequest}</span>}
-          </p>
-          {badges.length > 0 ? (
-            <p className="mt-2 flex flex-wrap gap-1.5">
-              {badges.map((label) => (
-                <span key={label} className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-text">
-                  {label}
-                </span>
-              ))}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <p className="text-2xl font-semibold text-text sm:text-3xl">
+              {work.price ? formatPrice(work.price) : <span className="text-lg font-normal text-muted sm:text-xl">{t.ui.priceOnRequest}</span>}
             </p>
-          ) : null}
-          <h1 className="mt-3 text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl">{work.title}</h1>
+            {badges.map((label) => (
+              <span key={label} className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-text">
+                {label}
+              </span>
+            ))}
+          </div>
+          <h1 className="mt-2 text-balance text-xl font-semibold leading-snug tracking-tight text-text sm:text-3xl">{work.title}</h1>
 
-          <Link href={`/artists/${artist.slug}`} className="group mt-4 flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 transition duration-300 hover:border-accent">
+          <Link href={`/artists/${artist.slug}`} className="group mt-3 flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 transition duration-300 hover:border-accent">
             <span className="relative block h-12 w-12 shrink-0 overflow-hidden rounded-full bg-surface-2">
               {avatar ? <Image src={avatar} alt="" fill sizes="48px" placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover" /> : null}
             </span>

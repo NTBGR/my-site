@@ -1,15 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import CategoryArt from "@/components/CategoryArt";
 import Reveal from "@/components/Reveal";
 import WorkCard from "@/components/WorkCard";
 import { getLocalizedArtists, getWorkEntries, interleavedWorks, type WorkEntry } from "@/data/artists";
-import { categories, categoryColor, localizeCategory } from "@/data/categories";
+import { categories, localizeCategory } from "@/data/categories";
 import { BLUR_DATA_URL } from "@/lib/blur";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { toWorkCard } from "@/lib/workCard";
 
+const MIN_WORKS_FOR_COLLECTIONS = 30;
 const sectionClass = "mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:px-10 sm:pt-16";
 const h2Class = "text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl";
 
@@ -36,10 +36,16 @@ export default async function Home() {
   const showcase = interleavedWorks(lang, 8);
 
   // კატეგორიის წრე: პირველი ნამდვილი ფოტო ამ კატეგორიიდან (თუ არ არის, ილუსტრაცია)
-  const circles = categories.map((c) => {
-    const entry = all.find((e) => e.artist.categories.includes(c.slug) && e.work.image);
-    return { slug: c.slug, name: localizeCategory(c, lang).name, image: entry?.work.image, color: categoryColor(c.slug) };
-  });
+  const usedImages = new Set<string>();
+  const circles = categories
+    .map((c) => {
+      const candidates = all.filter((e) => e.artist.categories.includes(c.slug) && e.work.image);
+      const entry = candidates.find((e) => !usedImages.has(e.work.image as string)) ?? candidates[0];
+      if (entry?.work.image) usedImages.add(entry.work.image);
+      const full = localizeCategory(c, lang).name;
+      return { slug: c.slug, name: full.split(/ და | & /)[0], image: entry?.work.image };
+    })
+    .filter((c) => c.image);
 
   // კოლექციები: ჩანს მხოლოდ მაშინ, როცა შიგნით ნივთია
   const collections = [
@@ -51,6 +57,8 @@ export default async function Home() {
     .map((c) => ({ ...c, items: c.items.slice(0, 4) }))
     .filter((c) => c.items.length > 0)
     .slice(0, 3);
+  // ცოტა ნამუშევრით კოლექციები იგივე ნივთებს იმეორებს, ამიტომ ჩანს მხოლოდ ბევრი ნამუშევრის შემთხვევაში
+  const showCollections = all.length >= MIN_WORKS_FOR_COLLECTIONS;
 
   // „გაიცანი ხელოვანი“: პირველი ხელოვანი სამი ნამუშევრით
   const spotlight = artists[0];
@@ -62,14 +70,14 @@ export default async function Home() {
       {/* მოკლე მისალმება: ერთი სტატიკური ზოლი */}
       <section className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 sm:pt-8 lg:px-10">
         <div
-          className="grain relative isolate overflow-hidden rounded-[1.5rem] px-6 py-8 text-white shadow-lg sm:px-10 sm:py-12 lg:rounded-[2rem]"
+          className="grain relative isolate overflow-hidden rounded-[1.5rem] px-5 py-5 text-white shadow-lg sm:px-10 sm:py-12 lg:rounded-[2rem]"
           style={{ background: "linear-gradient(135deg, #d4623a, #c4553a 55%, #7a2f1b)" }}
         >
-          <h1 className="max-w-2xl text-balance text-3xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">{ui.introTitle}</h1>
-          <p className="mt-3 max-w-xl text-base text-white/90 sm:text-lg">{ui.introText}</p>
+          <h1 className="max-w-2xl text-balance text-2xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">{ui.introTitle}</h1>
+          <p className="mt-2 max-w-xl text-sm text-white/90 sm:mt-3 sm:text-lg">{ui.introText}</p>
           <Link
             href="/search"
-            className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
+            className="mt-6 hidden min-h-12 items-center gap-2 rounded-full bg-white px-7 sm:inline-flex text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
           >
             {ui.introCta}
             <span aria-hidden>→</span>
@@ -84,11 +92,7 @@ export default async function Home() {
             <li key={c.slug} className="shrink-0">
               <Link href={`/categories/${c.slug}`} className="group flex w-[4.75rem] flex-col items-center gap-2 text-center sm:w-24">
                 <span className="relative block h-[4.5rem] w-[4.5rem] overflow-hidden rounded-full shadow-md ring-2 ring-border transition duration-300 group-hover:-translate-y-1 group-hover:ring-accent sm:h-20 sm:w-20">
-                  {c.image ? (
-                    <Image src={c.image} alt="" fill sizes="80px" placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover" />
-                  ) : (
-                    <CategoryArt slug={c.slug} color={c.color} className="h-full w-full" />
-                  )}
+                  <Image src={c.image as string} alt="" fill sizes="80px" placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover" />
                 </span>
                 <span className="text-xs font-medium leading-tight text-text group-hover:text-accent sm:text-sm">{c.name}</span>
               </Link>
@@ -117,7 +121,7 @@ export default async function Home() {
       </section>
 
       {/* კოლექციები */}
-      {collections.map((collection) => (
+      {(showCollections ? collections : []).map((collection) => (
         <section key={collection.title} className={sectionClass}>
           <Reveal className="mb-5 flex items-end justify-between gap-4 sm:mb-8">
             <h2 className={h2Class}>{collection.title}</h2>

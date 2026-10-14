@@ -12,7 +12,7 @@ export default function SavedLink() {
     <Link
       href="/saved"
       aria-label={t.title}
-      className="relative ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:ml-0"
+      className="relative hidden h-11 w-11 lg:inline-flex items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:ml-0"
     >
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
         <path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.7a4.3 4.3 0 0 1 7.5 2.6c0 5.6-7.5 10.2-7.5 10.2Z" />

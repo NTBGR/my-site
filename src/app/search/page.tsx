@@ -68,24 +68,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         {q ? t.searchPage.resultsFor(q) : quickTitle[f] ?? t.searchPage.allWorks}
       </h1>
 
-      <form action="/search" method="get" role="search" className="mt-5 flex max-w-2xl gap-2">
-        <input
-          type="search"
-          name="q"
-          defaultValue={q}
-          placeholder={t.searchPage.placeholder}
-          aria-label={t.searchPage.placeholder}
-          maxLength={80}
-          className="h-12 min-w-0 flex-1 rounded-full border border-border bg-surface px-5 text-base text-text placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-        />
-        <button
-          type="submit"
-          className="inline-flex h-12 shrink-0 items-center rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 hover:bg-accent-hover"
-        >
-          {t.searchPage.button}
-        </button>
-      </form>
-
       {chips.length > 1 ? (
         <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden" role="group">
           {[{ slug: "", name: t.searchFilters.all, count: matched.length }, ...chips].map((chip) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useT } from "@/components/LangProvider";
 
@@ -14,6 +14,7 @@ export type SearchIndex = {
 // ძებნის ველი ჩამოსაშლელი ვარიანტებით: კატეგორიები, ხელოვანები და ნამუშევრები
 export default function SearchBox({ index, className = "" }: { index: SearchIndex; className?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const t = useT();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -26,6 +27,12 @@ export default function SearchBox({ index, className = "" }: { index: SearchInde
     return { categories: pick(index.categories, 3), artists: pick(index.artists, 3), works: pick(index.works, 5) };
   }, [needle, index]);
   const hasAny = suggestions && (suggestions.categories.length || suggestions.artists.length || suggestions.works.length);
+
+  // ძებნის გვერდზე ველში ჩანს ჩაწერილი სიტყვა
+  useEffect(() => {
+    if (pathname === "/search") setQuery(new URLSearchParams(window.location.search).get("q") ?? "");
+    else setQuery("");
+  }, [pathname]);
 
   useEffect(() => {
     const onDown = (event: MouseEvent) => {

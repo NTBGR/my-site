@@ -96,7 +96,7 @@ export default function Header({ searchIndex, menuCategories }: { searchIndex: S
 
           <button
             type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:hidden"
+            className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:hidden"
             aria-label={t.nav.menu}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
