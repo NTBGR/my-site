@@ -1,5 +1,6 @@
 import { makerOf } from "@/data/categories";
 import type { Lang } from "@/lib/dictionary";
+import { demoInfo } from "@/data/demo-info";
 
 export type ArtistWork = {
   title: string;
@@ -14,6 +15,14 @@ export type ArtistWork = {
   // არასავალდებულო: მასალა და მოკლე აღწერა (ნამუშევრის გვერდზე „დეტალები“ ბლოკში ჩანს, თუ შევსებულია)
   materials?: string;
   note?: string;
+  // ფასი ლარში; თუ არ არის, ჩანს „ფასი მოთხოვნით“
+  price?: number;
+  size?: string;
+  madeToOrder?: boolean; // შეკვეთით მზადდება
+  unique?: boolean; // ერთეული ნივთი
+  isNew?: boolean;
+  // დამატებითი ფოტოები (ნამუშევრის გვერდის გალერეისთვის)
+  images?: string[];
 };
 
 type ArtistText = {
@@ -128,7 +137,8 @@ export const artists: ArtistData[] = [
 
 export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
   const category = makerOf(artist.categories[0], lang);
-  if (lang === "ka") return { ...artist, category };
+  const withInfo = artist.works.map((work, i) => ({ ...demoInfo(artist.slug, i), ...work }));
+  if (lang === "ka") return { ...artist, category, works: withInfo };
   const { en } = artist;
   return {
     ...artist,
@@ -136,7 +146,7 @@ export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
     city: en.city,
     category,
     bio: en.bio,
-    works: artist.works.map((work, i) => ({
+    works: withInfo.map((work, i) => ({
       ...work,
       title: en.workTitles[i] ?? work.title,
     })),

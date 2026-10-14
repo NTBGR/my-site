@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import WorkCard, { type WorkCardData } from "@/components/WorkCard";
+import WorkCard from "@/components/WorkCard";
+import type { WorkCardData } from "@/lib/workCard";
 import { useT } from "@/components/LangProvider";
 import { useFavorites } from "@/lib/favorites";
 

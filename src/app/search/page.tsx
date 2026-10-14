@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ArtistCard from "@/components/ArtistCard";
-import WorkCard, { toWorkCard } from "@/components/WorkCard";
+import WorksBrowser from "@/components/WorksBrowser";
+import { toWorkCards } from "@/lib/workCard";
 import { getLocalizedArtists, getWorkEntries } from "@/data/artists";
 import { categories, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
@@ -12,10 +13,11 @@ export async function generateMetadata() {
 
 const norm = (text: string) => text.toLowerCase().trim();
 
-export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[]; cat?: string | string[] }> }) {
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[]; cat?: string | string[]; f?: string | string[] }> }) {
   const lang = await getLang();
   const t = dictionary[lang];
-  const { q: rawQ, cat: rawCat } = await searchParams;
+  const { q: rawQ, cat: rawCat, f: rawF } = await searchParams;
+  const f = (Array.isArray(rawF) ? rawF[0] : rawF) ?? "";
   const q = (Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "").slice(0, 80).trim();
   const needle = norm(q);
   const catParam = (Array.isArray(rawCat) ? rawCat[0] : rawCat) ?? "";
@@ -32,11 +34,18 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     const hay = norm(`${ka[i].work.title} ${en[i].work.title} ${ka[i].artist.name} ${categoryText(entry.artist.categories)}`);
     return hay.includes(needle);
   });
+  const quickTitle: Record<string, string> = { new: t.ui.newWorks, under50: t.ui.collectionUnder50, unique: t.ui.collectionUnique, mto: t.ui.collectionMadeToOrder };
   // კატეგორიის ჩიპები: მხოლოდ ისინი, სადაც შედეგი არის (რაოდენობით)
   const chips = categories
     .map((c) => ({ slug: c.slug, name: localizeCategory(c, lang).name, count: matched.filter((e) => e.artist.categories.includes(c.slug)).length }))
     .filter((c) => c.count > 0);
-  const works = cat ? matched.filter((e) => e.artist.categories.includes(cat)) : matched;
+  const byCat = cat ? matched.filter((e) => e.artist.categories.includes(cat)) : matched;
+  const works = byCat.filter((e) => {
+    if (f === "under50") return (e.work.price ?? Infinity) < 50;
+    if (f === "unique") return !!e.work.unique;
+    if (f === "mto") return !!e.work.madeToOrder;
+    return true;
+  });
   const chipHref = (slug: string) => {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
@@ -45,6 +54,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     return qs ? `/search?${qs}` : "/search";
   };
 
+  const order = new Map(getWorkEntries(lang).map((e, i) => [`${e.artist.slug}/${e.id}`, i]));
+  const cards = toWorkCards(works).map((c) => ({ ...c, order: order.get(c.key) ?? 0 }));
   const artists = needle
     ? getLocalizedArtists(lang).filter((artist) =>
         norm(`${artist.name} ${artist.city} ${categoryText(artist.categories)}`).includes(needle),
@@ -54,7 +65,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
       <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">
-        {q ? t.searchPage.resultsFor(q) : t.searchPage.allWorks}
+        {q ? t.searchPage.resultsFor(q) : quickTitle[f] ?? t.searchPage.allWorks}
       </h1>
 
       <form action="/search" method="get" role="search" className="mt-5 flex max-w-2xl gap-2">
@@ -113,17 +124,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       ) : null}
 
       {works.length > 0 ? (
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold tracking-tight text-text">
-            {t.searchPage.works} <span className="text-sm font-normal text-muted">· {t.searchPage.count(works.length)}</span>
-          </h2>
-          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
-            {works.map((entry) => (
-              <li key={`${entry.artist.slug}-${entry.id}`}>
-                <WorkCard card={toWorkCard(entry)} />
-              </li>
-            ))}
-          </ul>
+        <section className="mt-2">
+          <WorksBrowser cards={cards} emptyHint={t.searchPage.none} initialSort={f === "new" ? "new" : "relevant"} />
         </section>
       ) : null}
 

@@ -5,7 +5,7 @@ import { useT } from "@/components/LangProvider";
 import { copyText } from "@/lib/copy";
 
 // გაზიარება: ტელეფონზე სისტემური გაზიარების ფანჯარა, სხვაგან ბმულის კოპირება
-export default function ShareButton({ title, className = "" }: { title: string; className?: string }) {
+export default function ShareButton({ title, className = "", label }: { title: string; className?: string; label?: string }) {
   const t = useT().workPage;
   const [copied, setCopied] = useState(false);
 
@@ -28,7 +28,7 @@ export default function ShareButton({ title, className = "" }: { title: string; 
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <path d="M12 4v11M8 8l4-4 4 4M5 13v6h14v-6" />
       </svg>
-      <span className="text-sm font-medium" aria-live="polite">{copied ? t.shareCopied : t.share}</span>
+      <span className="text-sm font-medium" aria-live="polite">{copied ? t.shareCopied : (label ?? t.share)}</span>
     </button>
   );
 }

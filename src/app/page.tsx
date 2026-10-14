@@ -1,314 +1,182 @@
+import Image from "next/image";
 import Link from "next/link";
 import CategoryArt from "@/components/CategoryArt";
-import CategoryCarousel from "@/components/CategoryCarousel";
-import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
-import ArtistCard from "@/components/ArtistCard";
-import ArtistsCarousel from "@/components/ArtistsCarousel";
 import Reveal from "@/components/Reveal";
-import WorkCard, { toWorkCard } from "@/components/WorkCard";
-import { getLocalizedArtists, interleavedWorks } from "@/data/artists";
+import WorkCard from "@/components/WorkCard";
+import { getLocalizedArtists, getWorkEntries, interleavedWorks, type WorkEntry } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
+import { BLUR_DATA_URL } from "@/lib/blur";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { toWorkCard } from "@/lib/workCard";
 
+const sectionClass = "mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:px-10 sm:pt-16";
+const h2Class = "text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl";
+
+// ნამუშევრების ბადე (ერთნაირი ბარათით)
+function WorkGrid({ entries, cols = "lg:grid-cols-4" }: { entries: WorkEntry[]; cols?: string }) {
+  return (
+    <ul className={`grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 ${cols}`}>
+      {entries.map((entry) => (
+        <li key={`${entry.artist.slug}-${entry.id}`}>
+          <WorkCard card={toWorkCard(entry)} />
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default async function Home() {
   const lang = await getLang();
-  const t = dictionary[lang].home;
+  const dict = dictionary[lang];
+  const t = dict.home;
+  const ui = dict.ui;
   const artists = getLocalizedArtists(lang);
-  // ტელეფონზე ფურცვლით ჩანს ექვსამდე ხელოვანი და ბოლოს „ყველა ხელოვანი“ ბარათი; დესკტოპზე ხუთამდე (ერთი რიგი)
-  const featured = artists.slice(0, 6);
-  // ხელოვანების სხვადასხვა ხელობა „გაიცანი ხელოვანები“ ქარდისთვის
-  const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
-  const cats = categories.map((c) => localizeCategory(c, lang));
-  // რეალური ნამუშევრები: ავტორები მონაცვლეობით (ტელეფონზე 6, დიდ ეკრანზე 8)
+  const all = getWorkEntries(lang);
   const showcase = interleavedWorks(lang, 8);
 
-  const whiteButton =
-    "group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95";
-  const arrow = (
-    <span className="arrow-slide" aria-hidden>
-      →
-    </span>
-  );
+  // კატეგორიის წრე: პირველი ნამდვილი ფოტო ამ კატეგორიიდან (თუ არ არის, ილუსტრაცია)
+  const circles = categories.map((c) => {
+    const entry = all.find((e) => e.artist.categories.includes(c.slug) && e.work.image);
+    return { slug: c.slug, name: localizeCategory(c, lang).name, image: entry?.work.image, color: categoryColor(c.slug) };
+  });
 
-  // სლაიდის ფონი და მასში მცურავი ფილა ერთი ფერისაა, რომ ერთმანეთს ეხამებოდეს
-  const slideColor: Record<string, string> = {
-    keramika: "#5e7a55",
-    nakhatebi: "#3d5a73",
-    samkauli: "#b07a4a",
-    posterebi: "#2f6b6f",
-  };
+  // კოლექციები: ჩანს მხოლოდ მაშინ, როცა შიგნით ნივთია
+  const collections = [
+    { title: ui.collectionUnder50, href: "/search", items: all.filter((e) => (e.work.price ?? Infinity) < 50) },
+    { title: ui.collectionTbilisi, href: "/categories/keramika", items: all.filter((e) => e.artist.city === (lang === "ka" ? "თბილისი" : "Tbilisi") && e.artist.categories.includes("keramika")) },
+    { title: ui.collectionUnique, href: "/search", items: all.filter((e) => e.work.unique) },
+    { title: ui.collectionMadeToOrder, href: "/search", items: all.filter((e) => e.work.madeToOrder) },
+  ]
+    .map((c) => ({ ...c, items: c.items.slice(0, 4) }))
+    .filter((c) => c.items.length > 0)
+    .slice(0, 3);
 
-  const bannerSlides: BannerSlide[] = [
-    {
-      id: "main",
-      color: "#c4553a",
-      art: (
-        <>
-        {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაციები ზედა მარჯვენა კუთხეში */}
-        <div className="absolute right-4 top-4 h-28 w-40 sm:right-8 sm:top-6 sm:w-48 lg:hidden" aria-hidden>
-          {[
-            { slug: "bechdebi", pos: "left-0 top-2 w-[34%]", r: "-7deg", delay: "" },
-            { slug: "keramika", pos: "left-[33%] top-0 w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
-            { slug: "samkauli", pos: "right-0 top-5 w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
-          ].map((tile) => (
-            <div
-              key={tile.slug}
-              className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
-              style={{ ["--r" as string]: tile.r }}
-            >
-              <CategoryArt slug={tile.slug} color={categoryColor(tile.slug)} className="aspect-[3/4]" />
-            </div>
-          ))}
-        </div>
-        <div className="relative hidden h-full w-full lg:block" aria-hidden>
-          <div
-            className="float absolute left-[24%] top-[10%] w-[32%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15"
-            style={{ ["--r" as string]: "-6deg" }}
-          >
-            <CategoryArt slug="bechdebi" color={categoryColor("bechdebi")} className="aspect-[3/4]" />
-          </div>
-          <div
-            className="float absolute right-[6%] top-[6%] w-[30%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-2.5s]"
-            style={{ ["--r" as string]: "5deg" }}
-          >
-            <CategoryArt slug="keramika" color={categoryColor("keramika")} className="aspect-[4/5]" />
-          </div>
-          <div
-            className="float absolute right-[24%] top-[50%] w-[28%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-4.5s]"
-            style={{ ["--r" as string]: "-3deg" }}
-          >
-            <CategoryArt slug="samkauli" color={categoryColor("samkauli")} className="aspect-[4/3]" />
-          </div>
-        </div>
-        </>
-      ),
-      content: (
-        <div className="hero-in">
-          <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
-            {t.title}
-          </h1>
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-white/85 sm:mt-3 sm:text-lg">
-            {t.text}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <Link href="/categories" className={`${whiteButton} whitespace-nowrap`}>
-              {t.ctaPrimary}
-              {arrow}
-            </Link>
-            <Link
-              href="/join"
-              className="hidden whitespace-nowrap text-sm font-medium text-white/90 underline decoration-white/40 underline-offset-4 transition hover:text-white hover:decoration-white sm:inline"
-            >
-              {t.ctaMaker}
-            </Link>
-          </div>
-        </div>
-      ),
-    },
-    ...t.banners.map((banner, i): BannerSlide => ({
-      id: banner.slug,
-      color: slideColor[banner.slug],
-      art: (
-        <>
-          {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაცია კუთხეში, როგორც პირველ სლაიდზე */}
-          <div
-            aria-hidden
-            className="float absolute right-4 top-4 w-[42%] max-w-[13rem] overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:right-8 sm:top-6 sm:w-[30%] lg:hidden"
-            style={{ ["--r" as string]: ["5deg", "-5deg", "4deg", "-4deg"][i] }}
-          >
-            <CategoryArt slug={banner.slug} color={slideColor[banner.slug]} className="aspect-[4/3]" />
-          </div>
-          <CategoryArt
-            slug={banner.slug}
-            color={slideColor[banner.slug]}
-            className="absolute inset-0 hidden h-full w-full lg:block"
-          />
-        </>
-      ),
-      content: (
-        <div>
-          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-4xl xl:text-5xl">
-            {banner.title}
-          </h2>
-          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
-            {banner.text}
-          </p>
-          <div className="mt-5">
-            <Link href={`/categories/${banner.slug}`} className={whiteButton}>
-              {t.browse}
-              {arrow}
-            </Link>
-          </div>
-        </div>
-      ),
-    })),
-  ];
+  // „გაიცანი ხელოვანი“: პირველი ხელოვანი სამი ნამუშევრით
+  const spotlight = artists[0];
+  const spotlightWorks = spotlight ? all.filter((e) => e.artist.slug === spotlight.slug).slice(0, 3) : [];
+  const spotlightPhoto = spotlight ? spotlight.banner || spotlight.cover || spotlight.works.find((w) => w.image)?.image : undefined;
 
   return (
-    <div>
-      {/* ჰერო: მბრუნავი ბანერები */}
-      <section className="relative isolate overflow-x-clip">
+    <div className="pb-16 sm:pb-24">
+      {/* მოკლე მისალმება: ერთი სტატიკური ზოლი */}
+      <section className="mx-auto max-w-7xl px-4 pt-5 sm:px-6 sm:pt-8 lg:px-10">
         <div
-          aria-hidden
-          className="blob pointer-events-none absolute -left-32 top-0 -z-10 h-[28rem] w-[28rem] rounded-full bg-accent-soft blur-3xl"
-        />
-        <div className="mx-auto max-w-7xl px-4 pb-0 pt-5 sm:px-6 sm:pt-8 lg:px-10">
-          <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-            <HeroBanner slides={bannerSlides} />
-            <div className="hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-1 lg:grid-rows-2">
-              <Link
-                href="/categories"
-                className="group relative block min-h-36 overflow-hidden sm:min-h-44 rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
-              >
-                <div
-                  aria-hidden
-                  className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #8f6580, #7a4e6a 52%, #4f3245)" }}
-                />
-                <div aria-hidden className="absolute inset-x-5 top-5 z-10 grid grid-cols-4 gap-2 sm:inset-x-6 sm:top-6">
-                  {["nakhatebi", "posterebi", "keramika", "tyavi"].map((slug, i) => (
-                    <div
-                      key={slug}
-                      className="overflow-hidden rounded-xl shadow-lg ring-2 ring-white/15 transition duration-300 group-hover:-translate-y-0.5"
-                      style={{ transform: `rotate(${[-4, 3, -2, 4][i]}deg)` }}
-                    >
-                      <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-square" />
-                    </div>
-                  ))}
-                </div>
-                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6">
-                  <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                    {dictionary[lang].nav.categories}
-                  </h2>
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition duration-300 group-hover:bg-white group-hover:text-black" aria-hidden>
-                    <span className="arrow-slide">→</span>
-                  </span>
-                </div>
-              </Link>
-              <Link
-                href="/artists"
-                className="group relative block min-h-36 overflow-hidden sm:min-h-44 rounded-[1.25rem] rounded-bl-[2.5rem] rounded-tr-[2.5rem] text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl active:scale-[0.99] lg:rounded-[1.5rem] lg:rounded-bl-[3.5rem] lg:rounded-tr-[3.5rem]"
-              >
-                <div
-                  aria-hidden
-                  className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #e07a52, #d4623a 52%, #8f3b1f)" }}
-                />
-                <div aria-hidden className="absolute left-5 top-5 z-10 flex sm:left-6 sm:top-6">
-                  {crafts.map((slug, i) => (
-                    <span
-                      key={slug}
-                      className="-ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#d4623a] transition duration-300 first:ml-0 group-hover:translate-x-1"
-                      style={{ transitionDelay: `${i * 40}ms` }}
-                    >
-                      <CategoryArt slug={slug} color={categoryColor(slug)} className="h-full w-full" />
-                    </span>
-                  ))}
-                </div>
-                <div aria-hidden className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6">
-                  <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-                    {t.ctaSecondary}
-                  </h2>
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-md transition duration-300 group-hover:bg-white group-hover:text-black" aria-hidden>
-                    <span className="arrow-slide">→</span>
-                  </span>
-                </div>
-              </Link>
-            </div>
-          </div>
+          className="grain relative isolate overflow-hidden rounded-[1.5rem] px-6 py-8 text-white shadow-lg sm:px-10 sm:py-12 lg:rounded-[2rem]"
+          style={{ background: "linear-gradient(135deg, #d4623a, #c4553a 55%, #7a2f1b)" }}
+        >
+          <h1 className="max-w-2xl text-balance text-3xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">{ui.introTitle}</h1>
+          <p className="mt-3 max-w-xl text-base text-white/90 sm:text-lg">{ui.introText}</p>
+          <Link
+            href="/search"
+            className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
+          >
+            {ui.introCta}
+            <span aria-hidden>→</span>
+          </Link>
         </div>
       </section>
 
-      {/* ნამუშევრები: რეალური ფოტოები, მყიდველი ნივთებს ეძებს */}
-      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
-        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
-            {t.worksTitle}
-          </h2>
-          <Link
-            href="/search"
-            className="group inline-flex min-h-10 shrink-0 items-center gap-1.5 text-sm font-medium text-accent transition duration-300 hover:text-accent-hover"
-          >
-            {t.allWorks}
-            <span className="arrow-slide" aria-hidden>
-              →
-            </span>
+      {/* კატეგორიების წრეები (რეალური ფოტოებით), ჰორიზონტალურად */}
+      <section className="mx-auto max-w-7xl pt-8 sm:px-6 lg:px-10">
+        <ul className="flex gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:gap-6 sm:px-0 [&::-webkit-scrollbar]:hidden">
+          {circles.map((c) => (
+            <li key={c.slug} className="shrink-0">
+              <Link href={`/categories/${c.slug}`} className="group flex w-[4.75rem] flex-col items-center gap-2 text-center sm:w-24">
+                <span className="relative block h-[4.5rem] w-[4.5rem] overflow-hidden rounded-full shadow-md ring-2 ring-border transition duration-300 group-hover:-translate-y-1 group-hover:ring-accent sm:h-20 sm:w-20">
+                  {c.image ? (
+                    <Image src={c.image} alt="" fill sizes="80px" placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover" />
+                  ) : (
+                    <CategoryArt slug={c.slug} color={c.color} className="h-full w-full" />
+                  )}
+                </span>
+                <span className="text-xs font-medium leading-tight text-text group-hover:text-accent sm:text-sm">{c.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* ახალი ნამუშევრები */}
+      <section className={sectionClass}>
+        <Reveal className="mb-5 flex items-end justify-between gap-4 sm:mb-8">
+          <h2 className={h2Class}>{ui.newWorks}</h2>
+          <Link href="/search" className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover">
+            {t.allWorks} →
           </Link>
         </Reveal>
         <Reveal>
           <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4">
             {showcase.map((entry, i) => (
               <li key={`${entry.artist.slug}-${entry.id}`} className={i >= 6 ? "hidden lg:block" : undefined}>
-                <WorkCard card={toWorkCard(entry)} />
+                <WorkCard card={toWorkCard(entry)} priority={i < 4} />
               </li>
             ))}
           </ul>
         </Reveal>
       </section>
 
-      {/* კატეგორიები */}
-      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
-        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
-            {t.categoriesTitle}
-          </h2>
-          <Link
-            href="/categories"
-            className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
-          >
-            {t.allCategories}
-            <span className="arrow-slide" aria-hidden>
-              →
-            </span>
-          </Link>
-        </Reveal>
+      {/* კოლექციები */}
+      {collections.map((collection) => (
+        <section key={collection.title} className={sectionClass}>
+          <Reveal className="mb-5 flex items-end justify-between gap-4 sm:mb-8">
+            <h2 className={h2Class}>{collection.title}</h2>
+            <Link href={collection.href} className="inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover">
+              {t.allWorks} →
+            </Link>
+          </Reveal>
+          <Reveal>
+            <WorkGrid entries={collection.items} />
+          </Reveal>
+        </section>
+      ))}
 
-        <Reveal>
-          <CategoryCarousel
-            autoplay={false}
-            slides={cats.map((c) => ({
-              slug: c.slug,
-              name: c.name,
-              description: c.description,
-              color: categoryColor(c.slug),
-            }))}
-          />
-        </Reveal>
-      </section>
-
-      {/* რჩეული ხელოვანები */}
-      <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
-        <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
-            {t.featured}
-          </h2>
-          <Link
-            href="/artists"
-            className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
-          >
-            {t.fullList}
-            <span className="arrow-slide" aria-hidden>
-              →
-            </span>
-          </Link>
-        </Reveal>
-        <Reveal>
-          <ArtistsCarousel>
-            {featured.map((artist) => (
-              <ArtistCard
-                key={artist.slug}
-                artist={artist}
-                artClassName="aspect-[4/5] sm:aspect-square"
-                worksLabel={dictionary[lang].artists.worksCount(artist.works.length)}
-              />
-            ))}
-          </ArtistsCarousel>
-        </Reveal>
-      </section>
+      {/* გაიცანი ხელოვანი */}
+      {spotlight ? (
+        <section className={sectionClass}>
+          <Reveal className="mb-5 sm:mb-8">
+            <h2 className={h2Class}>{ui.meetMaker}</h2>
+          </Reveal>
+          <Reveal>
+            <div className="grid gap-5 overflow-hidden rounded-[1.75rem] border border-border bg-surface p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-8">
+              <div className="flex flex-col">
+                <Link href={`/artists/${spotlight.slug}`} className="group relative block aspect-[4/3] overflow-hidden rounded-[1.25rem] bg-surface-2">
+                  {spotlightPhoto ? (
+                    <Image
+                      src={spotlightPhoto}
+                      alt={spotlight.name}
+                      fill
+                      sizes="(min-width: 1024px) 35vw, 100vw"
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
+                      className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                    />
+                  ) : null}
+                </Link>
+                <h3 className="mt-4 text-2xl font-semibold tracking-tight text-text">{spotlight.name}</h3>
+                <p className="text-sm text-muted">
+                  {spotlight.category}
+                  {spotlight.city ? ` · ${spotlight.city}` : ""}
+                </p>
+                <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-muted">{spotlight.bio}</p>
+                <Link
+                  href={`/artists/${spotlight.slug}`}
+                  className="mt-4 inline-flex min-h-11 w-fit items-center rounded-full border border-border bg-bg px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent"
+                >
+                  {dict.workPage.viewProfile} →
+                </Link>
+              </div>
+              <ul className="grid grid-cols-3 gap-3">
+                {spotlightWorks.map((entry) => (
+                  <li key={entry.id}>
+                    <WorkCard card={toWorkCard(entry)} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </section>
+      ) : null}
 
       {/* როგორ მუშაობს */}
       <section

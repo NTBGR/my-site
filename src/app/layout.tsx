@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Georgian, Noto_Serif_Georgian } from "next/font/google";
+import BottomNav from "@/components/BottomNav";
 import Header from "@/components/Header";
+import type { SearchIndex } from "@/components/SearchBox";
+import { getLocalizedArtists, getWorkEntries } from "@/data/artists";
+import { categories, localizeCategory } from "@/data/categories";
 import Footer from "@/components/Footer";
 import { LangProvider } from "@/components/LangProvider";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -51,6 +55,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const lang = await getLang();
+  // ძებნის ჩამოსაშლელი ვარიანტები: ორივე ენაზე ეძებს, ტექსტი კი მიმდინარე ენაზე ჩანს
+  const kaWorks = getWorkEntries("ka");
+  const enWorks = getWorkEntries("en");
+  const searchIndex: SearchIndex = {
+    categories: categories.map((c) => ({ label: localizeCategory(c, lang).name, text: `${c.name} ${c.en.name}`, href: `/categories/${c.slug}` })),
+    artists: getLocalizedArtists(lang).map((a) => ({ label: a.name, text: `${a.name} ${a.city}`, href: `/artists/${a.slug}` })),
+    works: getWorkEntries(lang).map((e, i) => ({
+      label: e.work.title,
+      sub: e.artist.name,
+      text: `${kaWorks[i].work.title} ${enWorks[i].work.title} ${e.artist.name}`,
+      href: `/works/${e.artist.slug}/${e.id}`,
+    })),
+  };
 
   return (
     <html lang={lang} data-scroll-behavior="smooth" suppressHydrationWarning>
@@ -62,9 +79,12 @@ export default async function RootLayout({
       >
         <LangProvider lang={lang}>
           <ScrollToTop />
-          <Header />
+          <Header searchIndex={searchIndex} menuCategories={categories.map((c) => ({ label: localizeCategory(c, lang).name, href: `/categories/${c.slug}` }))} />
           <main className="flex-1">{children}</main>
           <Footer />
+          {/* ტელეფონის ქვედა ნავიგაციისთვის ადგილი */}
+          <div aria-hidden className="h-16 lg:hidden" />
+          <BottomNav />
         </LangProvider>
       </body>
     </html>

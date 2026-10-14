@@ -5,12 +5,16 @@ import ArtTile from "@/components/ArtTile";
 import CopyLink from "@/components/CopyLink";
 import HeartButton from "@/components/HeartButton";
 import ShareButton from "@/components/ShareButton";
-import WorkCard, { toWorkCard } from "@/components/WorkCard";
+import WorkCard from "@/components/WorkCard";
+import WorkGallery from "@/components/WorkGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
 import { getWorkEntries, getWorkEntry } from "@/data/artists";
 import { getCategoryBySlug, localizeCategory } from "@/data/categories";
+import { BLUR_DATA_URL } from "@/lib/blur";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { formatPrice } from "@/lib/price";
+import { toWorkCard } from "@/lib/workCard";
 
 type Params = Promise<{ artist: string; work: string }>;
 
@@ -28,6 +32,9 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
+const accordion = "group rounded-[1.25rem] border border-border bg-surface px-5 py-4";
+const summary = "flex min-h-8 cursor-pointer list-none items-center justify-between gap-3 text-base font-semibold text-text [&::-webkit-details-marker]:hidden";
+
 export default async function WorkPage({ params }: { params: Params }) {
   const { artist: artistSlug, work: workIdParam } = await params;
   const lang = await getLang();
@@ -43,10 +50,14 @@ export default async function WorkPage({ params }: { params: Params }) {
   const more = getWorkEntries(lang)
     .filter((e) => e.artist.slug === artist.slug && e.id !== entry.id)
     .slice(0, 6);
-
   const similar = getWorkEntries(lang)
     .filter((e) => e.artist.slug !== artist.slug && e.artist.categories.some((c) => artist.categories.includes(c)))
     .slice(0, 6);
+  const avatar = artist.cover || artist.works.find((w) => w.image)?.image;
+  const photos = [
+    ...(work.image ? [{ src: work.image, width: work.width, height: work.height }] : []),
+    ...(work.images ?? []).map((src) => ({ src })),
+  ];
   const cta = canMessage ? (
     <CopyLink
       href={`/go/${artist.slug}/w${index}`}
@@ -65,10 +76,12 @@ export default async function WorkPage({ params }: { params: Params }) {
     description: work.note || artist.bio,
     inLanguage: lang,
   };
+  const badges = [work.isNew ? t.ui.isNew : null, work.unique ? t.ui.unique : null, work.madeToOrder ? t.ui.madeToOrder : null].filter(Boolean) as string[];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-28 pt-3 lg:pb-24 sm:px-6 sm:pt-6 lg:px-10">
+    <div className="mx-auto max-w-7xl px-4 pb-28 pt-3 sm:px-6 sm:pt-6 lg:px-10 lg:pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       {/* ნავიგაციის ბილიკი */}
       <nav aria-label="breadcrumb" className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
         <Link href="/" className="hover:text-accent">{t.workPage.home}</Link>
@@ -83,69 +96,86 @@ export default async function WorkPage({ params }: { params: Params }) {
       </nav>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-12">
-        {/* ფოტო: მთლიანად ჩანს, არ იჭრება */}
-        <div className="overflow-hidden rounded-[1.5rem] bg-surface shadow-sm">
-          {work.image ? (
-            <Image
-              src={work.image}
-              alt={work.title}
-              width={work.width ?? 1000}
-              height={work.height ?? 1250}
-              sizes="(min-width: 1024px) 55vw, 100vw"
-              className="mx-auto h-auto max-h-[80vh] w-auto max-w-full object-contain"
-              priority
-            />
-          ) : (
-            <ArtTile color={work.color} variant={0} className="aspect-[3/4] w-full" />
-          )}
-        </div>
+        {photos.length > 0 ? (
+          <WorkGallery photos={photos} title={work.title} />
+        ) : (
+          <div className="overflow-hidden rounded-[1.5rem]">
+            <ArtTile color={work.color} variant={0} className="aspect-[4/5] w-full" />
+          </div>
+        )}
 
         <div className="flex flex-col">
-          <h1 className="text-balance text-3xl font-semibold leading-tight tracking-tight text-text sm:text-4xl">{work.title}</h1>
-          <p className="mt-2 text-muted">
-            {t.workPage.from}{" "}
-            <Link href={`/artists/${artist.slug}`} className="font-medium text-text underline decoration-border underline-offset-4 hover:text-accent">
-              {artist.name}
-            </Link>
-            {artist.city ? ` · ${artist.city}` : ""}
+          {/* ფასი → სათაური → ავტორი */}
+          <p className="text-2xl font-semibold text-text sm:text-3xl">
+            {work.price ? formatPrice(work.price) : <span className="text-lg font-normal text-muted sm:text-xl">{t.ui.priceOnRequest}</span>}
           </p>
+          {badges.length > 0 ? (
+            <p className="mt-2 flex flex-wrap gap-1.5">
+              {badges.map((label) => (
+                <span key={label} className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-text">
+                  {label}
+                </span>
+              ))}
+            </p>
+          ) : null}
+          <h1 className="mt-3 text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl">{work.title}</h1>
 
-          <p className="mt-6 text-sm leading-relaxed text-muted">{t.workPage.howToBuy}</p>
+          <Link href={`/artists/${artist.slug}`} className="group mt-4 flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 transition duration-300 hover:border-accent">
+            <span className="relative block h-12 w-12 shrink-0 overflow-hidden rounded-full bg-surface-2">
+              {avatar ? <Image src={avatar} alt="" fill sizes="48px" placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover" /> : null}
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate font-semibold text-text group-hover:text-accent">{artist.name}</span>
+              <span className="block truncate text-sm text-muted">
+                {artist.category}
+                {artist.city ? ` · ${artist.city}` : ""}
+              </span>
+            </span>
+            <span className="ml-auto text-muted" aria-hidden>→</span>
+          </Link>
+
           <div className="mt-4 hidden lg:block">{cta}</div>
+          <p className="mt-3 text-sm leading-relaxed text-muted">{t.workPage.howToBuy}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <HeartButton id={`${artist.slug}/${entry.id}`} label className="min-h-11 border border-border bg-surface px-5 text-text hover:border-accent hover:text-accent" />
             <ShareButton title={work.title} className="min-h-11 border border-border bg-surface px-5 text-text hover:border-accent hover:text-accent" />
           </div>
 
-          {work.materials || work.note ? (
-            <section className="mt-6 rounded-[1.5rem] border border-border bg-surface p-5">
-              <h2 className="text-lg font-semibold tracking-tight text-text">{t.workPage.details}</h2>
-              {work.materials ? (
-                <p className="mt-2 text-sm text-muted"><span className="font-medium text-text">{t.workPage.materials}:</span> {work.materials}</p>
-              ) : null}
-              {work.note ? <p className="mt-2 text-sm leading-relaxed text-muted">{work.note}</p> : null}
-            </section>
-          ) : null}
-
-          {/* გაიცანი ავტორი */}
-          <section className="mt-8 rounded-[1.5rem] border border-border bg-surface p-5">
-            <h2 className="text-lg font-semibold tracking-tight text-text">{t.workPage.aboutMaker}</h2>
-            <p className="mt-1 text-sm font-medium text-text">
-              {artist.name}
-              <span className="font-normal text-muted">
-                {" "}
-                · {artist.category}
-                {artist.city ? ` · ${artist.city}` : ""}
-              </span>
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-muted">{artist.bio}</p>
-            <Link
-              href={`/artists/${artist.slug}`}
-              className="mt-4 inline-flex min-h-10 items-center rounded-full border border-border bg-bg px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent"
-            >
-              {t.workPage.viewProfile} →
-            </Link>
-          </section>
+          {/* ჩამოსაშლელი ბლოკები */}
+          <div className="mt-6 space-y-3">
+            <details className={accordion} open>
+              <summary className={summary}>
+                {t.workPage.details}
+                <span aria-hidden className="text-muted transition group-open:rotate-45">+</span>
+              </summary>
+              <dl className="mt-3 space-y-1.5 text-sm text-muted">
+                {work.materials ? (
+                  <div><dt className="inline font-medium text-text">{t.workPage.materials}: </dt><dd className="inline">{work.materials}</dd></div>
+                ) : null}
+                {work.size ? (
+                  <div><dt className="inline font-medium text-text">{t.ui.size}: </dt><dd className="inline">{work.size}</dd></div>
+                ) : null}
+                <div><dt className="inline font-medium text-text">{t.workPage.from}: </dt><dd className="inline">{artist.name}</dd></div>
+                {work.note ? <p className="pt-1 leading-relaxed">{work.note}</p> : null}
+              </dl>
+            </details>
+            <details className={accordion}>
+              <summary className={summary}>
+                {t.ui.deliveryTitle}
+                <span aria-hidden className="text-muted transition group-open:rotate-45">+</span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-muted">{t.ui.deliveryText}</p>
+            </details>
+            {work.madeToOrder ? (
+              <details className={accordion}>
+                <summary className={summary}>
+                  {t.ui.orderTitle}
+                  <span aria-hidden className="text-muted transition group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-muted">{t.ui.orderText}</p>
+              </details>
+            ) : null}
+          </div>
         </div>
       </div>
 

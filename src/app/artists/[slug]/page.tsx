@@ -1,11 +1,13 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import ArtistTabs from "@/components/ArtistTabs";
+import ShareButton from "@/components/ShareButton";
+import WorkCard from "@/components/WorkCard";
+import { BLUR_DATA_URL } from "@/lib/blur";
+import { toWorkCard } from "@/lib/workCard";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { variantFor } from "@/components/ArtTile";
-import CategoryArt from "@/components/CategoryArt";
-import BannerPhotos from "@/components/BannerPhotos";
 import CopyLink from "@/components/CopyLink";
-import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
 import { getArtistBySlug, localizeArtist, workId } from "@/data/artists";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
@@ -111,11 +113,6 @@ export default async function ArtistPage({
   // ბანერის ფილაში ქავერი (ან პირველი ნამუშევრის ფოტო); თუ არცერთია, კატეგორიის ილუსტრაცია
   const firstPhoto = artist.works.find((work) => work.image)?.image;
   const bannerPhoto = artist.banner || artist.cover || firstPhoto;
-  const cover = bannerPhoto ? { image: bannerPhoto } : undefined;
-  // ბანერში ტრიალებს ქავერი (პირველი) და ხელოვანის ყველა ნამუშევარი
-  const bannerImages = bannerPhoto
-    ? [bannerPhoto, ...artist.works.map((work) => work.image).filter((src): src is string => !!src && src !== bannerPhoto)]
-    : [];
   const color = categoryColor(main);
   const cats = artist.categories
     .map((slug) => getCategoryBySlug(slug))
@@ -123,6 +120,10 @@ export default async function ArtistPage({
     .map((c) => localizeCategory(c, lang));
   const instagram = artist.instagram ? `/go/${artist.slug}/instagram` : undefined;
   const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
+
+  const avatar = artist.cover || firstPhoto;
+  const oneLiner = artist.bio.split(/(?<=[.!?])\s/)[0];
+  const workCards = artist.works.map((w, i) => toWorkCard({ artist, work: w, index: i, id: workId(w, i) }, i));
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
@@ -133,62 +134,31 @@ export default async function ArtistPage({
         {t.back}
       </Link>
 
-      {/* ბანერი ხელოვანის მთავარი კატეგორიის ფერში */}
-      <section
-        className="relative isolate mt-2 overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
-        style={{
-          background: `linear-gradient(135deg, color-mix(in srgb, ${color}, white 14%), ${color} 55%, color-mix(in srgb, ${color}, black 34%))`,
-        }}
-      >
-        {/* დესკტოპი/პლანშეტი: მცურავი ფილა მარჯვნივ, მთლიანად ჩანს */}
+      {/* მაღაზიის ზედა ნაწილი: ფართო სურათი (cover), მრგვალი ავატარი, სახელი, ქალაქი, ერთხაზიანი აღწერა */}
+      <section className="mt-2 overflow-hidden rounded-[1.5rem] border border-border bg-surface shadow-sm lg:rounded-[2rem]">
         <div
-          aria-hidden
-          className={`absolute right-[6%] top-1/2 hidden -translate-y-1/2 sm:block ${cover ? "w-[16%] max-w-[10rem]" : "w-[24%] max-w-[15rem]"}`}
+          className="relative h-32 sm:h-48"
+          style={{ background: `linear-gradient(135deg, color-mix(in srgb, ${color}, white 14%), ${color} 55%, color-mix(in srgb, ${color}, black 34%))` }}
         >
-          <div
-            className="float overflow-hidden rounded-[1.25rem] shadow-2xl ring-4 ring-white/15"
-            style={{ ["--r" as string]: "4deg" }}
-          >
-            {cover?.image ? (
-              <BannerPhotos images={bannerImages} sizes="160px" priority />
-            ) : (
-              <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
-            )}
-          </div>
+          {bannerPhoto ? (
+            <Image src={bannerPhoto} alt="" fill sizes="(min-width: 1280px) 1200px, 100vw" priority placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover opacity-60 mix-blend-multiply" />
+          ) : null}
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
         </div>
-        {/* მობილურზე: პატარა ილუსტრაცია კუთხეში */}
-        <div
-          aria-hidden
-          className={`float absolute right-4 top-4 z-10 overflow-hidden rounded-xl shadow-xl ring-2 ring-white/20 sm:hidden ${cover ? "w-[5.5rem]" : "w-[4.5rem]"}`}
-          style={{ ["--r" as string]: "5deg" }}
-        >
-          {cover?.image ? (
-            <BannerPhotos images={bannerImages} sizes="88px" />
-          ) : (
-            <CategoryArt slug={main} color={color} className="aspect-[4/3]" />
-          )}
-        </div>
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent" />
-
-        <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[13rem] sm:max-w-[62%] sm:px-10 sm:py-6">
-          <div className="flex flex-wrap gap-2 pr-24 text-xs font-medium sm:pr-0">
-            <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
-              {artist.category}
+        <div className="px-5 pb-6 sm:px-8">
+          <div className="-mt-12 flex items-end justify-between gap-3 sm:-mt-14">
+            <span className="relative block h-24 w-24 shrink-0 overflow-hidden rounded-full bg-surface-2 shadow-lg ring-4 ring-surface sm:h-28 sm:w-28">
+              {avatar ? <Image src={avatar} alt={artist.name} fill sizes="112px" placeholder="blur" blurDataURL={BLUR_DATA_URL} className="object-cover" /> : null}
             </span>
-            {artist.city ? (
-              <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
-                {artist.city}
-              </span>
-            ) : null}
+            <ShareButton title={artist.name} label={all.ui.shareProfile} className="min-h-11 border border-border bg-surface px-5 text-text hover:border-accent hover:text-accent" />
           </div>
-          <h1 className="mt-2 pr-24 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
-            {artist.name}
-          </h1>
-          <p className="mt-1 text-sm text-white/80">
-            {all.artists.worksCount(artist.works.length)}
+          <h1 className="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight text-text sm:text-4xl">{artist.name}</h1>
+          <p className="mt-1 text-sm text-muted">
+            {artist.category}
+            {artist.city ? ` · ${artist.city}` : ""} · {all.artists.worksCount(artist.works.length)}
           </p>
-
-          <p className="mt-4 text-sm font-medium text-white/85">{t.buyHint}</p>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-text/80">{oneLiner}</p>
+          <p className="mt-4 text-sm font-medium text-muted">{t.buyHint}</p>
           <div className="mt-2 flex flex-wrap gap-2">
             <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
             <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
@@ -196,57 +166,49 @@ export default async function ArtistPage({
         </div>
       </section>
 
-      {/* ნამუშევრები */}
-      <section className="mt-8 sm:mt-10">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.works}</h2>
-          {cats.length > 1 ? (
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-muted">{t.alsoIn}</span>
-              {cats.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/categories/${c.slug}`}
-                  className="inline-flex min-h-9 items-center rounded-full border border-border bg-surface px-3 font-medium text-text transition hover:border-accent hover:text-accent"
-                >
-                  {c.name}
-                </Link>
-              ))}
+      <ArtistTabs
+        worksLabel={all.ui.tabWorks}
+        storyLabel={all.ui.tabStory}
+        works={
+          <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
+            {workCards.map((card, i) => (
+              <li key={card.key}>
+                <WorkCard card={card} priority={i < 4} />
+              </li>
+            ))}
+          </ul>
+        }
+        story={
+          <div className="mt-6 grid gap-4 lg:grid-cols-[3fr_2fr]">
+            <div className="rounded-[1.75rem] border border-border bg-surface p-6 sm:p-8">
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">{t.about}</h2>
+              <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">{artist.bio}</p>
+              {cats.length > 1 ? (
+                <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
+                  <span className="text-muted">{t.alsoIn}</span>
+                  {cats.map((c) => (
+                    <Link
+                      key={c.slug}
+                      href={`/categories/${c.slug}`}
+                      className="inline-flex min-h-11 items-center rounded-full border border-border bg-bg px-4 font-medium text-text transition hover:border-accent hover:text-accent"
+                    >
+                      {c.name}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-        <div className="mt-5">
-          <WorksGallery
-            works={artist.works.map((work, i) => ({
-              title: work.title,
-              color: work.color,
-              variant: (variantFor(artist.slug) + i) % 4,
-              url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
-              pageHref: `/works/${artist.slug}/${workId(work, i)}`,
-              network: /facebook\.com|fb\.com|fb\.me/i.test(work.url || artist.instagram || artist.facebook) ? "facebook" as const : "instagram" as const,
-              image: work.image,
-              width: work.width,
-              height: work.height,
-            }))}
-          />
-        </div>
-      </section>
-
-      {/* ავტორის შესახებ + ყიდვის ბლოკი */}
-      <section className="mt-10 grid gap-4 sm:mt-14 lg:grid-cols-[3fr_2fr]">
-        <div className="rounded-[1.75rem] border border-border bg-surface p-6 sm:p-8">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">{t.about}</h2>
-          <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">{artist.bio}</p>
-        </div>
-        <div className="flex flex-col justify-center rounded-[1.75rem] bg-accent-soft p-6 sm:p-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>
-          <p className="mt-2 leading-relaxed text-text/75">{t.ctaText}</p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
-            <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
+            <div className="flex flex-col justify-center rounded-[1.75rem] bg-accent-soft p-6 sm:p-8">
+              <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>
+              <p className="mt-2 leading-relaxed text-text/75">{t.ctaText}</p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
+                <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        }
+      />
     </div>
   );
 }
