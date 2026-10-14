@@ -45,6 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     // icons-ის მითითება ფაილზე დაფუძნებულ ხატულას (app/icon.svg) გადაფარავს, ამიტომ ორივე აქვე ვწერთ
     icons: {
       icon: [
+        { url: "/favicon.ico", sizes: "any" },
         { url: "/icon.svg", type: "image/svg+xml" },
         { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       ],
