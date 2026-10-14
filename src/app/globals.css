@@ -199,7 +199,7 @@ a:hover > .arrow-slide {
     transform: translateY(0) rotate(var(--r, 0deg));
   }
   50% {
-    transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 1.5deg));
+    transform: translateY(-10px) rotate(calc(var(--r, 0deg) + 1.1deg));
   }
 }
 
@@ -229,7 +229,7 @@ a:hover > .arrow-slide {
 }
 
 .float {
-  animation: float 7s ease-in-out infinite;
+  animation: float 11s ease-in-out infinite;
 }
 
 /* პატარა ბარათებზე (ლენდინგის მარჯვენა ორი ბარათი) უფრო ნაზი და ნელი მცურავი მოძრაობა */
@@ -244,7 +244,7 @@ a:hover > .arrow-slide {
 }
 
 .float-soft {
-  animation: float-soft 10s ease-in-out infinite;
+  animation: float-soft 14s ease-in-out infinite;
 }
 
 /* ილუსტრაციები (კატეგორიების სცენები) ნელა ირხევა და ციმციმებს: ყველგან, სადაც CategoryArt გამოიყენება */

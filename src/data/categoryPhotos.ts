@@ -8,7 +8,7 @@ const photo = (slug: string, focal = "50% 50%"): CategoryPhoto => ({ src: `/cate
 export const categoryPhotos: Record<string, CategoryPhoto> = {
   nakhatebi: photo("nakhatebi"),
   posterebi: photo("posterebi"),
-  keramika: photo("keramika", "35% 55%"),
+  keramika: photo("keramika"),
   skulptura: photo("skulptura"),
   samkauli: photo("samkauli"),
   // ძველი გასაღები „ბეჭდები“ (ბანერებზე): ცალკე სურათი, რომ სამკაულთან ერთნაირი არ იყოს
