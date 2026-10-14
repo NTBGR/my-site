@@ -245,6 +245,7 @@ export default async function ArtistPage({
           <WorksGallery
             works={artist.works.map((work, i) => ({
               title: work.title,
+              price: work.price,
               color: work.color,
               variant: (variantFor(artist.slug) + i) % 4,
               url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,

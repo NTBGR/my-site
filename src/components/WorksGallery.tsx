@@ -16,6 +16,8 @@ export type GalleryWork = {
   color: string;
   variant: number;
   url?: string;
+  // ფასი ლარში
+  price?: number;
   // ❤️ შენახვის გასაღები ("ავტორი/ნამუშევარი") და alt ტექსტი
   favKey?: string;
   alt?: string;
@@ -94,6 +96,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
               <span className="mt-2 block px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base">
                 {work.title}
               </span>
+              {work.price ? <span className="mt-0.5 block px-1 text-sm font-semibold text-text sm:text-base">{work.price} ₾</span> : null}
             </button>
             {work.favKey ? (
               <HeartButton
@@ -211,6 +214,7 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                   ) : null}
                   <p className="line-clamp-2 min-w-0 flex-1 text-center text-base font-semibold leading-snug tracking-tight sm:text-lg">
                     {current.title}
+                    {current.price ? <span className="ml-2 font-bold">· {current.price} ₾</span> : null}
                   </p>
                   {works.length > 1 ? (
                     <ArrowButton direction="next" variant="glass" size="sm" label={t.home.next} onClick={() => step(1)} className="shrink-0 sm:hidden" />
