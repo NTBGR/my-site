@@ -11,6 +11,8 @@ export type Tag = {
   description: string;
   // თუ მითითებულია, ამ ფასამდე (ჩათვლით) ყველა ნამუშევარი ავტომატურად ხვდება თაგში
   maxPrice?: number;
+  // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდი და sitemap-ის ჩანაწერიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
+  hidden?: boolean;
   en: { name: string; description: string };
 };
 
@@ -33,6 +35,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-mom",
+    hidden: true,
     emoji: "🌸",
     name: "საჩუქარი დედას",
     description: "ხელნაკეთი საჩუქრები დედისთვის.",
@@ -40,6 +43,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "never-wilts",
+    hidden: true,
     emoji: "🌷",
     name: "თაიგული, რომელიც არ ჭკნება",
     description: "ნაქსოვი თაიგულები, რომლებიც არ ჭკნება და დიდხანს ინახება.",
@@ -55,7 +59,7 @@ export const tags: Tag[] = [
 ];
 
 export function getTagBySlug(slug: string) {
-  return tags.find((tag) => tag.slug === slug);
+  return tags.find((tag) => tag.slug === slug && !tag.hidden);
 }
 
 export function localizeTag(tag: Tag, lang: Lang) {
@@ -74,5 +78,5 @@ export function worksForTag(tag: Tag, lang: Lang): WorkEntry[] {
 
 // მხოლოდ ის თაგები, რომლებსაც ნამუშევარი აქვს (ცარიელი თაგი არ ჩანს)
 export function activeTags(lang: Lang) {
-  return tags.filter((tag) => worksForTag(tag, "ka").length > 0).map((tag) => localizeTag(tag, lang));
+  return tags.filter((tag) => !tag.hidden && worksForTag(tag, "ka").length > 0).map((tag) => localizeTag(tag, lang));
 }
