@@ -33,14 +33,13 @@ export default async function Home() {
   const ui = dict.ui;
   const artists = getLocalizedArtists(lang);
   const all = getWorkEntries(lang);
-  // მთავარ ვიტრინაში ცნობილი ადამიანების პოსტერები არ ჩანს (სამართლებრივი რისკი); ისინი კატეგორიასა და ძებნაში რჩება
-  const showcase = interleavedWorks(lang, 8, ["posterebi"]);
+  const showcase = interleavedWorks(lang, 8);
 
   // კატეგორიის წრე: პირველი ნამდვილი ფოტო ამ კატეგორიიდან (თუ არ არის, ილუსტრაცია)
   const usedImages = new Set<string>();
   const circles = categories
     .map((c) => {
-      const candidates = all.filter((e) => e.artist.categories.includes(c.slug) && !e.artist.categories.includes("posterebi") && e.work.image);
+      const candidates = all.filter((e) => e.artist.categories.includes(c.slug) && e.work.image);
       const entry = candidates.find((e) => !usedImages.has(e.work.image as string)) ?? candidates[0];
       if (entry?.work.image) usedImages.add(entry.work.image);
       const full = localizeCategory(c, lang).name;

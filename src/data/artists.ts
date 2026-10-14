@@ -188,9 +188,8 @@ export function getWorkEntry(lang: Lang, artistSlug: string, id: string): WorkEn
 }
 
 // მთავარი გვერდისთვის: ავტორები ერთმანეთს მონაცვლეობით (ერთი ავტორის ნამუშევრები ზედიზედ არ დაიდოს)
-export function interleavedWorks(lang: Lang, limit: number, excludeCategories: string[] = []): WorkEntry[] {
+export function interleavedWorks(lang: Lang, limit: number): WorkEntry[] {
   const lists = getLocalizedArtists(lang)
-    .filter((artist) => !artist.categories.some((c) => excludeCategories.includes(c)))
     .map((artist) => artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })))
     .filter((list) => list.length > 0);
   const out: WorkEntry[] = [];
