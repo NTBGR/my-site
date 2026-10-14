@@ -40,12 +40,15 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: lang === "ka" ? "ka_GE" : "en_US",
     },
     twitter: { card: "summary_large_image" },
+    // საიტს საკუთარი ქართული/ინგლისური გადამრთველი აქვს; ბრაუზერის ავტო-თარგმანი ქართულს ამახინჯებს
+    other: { google: "notranslate" },
   };
 }
 
-// ადგენს თემას გვერდის ჩვენებამდე, რომ ფერები არ აციმციმდეს
+// ადგენს თემას გვერდის ჩვენებამდე, რომ ფერები არ აციმციმდეს.
+// ნაგულისხმევი ყოველთვის ღიაა; ბნელი მხოლოდ მაშინ, თუ ადამიანმა თვითონ აირჩია
 // refresh-ზე ბრაუზერი ძველ ასქროლვის პოზიციას თვითონ აბრუნებს ჩვენი კოდის მერე: ვთიშავთ მხოლოდ refresh-ისთვის
-const themeScript = `try{var n=performance.getEntriesByType("navigation")[0];if(n&&n.type==="reload"){history.scrollRestoration="manual"}}catch(e){}try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
+const themeScript = `try{var n=performance.getEntriesByType("navigation")[0];if(n&&n.type==="reload"){history.scrollRestoration="manual"}}catch(e){}try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t="light"}document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
 
 export default async function RootLayout({
   children,
@@ -55,7 +58,7 @@ export default async function RootLayout({
   const lang = await getLang();
 
   return (
-    <html lang={lang} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang={lang} translate="no" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
