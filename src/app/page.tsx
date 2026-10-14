@@ -39,11 +39,11 @@ export default async function Home() {
   // მცურავი, დახრილი ფოტოების კოლაჟი ბანერის მარჯვენა მხარეს (ტელეფონზე სამი პატარა კუთხეში): ყველა სლაიდზე ერთნაირია
   const collage = (slugs: [string, string, string]) => (
     <>
-      <div className="absolute inset-x-5 top-4 h-32 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
+      <div className="absolute inset-x-5 top-3 h-24 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
         {[
-          { pos: "left-[2%] top-4 w-[31%] sm:left-0 sm:top-2 sm:w-[34%]", r: "-7deg", delay: "" },
-          { pos: "left-[35%] top-0 w-[31%] sm:left-[33%] sm:w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
-          { pos: "right-[2%] top-6 w-[30%] sm:right-0 sm:top-5 sm:w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
+          { pos: "left-[3%] top-3 w-[28%] sm:left-0 sm:top-2 sm:w-[34%]", r: "-7deg", delay: "" },
+          { pos: "left-[36%] top-0 w-[28%] sm:left-[33%] sm:w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
+          { pos: "right-[3%] top-5 w-[27%] sm:right-0 sm:top-5 sm:w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
         ].map((tile, i) => (
           <div
             key={slugs[i]}
@@ -92,7 +92,7 @@ export default async function Home() {
       art: collage(["bechdebi", "keramika", "samkauli"]),
       content: (
         <div className="hero-in">
-          <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
+          <h1 className="text-balance text-2xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
             {t.title}
           </h1>
           <p className="mt-2 max-w-md text-sm leading-relaxed text-white/85 sm:mt-3 sm:text-lg">
@@ -120,7 +120,7 @@ export default async function Home() {
       art: collage(related[banner.slug] ?? ["keramika", "samkauli", "nakhatebi"]),
       content: (
         <div>
-          <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
+          <h2 className="text-balance text-2xl font-semibold leading-[1.1] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
             {banner.title}
           </h2>
           <p className="mt-2 line-clamp-2 max-w-md text-sm leading-snug text-white/85 sm:mt-3 sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
