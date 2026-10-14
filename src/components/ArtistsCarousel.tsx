@@ -60,7 +60,7 @@ export default function ArtistsCarousel({ children }: { children: ReactNode }) {
         <li className="w-[58%] shrink-0 snap-start sm:hidden">
           <Link
             href="/artists"
-            className="group flex h-full min-h-48 flex-col items-center justify-center gap-3 rounded-[1.5rem] border border-dashed border-border bg-surface p-4 text-center transition duration-300 active:scale-[0.99]"
+            className="group flex h-full min-h-48 flex-col items-center justify-center gap-3 rounded-[1.5rem] border-[1.5px] border-dashed border-[color-mix(in_srgb,var(--text)_22%,transparent)] bg-bg p-4 text-center transition duration-300 active:scale-[0.99]"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft text-xl text-accent" aria-hidden>
               →
