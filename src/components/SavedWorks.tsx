@@ -48,7 +48,7 @@ export default function SavedWorks({ cards }: { cards: SavedCard[] }) {
                   <ArtTile color={card.color} variant={0} className="absolute inset-0 h-full w-full" />
                 )}
               </span>
-              <span className="mt-2 block line-clamp-2 px-1 text-sm font-medium leading-snug text-text sm:text-base">{card.title}</span>
+              <span className="mt-2 block line-clamp-2 h-[3em] px-1 text-sm font-medium leading-snug text-text sm:text-base">{card.title}</span>
               <span className="block truncate px-1 text-xs text-muted sm:text-sm">{card.artistName}</span>
             </Link>
             <HeartButton
