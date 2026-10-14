@@ -36,50 +36,60 @@ export default async function Home() {
   const slideColor = (slug: string) => categoryColor(slug);
 
 
+  // მცურავი, დახრილი ფოტოების კოლაჟი ბანერის მარჯვენა მხარეს (ტელეფონზე სამი პატარა კუთხეში): ყველა სლაიდზე ერთნაირია
+  const collage = (slugs: [string, string, string]) => (
+    <>
+      <div className="absolute right-4 top-4 h-28 w-40 sm:right-8 sm:top-6 sm:w-48 lg:hidden" aria-hidden>
+        {[
+          { pos: "left-0 top-2 w-[34%]", r: "-7deg", delay: "" },
+          { pos: "left-[33%] top-0 w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
+          { pos: "right-0 top-5 w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
+        ].map((tile, i) => (
+          <div
+            key={slugs[i]}
+            className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
+            style={{ ["--r" as string]: tile.r }}
+          >
+            <CategoryArt slug={slugs[i]} color={categoryColor(slugs[i])} className="aspect-[3/4]" />
+          </div>
+        ))}
+      </div>
+      <div className="relative hidden h-full w-full lg:block" aria-hidden>
+        <div
+          className="float absolute left-[24%] top-[10%] w-[32%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15"
+          style={{ ["--r" as string]: "-6deg" }}
+        >
+          <CategoryArt slug={slugs[0]} color={categoryColor(slugs[0])} className="aspect-[3/4]" />
+        </div>
+        <div
+          className="float absolute right-[6%] top-[6%] w-[30%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-2.5s]"
+          style={{ ["--r" as string]: "5deg" }}
+        >
+          <CategoryArt slug={slugs[1]} color={categoryColor(slugs[1])} className="aspect-[4/5]" />
+        </div>
+        <div
+          className="float absolute right-[24%] top-[50%] w-[28%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-4.5s]"
+          style={{ ["--r" as string]: "-3deg" }}
+        >
+          <CategoryArt slug={slugs[2]} color={categoryColor(slugs[2])} className="aspect-[4/3]" />
+        </div>
+      </div>
+    </>
+  );
+
+  // თითო სლაიდზე ერთი და იგივე თემის სამი ფოტო
+  const related: Record<string, [string, string, string]> = {
+    keramika: ["keramika", "keramika-2", "keramika-3"],
+    nakhatebi: ["nakhatebi", "nakhatebi-2", "nakhatebi-3"],
+    samkauli: ["samkauli", "bechdebi", "samkauli-3"],
+    posterebi: ["posterebi", "posterebi-2", "posterebi-3"],
+  };
+
   const bannerSlides: BannerSlide[] = [
     {
       id: "main",
       color: "#8f5a43",
-      art: (
-        <>
-        {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაციები ზედა მარჯვენა კუთხეში */}
-        <div className="absolute right-4 top-4 h-28 w-40 sm:right-8 sm:top-6 sm:w-48 lg:hidden" aria-hidden>
-          {[
-            { slug: "bechdebi", pos: "left-0 top-2 w-[34%]", r: "-7deg", delay: "" },
-            { slug: "keramika", pos: "left-[33%] top-0 w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
-            { slug: "samkauli", pos: "right-0 top-5 w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
-          ].map((tile) => (
-            <div
-              key={tile.slug}
-              className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
-              style={{ ["--r" as string]: tile.r }}
-            >
-              <CategoryArt slug={tile.slug} color={categoryColor(tile.slug)} className="aspect-[3/4]" />
-            </div>
-          ))}
-        </div>
-        <div className="relative hidden h-full w-full lg:block" aria-hidden>
-          <div
-            className="float absolute left-[24%] top-[10%] w-[32%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15"
-            style={{ ["--r" as string]: "-6deg" }}
-          >
-            <CategoryArt slug="bechdebi" color={categoryColor("bechdebi")} className="aspect-[3/4]" />
-          </div>
-          <div
-            className="float absolute right-[6%] top-[6%] w-[30%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-2.5s]"
-            style={{ ["--r" as string]: "5deg" }}
-          >
-            <CategoryArt slug="keramika" color={categoryColor("keramika")} className="aspect-[4/5]" />
-          </div>
-          <div
-            className="float absolute right-[24%] top-[50%] w-[28%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-4.5s]"
-            style={{ ["--r" as string]: "-3deg" }}
-          >
-            <CategoryArt slug="samkauli" color={categoryColor("samkauli")} className="aspect-[4/3]" />
-          </div>
-        </div>
-        </>
-      ),
+      art: collage(["bechdebi", "keramika", "samkauli"]),
       content: (
         <div className="hero-in">
           <h1 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-4xl xl:text-5xl">
@@ -104,27 +114,10 @@ export default async function Home() {
       ),
     },
     // სლაიდი მხოლოდ იმ კატეგორიას აქვს, რომელსაც ნამდვილი ფოტო ჰყავს
-    ...t.banners.filter((banner) => hasCategoryPhoto(banner.slug)).map((banner, i): BannerSlide => ({
+    ...t.banners.filter((banner) => hasCategoryPhoto(banner.slug)).map((banner): BannerSlide => ({
       id: banner.slug,
-      framed: true,
       color: slideColor(banner.slug),
-      art: (
-        <>
-          {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაცია კუთხეში, როგორც პირველ სლაიდზე */}
-          <div
-            aria-hidden
-            className="float absolute right-4 top-4 w-[42%] max-w-[13rem] overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:right-8 sm:top-6 sm:w-[30%] lg:hidden"
-            style={{ ["--r" as string]: ["5deg", "-5deg", "4deg", "-4deg"][i] }}
-          >
-            <CategoryArt slug={banner.slug} color={slideColor(banner.slug)} className="aspect-[4/3]" />
-          </div>
-          <CategoryArt
-            slug={banner.slug}
-            color={slideColor(banner.slug)}
-            className="absolute inset-0 hidden h-full w-full lg:block"
-          />
-        </>
-      ),
+      art: collage(related[banner.slug] ?? ["keramika", "samkauli", "nakhatebi"]),
       content: (
         <div>
           <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
