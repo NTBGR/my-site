@@ -1,4 +1,4 @@
-// ფოტოების ზომები და ბუნდოვანი წინასწარი გამოსახულება (blur) ავტომატურად: public/artists/** → src/data/image-meta.json
+// ფოტოების ზომები და ბუნდოვანი წინასწარი გამოსახულება (blur) ავტომატურად: public/artists/** და public/categories/** → src/data/image-meta.json
 // ხელით არაფერი იწერება: ახალი ფოტო საქაღალდეში რომ ჩაიდება, build-ზე ეს ფაილი თავად განახლდება.
 import { readdir, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -18,7 +18,7 @@ async function walk(dir) {
 }
 
 const meta = {};
-for (const file of (await walk(path.join(ROOT, "artists"))).sort()) {
+for (const file of [...(await walk(path.join(ROOT, "artists"))), ...(await walk(path.join(ROOT, "categories")))].sort()) {
   const image = sharp(file).rotate(); // EXIF-ის მიხედვით სწორი ორიენტაცია
   const info = await image.metadata();
   const oriented = info.orientation && info.orientation >= 5;

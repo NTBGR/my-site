@@ -9,6 +9,7 @@ import ArtistsCarousel from "@/components/ArtistsCarousel";
 import Reveal from "@/components/Reveal";
 import { getLocalizedArtists } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
+import { hasCategoryPhoto } from "@/data/categoryPhotos";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
@@ -106,7 +107,8 @@ export default async function Home() {
         </div>
       ),
     },
-    ...t.banners.map((banner, i): BannerSlide => ({
+    // სლაიდი მხოლოდ იმ კატეგორიას აქვს, რომელსაც ნამდვილი ფოტო ჰყავს
+    ...t.banners.filter((banner) => hasCategoryPhoto(banner.slug)).map((banner, i): BannerSlide => ({
       id: banner.slug,
       color: slideColor[banner.slug],
       art: (
