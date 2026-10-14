@@ -116,7 +116,7 @@ async function sendToTelegram(app: Application) {
     "",
     `<b>სახელი და გვარი:</b> ${escapeHtml(app.name)}`,
     `<b>ბრენდი / მაღაზია:</b> ${escapeHtml(app.brand)}`,
-    `<b>ემაილი:</b> ${escapeHtml(app.email)}`,
+    `<b>იმეილი:</b> ${escapeHtml(app.email)}`,
     `<b>ქალაქი:</b> ${escapeHtml(app.city)}`,
     `<b>მიმართულება:</b> ${escapeHtml(app.category)}`,
     `<b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}`,
@@ -153,7 +153,7 @@ async function sendToTelegram(app: Application) {
 async function sendToEmail(app: Application) {
   const html = `
     <h2>ახალი განაცხადი: ${escapeHtml(app.brand)} (${escapeHtml(app.name)})</h2>
-    <p><b>ემაილი:</b> ${escapeHtml(app.email)}</p>
+    <p><b>იმეილი:</b> ${escapeHtml(app.email)}</p>
     <p><b>ქალაქი:</b> ${escapeHtml(app.city)}</p>
     <p><b>მიმართულება:</b> ${escapeHtml(app.category)}</p>
     <p><b>ინსტაგრამი:</b> ${escapeHtml(app.instagram) || "—"}</p>
