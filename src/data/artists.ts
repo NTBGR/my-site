@@ -129,7 +129,7 @@ export const artists: ArtistData[] = [
     categories: ["tekstili", "sachuqrebi"],
     cover: "/artists/tamus-shop/bouquet-pink-blooms.jpg",
     banner: "/artists/tamus-shop/bouquet-pink-blooms.jpg",
-    bio: "Tamus Shop ხელით ქსოვს ძაფის თაიგულებს: ტიტებს, ვარდებს, ფუმფულა ძაფის თაიგულებს და ამიგურუმის პატარა თოჯინებს. ასეთი თაიგული არ ჭკნება და საჩუქრად დიდხანს ინახება.",
+    bio: "ჰობი, რომელიც ბიზნესად იქცა. მე ვარ თამუ და უკვე 5 წელია ხელით ნაქსოვი ნივთების მაღაზია მაქვს. Tamus Shop-ში შეხვდებით უამრავ ფერად ნივთს: ძაფის ტიტებისა და ვარდების თაიგულებს, ფუმფულა ძაფის თაიგულებს და ამიგურუმის პატარა თოჯინებს. ასეთი თაიგული არ ჭკნება და საჩუქრად დიდხანს ინახება.",
     instagram: "https://www.instagram.com/tamusshop3/",
     facebook: "https://www.facebook.com/profile.php?id=100071936977915",
     works: [
@@ -147,7 +147,7 @@ export const artists: ArtistData[] = [
     en: {
       name: "Tamus Shop",
       city: "",
-      bio: "Tamus Shop crochets yarn bouquets by hand: tulips, roses, plush-yarn bouquets and small amigurumi dolls. A crocheted bouquet never wilts and keeps for years as a gift.",
+      bio: "A hobby that grew into a business. I'm Tamu, and for five years I've run a shop of hand-crocheted things. At Tamus Shop you'll find lots of colourful pieces: yarn bouquets of tulips and roses, plush-yarn bouquets and small amigurumi dolls. A crocheted bouquet never wilts and keeps for years as a gift.",
       workTitles: [
         "Bouquet \"Pink Blooms\"",
         "Plush bouquet \"Yellow\"",
