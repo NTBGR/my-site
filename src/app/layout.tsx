@@ -6,6 +6,7 @@ import { LangProvider } from "@/components/LangProvider";
 import ScrollToTop from "@/components/ScrollToTop";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const notoSansGeorgian = Noto_Sans_Georgian({
@@ -20,7 +21,6 @@ const notoSerifGeorgian = Noto_Serif_Georgian({
   variable: "--font-serif",
 });
 
-const SITE_URL = "https://khelovani.vercel.app";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLang();

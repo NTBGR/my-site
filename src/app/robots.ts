@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
 // გადასვლის ბმულები (/go) და API საძიებო სისტემებმა არ უნდა გახსნან, თორემ დათვლა გაიბერება
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/", disallow: ["/go/", "/api/"] },
-    sitemap: "https://khelovani.vercel.app/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

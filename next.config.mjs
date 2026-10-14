@@ -22,7 +22,11 @@ const nextConfig = {
   },
   // „ბეჭდები“ გაერთიანდა „სამკაულში“: ძველი ბმული არ უნდა გაწყდეს
   async redirects() {
-    return [{ source: "/categories/bechdebi", destination: "/categories/samkauli", permanent: true }];
+    return [
+      { source: "/categories/bechdebi", destination: "/categories/samkauli", permanent: true },
+      // ძველი მისამართი ახალზე გადადის (API გამოვრიცხეთ, რომ Vercel-ის ყოველთვიური cron არ გაწყდეს)
+      { source: "/:path((?!api/).*)", has: [{ type: "host", value: "khelovani.vercel.app" }], destination: "https://www.khelovani.ge/:path", permanent: true },
+    ];
   },
 };
 

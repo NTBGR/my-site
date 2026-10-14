@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { SITE_HOST } from "@/lib/site";
 import { dictionary } from "@/lib/dictionary";
 
 // გაზიარების სურათი (ფეისბუქი, მესენჯერი, ვაიბერი...): ბოტებს ენის ქუქი არ აქვთ, ამიტომ ქართულია
@@ -117,7 +118,7 @@ export default async function OpengraphImage() {
             </div>
           </div>
 
-          <div style={{ fontSize: 24, color: MUTED }}>khelovani.vercel.app</div>
+          <div style={{ fontSize: 24, color: MUTED }}>{SITE_HOST}</div>
         </div>
 
         {/* ილუსტრაციები: ბეჭდები, კერამიკა, ნახატი */}

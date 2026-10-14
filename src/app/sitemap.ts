@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { artists } from "@/data/artists";
 import { categories } from "@/data/categories";
+import { SITE_URL } from "@/lib/site";
 
-const SITE_URL = "https://khelovani.vercel.app";
 
 // საძიებო სისტემებისთვის გვერდების სია: ავტომატურად იზრდება, როცა ახალი ხელოვანი ან კატეგორია ემატება
 export default function sitemap(): MetadataRoute.Sitemap {

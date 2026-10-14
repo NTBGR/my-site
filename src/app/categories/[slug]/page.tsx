@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 import ArtistCard from "@/components/ArtistCard";
 import CategoryArt from "@/components/CategoryArt";
 import { getLocalizedArtists } from "@/data/artists";
@@ -49,9 +50,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: t.nav.home, item: "https://khelovani.vercel.app" },
-      { "@type": "ListItem", position: 2, name: t.categories.title, item: "https://khelovani.vercel.app/categories" },
-      { "@type": "ListItem", position: 3, name: category.name, item: `https://khelovani.vercel.app/categories/${category.slug}` },
+      { "@type": "ListItem", position: 1, name: t.nav.home, item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: t.categories.title, item: `${SITE_URL}/categories` },
+      { "@type": "ListItem", position: 3, name: category.name, item: `${SITE_URL}/categories/${category.slug}` },
     ],
   };
 

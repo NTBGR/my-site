@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
@@ -131,18 +132,18 @@ export default async function ArtistPage({
         "@type": "Person",
         name: artist.name,
         description: artist.bio,
-        url: `https://khelovani.vercel.app/artists/${artist.slug}`,
+        url: `${SITE_URL}/artists/${artist.slug}`,
         jobTitle: artist.category,
         address: artist.city ? { "@type": "PostalAddress", addressLocality: artist.city, addressCountry: "GE" } : undefined,
         sameAs: [artist.instagram, artist.facebook].filter(Boolean),
-        image: artist.cover ? `https://khelovani.vercel.app${artist.cover}` : undefined,
+        image: artist.cover ? `${SITE_URL}${artist.cover}` : undefined,
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: all.nav.home, item: "https://khelovani.vercel.app" },
-          { "@type": "ListItem", position: 2, name: all.nav.artists, item: "https://khelovani.vercel.app/artists" },
-          { "@type": "ListItem", position: 3, name: artist.name, item: `https://khelovani.vercel.app/artists/${artist.slug}` },
+          { "@type": "ListItem", position: 1, name: all.nav.home, item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: all.nav.artists, item: `${SITE_URL}/artists` },
+          { "@type": "ListItem", position: 3, name: artist.name, item: `${SITE_URL}/artists/${artist.slug}` },
         ],
       },
     ],
