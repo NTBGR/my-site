@@ -90,7 +90,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   const onCategoryPage = pathname === "/categories" || pathname.startsWith("/categories/");
 
   return (
-    <nav aria-label={t.nav.categories} className="relative z-30 border-b border-border bg-bg">
+    <nav aria-label={t.nav.categories} className="relative z-30 hidden border-b border-border bg-bg sm:block">
       <div className="mx-auto flex max-w-7xl items-center">
         <div ref={menuRef} className="shrink-0 border-r border-border pl-4 pr-3 sm:pl-6 lg:pl-10">
           <button

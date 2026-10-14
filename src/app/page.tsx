@@ -39,7 +39,7 @@ export default async function Home() {
   // მცურავი, დახრილი ფოტოების კოლაჟი ბანერის მარჯვენა მხარეს (ტელეფონზე სამი პატარა კუთხეში): ყველა სლაიდზე ერთნაირია
   const collage = (slugs: [string, string, string]) => (
     <>
-      <div className="absolute inset-x-5 top-5 h-40 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
+      <div className="absolute inset-x-5 top-4 h-32 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
         {[
           { pos: "left-[2%] top-4 w-[31%] sm:left-0 sm:top-2 sm:w-[34%]", r: "-7deg", delay: "" },
           { pos: "left-[35%] top-0 w-[31%] sm:left-[33%] sm:w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
@@ -50,7 +50,7 @@ export default async function Home() {
             className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
             style={{ ["--r" as string]: tile.r }}
           >
-            <CategoryArt slug={slugs[i]} color={categoryColor(slugs[i])} className="aspect-[3/4]" />
+            <CategoryArt slug={slugs[i]} color={categoryColor(slugs[i])} className="aspect-[4/3] sm:aspect-[3/4]" />
           </div>
         ))}
       </div>
@@ -123,7 +123,7 @@ export default async function Home() {
           <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
             {banner.title}
           </h2>
-          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
+          <p className="mt-2 line-clamp-2 max-w-md text-sm leading-snug text-white/85 sm:mt-3 sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
             {banner.text}
           </p>
           <div className="mt-5">

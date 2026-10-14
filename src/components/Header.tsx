@@ -8,7 +8,8 @@ import Preferences from "@/components/Preferences";
 import SavedLink from "@/components/SavedLink";
 import CategoryBar, { type BarTag } from "@/components/CategoryBar";
 import LogoLink from "@/components/LogoLink";
-import { useT } from "@/components/LangProvider";
+import { useLang, useT } from "@/components/LangProvider";
+import { categories, localizeCategory } from "@/data/categories";
 
 const navHrefs = ["/artists", "/categories", "/blog", "/about"] as const;
 
@@ -50,6 +51,7 @@ function MenuIcon({ open }: { open: boolean }) {
 export default function Header({ tags }: { tags: BarTag[] }) {
   const router = useRouter();
   const t = useT();
+  const lang = useLang();
   const pathname = usePathname();
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -248,6 +250,45 @@ export default function Header({ tags }: { tags: BarTag[] }) {
               </Link>
             );
           })}
+
+          {tags.length > 0 ? (
+            <div className="mt-2 border-t border-border pt-2">
+              <ul className="flex flex-col">
+                {tags.map((tag) => (
+                  <li key={tag.slug}>
+                    <Link
+                      href={`/gifts/${tag.slug}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="flex min-h-11 items-center rounded-2xl px-4 text-sm font-medium text-text transition-colors hover:bg-accent-soft hover:text-accent"
+                    >
+                      <span aria-hidden className="mr-2">{tag.emoji}</span>
+                      {tag.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          <div className="mt-2 border-t border-border pt-2">
+            <p className="px-4 pb-1 pt-1 text-xs font-semibold text-muted">{t.nav.categories}</p>
+            <ul className="flex flex-col">
+              {categories.map((raw) => {
+                const category = localizeCategory(raw, lang);
+                return (
+                  <li key={category.slug}>
+                    <Link
+                      href={`/categories/${category.slug}`}
+                      onClick={() => setMenuOpen(false)}
+                      className="flex min-h-11 items-center rounded-2xl px-4 text-sm font-medium text-text transition-colors hover:bg-accent-soft hover:text-accent"
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
 
           <div className="mt-2 border-t border-border pt-3">
             <Preferences />
