@@ -40,10 +40,20 @@ export function useFavorites() {
   const list = useSyncExternalStore(subscribe, snapshot, () => EMPTY);
   const toggle = useCallback((id: string) => {
     const current = read();
-    const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
+    const adding = !current.includes(id);
+    const next = adding ? [...current, id] : current.filter((x) => x !== id);
     try {
       localStorage.setItem(KEY, JSON.stringify(next));
     } catch {}
+    // დამატებას ანონიმურად ვითვლით ხელოვანის თვიური რეპორტისთვის; შეცდომას მნიშვნელობა არ აქვს
+    if (adding) {
+      fetch("/api/favorite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: id }),
+        keepalive: true,
+      }).catch(() => {});
+    }
     window.dispatchEvent(new Event(EVENT));
   }, []);
   return { list, has: (id: string) => list.includes(id), toggle };
