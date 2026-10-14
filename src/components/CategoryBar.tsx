@@ -90,9 +90,9 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   const onCategoryPage = pathname === "/categories" || pathname.startsWith("/categories/");
 
   return (
-    <nav aria-label={t.nav.categories} className="relative z-30 hidden border-b border-border bg-bg sm:block">
+    <nav aria-label={t.nav.categories} className="relative z-30 border-b border-border bg-bg">
       <div className="mx-auto flex max-w-7xl items-center">
-        <div ref={menuRef} className="shrink-0 border-r border-border pl-4 pr-3 sm:pl-6 lg:pl-10">
+        <div ref={menuRef} className="hidden shrink-0 border-r border-border pl-4 pr-3 sm:block sm:pl-6 lg:pl-10">
           <button
             type="button"
             aria-expanded={open}
@@ -153,7 +153,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               size="sm"
               label={t.home.prev}
               onClick={() => scrollBy(-1)}
-              className="absolute left-1 top-1/2 z-10 hidden -translate-y-1/2 sm:flex"
+              className="absolute left-1 top-1/2 z-10 flex -translate-y-1/2"
             />
           ) : null}
           {canRight ? (
@@ -162,13 +162,13 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               size="sm"
               label={t.home.next}
               onClick={() => scrollBy(1)}
-              className="absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 sm:flex lg:right-6"
+              className="absolute right-2 top-1/2 z-10 flex -translate-y-1/2 sm:right-3 lg:right-6"
             />
           ) : null}
 
           <ul
             ref={listRef}
-            className="flex gap-1.5 overflow-x-auto py-2.5 pl-2 pr-4 [scrollbar-width:none] sm:pr-6 lg:pr-10 [&::-webkit-scrollbar]:hidden"
+            className="flex gap-1.5 overflow-x-auto py-2.5 pl-4 pr-12 sm:pl-2 sm:pr-4 [scrollbar-width:none] sm:pr-6 lg:pr-10 [&::-webkit-scrollbar]:hidden"
             style={{
               maskImage: `linear-gradient(90deg, ${canLeft ? "transparent, #000 40px" : "#000, #000"}, ${canRight ? "#000 calc(100% - 56px), transparent" : "#000, #000"})`,
             }}
