@@ -153,3 +153,19 @@ export function getCities(lang: Lang): string[] {
     new Set(artists.map((artist) => localizeArtist(artist, lang).city)),
   );
 }
+
+// ნამუშევრის კოდი: ფოტოს ფაილის სახელი (მაგ. "ring-amore"); ფოტოს გარეშე რიგითი ნომერი.
+// სტაბილურია: შენახვის (❤️) გასაღებად ვიყენებთ, ნამუშევრების რიგი რომ შეიცვალოს.
+export function workId(work: ArtistWork, index: number): string {
+  const file = work.image?.split("/").pop()?.replace(/\.[^.]+$/, "");
+  return file || `w${index}`;
+}
+
+export type WorkEntry = { artist: Artist; work: ArtistWork; index: number; id: string };
+
+// ყველა ნამუშევარი ერთ სიაში (ავტორთან ერთად)
+export function getWorkEntries(lang: Lang): WorkEntry[] {
+  return getLocalizedArtists(lang).flatMap((artist) =>
+    artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })),
+  );
+}

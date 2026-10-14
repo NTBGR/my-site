@@ -103,6 +103,17 @@ const ka = {
     empty: "ხელოვანი ვერ მოიძებნა.",
     reset: "ფილტრების გასუფთავება",
   },
+  // ❤️ შენახული ნამუშევრები
+  workPage: {
+    save: "შენახვა",
+    unsave: "შენახულიდან ამოღება",
+  },
+  savedPage: {
+    title: "შენახული ნამუშევრები",
+    empty: "ჯერ არაფერი გაქვს შენახული. ნამუშევარზე გულის ღილაკს დააჭირე და აქ გამოჩნდება.",
+    browse: "ხელოვანების ნახვა",
+    note: "შენახული ნამუშევრები მხოლოდ ამ ბრაუზერში ინახება.",
+  },
   artist: {
     notFoundTitle: "ხელოვანი ვერ მოიძებნა",
     notFoundText: "ამ მისამართზე პროფილი არ არსებობს. სცადე სიიდან არჩევა.",
@@ -322,6 +333,16 @@ const en: Dict = {
     worksCount: (n: number) => `${n} ${n === 1 ? "work" : "works"}`,
     empty: "No artists found.",
     reset: "Clear filters",
+  },
+  workPage: {
+    save: "Save",
+    unsave: "Remove from saved",
+  },
+  savedPage: {
+    title: "Saved works",
+    empty: "Nothing saved yet. Tap the heart on a work and it will show up here.",
+    browse: "Browse artists",
+    note: "Saved works are kept in this browser only.",
   },
   artist: {
     notFoundTitle: "Artist not found",

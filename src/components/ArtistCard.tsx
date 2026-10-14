@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Photo from "@/components/Photo";
 import Link from "next/link";
 import type { Artist } from "@/data/artists";
 import CategoryArt from "@/components/CategoryArt";
@@ -29,13 +29,7 @@ export default function ArtistCard({
     >
       <div className={`relative overflow-hidden rounded-[1.1rem] bg-surface-2 sm:rounded-[1.25rem] ${artClassName}`}>
         {photo?.image ? (
-          <Image
-            src={photo.image}
-            alt={photo.title}
-            fill
-            sizes="(min-width: 1280px) 20vw, (min-width: 640px) 33vw, 50vw"
-            className="zoom-on-hover will-change-transform object-cover"
-          />
+          <Photo src={photo.image} alt={`${artist.name} — ${photo.title}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
         ) : (
           <CategoryArt
             slug={main}

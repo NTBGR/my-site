@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { Artist } from "@/data/artists";
 import ArtistCard from "@/components/ArtistCard";
 import { useT } from "@/components/LangProvider";
+import { scoreText } from "@/lib/searchMatch";
 
 // ამაზე ნაკლებ ხელოვანზე კატეგორიების ფილტრი დამალულია
 const MIN_ARTISTS_FOR_FILTER = 6;
@@ -15,23 +16,30 @@ export default function ArtistsFilter({
   artists,
   crafts,
   initialQuery = "",
+  searchTexts = {},
 }: {
   artists: Artist[];
   // ფილტრი საიტის კატეგორიებით (მხოლოდ ის, სადაც ხელოვანი არის)
   crafts: { slug: string; name: string }[];
   initialQuery?: string;
+  // ძებნის ტექსტი თითო ხელოვანზე: სახელი, ქალაქი, კატეგორია, ნამუშევრების სახელები (ორივე ენაზე)
+  searchTexts?: Record<string, string>;
 }) {
   const t = useT().artists;
   const [query, setQuery] = useState(initialQuery);
   const [craft, setCraft] = useState("all");
 
+  // ძებნა: ტრანსლიტერაციით („zhu“, „bechedi“) და ნამუშევრის სახელითაც; საუკეთესო დამთხვევა ზემოთ
   const filtered = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return artists.filter((artist) => {
-      if (craft !== "all" && !artist.categories.includes(craft)) return false;
-      return !needle || artist.name.toLowerCase().includes(needle);
-    });
-  }, [artists, craft, query]);
+    const needle = query.trim();
+    const list = artists.filter((artist) => craft === "all" || artist.categories.includes(craft));
+    if (!needle) return list;
+    return list
+      .map((artist) => ({ artist, score: scoreText(searchTexts[artist.slug] ?? artist.name, needle) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((x) => x.artist);
+  }, [artists, craft, query, searchTexts]);
 
   const filtersActive = craft !== "all" || query.trim() !== "";
 

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/JsonLd";
 import ArtistCard from "@/components/ArtistCard";
 import CategoryArt from "@/components/CategoryArt";
 import { getLocalizedArtists } from "@/data/artists";
@@ -44,8 +45,19 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     artist.categories.includes(category.slug),
   );
 
+  const crumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t.nav.home, item: "https://khelovani.vercel.app" },
+      { "@type": "ListItem", position: 2, name: t.categories.title, item: "https://khelovani.vercel.app/categories" },
+      { "@type": "ListItem", position: 3, name: category.name, item: `https://khelovani.vercel.app/categories/${category.slug}` },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
+      <JsonLd data={crumbLd} />
       {/* დაბალი ბანერი კატეგორიის ილუსტრაციით */}
       <section
         className="relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"

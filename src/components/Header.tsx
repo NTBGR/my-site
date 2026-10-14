@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
+import SavedLink from "@/components/SavedLink";
 import CategoryBar from "@/components/CategoryBar";
 import LogoLink from "@/components/LogoLink";
 import { useT } from "@/components/LangProvider";
@@ -165,6 +166,8 @@ export default function Header() {
           >
             <SearchIcon />
           </button>
+
+          <SavedLink />
 
           <button
             type="button"

@@ -27,6 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const { meta } = dictionary[lang];
   return {
     metadataBase: new URL(SITE_URL),
+    // ყოველ გვერდს საკუთარი მისამართი canonical-ად (დუბლიკატების თავიდან ასაცილებლად)
+    alternates: { canonical: "./" },
     // ქვეგვერდები: „ხელოვანები · ხელოვანი“; მთავარი: სრული სათაური
     title: { default: meta.homeTitle, template: `%s · ${meta.title}` },
     description: meta.description,
