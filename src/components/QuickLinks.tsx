@@ -10,9 +10,6 @@ export default function QuickLinks() {
   const pathname = usePathname();
   const links = [
     { href: "/search?f=new", label: t.ui.newWorks, icon: "✦" },
-    { href: "/search?f=under50", label: t.ui.collectionUnder50 },
-    { href: "/search?f=unique", label: t.ui.collectionUnique },
-    { href: "/search?f=mto", label: t.ui.collectionMadeToOrder },
     { href: "/artists", label: t.nav.artists },
     { href: "/about", label: t.footer.about },
   ];

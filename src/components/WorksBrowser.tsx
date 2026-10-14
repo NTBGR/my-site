@@ -39,6 +39,8 @@ export default function WorksBrowser({ cards, emptyHint, initialSort = "relevant
     return list;
   }, [cards, price, city, mto, sort]);
 
+  const hasPrices = cards.some((c) => c.price !== undefined);
+  const hasMto = cards.some((c) => c.madeToOrder);
   const activeCount = (price !== "any" ? 1 : 0) + (city ? 1 : 0) + (mto ? 1 : 0);
   const reset = () => {
     setPrice("any");
@@ -94,12 +96,12 @@ export default function WorksBrowser({ cards, emptyHint, initialSort = "relevant
   return (
     <div>
       <div className="mt-5 flex flex-wrap items-center gap-2 sm:gap-3">
-        <button type="button" onClick={() => setSheet(true)} className={`${chip(activeCount > 0)} sm:hidden`}>
+        <button type="button" onClick={() => setSheet(true)} className={`${chip(activeCount > 0)} ${hasPrices || hasMto || cities.length > 1 ? "" : "hidden"} sm:hidden`}>
           {t.filters}
           {activeCount > 0 ? ` · ${activeCount}` : ""}
         </button>
         <div className="hidden flex-wrap items-center gap-2 sm:flex">
-          {priceOptions.slice(1).map((o) => (
+          {(hasPrices ? priceOptions.slice(1) : []).map((o) => (
             <button key={o.value} type="button" onClick={() => setPrice(price === o.value ? "any" : o.value)} className={chip(price === o.value)} aria-pressed={price === o.value}>
               {o.label}
             </button>

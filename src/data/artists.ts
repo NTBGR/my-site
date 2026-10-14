@@ -1,6 +1,5 @@
 import { makerOf } from "@/data/categories";
 import type { Lang } from "@/lib/dictionary";
-import { demoInfo } from "@/data/demo-info";
 
 export type ArtistWork = {
   title: string;
@@ -137,7 +136,7 @@ export const artists: ArtistData[] = [
 
 export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
   const category = makerOf(artist.categories[0], lang);
-  const withInfo = artist.works.map((work, i) => ({ ...demoInfo(artist.slug, i), ...work }));
+  const withInfo = artist.works;
   if (lang === "ka") return { ...artist, category, works: withInfo };
   const { en } = artist;
   return {
