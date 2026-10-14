@@ -68,7 +68,12 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
     lastPath.current = pathname;
     const list = listRef.current;
     const active = list?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (!list || !active) return;
+    if (!list) return;
+    // თაგის გარეშე გვერდზე გადასვლისას ზოლი თავიდან იწყება (და არა იქ, სადაც გადაახვიე)
+    if (!active) {
+      list.scrollTo({ left: 0, behavior: "instant" });
+      return;
+    }
     const listBox = list.getBoundingClientRect();
     const box = active.getBoundingClientRect();
     const left = box.left - listBox.left + list.scrollLeft;

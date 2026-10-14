@@ -22,16 +22,6 @@ function savePosition(path: string, y: number) {
   } catch {}
 }
 
-// სად იწყება გვერდი: ხელოვანის გვერდზე კატეგორიების ზოლი ზემოთ დამალულია (ზევით ასქროლვაზე ჩანს),
-// დანარჩენ გვერდებზე ბოლომდე ზემოდან.
-function startY(pathname: string) {
-  if (!/^\/artists\/[^/]+$/.test(pathname)) return 0;
-  const header = document.querySelector("header");
-  const main = document.querySelector("main");
-  if (!header || !main) return 0;
-  return Math.max(0, Math.round(main.getBoundingClientRect().top + window.scrollY - header.getBoundingClientRect().height));
-}
-
 function jump(y: number) {
   window.scrollTo({ top: y, left: 0, behavior: "instant" });
 }
@@ -85,7 +75,7 @@ export default function ScrollToTop() {
       if (nav?.type === "back_forward") {
         jump(loadPositions()[pathname] ?? 0);
       } else {
-        jump(startY(pathname));
+        jump(0);
       }
       return;
     }
@@ -93,10 +83,10 @@ export default function ScrollToTop() {
       fromHistory.current = false;
       const saved = pendingY.current ?? loadPositions()[pathname];
       pendingY.current = undefined;
-      jump(saved ?? startY(pathname));
+      jump(saved ?? 0);
       return;
     }
-    jump(startY(pathname));
+    jump(0);
   }, [pathname]);
 
   return null;

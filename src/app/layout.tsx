@@ -42,7 +42,14 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: { card: "summary_large_image" },
     // iPhone-ის „საწყის ეკრანზე დამატებისთვის“: სრული კვადრატი საიტის ფერზე (სისტემა თვითონ ამრგვალებს)
-    icons: { apple: "/icons/apple-touch-icon.png" },
+    // icons-ის მითითება ფაილზე დაფუძნებულ ხატულას (app/icon.svg) გადაფარავს, ამიტომ ორივე აქვე ვწერთ
+    icons: {
+      icon: [
+        { url: "/icon.svg", type: "image/svg+xml" },
+        { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      ],
+      apple: "/icons/apple-touch-icon.png",
+    },
     // საიტს საკუთარი ქართული/ინგლისური გადამრთველი აქვს; ბრაუზერის ავტო-თარგმანი ქართულს ამახინჯებს
     other: { google: "notranslate" },
   };
