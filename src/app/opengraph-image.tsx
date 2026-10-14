@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { SITE_HOST } from "@/lib/site";
+import { SITE_HOST, SITE_URL } from "@/lib/site";
 import { dictionary } from "@/lib/dictionary";
 
 // გაზიარების სურათი (ფეისბუქი, მესენჯერი, ვაიბერი...): ბოტებს ენის ქუქი არ აქვთ, ამიტომ ქართულია
@@ -11,7 +11,8 @@ export const contentType = "image/png";
 // ბილდმა ფონტები რომ იპოვოს, მისამართები სტატიკური უნდა იყოს
 const loadFont = (url: URL) => fetch(url).then((res) => res.arrayBuffer());
 
-const toDataUrl = async (url: URL) => {
+// ფოტოებს საიტის სტატიკური ფაილებიდან ვიღებთ (edge ფუნქციის ზომა 1MB-ს არ უნდა აღემატებოდეს, ფოტოების ჩაშენება კი გადააჭარბებდა)
+const toDataUrl = async (url: string) => {
   const buffer: ArrayBuffer = await (await fetch(url)).arrayBuffer();
   const bytes = new Uint8Array(buffer);
   let binary = "";
@@ -64,9 +65,9 @@ function Photo({
 
 export default async function OpengraphImage() {
   const [photoA, photoB, photoC] = await Promise.all([
-    toDataUrl(new URL("../assets/og-images/a.jpg", import.meta.url)),
-    toDataUrl(new URL("../assets/og-images/b.jpg", import.meta.url)),
-    toDataUrl(new URL("../assets/og-images/c.jpg", import.meta.url)),
+    toDataUrl(`${SITE_URL}/categories/keramika-main.jpg`),
+    toDataUrl(`${SITE_URL}/categories/nakhatebi.jpg`),
+    toDataUrl(`${SITE_URL}/categories/samkauli.jpg`),
   ]);
   const [serif, sans] = await Promise.all([
     loadFont(new URL("../assets/og-fonts/NotoSerifGeorgian-Bold.ttf", import.meta.url)),
