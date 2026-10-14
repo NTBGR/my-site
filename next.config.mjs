@@ -25,7 +25,7 @@ const nextConfig = {
     return [
       { source: "/categories/bechdebi", destination: "/categories/samkauli", permanent: true },
       // ძველი მისამართი ახალზე გადადის (API გამოვრიცხეთ, რომ Vercel-ის ყოველთვიური cron არ გაწყდეს)
-      { source: "/:path((?!api/).*)", has: [{ type: "host", value: "khelovani.vercel.app" }], destination: "https://www.khelovani.ge/:path", permanent: true },
+      { source: "/:path((?!api/).*)", has: [{ type: "host", value: "khelovani.vercel.app" }], destination: "https://khelovani.ge/:path", permanent: true },
     ];
   },
 };
