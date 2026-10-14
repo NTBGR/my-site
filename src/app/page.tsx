@@ -39,18 +39,18 @@ export default async function Home() {
   // მცურავი, დახრილი ფოტოების კოლაჟი ბანერის მარჯვენა მხარეს (ტელეფონზე სამი პატარა კუთხეში): ყველა სლაიდზე ერთნაირია
   const collage = (slugs: [string, string, string]) => (
     <>
-      <div className="absolute inset-x-5 top-3 h-24 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
+      <div className="absolute inset-x-5 top-4 h-24 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
         {[
-          { pos: "left-[3%] top-3 w-[28%] sm:left-0 sm:top-2 sm:w-[34%]", r: "-7deg", delay: "" },
-          { pos: "left-[36%] top-0 w-[28%] sm:left-[33%] sm:w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
-          { pos: "right-[3%] top-5 w-[27%] sm:right-0 sm:top-5 sm:w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
+          { pos: "left-[2%] top-2 w-[29%] sm:left-0 sm:top-2 sm:w-[34%]", r: "-5deg", delay: "" },
+          { pos: "left-[35.5%] top-2 w-[29%] sm:left-[33%] sm:top-0 sm:w-[34%]", r: "3deg", delay: "[animation-delay:-2.5s]" },
+          { pos: "right-[2%] top-2 w-[29%] sm:right-0 sm:top-5 sm:w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
         ].map((tile, i) => (
           <div
             key={slugs[i]}
             className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
             style={{ ["--r" as string]: tile.r }}
           >
-            <CategoryArt slug={slugs[i]} color={categoryColor(slugs[i])} className="aspect-[4/3] sm:aspect-[3/4]" />
+            <CategoryArt slug={slugs[i]} color={categoryColor(slugs[i])} className="aspect-square sm:aspect-[3/4]" />
           </div>
         ))}
       </div>
