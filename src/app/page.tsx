@@ -32,18 +32,14 @@ export default async function Home() {
     </span>
   );
 
-  // სლაიდის ფონი და მასში მცურავი ფილა ერთი ფერისაა, რომ ერთმანეთს ეხამებოდეს
-  const slideColor: Record<string, string> = {
-    keramika: "#5e7a55",
-    nakhatebi: "#3d5a73",
-    samkauli: "#b07a4a",
-    posterebi: "#2f6b6f",
-  };
+  // სლაიდის ფონის ფერი კატეგორიის პალიტრიდანაა (იგივე თბილი მიწისფერი ოჯახი, რაც ფოტოებს)
+  const slideColor = (slug: string) => categoryColor(slug);
+
 
   const bannerSlides: BannerSlide[] = [
     {
       id: "main",
-      color: "#c4553a",
+      color: "#8f5a43",
       art: (
         <>
         {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაციები ზედა მარჯვენა კუთხეში */}
@@ -110,7 +106,7 @@ export default async function Home() {
     // სლაიდი მხოლოდ იმ კატეგორიას აქვს, რომელსაც ნამდვილი ფოტო ჰყავს
     ...t.banners.filter((banner) => hasCategoryPhoto(banner.slug)).map((banner, i): BannerSlide => ({
       id: banner.slug,
-      color: slideColor[banner.slug],
+      color: slideColor(banner.slug),
       art: (
         <>
           {/* მობილური/პლანშეტი: პატარა მცურავი ილუსტრაცია კუთხეში, როგორც პირველ სლაიდზე */}
@@ -119,11 +115,11 @@ export default async function Home() {
             className="float absolute right-4 top-4 w-[42%] max-w-[13rem] overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 sm:right-8 sm:top-6 sm:w-[30%] lg:hidden"
             style={{ ["--r" as string]: ["5deg", "-5deg", "4deg", "-4deg"][i] }}
           >
-            <CategoryArt slug={banner.slug} color={slideColor[banner.slug]} className="aspect-[4/3]" />
+            <CategoryArt slug={banner.slug} color={slideColor(banner.slug)} className="aspect-[4/3]" />
           </div>
           <CategoryArt
             slug={banner.slug}
-            color={slideColor[banner.slug]}
+            color={slideColor(banner.slug)}
             className="absolute inset-0 hidden h-full w-full lg:block"
           />
         </>
@@ -181,7 +177,7 @@ export default async function Home() {
                 <div
                   aria-hidden
                   className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #8f6580, #7a4e6a 52%, #4f3245)" }}
+                  style={{ background: "linear-gradient(150deg, #8c7560, #735f4c 52%, #4a3c2f)" }}
                 />
                 <div aria-hidden className="absolute inset-x-5 top-5 z-10 grid grid-cols-4 gap-2 sm:inset-x-6 sm:top-6">
                   {["nakhatebi", "posterebi", "keramika", "tyavi"].map((slug, i) => (

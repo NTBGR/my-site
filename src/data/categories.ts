@@ -144,19 +144,20 @@ export const categories: Category[] = [
   },
 ];
 
-// კატეგორიის ფერი (ილუსტრაციებისთვის და ბანერებისთვის), მიბმულია სახელზე
+// კატეგორიის ფერი (ბანერებისთვის), მიბმულია სახელზე. ფოტოები თბილი ბეჟისფერია, ამიტომ ფერებიც ერთ თბილ, მიჩუმებულ
+// მიწისფერ ოჯახშია (ტაუპი, თიხა, ხე, ტყავი): ბანერი და ფოტო ერთმანეთს ეხამება, ტექსტი თეთრად კარგად იკითხება.
 const palette: Record<string, string> = {
-  nakhatebi: "#c4553a",
-  posterebi: "#2f6b6f",
-  bechdebi: "#3d5a73",
-  keramika: "#5e7a55",
-  skulptura: "#7a4e6a",
-  samkauli: "#b07a4a",
-  tekstili: "#4a6d8c",
-  tyavi: "#a65d3f",
-  "khis-nakethobebi": "#6b7c6a",
-  "saxlis-dekori": "#8a6a9c",
-  sachuqrebi: "#b44532",
+  nakhatebi: "#7d6a55",
+  posterebi: "#6f6a5c",
+  bechdebi: "#85705a",
+  keramika: "#7a6e5a",
+  skulptura: "#756c60",
+  samkauli: "#85705a",
+  tekstili: "#7c705f",
+  tyavi: "#82614a",
+  "khis-nakethobebi": "#7b6247",
+  "saxlis-dekori": "#6e5f4c",
+  sachuqrebi: "#8a7058",
 };
 
 export function categoryColor(slug: string) {
