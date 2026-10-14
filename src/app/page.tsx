@@ -39,11 +39,11 @@ export default async function Home() {
   // მცურავი, დახრილი ფოტოების კოლაჟი ბანერის მარჯვენა მხარეს (ტელეფონზე სამი პატარა კუთხეში): ყველა სლაიდზე ერთნაირია
   const collage = (slugs: [string, string, string]) => (
     <>
-      <div className="absolute right-4 top-4 h-28 w-40 sm:right-8 sm:top-6 sm:w-48 lg:hidden" aria-hidden>
+      <div className="absolute inset-x-5 top-5 h-40 sm:inset-x-auto sm:right-8 sm:top-6 sm:h-28 sm:w-48 lg:hidden" aria-hidden>
         {[
-          { pos: "left-0 top-2 w-[34%]", r: "-7deg", delay: "" },
-          { pos: "left-[33%] top-0 w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
-          { pos: "right-0 top-5 w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
+          { pos: "left-[2%] top-4 w-[31%] sm:left-0 sm:top-2 sm:w-[34%]", r: "-7deg", delay: "" },
+          { pos: "left-[35%] top-0 w-[31%] sm:left-[33%] sm:w-[34%]", r: "5deg", delay: "[animation-delay:-2.5s]" },
+          { pos: "right-[2%] top-6 w-[30%] sm:right-0 sm:top-5 sm:w-[32%]", r: "-3deg", delay: "[animation-delay:-4.5s]" },
         ].map((tile, i) => (
           <div
             key={slugs[i]}
@@ -123,7 +123,7 @@ export default async function Home() {
           <h2 className="text-balance text-3xl font-semibold leading-[1.08] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
             {banner.title}
           </h2>
-          <p className="mt-3 hidden max-w-md text-base leading-relaxed text-white/85 sm:block sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85 sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
             {banner.text}
           </p>
           <div className="mt-5">

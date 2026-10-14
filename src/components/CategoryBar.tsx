@@ -92,7 +92,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   return (
     <nav aria-label={t.nav.categories} className="relative z-30 border-b border-border bg-bg">
       <div className="mx-auto flex max-w-7xl items-center">
-        <div ref={menuRef} className="shrink-0 pl-4 sm:pl-6 lg:pl-10">
+        <div ref={menuRef} className="shrink-0 border-r border-border pl-4 pr-3 sm:pl-6 lg:pl-10">
           <button
             type="button"
             aria-expanded={open}
