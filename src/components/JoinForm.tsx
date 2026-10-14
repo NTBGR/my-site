@@ -5,74 +5,30 @@ import { useState, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import { useLang, useT } from "@/components/LangProvider";
 import { categories } from "@/data/categories";
-import { cities, OTHER_CATEGORY } from "@/data/join-options";
-
-const MAX_FILES = 10;
-const MAX_TOTAL_BYTES = 4 * 1024 * 1024;
+import { cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 
 const inputClass =
   "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
 type Status = "idle" | "sending" | "success";
 
-const MAX_SIDE = 1600;
-
-// ტელეფონის ფოტო 3-6MB-ია: ვაპატარავებთ (გრძელი გვერდი 1600px, JPEG), რომ 10 ფოტო ერთად ეტეოდეს. შეცდომისას ორიგინალი გადის.
-async function shrink(file: File): Promise<File> {
-  try {
-    const bitmap = await createImageBitmap(file);
-    const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(bitmap.width * scale);
-    canvas.height = Math.round(bitmap.height * scale);
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return file;
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.82));
-    if (!blob || blob.size >= file.size) return file;
-    return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
-  } catch {
-    return file;
-  }
-}
-
 export default function JoinForm() {
   const t = useT().form;
   const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  // „სხვა“ არჩევისას ჩნდება ველი, სადაც ადამიანი თვითონ წერს
+  const [city, setCity] = useState("");
+  const [category, setCategory] = useState("");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    setStatus("sending");
 
     const form = event.currentTarget;
-    const data = new FormData(form);
-
-    const picked = (data.getAll("works") as File[]).filter((f) => f.size > 0);
-    if (picked.length === 0) {
-      setError(t.errors.photos);
-      return;
-    }
-    if (picked.length > MAX_FILES) {
-      setError(t.errors.tooMany(MAX_FILES));
-      return;
-    }
-
-    setStatus("sending");
-    const files = await Promise.all(picked.map(shrink));
-    if (files.reduce((sum, f) => sum + f.size, 0) > MAX_TOTAL_BYTES) {
-      setError(t.errors.size);
-      setStatus("idle");
-      return;
-    }
-    data.delete("works");
-    files.forEach((file) => data.append("works", file));
-
     try {
-      const res = await fetch("/api/join", { method: "POST", body: data });
+      const res = await fetch("/api/join", { method: "POST", body: new FormData(form) });
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         const code = json.error as keyof typeof t.errors | undefined;
@@ -82,6 +38,8 @@ export default function JoinForm() {
         return;
       }
       form.reset();
+      setCity("");
+      setCategory("");
       setStatus("success");
     } catch {
       setError(t.errors.network);
@@ -110,48 +68,91 @@ export default function JoinForm() {
     >
       <label className="text-sm font-medium text-text">
         {t.name}
-        <input name="name" required maxLength={100} className={inputClass} />
+        <input name="name" required maxLength={100} autoComplete="name" className={inputClass} />
       </label>
 
       <label className="text-sm font-medium text-text">
+        {t.brand}
+        <input name="brand" required maxLength={100} placeholder={t.brandPlaceholder} className={inputClass} />
+      </label>
+
+      <label className="text-sm font-medium text-text sm:col-span-2">
         {t.email}
         <input
           name="email"
           type="email"
           required
           maxLength={150}
+          autoComplete="email"
           className={inputClass}
         />
       </label>
 
-      <label className="text-sm font-medium text-text">
-        {t.city}
-        <select name="city" required defaultValue="" className={inputClass}>
-          <option value="" disabled>
-            {t.cityPlaceholder}
-          </option>
-          {cities.map((city) => (
-            <option key={city.value} value={city.value}>
-              {lang === "ka" ? city.value : city.en}
+      <div>
+        <label className="text-sm font-medium text-text">
+          {t.city}
+          <select
+            name="city"
+            required
+            value={city}
+            onChange={(event) => setCity(event.target.value)}
+            className={inputClass}
+          >
+            <option value="" disabled>
+              {t.cityPlaceholder}
             </option>
-          ))}
-        </select>
-      </label>
+            {cities.map((item) => (
+              <option key={item.value} value={item.value}>
+                {lang === "ka" ? item.value : item.en}
+              </option>
+            ))}
+            <option value={OTHER_CITY}>{t.otherCity}</option>
+          </select>
+        </label>
+        {city === OTHER_CITY ? (
+          <input
+            name="cityOther"
+            required
+            maxLength={80}
+            placeholder={t.otherCityPlaceholder}
+            aria-label={t.otherCityPlaceholder}
+            className={inputClass}
+          />
+        ) : null}
+      </div>
 
-      <label className="text-sm font-medium text-text">
-        {t.category}
-        <select name="category" required defaultValue="" className={inputClass}>
-          <option value="" disabled>
-            {t.categoryPlaceholder}
-          </option>
-          {categories.map((category) => (
-            <option key={category.slug} value={category.slug}>
-              {lang === "ka" ? category.name : category.en.name}
+      <div>
+        <label className="text-sm font-medium text-text">
+          {t.category}
+          <select
+            name="category"
+            required
+            value={category}
+            onChange={(event) => setCategory(event.target.value)}
+            className={inputClass}
+          >
+            <option value="" disabled>
+              {t.categoryPlaceholder}
             </option>
-          ))}
-          <option value={OTHER_CATEGORY}>{t.otherCategory}</option>
-        </select>
-      </label>
+            {categories.map((item) => (
+              <option key={item.slug} value={item.slug}>
+                {lang === "ka" ? item.name : item.en.name}
+              </option>
+            ))}
+            <option value={OTHER_CATEGORY}>{t.otherCategory}</option>
+          </select>
+        </label>
+        {category === OTHER_CATEGORY ? (
+          <input
+            name="categoryOther"
+            required
+            maxLength={80}
+            placeholder={t.otherCategoryPlaceholder}
+            aria-label={t.otherCategoryPlaceholder}
+            className={inputClass}
+          />
+        ) : null}
+      </div>
 
       <label className="text-sm font-medium text-text">
         {t.instagram}
@@ -194,21 +195,6 @@ export default function JoinForm() {
           placeholder={t.commentPlaceholder}
           className={inputClass}
         />
-      </label>
-
-      <label className="text-sm font-medium text-text sm:col-span-2">
-        {t.works}
-        <input
-          name="works"
-          type="file"
-          required
-          multiple
-          accept="image/jpeg,image/png,image/webp"
-          className={`${inputClass} file:mr-3 file:rounded-md file:border-0 file:bg-accent file:px-3 file:py-1.5 file:text-sm file:text-on-accent`}
-        />
-        <span className="mt-1.5 block text-xs font-normal text-muted">
-          {t.worksHint(MAX_FILES)}
-        </span>
       </label>
 
       {/* ანტისპამ ხაფანგი: ადამიანს არ უნდა ეჩვენოს */}

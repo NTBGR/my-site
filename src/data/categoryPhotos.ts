@@ -11,8 +11,8 @@ export const categoryPhotos: Record<string, CategoryPhoto> = {
   keramika: photo("keramika", "35% 55%"),
   skulptura: photo("skulptura"),
   samkauli: photo("samkauli"),
-  // „ბეჭდები“ გაერთიანდა „სამკაულში“; ძველი გასაღები ბანერებისთვის ამავე სურათს იყენებს
-  bechdebi: photo("samkauli"),
+  // ძველი გასაღები „ბეჭდები“ (ბანერებზე): ცალკე სურათი, რომ სამკაულთან ერთნაირი არ იყოს
+  bechdebi: photo("bechdebi"),
   tekstili: photo("tekstili"),
   tyavi: photo("tyavi"),
   "khis-nakethobebi": photo("khis-nakethobebi"),

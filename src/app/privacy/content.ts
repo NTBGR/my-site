@@ -36,7 +36,7 @@ export const privacy: Record<
       {
         title: "ხელოვანები (განაცხადის ფორმა)",
         text: [
-          "„გახდი პარტნიორი“ ფორმით ვიღებთ: სახელს და გვარს, ემაილს, ქალაქს, მიმართულებას, ინსტაგრამისა და ფეისბუქის ბმულებს, მოკლე ბიოგრაფიას და ნამუშევრების ფოტოებს. ამ ინფორმაციას ვიყენებთ განაცხადის განსახილველად, შენთან დასაკავშირებლად და პროფილის გამოსაქვეყნებლად.",
+          "„გახდი პარტნიორი“ ფორმით ვიღებთ: სახელს და გვარს, ბრენდის ან მაღაზიის სახელს, ემაილს, ქალაქს, მიმართულებას, ინსტაგრამისა და ფეისბუქის ბმულებს, მოკლე ბიოგრაფიას. ამ ინფორმაციას ვიყენებთ განაცხადის განსახილველად, შენთან დასაკავშირებლად და პროფილის გამოსაქვეყნებლად.",
           "გამოქვეყნებულ პროფილზე საჯაროდ ჩანს სახელი, ქალაქი, მიმართულება, ბიოგრაფია, ნამუშევრები და სოციალური ქსელების ბმულები. ემაილი არასოდეს ქვეყნდება.",
         ],
       },
@@ -107,7 +107,7 @@ export const privacy: Record<
       {
         title: "Makers (application form)",
         text: [
-          "Through the \"Become a partner\" form we receive your name, email, city, craft, Instagram and Facebook links, a short bio and photos of your work. We use this to review your application, contact you and publish your profile.",
+          "Through the \"Become a partner\" form we receive your name, brand or shop name, email, city, craft, Instagram and Facebook links and a short bio. We use this to review your application, contact you and publish your profile.",
           "A published profile shows your name, city, craft, bio, works and social links. Your email is never published.",
         ],
       },
