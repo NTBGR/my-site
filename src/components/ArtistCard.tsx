@@ -4,7 +4,7 @@ import type { Artist } from "@/data/artists";
 import CategoryArt from "@/components/CategoryArt";
 import { categoryColor } from "@/data/categories";
 
-// ხელოვანის ბარათი: ფოტო ზემოთ, საიტის მთავარი (თიხისფერი) ფერის პანელი ქვემოთ, ისევე როგორც „გახდი პარტნიორი“ ბარათზე.
+// ხელოვანის ბარათი: ფოტო ზემოთ, მუქი ესპრესოს პანელი ქვემოთ; თიხისფერი მხოლოდ „გახდი პარტნიორი“ ბარათზეა, რომ ის გამოირჩეოდეს.
 // ხელოვანების ფოტოები ფერებით ძალიან განსხვავებულია (ვარდისფერი, ნაცრისფერი, მკვეთრი), ამიტომ მათ ოდნავ ერთიან თბილ ტონს ვაძლევთ.
 export default function ArtistCard({
   artist,
@@ -27,7 +27,7 @@ export default function ArtistCard({
   return (
     <Link
       href={`/artists/${artist.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-accent text-on-accent will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:bg-accent-hover hover:shadow-2xl active:scale-[0.99] sm:rounded-[1.75rem]"
+      className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] bg-[#3f3731] text-white will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:bg-[#4a4037] hover:shadow-2xl active:scale-[0.99] sm:rounded-[1.75rem]"
     >
       <div className={`relative overflow-hidden bg-surface-2 ${artClassName}`}>
         <div className="absolute inset-0" style={photo?.image ? { filter: "saturate(.88) sepia(.1)" } : undefined}>
@@ -46,10 +46,10 @@ export default function ArtistCard({
           <h3 className="text-[15px] font-semibold leading-snug tracking-tight [overflow-wrap:anywhere] sm:text-lg">
             {artist.name}
           </h3>
-          {worksLabel ? <p className="mt-0.5 text-xs opacity-80 sm:text-sm">{worksLabel}</p> : null}
+          {worksLabel ? <p className="mt-0.5 text-xs text-white/70 sm:text-sm">{worksLabel}</p> : null}
         </div>
         <span
-          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/20 transition duration-300 group-hover:bg-white group-hover:text-black sm:flex"
+          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 text-white transition duration-300 group-hover:bg-white group-hover:text-black sm:flex"
           aria-hidden
         >
           <span className="arrow-slide">→</span>
