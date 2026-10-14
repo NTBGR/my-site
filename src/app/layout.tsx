@@ -36,11 +36,13 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       siteName: meta.title,
-      title: meta.homeTitle,
+      title: meta.shareTitle,
       description: meta.description,
       locale: lang === "ka" ? "ka_GE" : "en_US",
     },
     twitter: { card: "summary_large_image" },
+    // iPhone-ის „საწყის ეკრანზე დამატებისთვის“: სრული კვადრატი საიტის ფერზე (სისტემა თვითონ ამრგვალებს)
+    icons: { apple: "/icons/apple-touch-icon.png" },
     // საიტს საკუთარი ქართული/ინგლისური გადამრთველი აქვს; ბრაუზერის ავტო-თარგმანი ქართულს ამახინჯებს
     other: { google: "notranslate" },
   };

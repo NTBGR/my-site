@@ -12,7 +12,9 @@ const ka = {
   },
   meta: {
     title: "ხელოვანი",
-    homeTitle: "ხელოვანი — ხელნაკეთი ნივთები ქართველი ხელოვანებისგან",
+    // ბრაუზერის ტაბში მხოლოდ სახელი; გაზიარების ბარათზე (Messenger, Facebook, LinkedIn) უფრო აღწერითი სათაური
+    homeTitle: "ხელოვანი",
+    shareTitle: "ხელოვანი — ხელნაკეთი ნივთები ქართველი ხელოვანებისგან",
     ogTagline: "ხელით შექმნილი",
     ogText: "ნახატები, კერამიკა, სამკაული და დეკორი",
     description:
@@ -241,7 +243,8 @@ const en: Dict = {
   },
   meta: {
     title: "Khelovani",
-    homeTitle: "Khelovani — handmade goods by Georgian artists",
+    homeTitle: "Khelovani",
+    shareTitle: "Khelovani — handmade goods by Georgian artists",
     ogTagline: "Made by hand",
     ogText: "Paintings, ceramics, jewelry and decor",
     description:

@@ -4,7 +4,7 @@ import { dictionary } from "@/lib/dictionary";
 
 // გაზიარების სურათი (ფეისბუქი, მესენჯერი, ვაიბერი...): ბოტებს ენის ქუქი არ აქვთ, ამიტომ ქართულია
 export const runtime = "edge";
-export const alt = dictionary.ka.meta.homeTitle;
+export const alt = dictionary.ka.meta.shareTitle;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
