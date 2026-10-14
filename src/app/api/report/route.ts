@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { artists } from "@/data/artists";
+import { artists, workId } from "@/data/artists";
 import { clicksEnabled, monthOf, monthStats } from "@/lib/clicks";
+import { monthFavorites } from "@/lib/favoriteStats";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,23 +48,29 @@ export async function GET(req: NextRequest) {
 
   const param = req.nextUrl.searchParams.get("month");
   const month = param && /^\d{4}-\d{2}$/.test(param) ? param : previousMonth();
-  const stats = await monthStats(month);
+  const [stats, favs] = await Promise.all([monthStats(month), monthFavorites(month)]);
 
   const rows = artists
     .map((a) => {
       const s = stats[a.slug] ?? { instagram: 0, facebook: 0, total: 0 };
-      return { artist: a, ...s, people: s.instagram + s.facebook };
+      const f = favs[a.slug] ?? { people: 0, saves: 0 };
+      const topIndex = f.top ? a.works.findIndex((w, i) => workId(w, i) === f.top!.id) : -1;
+      const topTitle = topIndex >= 0 ? a.works[topIndex].title : undefined;
+      return { artist: a, ...s, people: s.instagram + s.facebook, favPeople: f.people, favSaves: f.saves, topTitle, topCount: f.top?.count ?? 0 };
     })
     .sort((a, b) => b.people - a.people);
 
   const totalPeople = rows.reduce((sum, r) => sum + r.people, 0);
+  const totalFavPeople = rows.reduce((sum, r) => sum + r.favPeople, 0);
   const summary = [
     `<b>📊 რეპორტი: ${month}</b>`,
     `სულ გადავიდა ${totalPeople} ადამიანი.`,
+    `ფავორიტებში დაამატა ${totalFavPeople} ადამიანმა (ხელოვანებს შორის ჯამი).`,
     "",
     ...rows.map(
       (r) =>
-        `• ${escapeHtml(r.artist.name)}: <b>${r.people}</b> (ინსტა ${r.instagram}, ფბ ${r.facebook}; დაწკაპუნება ${r.total})`,
+        `• ${escapeHtml(r.artist.name)}: <b>${r.people}</b> (ინსტა ${r.instagram}, ფბ ${r.facebook}; დაწკაპუნება ${r.total})` +
+        (r.favSaves ? `, ❤ ${r.favPeople} ადამიანმა დაიმახსოვრა` : ""),
     ),
     "",
     "ქვემოთ თითო ხელოვანზე მზა ტექსტია: შეეხე ბლოკს, დაკოპირდება, და გაუგზავნე.",
@@ -83,6 +90,13 @@ export async function GET(req: NextRequest) {
             `${inMonth(month)} „ხელოვანიდან“ შენს გვერდზე გადმოვიდა ${r.people} ადამიანი:`,
             `• ინსტაგრამზე: ${r.instagram}`,
             `• ფეისბუქზე: ${r.facebook}`,
+            ...(r.favSaves
+              ? [
+                  "",
+                  `❤ ${r.favPeople} ადამიანმა დაიმახსოვრა შენი ნამუშევარი (სულ ${r.favSaves} დამატება ფავორიტებში).`,
+                  ...(r.topTitle ? [`ყველაზე პოპულარული: „${r.topTitle}“ (${r.topCount}).`] : []),
+                ]
+              : []),
             "",
             "მადლობა, რომ ჩვენთან ხარ! 🧡",
           ].join("\n"),
@@ -101,5 +115,5 @@ export async function GET(req: NextRequest) {
     await telegram(messages[i]);
   }
 
-  return NextResponse.json({ ok: true, month, artists: rows.length, totalPeople });
+  return NextResponse.json({ ok: true, month, artists: rows.length, totalPeople, totalFavPeople });
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import HeartButton from "@/components/HeartButton";
+import Photo from "@/components/Photo";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import ArtTile from "@/components/ArtTile";
@@ -14,6 +16,9 @@ export type GalleryWork = {
   color: string;
   variant: number;
   url?: string;
+  // ❤️ შენახვის გასაღები ("ავტორი/ნამუშევარი") და alt ტექსტი
+  favKey?: string;
+  alt?: string;
   // სად მიდის ბმული: ღილაკის წარწერისთვის
   network?: "instagram" | "facebook";
   // ნამდვილი ფოტო (public საქაღალდიდან) და მისი ზომები; თუ არ არის, ჩანს ადგილმჭერი
@@ -71,23 +76,17 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
       {/* ერთნაირი 3:4 ბარათები (ტელეფონის ფოტოს ფორმატი); სრული ფოტო იხსნება დაჭერით */}
       <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
         {works.map((work, i) => (
-          <li key={`${work.title}-${i}`}>
+          <li key={`${work.title}-${i}`} className="group relative">
             {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
             <button
               type="button"
               onClick={() => setOpen(i)}
               aria-label={work.title}
-              className="group block w-full text-left"
+              className="block w-full text-left"
             >
-              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl sm:rounded-[1.5rem]">
+              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl sm:rounded-[1.5rem]">
                 {work.image ? (
-                  <Image
-                    src={work.image}
-                    alt={work.title}
-                    fill
-                    sizes="(min-width: 1280px) 240px, (min-width: 1024px) 290px, (min-width: 640px) 33vw, 50vw"
-                    className="object-cover transition duration-300 group-hover:scale-[1.04]"
-                  />
+                  <Photo src={work.image} alt={work.alt ?? work.title} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
                 ) : (
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
                 )}
@@ -96,6 +95,12 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                 {work.title}
               </span>
             </button>
+            {work.favKey ? (
+              <HeartButton
+                id={work.favKey}
+                className="absolute right-2 top-2 z-10 h-9 w-9 bg-white/90 text-text shadow-sm backdrop-blur transition after:absolute after:-inset-1 after:content-[''] hover:text-accent"
+              />
+            ) : null}
           </li>
         ))}
       </ul>
@@ -131,6 +136,9 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                 <span className="text-sm font-medium text-white/70 tabular-nums">
                   {open! + 1} / {works.length}
                 </span>
+                {current.favKey ? (
+                  <HeartButton id={current.favKey} className="ml-auto mr-2 h-11 w-11 border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-black" />
+                ) : null}
                 <button
                   type="button"
                   onClick={close}

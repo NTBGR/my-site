@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
@@ -7,7 +8,7 @@ import BannerPhotos from "@/components/BannerPhotos";
 import CopyLink from "@/components/CopyLink";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, localizeArtist } from "@/data/artists";
+import { getArtistBySlug, localizeArtist, workId } from "@/data/artists";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -123,6 +124,30 @@ export default async function ArtistPage({
   const instagram = artist.instagram ? `/go/${artist.slug}/instagram` : undefined;
   const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
 
+  const artistLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        name: artist.name,
+        description: artist.bio,
+        url: `https://khelovani.vercel.app/artists/${artist.slug}`,
+        jobTitle: artist.category,
+        address: artist.city ? { "@type": "PostalAddress", addressLocality: artist.city, addressCountry: "GE" } : undefined,
+        sameAs: [artist.instagram, artist.facebook].filter(Boolean),
+        image: artist.cover ? `https://khelovani.vercel.app${artist.cover}` : undefined,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: all.nav.home, item: "https://khelovani.vercel.app" },
+          { "@type": "ListItem", position: 2, name: all.nav.artists, item: "https://khelovani.vercel.app/artists" },
+          { "@type": "ListItem", position: 3, name: artist.name, item: `https://khelovani.vercel.app/artists/${artist.slug}` },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <Link
@@ -131,6 +156,7 @@ export default async function ArtistPage({
       >
         {t.back}
       </Link>
+      <JsonLd data={artistLd} />
 
       {/* ბანერი ხელოვანის მთავარი კატეგორიის ფერში */}
       <section
@@ -221,6 +247,8 @@ export default async function ArtistPage({
               color: work.color,
               variant: (variantFor(artist.slug) + i) % 4,
               url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
+              favKey: `${artist.slug}/${workId(work, i)}`,
+              alt: `${work.title} — ${artist.name}`,
               network: /facebook\.com|fb\.com|fb\.me/i.test(work.url || artist.instagram || artist.facebook) ? "facebook" as const : "instagram" as const,
               image: work.image,
               width: work.width,

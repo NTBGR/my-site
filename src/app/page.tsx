@@ -1,4 +1,5 @@
 import Link from "next/link";
+import JsonLd from "@/components/JsonLd";
 import CategoryArt from "@/components/CategoryArt";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
@@ -143,8 +144,23 @@ export default async function Home() {
     })),
   ];
 
+  const siteLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Organization", name: "ხელოვანი", url: "https://khelovani.vercel.app", logo: "https://khelovani.vercel.app/icon.svg" },
+      {
+        "@type": "WebSite",
+        name: "ხელოვანი",
+        url: "https://khelovani.vercel.app",
+        inLanguage: lang,
+        potentialAction: { "@type": "SearchAction", target: "https://khelovani.vercel.app/artists?q={search_term_string}", "query-input": "required name=search_term_string" },
+      },
+    ],
+  };
+
   return (
     <div>
+      <JsonLd data={siteLd} />
       {/* ჰერო: მბრუნავი ბანერები */}
       <section className="relative isolate overflow-x-clip">
         <div

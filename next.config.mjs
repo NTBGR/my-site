@@ -13,6 +13,8 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  // ფოტოები AVIF/WebP-ით; quality 75 (ნაგულისხმევი) და 80
+  images: { formats: ["image/avif", "image/webp"], qualities: [75, 80] },
   // Next.js-მა თავის ვერსიას თავს არ დაადებდეს პასუხებში
   poweredByHeader: false,
   async headers() {

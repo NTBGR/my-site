@@ -22,6 +22,15 @@ export default async function ArtistsPage({
     .filter((c) => artists.some((a) => a.categories.includes(c.slug)))
     .map((c) => ({ slug: c.slug, name: localizeCategory(c, lang).makers }));
   const { q: rawQ } = await searchParams;
+  // ძებნის ტექსტი: ხელოვანი + ქალაქი + კატეგორიები + ნამუშევრების სახელები ორივე ენაზე
+  const kaArtists = getLocalizedArtists("ka");
+  const enArtists = getLocalizedArtists("en");
+  const searchTexts: Record<string, string> = Object.fromEntries(
+    kaArtists.map((ka, i) => [
+      ka.slug,
+      [ka.name, ka.city, enArtists[i].city, ...ka.works.map((w) => w.title), ...enArtists[i].works.map((w) => w.title), ...ka.categories.flatMap((slug) => { const c = categories.find((x) => x.slug === slug); return c ? [c.name, c.en.name, c.maker, c.en.maker] : []; })].join(" "),
+    ]),
+  );
   const q = Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "";
 
   return (
@@ -34,7 +43,7 @@ export default async function ArtistsPage({
       />
 
       <div className="mt-8 sm:mt-10">
-        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} />
+        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} searchTexts={searchTexts} />
       </div>
     </div>
   );
