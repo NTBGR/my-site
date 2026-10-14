@@ -11,6 +11,17 @@ export type ArtistWork = {
   image?: string;
   width?: number;
   height?: number;
+  // არასავალდებულო: მასალა და მოკლე აღწერა (ნამუშევრის გვერდზე „დეტალები“ ბლოკში ჩანს, თუ შევსებულია)
+  materials?: string;
+  note?: string;
+  // ფასი ლარში; თუ არ არის, ჩანს „ფასი მოთხოვნით“
+  price?: number;
+  size?: string;
+  madeToOrder?: boolean; // შეკვეთით მზადდება
+  unique?: boolean; // ერთეული ნივთი
+  isNew?: boolean;
+  // დამატებითი ფოტოები (ნამუშევრის გვერდის გალერეისთვის)
+  images?: string[];
 };
 
 type ArtistText = {
@@ -125,7 +136,8 @@ export const artists: ArtistData[] = [
 
 export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
   const category = makerOf(artist.categories[0], lang);
-  if (lang === "ka") return { ...artist, category };
+  const withInfo = artist.works;
+  if (lang === "ka") return { ...artist, category, works: withInfo };
   const { en } = artist;
   return {
     ...artist,
@@ -133,7 +145,7 @@ export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
     city: en.city,
     category,
     bio: en.bio,
-    works: artist.works.map((work, i) => ({
+    works: withInfo.map((work, i) => ({
       ...work,
       title: en.workTitles[i] ?? work.title,
     })),
@@ -152,4 +164,38 @@ export function getCities(lang: Lang): string[] {
   return Array.from(
     new Set(artists.map((artist) => localizeArtist(artist, lang).city)),
   );
+}
+
+// ნამუშევრის მისამართის კოდი: ფოტოს ფაილის სახელი (მაგ. "ring-amore"); ფოტოს გარეშე რიგითი ნომერი.
+// მისამართი სტაბილურია, ნამუშევრების რიგი რომ შეიცვალოს.
+export function workId(work: ArtistWork, index: number): string {
+  const file = work.image?.split("/").pop()?.replace(/\.[^.]+$/, "");
+  return file || `w${index}`;
+}
+
+export type WorkEntry = { artist: Artist; work: ArtistWork; index: number; id: string };
+
+// ყველა ნამუშევარი ერთ სიაში (ავტორთან ერთად)
+export function getWorkEntries(lang: Lang): WorkEntry[] {
+  return getLocalizedArtists(lang).flatMap((artist) =>
+    artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })),
+  );
+}
+
+export function getWorkEntry(lang: Lang, artistSlug: string, id: string): WorkEntry | undefined {
+  return getWorkEntries(lang).find((entry) => entry.artist.slug === artistSlug && entry.id === id);
+}
+
+// მთავარი გვერდისთვის: ავტორები ერთმანეთს მონაცვლეობით (ერთი ავტორის ნამუშევრები ზედიზედ არ დაიდოს)
+export function interleavedWorks(lang: Lang, limit: number): WorkEntry[] {
+  const lists = getLocalizedArtists(lang)
+    .map((artist) => artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })))
+    .filter((list) => list.length > 0);
+  const out: WorkEntry[] = [];
+  for (let round = 0; out.length < limit && lists.some((l) => l[round]); round++) {
+    for (const list of lists) {
+      if (list[round] && out.length < limit) out.push(list[round]);
+    }
+  }
+  return out;
 }
