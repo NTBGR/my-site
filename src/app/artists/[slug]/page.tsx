@@ -7,7 +7,7 @@ import BannerPhotos from "@/components/BannerPhotos";
 import CopyLink from "@/components/CopyLink";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, localizeArtist } from "@/data/artists";
+import { getArtistBySlug, localizeArtist, workId } from "@/data/artists";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -88,6 +88,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description: artist.bio,
+    alternates: { canonical: `/artists/${artist.slug}` },
     openGraph: { title, description: artist.bio, type: "profile", images: ["/opengraph-image"] },
   };
 }
@@ -221,6 +222,7 @@ export default async function ArtistPage({
               color: work.color,
               variant: (variantFor(artist.slug) + i) % 4,
               url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
+              pageHref: `/works/${artist.slug}/${workId(work, i)}`,
               network: /facebook\.com|fb\.com|fb\.me/i.test(work.url || artist.instagram || artist.facebook) ? "facebook" as const : "instagram" as const,
               image: work.image,
               width: work.width,

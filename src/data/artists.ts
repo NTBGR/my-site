@@ -11,6 +11,9 @@ export type ArtistWork = {
   image?: string;
   width?: number;
   height?: number;
+  // არასავალდებულო: მასალა და მოკლე აღწერა (ნამუშევრის გვერდზე „დეტალები“ ბლოკში ჩანს, თუ შევსებულია)
+  materials?: string;
+  note?: string;
 };
 
 type ArtistText = {

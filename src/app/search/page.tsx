@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ArtistCard from "@/components/ArtistCard";
-import WorkCard from "@/components/WorkCard";
+import WorkCard, { toWorkCard } from "@/components/WorkCard";
 import { getLocalizedArtists, getWorkEntries } from "@/data/artists";
 import { categories, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
@@ -12,12 +12,14 @@ export async function generateMetadata() {
 
 const norm = (text: string) => text.toLowerCase().trim();
 
-export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[] }> }) {
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[]; cat?: string | string[] }> }) {
   const lang = await getLang();
   const t = dictionary[lang];
-  const { q: rawQ } = await searchParams;
+  const { q: rawQ, cat: rawCat } = await searchParams;
   const q = (Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "").slice(0, 80).trim();
   const needle = norm(q);
+  const catParam = (Array.isArray(rawCat) ? rawCat[0] : rawCat) ?? "";
+  const cat = categories.some((c) => c.slug === catParam) ? catParam : "";
 
   // ძებნა ორივე ენაზე: ქართულად დაწერილი სიტყვა ინგლისურ ვერსიაზეც იპოვის და პირიქით
   const ka = getWorkEntries("ka");
@@ -25,11 +27,23 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const categoryText = (slugs: string[]) =>
     slugs.map((slug) => categories.find((c) => c.slug === slug)).filter((c) => !!c).map((c) => `${c.name} ${c.en.name} ${c.maker} ${c.en.maker}`).join(" ");
 
-  const works = getWorkEntries(lang).filter((entry, i) => {
+  const matched = getWorkEntries(lang).filter((entry, i) => {
     if (!needle) return true;
     const hay = norm(`${ka[i].work.title} ${en[i].work.title} ${ka[i].artist.name} ${categoryText(entry.artist.categories)}`);
     return hay.includes(needle);
   });
+  // კატეგორიის ჩიპები: მხოლოდ ისინი, სადაც შედეგი არის (რაოდენობით)
+  const chips = categories
+    .map((c) => ({ slug: c.slug, name: localizeCategory(c, lang).name, count: matched.filter((e) => e.artist.categories.includes(c.slug)).length }))
+    .filter((c) => c.count > 0);
+  const works = cat ? matched.filter((e) => e.artist.categories.includes(cat)) : matched;
+  const chipHref = (slug: string) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (slug) params.set("cat", slug);
+    const qs = params.toString();
+    return qs ? `/search?${qs}` : "/search";
+  };
 
   const artists = needle
     ? getLocalizedArtists(lang).filter((artist) =>
@@ -61,6 +75,26 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         </button>
       </form>
 
+      {chips.length > 1 ? (
+        <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0 [&::-webkit-scrollbar]:hidden" role="group">
+          {[{ slug: "", name: t.searchFilters.all, count: matched.length }, ...chips].map((chip) => {
+            const active = chip.slug === cat;
+            return (
+              <Link
+                key={chip.slug || "all"}
+                href={chipHref(chip.slug)}
+                aria-current={active ? "true" : undefined}
+                className={`inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-sm font-medium transition duration-300 ${
+                  active ? "border-transparent bg-accent text-on-accent" : "border-border bg-surface text-text hover:border-accent hover:text-accent"
+                }`}
+              >
+                {chip.name} <span className="ml-1.5 opacity-60">{chip.count}</span>
+              </Link>
+            );
+          })}
+        </div>
+      ) : null}
+
       {works.length === 0 && artists.length === 0 ? (
         <div className="mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-8 text-center">
           <p className="text-muted">{t.searchPage.none}</p>
@@ -86,7 +120,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
             {works.map((entry) => (
               <li key={`${entry.artist.slug}-${entry.id}`}>
-                <WorkCard entry={entry} />
+                <WorkCard card={toWorkCard(entry)} />
               </li>
             ))}
           </ul>

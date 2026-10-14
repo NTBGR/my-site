@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ArtTile from "@/components/ArtTile";
 import CopyLink from "@/components/CopyLink";
-import WorkCard from "@/components/WorkCard";
+import HeartButton from "@/components/HeartButton";
+import ShareButton from "@/components/ShareButton";
+import WorkCard, { toWorkCard } from "@/components/WorkCard";
 import { socialVariant } from "@/components/ui/socialStyles";
 import { getWorkEntries, getWorkEntry } from "@/data/artists";
 import { getCategoryBySlug, localizeCategory } from "@/data/categories";
@@ -21,6 +23,7 @@ export async function generateMetadata({ params }: { params: Params }) {
   return {
     title,
     description,
+    alternates: { canonical: `/works/${entry.artist.slug}/${entry.id}` },
     openGraph: { title, description, type: "website", images: entry.work.image ? [entry.work.image] : ["/opengraph-image"] },
   };
 }
@@ -41,8 +44,31 @@ export default async function WorkPage({ params }: { params: Params }) {
     .filter((e) => e.artist.slug === artist.slug && e.id !== entry.id)
     .slice(0, 6);
 
+  const similar = getWorkEntries(lang)
+    .filter((e) => e.artist.slug !== artist.slug && e.artist.categories.some((c) => artist.categories.includes(c)))
+    .slice(0, 6);
+  const cta = canMessage ? (
+    <CopyLink
+      href={`/go/${artist.slug}/w${index}`}
+      message={t.artist.dmMessage(work.title)}
+      className={`inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border px-6 text-base font-medium transition duration-300 hover:-translate-y-0.5 active:scale-95 ${socialVariant[network]}`}
+    >
+      {network === "facebook" ? t.artist.messageOnFacebook : t.artist.messageOnInstagram} ↗
+    </CopyLink>
+  ) : null;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: work.title,
+    creator: { "@type": "Person", name: artist.name },
+    image: work.image ? `https://khelovani.vercel.app${work.image}` : undefined,
+    description: work.note || artist.bio,
+    inLanguage: lang,
+  };
+
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-3 sm:px-6 sm:pb-24 sm:pt-6 lg:px-10">
+    <div className="mx-auto max-w-7xl px-4 pb-28 pt-3 lg:pb-24 sm:px-6 sm:pt-6 lg:px-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* ნავიგაციის ბილიკი */}
       <nav aria-label="breadcrumb" className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
         <Link href="/" className="hover:text-accent">{t.workPage.home}</Link>
@@ -85,14 +111,20 @@ export default async function WorkPage({ params }: { params: Params }) {
           </p>
 
           <p className="mt-6 text-sm leading-relaxed text-muted">{t.workPage.howToBuy}</p>
-          {canMessage ? (
-            <CopyLink
-              href={`/go/${artist.slug}/w${index}`}
-              message={t.artist.dmMessage(work.title)}
-              className={`mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border px-6 text-base font-medium transition duration-300 hover:-translate-y-0.5 active:scale-95 sm:w-auto ${socialVariant[network]}`}
-            >
-              {network === "facebook" ? t.artist.messageOnFacebook : t.artist.messageOnInstagram} ↗
-            </CopyLink>
+          <div className="mt-4 hidden lg:block">{cta}</div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <HeartButton id={`${artist.slug}/${entry.id}`} label className="min-h-11 border border-border bg-surface px-5 text-text hover:border-accent hover:text-accent" />
+            <ShareButton title={work.title} className="min-h-11 border border-border bg-surface px-5 text-text hover:border-accent hover:text-accent" />
+          </div>
+
+          {work.materials || work.note ? (
+            <section className="mt-6 rounded-[1.5rem] border border-border bg-surface p-5">
+              <h2 className="text-lg font-semibold tracking-tight text-text">{t.workPage.details}</h2>
+              {work.materials ? (
+                <p className="mt-2 text-sm text-muted"><span className="font-medium text-text">{t.workPage.materials}:</span> {work.materials}</p>
+              ) : null}
+              {work.note ? <p className="mt-2 text-sm leading-relaxed text-muted">{work.note}</p> : null}
+            </section>
           ) : null}
 
           {/* გაიცანი ავტორი */}
@@ -123,11 +155,31 @@ export default async function WorkPage({ params }: { params: Params }) {
           <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-5 xl:grid-cols-6">
             {more.map((e) => (
               <li key={e.id}>
-                <WorkCard entry={e} />
+                <WorkCard card={toWorkCard(e)} />
               </li>
             ))}
           </ul>
         </section>
+      ) : null}
+
+      {similar.length > 0 ? (
+        <section className="mt-12 sm:mt-16">
+          <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.workPage.similar}</h2>
+          <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-5 xl:grid-cols-6">
+            {similar.map((e) => (
+              <li key={`${e.artist.slug}-${e.id}`}>
+                <WorkCard card={toWorkCard(e)} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {/* ტელეფონზე ქვემოთ მიმაგრებული ღილაკი: გვერდის ჩამოსქროლვისას ჩანს */}
+      {cta ? (
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-[color-mix(in_srgb,var(--bg)_92%,transparent)] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden">
+          {cta}
+        </div>
       ) : null}
     </div>
   );

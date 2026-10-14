@@ -5,7 +5,7 @@ import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
 import ArtistsCarousel from "@/components/ArtistsCarousel";
 import Reveal from "@/components/Reveal";
-import WorkCard from "@/components/WorkCard";
+import WorkCard, { toWorkCard } from "@/components/WorkCard";
 import { getLocalizedArtists, interleavedWorks } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
@@ -243,7 +243,7 @@ export default async function Home() {
           <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4">
             {showcase.map((entry, i) => (
               <li key={`${entry.artist.slug}-${entry.id}`} className={i >= 6 ? "hidden lg:block" : undefined}>
-                <WorkCard entry={entry} />
+                <WorkCard card={toWorkCard(entry)} />
               </li>
             ))}
           </ul>

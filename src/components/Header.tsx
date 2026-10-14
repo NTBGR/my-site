@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
+import SavedLink from "@/components/SavedLink";
 import CategoryBar from "@/components/CategoryBar";
 import LogoLink from "@/components/LogoLink";
 import { useT } from "@/components/LangProvider";
@@ -153,9 +154,11 @@ export default function Header() {
             </Button>
           </div>
 
+          <SavedLink />
+
           <button
             type="button"
-            className="ml-auto inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft lg:ml-0 xl:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-text transition-colors hover:bg-accent-soft xl:hidden"
             aria-label={t.nav.searchLabel}
             aria-expanded={searchOpen}
             onClick={() => {
