@@ -95,18 +95,17 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
             aria-hidden={i !== active}
             className="relative min-h-[22rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[24rem]"
           >
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `linear-gradient(135deg, color-mix(in srgb, ${slide.color}, white 14%), ${slide.color} 55%, color-mix(in srgb, ${slide.color}, black 18%))`,
-              }}
-            />
-            <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[62%] lg:[mask-image:linear-gradient(90deg,transparent,rgba(0,0,0,.55)_22%,#000_52%)]">
-              {slide.art}
-            </div>
+            <div className="absolute inset-0" style={{ background: slide.color }} />
+            <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[62%]">{slide.art}</div>
+            {/* ფოტოს მარცხენა კიდე ბანერის ზუსტ ფერში ჩაიძირება: გადასვლა გლუვია და ზოლი არ ჩანს */}
             <div
               aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent lg:bg-gradient-to-r lg:from-black/25 lg:via-transparent lg:to-transparent"
+              className="absolute inset-y-0 right-0 hidden w-[62%] lg:block"
+              style={{ background: `linear-gradient(90deg, ${slide.color} 0%, ${slide.color} 6%, color-mix(in srgb, ${slide.color} 70%, transparent) 20%, color-mix(in srgb, ${slide.color} 30%, transparent) 40%, transparent 70%)` }}
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent lg:hidden"
             />
             <div className="absolute inset-x-0 bottom-0 z-10 p-6 pb-[4.75rem] sm:p-10 sm:pb-20 sm:pl-20 lg:inset-y-0 lg:flex lg:w-[64%] lg:flex-col lg:justify-center lg:p-10 lg:pb-16 lg:pl-20">
               {slide.content}

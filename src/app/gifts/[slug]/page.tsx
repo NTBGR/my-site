@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ArtTile from "@/components/ArtTile";
 import HeartButton from "@/components/HeartButton";
 import JsonLd from "@/components/JsonLd";
+import PageBanner from "@/components/PageBanner";
 import Photo from "@/components/Photo";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
 import { workId } from "@/data/artists";
@@ -43,14 +44,14 @@ export default async function GiftPage({ params }: { params: Promise<{ slug: str
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
       <JsonLd data={crumbLd} />
-      <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">
-        <span aria-hidden className="mr-2">{tag.emoji}</span>
-        {tag.name}
-      </h1>
-      <p className="mt-2 max-w-2xl text-muted">{tag.description}</p>
-      <p className="mt-1 text-sm text-muted">{t.artists.worksCount(entries.length)}</p>
+      <PageBanner
+        title={`${tag.emoji} ${tag.name}`}
+        text={tag.description}
+        badge={t.artists.worksCount(entries.length)}
+        collage={tag.collage}
+      />
 
-      <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
+      <ul className="mt-8 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
         {entries.map(({ artist, work, index }) => (
           <li key={`${artist.slug}/${index}`} className="group relative">
             <Link href={`/artists/${artist.slug}`} className="block">

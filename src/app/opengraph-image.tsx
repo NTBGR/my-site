@@ -14,7 +14,7 @@ const loadFont = (url: URL) => fetch(url).then((res) => res.arrayBuffer());
 const BG = "#f6f1ea";
 const TEXT = "#1d1a17";
 const MUTED = "#6a6158";
-const ACCENT = "#c93f15";
+const ACCENT = "#a84f2c";
 
 function Tile({
   color,

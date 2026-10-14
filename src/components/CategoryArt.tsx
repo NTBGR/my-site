@@ -19,18 +19,16 @@ export default function CategoryArt({
 }) {
   const photo = categoryPhotos[slug];
   const position = className.includes("absolute") ? "" : "relative";
+  // ყოველ სურათს საკუთარი ფაზა
+  const phase = Array.from(slug).reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 8 * 2;
 
   if (photo) {
     return (
       <div className={`${position} overflow-hidden bg-surface-2 ${className}`.trim()}>
-        <Photo
-          src={photo.src}
-          alt=""
-          sizes="(min-width:1024px) 480px, 70vw"
-          fit="cover"
-          focal={photo.focal}
-          hoverZoom
-        />
+        {/* ნელი მოძრაობა; ყოველ კატეგორიას საკუთარი ფაზა, რომ ყველა ერთდროულად ერთნაირად არ მოძრაობდეს */}
+        <div className="art-drift absolute inset-0" style={{ animationDelay: `-${phase}s` }} aria-hidden>
+          <Photo src={photo.src} alt="" sizes="(min-width:1024px) 480px, 70vw" fit="cover" focal={photo.focal} />
+        </div>
         {children ? <div className="relative z-10 h-full">{children}</div> : null}
       </div>
     );

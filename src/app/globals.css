@@ -9,9 +9,9 @@
   --text: #1d1a17;
   --muted: #6a6158;
   --border: #e3d9cb;
-  --accent: #c93f15;
-  --accent-hover: #a5320e;
-  --accent-soft: #fbe2d6;
+  --accent: #a84f2c;
+  --accent-hover: #8a3d20;
+  --accent-soft: #f2e0d4;
   --on-accent: #ffffff;
   color-scheme: light;
 }
@@ -23,8 +23,8 @@ html[data-theme="dark"] {
   --text: #f4ede4;
   --muted: #a99e91;
   --border: #2e2823;
-  --accent: #ff7d50;
-  --accent-hover: #ff9a74;
+  --accent: #e8895f;
+  --accent-hover: #f0a07c;
   --accent-soft: #35201a;
   --on-accent: #1a0f09;
   color-scheme: dark;
@@ -263,9 +263,26 @@ a:hover > .arrow-slide {
   animation: art-twinkle 3.6s ease-in-out infinite;
 }
 
+/* კატეგორიის ფოტო ნელა ცურავს და ოდნავ იზრდება (Ken Burns), როგორც ადრე ილუსტრაციები ირხეოდა */
+@keyframes art-drift {
+  0%,
+  100% {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.13) translate3d(-1.8%, -1.2%, 0);
+  }
+}
+
+.art-drift {
+  animation: art-drift 16s ease-in-out infinite;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .art-bob,
-  .art-twinkle {
+  .art-twinkle,
+  .art-drift {
     animation: none;
   }
 }

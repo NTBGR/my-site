@@ -13,6 +13,8 @@ export type Tag = {
   maxPrice?: number;
   // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდიც არ იხსნება და sitemap-შიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
   hidden?: boolean;
+  // ბანერის კოლაჟი: სამი კატეგორიის სურათი
+  collage: [string, string, string];
   en: { name: string; description: string };
 };
 
@@ -20,6 +22,7 @@ export type Tag = {
 export const tags: Tag[] = [
   {
     slug: "under-100",
+    collage: ["sachuqrebi", "keramika", "tekstili"],
     emoji: "🏷️",
     name: "საჩუქარი 100 ₾-მდე",
     description: "ხელნაკეთი ნამუშევრები 100 ლარამდე ფასად.",
@@ -28,6 +31,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-her",
+    collage: ["samkauli", "tekstili", "sachuqrebi"],
     emoji: "💐",
     name: "საჩუქარი ქალბატონებისთვის",
     description: "ხელნაკეთი საჩუქრები ქალბატონებისთვის: თაიგულები, სამკაულები და სხვა.",
@@ -35,6 +39,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-him",
+    collage: ["tyavi", "posterebi", "khis-nakethobebi"],
     emoji: "🎁",
     name: "საჩუქარი მამაკაცებისთვის",
     description: "ხელნაკეთი საჩუქრები მამაკაცებისთვის: პოსტერები და სხვა.",
@@ -42,6 +47,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-fans",
+    collage: ["posterebi", "nakhatebi", "sachuqrebi"],
     emoji: "⚽",
     name: "საჩუქარი გულშემატკივარს",
     description: "პოსტერები და სხვა საჩუქრები სპორტის გულშემატკივრისთვის.",
@@ -49,6 +55,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-mom",
+    collage: ["sachuqrebi", "tekstili", "saxlis-dekori"],
     emoji: "🌸",
     hidden: true,
     name: "საჩუქარი დედას",
@@ -57,6 +64,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "never-wilts",
+    collage: ["tekstili", "sachuqrebi", "saxlis-dekori"],
     emoji: "🌷",
     hidden: true,
     name: "თაიგული, რომელიც არ ჭკნება",
@@ -71,8 +79,8 @@ export function getTagBySlug(slug: string) {
 
 export function localizeTag(tag: Tag, lang: Lang) {
   return lang === "ka"
-    ? { slug: tag.slug, emoji: tag.emoji, name: tag.name, description: tag.description }
-    : { slug: tag.slug, emoji: tag.emoji, ...tag.en };
+    ? { slug: tag.slug, emoji: tag.emoji, collage: tag.collage, name: tag.name, description: tag.description }
+    : { slug: tag.slug, emoji: tag.emoji, collage: tag.collage, ...tag.en };
 }
 
 // ამ თაგის ნამუშევრები
