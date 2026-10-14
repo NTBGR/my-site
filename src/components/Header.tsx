@@ -6,7 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
 import SavedLink from "@/components/SavedLink";
-import CategoryBar from "@/components/CategoryBar";
+import CategoryBar, { type BarTag } from "@/components/CategoryBar";
 import LogoLink from "@/components/LogoLink";
 import { useT } from "@/components/LangProvider";
 
@@ -47,7 +47,7 @@ function MenuIcon({ open }: { open: boolean }) {
   );
 }
 
-export default function Header() {
+export default function Header({ tags }: { tags: BarTag[] }) {
   const router = useRouter();
   const t = useT();
   const pathname = usePathname();
@@ -191,7 +191,7 @@ export default function Header() {
         ) : null}
       </header>
 
-      <CategoryBar />
+      <CategoryBar tags={tags} />
 
       {/* მობილური მენიუ: გვერდიდან გამოსვლადი პანელი */}
       <div

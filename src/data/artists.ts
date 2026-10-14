@@ -8,6 +8,8 @@ export type ArtistWork = {
   url?: string;
   // ფასი ლარში (₾); თუ არ არის, საიტი ფასს არ აჩვენებს
   price?: number;
+  // თაგების გასაღებები (src/data/tags.ts): საჩუქრის მიზეზი, მაგ. "for-her", "for-mom"
+  tags?: string[];
   // ნამდვილი ფოტო: ფაილი public/artists/<slug>/..., მისი ზომები პიქსელებში (პროპორციისთვის).
   // ბარათები 3:4-ია (ტელეფონის ვერტიკალური ფოტო); სრულეკრანიან ნახვაში ფოტო მთლიანად ჩანს.
   image?: string;
@@ -55,13 +57,13 @@ export const artists: ArtistData[] = [
     instagram: "https://www.instagram.com/zhuzhaceramics/",
     facebook: "https://www.facebook.com/profile.php?id=61580098836416",
     works: [
-      { title: "ყელსაბამი „ცისფერი ვარსკვლავი“", color: "#3f9fd6", image: "/artists/zhuzha-ceramics/necklace-blue-star.jpg", width: 1200, height: 1600, price: 120 },
-      { title: "ყელსაბამი „ყვითელი ვარსკვლავი“", color: "#d4402c", image: "/artists/zhuzha-ceramics/necklace-yellow-star.jpg", width: 1200, height: 1600, price: 120 },
-      { title: "ყელსაბამი „მწვანე ვარსკვლავი“", color: "#3f7a3a", image: "/artists/zhuzha-ceramics/necklace-green-star.jpg", width: 1200, height: 1600, price: 120 },
-      { title: "ყელსაბამი „წითელი ვარსკვლავი“", color: "#e0452d", image: "/artists/zhuzha-ceramics/necklace-red-star.jpg", width: 1200, height: 1600, price: 120 },
-      { title: "ბეჭედი „ტიტა“", color: "#8a6fbf", image: "/artists/zhuzha-ceramics/ring-tulip.jpg", width: 844, height: 1125, price: 80 },
-      { title: "ბეჭედი „AMORE“", color: "#c9a3ad", image: "/artists/zhuzha-ceramics/ring-amore.jpg", width: 844, height: 1125, price: 80 },
-      { title: "ბროში „გული“", color: "#d9573f", image: "/artists/zhuzha-ceramics/brooch-heart.jpg", width: 1125, height: 1500, price: 80 },
+      { title: "ყელსაბამი „ცისფერი ვარსკვლავი“", color: "#3f9fd6", image: "/artists/zhuzha-ceramics/necklace-blue-star.jpg", width: 1200, height: 1600, price: 120, tags: ["for-mom", "for-her"] },
+      { title: "ყელსაბამი „ყვითელი ვარსკვლავი“", color: "#d4402c", image: "/artists/zhuzha-ceramics/necklace-yellow-star.jpg", width: 1200, height: 1600, price: 120, tags: ["for-mom", "for-her"] },
+      { title: "ყელსაბამი „მწვანე ვარსკვლავი“", color: "#3f7a3a", image: "/artists/zhuzha-ceramics/necklace-green-star.jpg", width: 1200, height: 1600, price: 120, tags: ["for-mom", "for-her"] },
+      { title: "ყელსაბამი „წითელი ვარსკვლავი“", color: "#e0452d", image: "/artists/zhuzha-ceramics/necklace-red-star.jpg", width: 1200, height: 1600, price: 120, tags: ["for-mom", "for-her"] },
+      { title: "ბეჭედი „ტიტა“", color: "#8a6fbf", image: "/artists/zhuzha-ceramics/ring-tulip.jpg", width: 844, height: 1125, price: 80, tags: ["for-her"] },
+      { title: "ბეჭედი „AMORE“", color: "#c9a3ad", image: "/artists/zhuzha-ceramics/ring-amore.jpg", width: 844, height: 1125, price: 80, tags: ["for-her"] },
+      { title: "ბროში „გული“", color: "#d9573f", image: "/artists/zhuzha-ceramics/brooch-heart.jpg", width: 1125, height: 1500, price: 80, tags: ["for-mom", "for-her"] },
     ],
     en: {
       name: "ZHU-ZHA Ceramics",
@@ -90,18 +92,18 @@ export const artists: ArtistData[] = [
     instagram: "https://www.instagram.com/tbgrposterlab/",
     facebook: "https://www.facebook.com/profile.php?id=61586527464734",
     works: [
-      { title: "პოსტერი „კვარა“", color: "#1c1c22", image: "/artists/tbgr-poster-lab/kvara.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „მესი“", color: "#4a8fc4", image: "/artists/tbgr-poster-lab/messi.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „რონალდო“", color: "#c4302b", image: "/artists/tbgr-poster-lab/ronaldo.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „იამალი“", color: "#2f4f9e", image: "/artists/tbgr-poster-lab/yamal.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „ალი“", color: "#c2242e", image: "/artists/tbgr-poster-lab/ali.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „რეალ მადრიდი“", color: "#1d4f9c", image: "/artists/tbgr-poster-lab/real-madrid.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „ბარსელონა“", color: "#a3123f", image: "/artists/tbgr-poster-lab/barcelona.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „ლივერპული“", color: "#8a1c1c", image: "/artists/tbgr-poster-lab/liverpool.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „მანჩესტერ იუნაიტედი“", color: "#d8281c", image: "/artists/tbgr-poster-lab/manchester-united.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „მილანი“", color: "#d6122e", image: "/artists/tbgr-poster-lab/milan.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „ბაიერნი“", color: "#dc052d", image: "/artists/tbgr-poster-lab/bayern.jpg", width: 1440, height: 1440, price: 60 },
-      { title: "პოსტერი „პსჟ“", color: "#0a3a73", image: "/artists/tbgr-poster-lab/psg.jpg", width: 1440, height: 1440, price: 60 },
+      { title: "პოსტერი „კვარა“", color: "#1c1c22", image: "/artists/tbgr-poster-lab/kvara.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „მესი“", color: "#4a8fc4", image: "/artists/tbgr-poster-lab/messi.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „რონალდო“", color: "#c4302b", image: "/artists/tbgr-poster-lab/ronaldo.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „იამალი“", color: "#2f4f9e", image: "/artists/tbgr-poster-lab/yamal.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „ალი“", color: "#c2242e", image: "/artists/tbgr-poster-lab/ali.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „რეალ მადრიდი“", color: "#1d4f9c", image: "/artists/tbgr-poster-lab/real-madrid.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „ბარსელონა“", color: "#a3123f", image: "/artists/tbgr-poster-lab/barcelona.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „ლივერპული“", color: "#8a1c1c", image: "/artists/tbgr-poster-lab/liverpool.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „მანჩესტერ იუნაიტედი“", color: "#d8281c", image: "/artists/tbgr-poster-lab/manchester-united.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „მილანი“", color: "#d6122e", image: "/artists/tbgr-poster-lab/milan.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „ბაიერნი“", color: "#dc052d", image: "/artists/tbgr-poster-lab/bayern.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
+      { title: "პოსტერი „პსჟ“", color: "#0a3a73", image: "/artists/tbgr-poster-lab/psg.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans"] },
     ],
     en: {
       name: "TBGR Poster Lab",
@@ -135,16 +137,16 @@ export const artists: ArtistData[] = [
     instagram: "https://www.instagram.com/tamusshop3/",
     facebook: "https://www.facebook.com/profile.php?id=100071936977915",
     works: [
-      { title: "თაიგული „ვარდისფერი ყვავილები“", color: "#e58fb0", image: "/artists/tamus-shop/bouquet-pink-blooms.jpg", width: 1200, height: 1598, price: 55 },
-      { title: "ფუმფულა თაიგული „ყვითელი“", color: "#f2a900", image: "/artists/tamus-shop/plush-yellow.jpg", width: 1200, height: 1598, price: 45 },
-      { title: "ფუმფულა თაიგული „ვარდისფერი ვარდები“", color: "#e8559a", image: "/artists/tamus-shop/plush-pink-roses.jpg", width: 1200, height: 1598, price: 45 },
-      { title: "თაიგული „ყვითელი ტიტები თოჯინით“", color: "#f0b400", image: "/artists/tamus-shop/tulips-yellow-doll.jpg", width: 1200, height: 1598, price: 60 },
-      { title: "თაიგული „ტიტები და სიმინდი“", color: "#1f9c86", image: "/artists/tamus-shop/tulips-teal-corn.jpg", width: 1200, height: 1598, price: 45 },
-      { title: "თაიგული „ცისფერი ტიტები“", color: "#2d9fd0", image: "/artists/tamus-shop/tulips-blue-doll.jpg", width: 1200, height: 1600, price: 65 },
-      { title: "თაიგული „ვარდისფერი ტიტები“", color: "#f0a0b8", image: "/artists/tamus-shop/tulips-pink.jpg", width: 1200, height: 1598, price: 35 },
-      { title: "თაიგული „ნარინჯისფერი ტიტები“", color: "#e8501c", image: "/artists/tamus-shop/tulips-orange.jpg", width: 1200, height: 1598, price: 35 },
-      { title: "ფუმფულა თაიგული „წითელი ვარდები“", color: "#c8102e", image: "/artists/tamus-shop/plush-red-roses.jpg", width: 1200, height: 1598, price: 45 },
-      { title: "ფუმფულა თაიგული „წითელი ყვავილები“", color: "#d8201c", image: "/artists/tamus-shop/plush-red-flowers.jpg", width: 1200, height: 1598, price: 25 },
+      { title: "თაიგული „ვარდისფერი ყვავილები“", color: "#e58fb0", image: "/artists/tamus-shop/bouquet-pink-blooms.jpg", width: 1200, height: 1598, price: 55, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "ფუმფულა თაიგული „ყვითელი“", color: "#f2a900", image: "/artists/tamus-shop/plush-yellow.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "ფუმფულა თაიგული „ვარდისფერი ვარდები“", color: "#e8559a", image: "/artists/tamus-shop/plush-pink-roses.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "თაიგული „ყვითელი ტიტები თოჯინით“", color: "#f0b400", image: "/artists/tamus-shop/tulips-yellow-doll.jpg", width: 1200, height: 1598, price: 60, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "თაიგული „ტიტები და სიმინდი“", color: "#1f9c86", image: "/artists/tamus-shop/tulips-teal-corn.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "თაიგული „ცისფერი ტიტები“", color: "#2d9fd0", image: "/artists/tamus-shop/tulips-blue-doll.jpg", width: 1200, height: 1600, price: 65, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "თაიგული „ვარდისფერი ტიტები“", color: "#f0a0b8", image: "/artists/tamus-shop/tulips-pink.jpg", width: 1200, height: 1598, price: 35, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "თაიგული „ნარინჯისფერი ტიტები“", color: "#e8501c", image: "/artists/tamus-shop/tulips-orange.jpg", width: 1200, height: 1598, price: 35, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "ფუმფულა თაიგული „წითელი ვარდები“", color: "#c8102e", image: "/artists/tamus-shop/plush-red-roses.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "ფუმფულა თაიგული „წითელი ყვავილები“", color: "#d8201c", image: "/artists/tamus-shop/plush-red-flowers.jpg", width: 1200, height: 1598, price: 25, tags: ["for-mom", "for-her", "never-wilts"] },
     ],
     en: {
       name: "Tamus Shop",

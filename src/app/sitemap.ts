@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { artists } from "@/data/artists";
 import { categories } from "@/data/categories";
+import { activeTags } from "@/data/tags";
 import { SITE_URL } from "@/lib/site";
 
 
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...pages.map((path) => ({ url: `${SITE_URL}${path}` })),
     ...categories.map((category) => ({ url: `${SITE_URL}/categories/${category.slug}` })),
+    ...activeTags("ka").map((tag) => ({ url: `${SITE_URL}/gifts/${tag.slug}` })),
     ...artists.map((artist) => ({ url: `${SITE_URL}/artists/${artist.slug}` })),
   ];
 }

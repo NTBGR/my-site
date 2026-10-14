@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { LangProvider } from "@/components/LangProvider";
 import ScrollToTop from "@/components/ScrollToTop";
 import { dictionary } from "@/lib/dictionary";
+import { activeTags } from "@/data/tags";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -67,7 +68,7 @@ export default async function RootLayout({
       >
         <LangProvider lang={lang}>
           <ScrollToTop />
-          <Header />
+          <Header tags={activeTags(lang)} />
           <main className="flex-1">{children}</main>
           <Footer />
         </LangProvider>
