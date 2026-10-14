@@ -14,11 +14,11 @@ const ka = {
     title: "ხელოვანი",
     // ბრაუზერის ტაბში მხოლოდ სახელი; გაზიარების ბარათზე (Messenger, Facebook, LinkedIn) უფრო აღწერითი სათაური
     homeTitle: "ხელოვანი",
-    shareTitle: "ხელოვანი — ხელნაკეთი ნივთები ქართველი ხელოვანებისგან",
+    shareTitle: "ხელოვანი - ხელნაკეთი ნივთები ქართველი ხელოვანებისგან",
     ogTagline: "ხელით შექმნილი",
     ogText: "ნახატები, კერამიკა, სამკაული და დეკორი",
     description:
-      "ქართველი ხელოვანების ხელნაკეთი ნამუშევრები ერთ სივრცეში. იპოვე და იყიდე პირდაპირ ავტორისგან — მის ინსტაგრამზე ან ფეისბუქზე.",
+      "ქართველი ხელოვანების ხელნაკეთი ნამუშევრები ერთ სივრცეში. იპოვე და იყიდე პირდაპირ ავტორისგან - მის ინსტაგრამზე ან ფეისბუქზე.",
   },
   nav: {
     home: "მთავარი",
@@ -140,7 +140,7 @@ const ka = {
   },
   categories: {
     title: "კატეგორიები",
-    text: "ნახატებიდან ხის ნაკეთობებამდე — აირჩიე, რა გაინტერესებს.",
+    text: "ნახატებიდან ხის ნაკეთობებამდე - აირჩიე, რა გაინტერესებს.",
     total: (n: number) => `${n} კატეგორია`,
     back: "← ყველა კატეგორია",
     empty: "ამ კატეგორიაში ნივთები ჯერ არ არის.",
@@ -244,7 +244,7 @@ const en: Dict = {
   meta: {
     title: "Khelovani",
     homeTitle: "Khelovani",
-    shareTitle: "Khelovani — handmade goods by Georgian artists",
+    shareTitle: "Khelovani - handmade goods by Georgian artists",
     ogTagline: "Made by hand",
     ogText: "Paintings, ceramics, jewelry and decor",
     description:
@@ -368,7 +368,7 @@ const en: Dict = {
   },
   categories: {
     title: "Categories",
-    text: "From paintings to woodwork — pick what interests you.",
+    text: "From paintings to woodwork - pick what interests you.",
     total: (n: number) => `${n} categories`,
     back: "← All categories",
     empty: "There are no items in this category yet.",

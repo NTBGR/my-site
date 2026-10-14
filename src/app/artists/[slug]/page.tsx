@@ -86,7 +86,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const raw = getArtistBySlug(slug);
   if (!raw) return {};
   const artist = localizeArtist(raw, await getLang());
-  const title = `${artist.name} — ${artist.category}`;
+  const title = `${artist.name} - ${artist.category}`;
   return {
     title,
     description: artist.bio,
@@ -250,7 +250,7 @@ export default async function ArtistPage({
               variant: (variantFor(artist.slug) + i) % 4,
               url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
               favKey: `${artist.slug}/${workId(work, i)}`,
-              alt: `${work.title} — ${artist.name}`,
+              alt: `${work.title} - ${artist.name}`,
               network: /facebook\.com|fb\.com|fb\.me/i.test(work.url || artist.instagram || artist.facebook) ? "facebook" as const : "instagram" as const,
               image: work.image,
               width: work.width,

@@ -59,7 +59,7 @@ export default async function GiftPage({ params }: { params: Promise<{ slug: str
                 {work.image ? (
                   <Photo
                     src={work.image}
-                    alt={`${work.title} — ${artist.name}`}
+                    alt={`${work.title} - ${artist.name}`}
                     sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw"
                     hoverZoom
                   />

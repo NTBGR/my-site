@@ -43,7 +43,7 @@ export default function SavedWorks({ cards }: { cards: SavedCard[] }) {
             <Link href={`/artists/${card.artistSlug}`} className="block">
               <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm">
                 {card.image ? (
-                  <Photo src={card.image} alt={`${card.title} — ${card.artistName}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
+                  <Photo src={card.image} alt={`${card.title} - ${card.artistName}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
                 ) : (
                   <ArtTile color={card.color} variant={0} className="absolute inset-0 h-full w-full" />
                 )}

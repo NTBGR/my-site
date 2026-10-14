@@ -32,7 +32,7 @@ export default function ArtistCard({
       <div className={`relative overflow-hidden bg-surface-2 ${artClassName}`}>
         <div className="absolute inset-0" style={photo?.image ? { filter: "saturate(.88) sepia(.1)" } : undefined}>
           {photo?.image ? (
-            <Photo src={photo.image} alt={`${artist.name} — ${photo.title}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
+            <Photo src={photo.image} alt={`${artist.name} - ${photo.title}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
           ) : (
             <CategoryArt slug={main} color={categoryColor(main)} still className="absolute inset-0 h-full w-full" />
           )}
