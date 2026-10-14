@@ -3,6 +3,7 @@ import { Noto_Sans_Georgian, Noto_Serif_Georgian } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { LangProvider } from "@/components/LangProvider";
+import { Analytics } from "@vercel/analytics/next";
 import ScrollToTop from "@/components/ScrollToTop";
 import { dictionary } from "@/lib/dictionary";
 import { activeTags } from "@/data/tags";
@@ -78,6 +79,7 @@ export default async function RootLayout({
       >
         <LangProvider lang={lang}>
           <ScrollToTop />
+          <Analytics />
           <Header tags={activeTags(lang)} />
           <main className="flex-1">{children}</main>
           <Footer />

@@ -14,7 +14,7 @@ export const privacy: Record<
   ka: {
     title: "კონფიდენციალურობა",
     intro: "მოკლედ და გასაგებად: რა ინფორმაციას ვაგროვებთ, რატომ და როგორ ვიყენებთ.",
-    updated: "ბოლო განახლება: 4 ოქტომბერი, 2026",
+    updated: "ბოლო განახლება: 15 ოქტომბერი, 2026",
     sections: [
       {
         title: "ვინ ვართ",
@@ -31,6 +31,7 @@ export const privacy: Record<
           "შენს ბრაუზერს ენიჭება შემთხვევითი, ანონიმური კოდი (ქუქი), რომელიც შენს ვინაობას არ ავლენს.",
           "გადასვლისას 24 საათით ვინახავთ ამ კოდის დაშიფრულ ვერსიას (ჰეშს), რომ ერთი ადამიანი ერთ დღეში ორჯერ არ ჩავთვალოთ. თუ ქუქი დაბლოკილია, ამავე მიზნით გამოიყენება IP მისამართისა და ბრაუზერის ჰეში.",
           "მუდმივად ვინახავთ მხოლოდ ჯამურ რიცხვებს: რამდენი ადამიანი გადავიდა რომელი ხელოვანის გვერდზე თვის განმავლობაში. IP მისამართს არ ვინახავთ.",
+          "საიტის ვიზიტებს ვითვლით ანონიმურად (Vercel Web Analytics): რომელი გვერდი გაიხსნა, სად მდებარეობს ვიზიტორი ქვეყნის დონეზე და რა მოწყობილობიდან. ეს ქუქებს არ იყენებს, ცალკეულ ადამიანს არ აიდენტიფიცირებს და სარეკლამოდ არ გამოიყენება.",
         ],
       },
       {
@@ -85,7 +86,7 @@ export const privacy: Record<
   en: {
     title: "Privacy",
     intro: "In short and plainly: what we collect, why, and how we use it.",
-    updated: "Last updated: 4 October 2026",
+    updated: "Last updated: 15 October 2026",
     sections: [
       {
         title: "Who we are",
@@ -102,6 +103,7 @@ export const privacy: Record<
           "Your browser gets a random, anonymous code (a cookie) that does not reveal who you are.",
           "When you follow a link, we keep a scrambled version (hash) of that code for 24 hours so one person isn't counted twice in a day. If cookies are blocked, a hash of your IP address and browser is used for the same purpose.",
           "The only thing we keep long-term is totals: how many people went to each maker's page per month. We don't store IP addresses.",
+          "We count site visits anonymously (Vercel Web Analytics): which page was opened, the visitor's country, and the type of device. It uses no cookies, doesn't identify individual people, and isn't used for advertising.",
         ],
       },
       {
