@@ -285,6 +285,26 @@ export default async function Home() {
                 worksLabel={dictionary[lang].artists.worksCount(artist.works.length)}
               />
             ))}
+            {/* ბოლო ბარათი: პარტნიორობის მოწვევა საიტის მთავარი ფერით, ბადის თავისუფალ ადგილას */}
+            <Link
+              key="join"
+              href="/join"
+              className="group flex h-full min-h-72 flex-col justify-between overflow-hidden rounded-[1.5rem] bg-accent p-5 text-on-accent transition duration-300 hover:-translate-y-1.5 hover:bg-accent-hover hover:shadow-2xl active:scale-[0.99] sm:rounded-[1.75rem] sm:p-6"
+            >
+              <span aria-hidden className="text-3xl opacity-80">
+                ✦
+              </span>
+              <div>
+                <h3 className="text-xl font-semibold leading-tight tracking-tight sm:text-2xl">{dictionary[lang].nav.join}</h3>
+                <p className="mt-2 text-sm leading-snug opacity-90">{dictionary[lang].join.text}</p>
+              </div>
+              <span
+                aria-hidden
+                className="mt-4 flex h-10 w-10 items-center justify-center self-end rounded-full bg-white/20 transition duration-300 group-hover:bg-white group-hover:text-black"
+              >
+                <span className="arrow-slide">→</span>
+              </span>
+            </Link>
           </ArtistsCarousel>
         </Reveal>
       </section>
