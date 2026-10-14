@@ -36,6 +36,7 @@ export default async function CategoriesPage() {
                 className="group flex h-full flex-col rounded-[1.25rem] border border-border bg-surface p-2 lg:overflow-hidden lg:p-0 transition duration-300 hover:-translate-y-1 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.5rem]"
               >
                 <CategoryArt
+                  still
                   slug={category.slug}
                   color={categoryColor(raw.slug)}
                   className="aspect-[4/3] rounded-[0.9rem] sm:rounded-[1.1rem] lg:rounded-none"

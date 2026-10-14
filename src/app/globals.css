@@ -232,6 +232,21 @@ a:hover > .arrow-slide {
   animation: float 7s ease-in-out infinite;
 }
 
+/* პატარა ბარათებზე (ლენდინგის მარჯვენა ორი ბარათი) უფრო ნაზი და ნელი მცურავი მოძრაობა */
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-5px) rotate(calc(var(--r, 0deg) + 0.6deg));
+  }
+}
+
+.float-soft {
+  animation: float-soft 10s ease-in-out infinite;
+}
+
 /* ილუსტრაციები (კატეგორიების სცენები) ნელა ირხევა და ციმციმებს: ყველგან, სადაც CategoryArt გამოიყენება */
 @keyframes art-bob {
   0%,
@@ -267,22 +282,23 @@ a:hover > .arrow-slide {
 @keyframes art-drift {
   0%,
   100% {
-    transform: scale(1.05) translate3d(0, 0, 0);
+    transform: scale(1.03) translate3d(0, 0, 0);
   }
   50% {
-    transform: scale(1.13) translate3d(-1.8%, -1.2%, 0);
+    transform: scale(1.07) translate3d(-0.8%, -0.6%, 0);
   }
 }
 
 .art-drift {
-  animation: art-drift 16s ease-in-out infinite;
+  animation: art-drift 40s ease-in-out infinite;
   will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .art-bob,
   .art-twinkle,
-  .art-drift {
+  .art-drift,
+  .float-soft {
     animation: none;
   }
 }

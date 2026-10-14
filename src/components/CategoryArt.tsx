@@ -8,6 +8,7 @@ export default function CategoryArt({
   slug,
   color,
   className = "",
+  still = false,
   children,
 }: {
   slug: string;
@@ -15,6 +16,8 @@ export default function CategoryArt({
   className?: string;
   // ძველი პარამეტრი (ილუსტრაციისთვის), ახლა გავლენა არ აქვს
   fit?: "cover" | "contain";
+  // ბარათებზე ფოტო უძრავია (მოძრაობა მხოლოდ ბანერებზეა)
+  still?: boolean;
   children?: ReactNode;
 }) {
   const photo = categoryPhotos[slug];
@@ -26,7 +29,7 @@ export default function CategoryArt({
     return (
       <div className={`${position} overflow-hidden bg-surface-2 ${className}`.trim()}>
         {/* ნელი მოძრაობა; ყოველ კატეგორიას საკუთარი ფაზა, რომ ყველა ერთდროულად ერთნაირად არ მოძრაობდეს */}
-        <div className="art-drift absolute inset-0" style={{ animationDelay: `-${phase}s` }} aria-hidden>
+        <div className={`${still ? "" : "art-drift"} absolute inset-0`} style={still ? undefined : { animationDelay: `-${phase}s` }} aria-hidden>
           <Photo src={photo.src} alt="" sizes="(min-width:1024px) 480px, 70vw" fit="cover" focal={photo.focal} />
         </div>
         {children ? <div className="relative z-10 h-full">{children}</div> : null}

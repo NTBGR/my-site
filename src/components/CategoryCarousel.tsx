@@ -112,7 +112,7 @@ export default function CategoryCarousel({
               className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] text-white transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.99]"
               style={{ background: `color-mix(in srgb, ${slide.color}, black 34%)` }}
             >
-              <CategoryArt slug={slide.slug} color={slide.color} className="aspect-[16/10] w-full sm:aspect-[4/3]" />
+              <CategoryArt slug={slide.slug} color={slide.color} still className="aspect-[16/10] w-full sm:aspect-[4/3]" />
               <div className="flex flex-1 flex-col items-start gap-3 p-4 sm:p-5">
                 <h3 className="text-lg font-semibold leading-tight tracking-tight sm:text-xl lg:text-base xl:text-lg">
                   {slide.name}

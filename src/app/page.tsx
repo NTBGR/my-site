@@ -177,7 +177,7 @@ export default async function Home() {
                   {["nakhatebi", "posterebi", "keramika", "tyavi"].map((slug, i) => (
                     <div
                       key={slug}
-                      className="float overflow-hidden rounded-xl shadow-lg ring-2 ring-white/15"
+                      className="float-soft overflow-hidden rounded-xl shadow-lg ring-2 ring-white/15"
                       style={{ ["--r" as string]: `${[-4, 3, -2, 4][i]}deg`, animationDelay: `-${i * 1.8}s` }}
                     >
                       <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-square" />
@@ -207,7 +207,7 @@ export default async function Home() {
                   {crafts.map((slug, i) => (
                     <span
                       key={slug}
-                      className="float -ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#9d6044] first:ml-0"
+                      className="float-soft -ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#9d6044] first:ml-0"
                       style={{ ["--r" as string]: "0deg", animationDelay: `-${i * 2.2}s` }}
                     >
                       <CategoryArt slug={slug} color={categoryColor(slug)} className="h-full w-full" />
