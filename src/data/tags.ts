@@ -11,20 +11,13 @@ export type Tag = {
   description: string;
   // თუ მითითებულია, ამ ფასამდე (ჩათვლით) ყველა ნამუშევარი ავტომატურად ხვდება თაგში
   maxPrice?: number;
-  // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდი და sitemap-ის ჩანაწერიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
+  // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდიც არ იხსნება და sitemap-შიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
   hidden?: boolean;
   en: { name: string; description: string };
 };
 
 // თანმიმდევრობა ზოლში ასეთია
 export const tags: Tag[] = [
-  {
-    slug: "for-her",
-    emoji: "💐",
-    name: "საჩუქარი ქალბატონებისთვის",
-    description: "ხელნაკეთი საჩუქრები ქალბატონებისთვის: თაიგულები, სამკაულები და სხვა.",
-    en: { name: "Gifts for ladies", description: "Handmade gifts for ladies: bouquets, jewelry and more." },
-  },
   {
     slug: "under-100",
     emoji: "🏷️",
@@ -34,20 +27,18 @@ export const tags: Tag[] = [
     en: { name: "Gifts under 100 ₾", description: "Handmade works priced up to 100 GEL." },
   },
   {
-    slug: "for-mom",
-    hidden: true,
-    emoji: "🌸",
-    name: "საჩუქარი დედას",
-    description: "ხელნაკეთი საჩუქრები დედისთვის.",
-    en: { name: "Gifts for mom", description: "Handmade gifts for mom." },
+    slug: "for-her",
+    emoji: "💐",
+    name: "საჩუქარი ქალბატონებისთვის",
+    description: "ხელნაკეთი საჩუქრები ქალბატონებისთვის: თაიგულები, სამკაულები და სხვა.",
+    en: { name: "Gifts for ladies", description: "Handmade gifts for ladies: bouquets, jewelry and more." },
   },
   {
-    slug: "never-wilts",
-    hidden: true,
-    emoji: "🌷",
-    name: "თაიგული, რომელიც არ ჭკნება",
-    description: "ნაქსოვი თაიგულები, რომლებიც არ ჭკნება და დიდხანს ინახება.",
-    en: { name: "Bouquets that never wilt", description: "Crocheted bouquets that never wilt and keep for years." },
+    slug: "for-him",
+    emoji: "🎁",
+    name: "საჩუქარი მამაკაცებისთვის",
+    description: "ხელნაკეთი საჩუქრები მამაკაცებისთვის: პოსტერები და სხვა.",
+    en: { name: "Gifts for men", description: "Handmade gifts for men: posters and more." },
   },
   {
     slug: "for-fans",
@@ -55,6 +46,22 @@ export const tags: Tag[] = [
     name: "საჩუქარი გულშემატკივარს",
     description: "პოსტერები და სხვა საჩუქრები სპორტის გულშემატკივრისთვის.",
     en: { name: "Gifts for fans", description: "Posters and other gifts for sports fans." },
+  },
+  {
+    slug: "for-mom",
+    emoji: "🌸",
+    hidden: true,
+    name: "საჩუქარი დედას",
+    description: "ხელნაკეთი საჩუქრები დედისთვის.",
+    en: { name: "Gifts for mom", description: "Handmade gifts for mom." },
+  },
+  {
+    slug: "never-wilts",
+    emoji: "🌷",
+    hidden: true,
+    name: "თაიგული, რომელიც არ ჭკნება",
+    description: "ნაქსოვი თაიგულები, რომლებიც არ ჭკნება და დიდხანს ინახება.",
+    en: { name: "Bouquets that never wilt", description: "Crocheted bouquets that never wilt and keep for years." },
   },
 ];
 
