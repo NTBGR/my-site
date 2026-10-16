@@ -119,19 +119,30 @@ export default function WorksGallery({
     <>
       {/* ერთნაირი 3:4 ბარათები (ტელეფონის ფოტოს ფორმატი); სრული ფოტო იხსნება დაჭერით */}
       {showSort && pricedCount >= 3 ? (
-        <div className="mb-4 flex justify-end">
-          <label className="flex items-center gap-2 text-sm text-muted">
-            {t.sort.label}
-            <select
-              value={sort}
-              onChange={(event) => setSort(event.target.value as "default" | "asc" | "desc")}
-              className="min-h-9 rounded-full border border-border bg-bg px-3 text-sm text-text"
+        <div
+          role="group"
+          aria-label={t.sort.label}
+          className="mb-4 inline-flex max-w-full overflow-x-auto rounded-full border border-border bg-surface p-1 text-[13px] font-medium [scrollbar-width:none] sm:text-sm [&::-webkit-scrollbar]:hidden"
+        >
+          {(
+            [
+              ["default", t.sort.default],
+              ["asc", t.sort.short.asc],
+              ["desc", t.sort.short.desc],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={sort === value}
+              onClick={() => setSort(value)}
+              className={`min-h-8 shrink-0 whitespace-nowrap rounded-full px-3 transition ${
+                sort === value ? "bg-accent text-on-accent" : "text-muted hover:text-accent"
+              }`}
             >
-              <option value="default">{t.sort.default}</option>
-              <option value="asc">{t.sort.asc}</option>
-              <option value="desc">{t.sort.desc}</option>
-            </select>
-          </label>
+              {label}
+            </button>
+          ))}
         </div>
       ) : null}
       <ul className={`${layout === "row" ? ROW : GRID} ${columns}`}>

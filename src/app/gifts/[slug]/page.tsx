@@ -21,6 +21,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+// კომპაქტური სეგმენტირებული არჩევანი (ბმულებით): მიმდინარე არჩევანი ივსება აქცენტით
+function Segmented({ label, items }: { label: string; items: { key: string; label: string; href: string; active: boolean }[] }) {
+  return (
+    <div role="group" aria-label={label} className="inline-flex max-w-full overflow-x-auto rounded-full border border-border bg-surface p-1 text-[13px] font-medium [scrollbar-width:none] sm:text-sm [&::-webkit-scrollbar]:hidden">
+      {items.map((item) => (
+        <Link
+          key={item.key}
+          href={item.href}
+          replace
+          scroll={false}
+          aria-current={item.active ? "true" : undefined}
+          className={`inline-flex min-h-8 shrink-0 items-center whitespace-nowrap rounded-full px-3 transition ${
+            item.active ? "bg-accent text-on-accent" : "text-muted hover:text-accent"
+          }`}
+        >
+          {item.label}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 // საჩუქრის თაგი: ამ მიზეზის ყველა ნამუშევარი ხელოვანის მიხედვით
 export default async function GiftPage({
   params,
@@ -78,44 +100,31 @@ export default async function GiftPage({
         collage={tag.collage}
       />
 
-      <div className="mt-6 flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-muted">{t.sort.label}:</span>
-        {([["", t.sort.default], ["asc", t.sort.asc], ["desc", t.sort.desc]] as const).map(([value, label]) => (
-          <Link
-            key={value}
-            href={hrefFor(value, max)}
-            replace
-            scroll={false}
-            aria-current={sort === value ? "true" : undefined}
-            className={`inline-flex min-h-9 items-center rounded-full border px-3 font-medium transition ${
-              sort === value ? "border-accent bg-accent text-on-accent" : "border-border bg-bg text-text hover:border-accent hover:text-accent"
-            }`}
-          >
-            {label}
-          </Link>
-        ))}
+      {/* დალაგება და ფასის ფილტრი: კომპაქტური სეგმენტები, ტელეფონზე ერთ-ერთ რიგში გვერდზე გადასახვევი */}
+      <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4">
+        <Segmented
+          label={t.sort.label}
+          items={([["", t.sort.default], ["asc", t.sort.short.asc], ["desc", t.sort.short.desc]] as const).map(([value, label]) => ({
+            key: value,
+            label,
+            href: hrefFor(value, max),
+            active: sort === value,
+          }))}
+        />
+        {buckets.length > 0 ? (
+          <Segmented
+            label={t.priceFilter.label}
+            items={([[0, t.priceFilter.all], ...buckets.map((limit) => [limit, t.priceFilter.upTo(limit)] as const)] as const).map(([limit, label]) => ({
+              key: String(limit),
+              label,
+              href: hrefFor(sort, limit),
+              active: max === limit,
+            }))}
+          />
+        ) : null}
+        {max ? <span className="text-sm text-muted">{t.artists.worksCount(entries.length)}</span> : null}
       </div>
-      {buckets.length > 0 ? (
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
-          <span className="text-muted">{t.priceFilter.label}:</span>
-          {([[0, t.priceFilter.all], ...buckets.map((limit) => [limit, t.priceFilter.upTo(limit)] as const)] as const).map(([limit, label]) => (
-            <Link
-              key={limit}
-              href={hrefFor(sort, limit)}
-              replace
-              scroll={false}
-              aria-current={max === limit ? "true" : undefined}
-              className={`inline-flex min-h-9 items-center rounded-full border px-3 font-medium transition ${
-                max === limit ? "border-accent bg-accent text-on-accent" : "border-border bg-bg text-text hover:border-accent hover:text-accent"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-          {max ? <span className="text-muted">· {t.artists.worksCount(entries.length)}</span> : null}
-        </div>
-      ) : null}
-      <p className="mt-2 text-sm text-muted">{t.priceNote}</p>
+      <p className="mt-2 text-xs leading-relaxed text-muted sm:text-sm">{t.priceNote}</p>
 
       <div className="mt-6">
         <WorksGallery

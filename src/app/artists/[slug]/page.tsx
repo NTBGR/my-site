@@ -57,7 +57,7 @@ function SocialLink({
   variant: keyof typeof socialVariant;
 }) {
   const base =
-    "inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border px-3.5 text-sm font-medium sm:gap-2.5 sm:px-5";
+    "inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-full border px-3.5 text-sm font-medium sm:flex-none sm:gap-2.5 sm:px-5";
 
   // ბმული ჯერ არ არის: ღილაკი მაინც ჩანს, ოღონდ მკრთალია
   if (!href) {
@@ -224,27 +224,31 @@ export default async function ArtistPage({
             {all.artists.worksCount(artist.works.length)}
           </p>
 
-          <p className="mt-4 text-sm font-medium text-white/85">{t.buyHint}</p>
-          <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <p className="text-sm font-medium text-white/85">{t.buyHint}</p>
+            {/* ტელეფონზე გაზიარება მხოლოდ ხატულაა და ტექსტის რიგშია, რომ ღილაკები ერთ რიგში ეტეოდეს */}
+            <ShareButton url={`/artists/${artist.slug}`} title={artist.name} variant="icon" className="shrink-0 sm:hidden" />
+          </div>
+          <div className="mt-2 flex items-center gap-2">
             <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
             <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
-            <ShareButton url={`/artists/${artist.slug}`} title={artist.name} />
+            <ShareButton url={`/artists/${artist.slug}`} title={artist.name} className="hidden sm:inline-flex" />
           </div>
         </div>
       </section>
 
       {/* ნამუშევრები */}
       <section className="mt-8 sm:mt-10">
-        <div className="flex flex-wrap items-end justify-between gap-3">
+        <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.works}</h2>
           {cats.length > 1 ? (
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-muted">{t.alsoIn}</span>
+            <div className="flex items-center gap-2 text-sm max-sm:order-last max-sm:-mx-4 max-sm:w-[calc(100%+2rem)] max-sm:overflow-x-auto max-sm:px-4 max-sm:pb-1 max-sm:[scrollbar-width:none] max-sm:[&::-webkit-scrollbar]:hidden">
+              <span className="hidden text-muted sm:inline">{t.alsoIn}</span>
               {cats.map((c) => (
                 <Link
                   key={c.slug}
                   href={`/categories/${c.slug}`}
-                  className="inline-flex min-h-9 items-center rounded-full border border-border bg-surface px-3 font-medium text-text transition hover:border-accent hover:text-accent"
+                  className="inline-flex min-h-9 shrink-0 items-center whitespace-nowrap rounded-full border border-border bg-surface px-3.5 text-[13px] font-medium text-text transition hover:border-accent hover:text-accent sm:text-sm"
                 >
                   {c.name}
                 </Link>
@@ -252,8 +256,8 @@ export default async function ArtistPage({
             </div>
           ) : null}
         </div>
-        <p className="mt-1 text-sm text-muted">{all.priceNote}</p>
-        <div className="mt-5">
+        <p className="mt-2 text-xs leading-relaxed text-muted sm:mt-1 sm:text-sm">{all.priceNote}</p>
+        <div className="mt-4 sm:mt-5">
           <WorksGallery
             shareUrl={`/artists/${artist.slug}`}
             shareTitle={artist.name}
