@@ -115,39 +115,6 @@ textarea:focus-visible {
   }
 }
 
-/* გადახვევის მინიშნება (ჩიპების ზოლი ტელეფონზე): ისარი მარჯვნივ მიდის-მოდის და ანათებს */
-@keyframes hint-nudge {
-  0%,
-  100% {
-    transform: translateX(-2px);
-  }
-  50% {
-    transform: translateX(4px);
-  }
-}
-
-@keyframes hint-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
-  }
-  50% {
-    box-shadow: 0 0 0 9px transparent;
-  }
-}
-
-.scroll-hint {
-  animation:
-    hint-nudge 1.4s ease-in-out infinite,
-    hint-glow 1.4s ease-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-hint {
-    animation: none;
-  }
-}
-
 /* ---------- ანიმაციები და ჰოვერები ---------- */
 
 @keyframes rise {

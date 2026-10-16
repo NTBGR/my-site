@@ -17,42 +17,12 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   const listRef = useRef<HTMLUListElement | null>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
-  // მარჯვენა კიდის ანათებადი ისარი ქრება პირველივე გადახვევისას
-  const [scrolled, setScrolled] = useState(false);
 
   const update = useCallback(() => {
     const el = listRef.current;
     if (!el) return;
     setCanLeft(el.scrollLeft > 4);
     setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-    if (el.scrollLeft > 8) setScrolled(true);
-  }, []);
-
-  // ტელეფონზე სესიაში ერთხელ ზოლი მცირედ გადაინაცვლებს და ბრუნდება: ჩანს, რომ გადაიხვევა
-  useEffect(() => {
-    const el = listRef.current;
-    if (!el) return;
-    try {
-      if (sessionStorage.getItem("chip-nudge")) return;
-      if (!window.matchMedia("(max-width: 639px)").matches) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    } catch {
-      return;
-    }
-    const out = setTimeout(() => {
-      // ნიშანი მხოლოდ რეალურად შესრულებულ ბიძგზე იდება
-      try {
-        sessionStorage.setItem("chip-nudge", "1");
-      } catch {}
-      if (el.scrollLeft === 0) el.scrollTo({ left: 64, behavior: "smooth" });
-    }, 1400);
-    const back = setTimeout(() => {
-      if (el.scrollLeft > 0 && el.scrollLeft <= 70) el.scrollTo({ left: 0, behavior: "smooth" });
-    }, 2300);
-    return () => {
-      clearTimeout(out);
-      clearTimeout(back);
-    };
   }, []);
 
   useEffect(() => {
@@ -159,16 +129,6 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               </Link>
             </li>
           </ul>
-          {/* ტელეფონზე: პატარა ანათებადი ისარი კიდეზე, რომ ზოლის გადახვევა გასაგები იყოს (არ იდება, მხოლოდ მინიშნებაა) */}
-          {canRight && !scrolled ? (
-            <span aria-hidden className="pointer-events-none absolute right-2 top-1/2 z-10 -translate-y-1/2 sm:hidden">
-              <span className="scroll-hint flex h-8 w-8 items-center justify-center rounded-full bg-accent text-on-accent">
-                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m9 6 6 6-6 6" />
-                </svg>
-              </span>
-            </span>
-          ) : null}
         </div>
       </div>
     </nav>
