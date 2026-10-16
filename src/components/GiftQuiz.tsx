@@ -66,6 +66,18 @@ export default function GiftQuiz({ works }: { works: QuizWork[] }) {
     return { results: works.filter((work) => match(work, false, false)).slice(0, 8), exact: false };
   }, [works, who, budget, kind]);
 
+  // მესამე კითხვა: მხოლოდ ის სახეობები, რომლებიც არჩეულ ადამიანზე და ბიუჯეტზე ნამდვილად გვაქვს
+  const kindOptions = useMemo(() => {
+    const maxPrice = BUDGET.find((b) => b.id === budget)?.max;
+    const tag = WHO.find((w) => w.id === who)?.tag;
+    const available = new Set(
+      works
+        .filter((work) => (!tag || work.tags.includes(tag)) && (maxPrice === undefined || (work.price !== undefined && work.price <= maxPrice)))
+        .map((work) => work.kind),
+    );
+    return KIND.filter((option) => option.id === "any" || available.has(option.id));
+  }, [works, who, budget]);
+
   const restart = () => {
     setStep(0);
     setWho("any");
@@ -127,7 +139,7 @@ export default function GiftQuiz({ works }: { works: QuizWork[] }) {
         {progress}
         <h2 className="mb-4 text-2xl font-semibold tracking-tight text-text">{t.q3}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          {KIND.map((option) => (
+          {kindOptions.map((option) => (
             <button key={option.id} type="button" className={optionClass} onClick={() => { setKind(option.id); setStep(3); }}>
               <span aria-hidden className="text-2xl">{option.emoji}</span>
               {t.kind[option.id]}

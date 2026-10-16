@@ -261,29 +261,6 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-10 sm:pt-14">
-        <Link
-          href="/quiz"
-          className="group flex flex-col items-start gap-4 rounded-[1.5rem] border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg p-5 transition duration-300 hover:border-accent hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.75rem] sm:p-7"
-        >
-          <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
-              <span aria-hidden className="mr-2">🎯</span>
-              {dictionary[lang].quiz.promoTitle}
-            </h2>
-            <p className="mt-1 text-muted">{dictionary[lang].quiz.promoText}</p>
-          </div>
-          <span className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 group-hover:bg-accent-hover">
-            {dictionary[lang].quiz.promoCta}
-            <span className="arrow-slide" aria-hidden>
-              →
-            </span>
-          </span>
-        </Link>
-      </section>
-
-      <ArtistOfWeek />
-
       {/* რჩეული ხელოვანები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
         <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
@@ -334,8 +311,6 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      <TrendingWorks />
-
       {/* როგორ მუშაობს */}
       <section
         id="how-it-works"
@@ -381,6 +356,31 @@ export default async function Home() {
           </span>
         </Link>
       </section>
+
+      <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-10 sm:pt-14">
+        <Link
+          href="/quiz"
+          className="group flex flex-col items-start gap-4 rounded-[1.5rem] border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg p-5 transition duration-300 hover:border-accent hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.75rem] sm:p-7"
+        >
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+              <span aria-hidden className="mr-2">🎯</span>
+              {dictionary[lang].quiz.promoTitle}
+            </h2>
+            <p className="mt-1 text-muted">{dictionary[lang].quiz.promoText}</p>
+          </div>
+          <span className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 group-hover:bg-accent-hover">
+            {dictionary[lang].quiz.promoCta}
+            <span className="arrow-slide" aria-hidden>
+              →
+            </span>
+          </span>
+        </Link>
+      </section>
+
+      <TrendingWorks />
+
+      <ArtistOfWeek />
 
       {/* შემოქმედის ბანერი */}
       <section className="mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 lg:px-10 sm:pb-20 sm:pt-20">
