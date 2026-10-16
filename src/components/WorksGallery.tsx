@@ -3,11 +3,12 @@
 import Image from "next/image";
 import HeartButton from "@/components/HeartButton";
 import Photo from "@/components/Photo";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import ArtTile from "@/components/ArtTile";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import ShareButton from "@/components/ShareButton";
 import { copyText } from "@/lib/copy";
 import { socialVariant } from "@/components/ui/socialStyles";
 
@@ -35,8 +36,24 @@ function ratioOf(work: GalleryWork) {
   return work.width && work.height ? work.width / work.height : FALLBACK_RATIO;
 }
 
-export default function WorksGallery({ works }: { works: GalleryWork[] }) {
+export default function WorksGallery({
+  works: source,
+  shareUrl,
+  shareTitle,
+}: {
+  works: GalleryWork[];
+  shareUrl?: string;
+  shareTitle?: string;
+}) {
   const t = useT();
+  // დახარისხება ფასით (ფასის გარეშე ნამუშევრები ბოლოშია)
+  const [sort, setSort] = useState<"default" | "asc" | "desc">("default");
+  const works = useMemo(() => {
+    if (sort === "default") return source;
+    const price = (w: GalleryWork) => w.price ?? Number.POSITIVE_INFINITY;
+    return [...source].sort((a, b) => (sort === "asc" ? price(a) - price(b) : (b.price ?? -1) - (a.price ?? -1)));
+  }, [source, sort]);
+  const pricedCount = source.filter((w) => w.price).length;
   const [open, setOpen] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -76,6 +93,22 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
   return (
     <>
       {/* ერთნაირი 3:4 ბარათები (ტელეფონის ფოტოს ფორმატი); სრული ფოტო იხსნება დაჭერით */}
+      {pricedCount >= 3 ? (
+        <div className="mb-4 flex justify-end">
+          <label className="flex items-center gap-2 text-sm text-muted">
+            {t.sort.label}
+            <select
+              value={sort}
+              onChange={(event) => setSort(event.target.value as "default" | "asc" | "desc")}
+              className="min-h-9 rounded-full border border-border bg-bg px-3 text-sm text-text"
+            >
+              <option value="default">{t.sort.default}</option>
+              <option value="asc">{t.sort.asc}</option>
+              <option value="desc">{t.sort.desc}</option>
+            </select>
+          </label>
+        </div>
+      ) : null}
       <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
         {works.map((work, i) => (
           <li key={`${work.title}-${i}`} className="group relative">
@@ -139,9 +172,12 @@ export default function WorksGallery({ works }: { works: GalleryWork[] }) {
                 <span className="text-sm font-medium text-white/70 tabular-nums">
                   {open! + 1} / {works.length}
                 </span>
-                {current.favKey ? (
-                  <HeartButton id={current.favKey} className="ml-auto mr-2 h-11 w-11 border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-black" />
-                ) : null}
+                <div className="ml-auto mr-2 flex items-center gap-2">
+                  {shareUrl ? <ShareButton url={shareUrl} title={`${current.title}${shareTitle ? ` - ${shareTitle}` : ""}`} variant="icon" /> : null}
+                  {current.favKey ? (
+                    <HeartButton id={current.favKey} className="h-11 w-11 border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-black" />
+                  ) : null}
+                </div>
                 <button
                   type="button"
                   onClick={close}

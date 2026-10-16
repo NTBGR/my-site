@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
+import ShareButton from "@/components/ShareButton";
 import { SITE_URL } from "@/lib/site";
 import type { ReactNode } from "react";
 import { variantFor } from "@/components/ArtTile";
@@ -218,6 +219,7 @@ export default async function ArtistPage({
           <div className="mt-2 flex flex-wrap gap-2">
             <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
             <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />
+            <ShareButton url={`/artists/${artist.slug}`} title={artist.name} />
           </div>
         </div>
       </section>
@@ -241,8 +243,11 @@ export default async function ArtistPage({
             </div>
           ) : null}
         </div>
+        <p className="mt-1 text-sm text-muted">{all.priceNote}</p>
         <div className="mt-5">
           <WorksGallery
+            shareUrl={`/artists/${artist.slug}`}
+            shareTitle={artist.name}
             works={artist.works.map((work, i) => ({
               title: work.title,
               price: work.price,

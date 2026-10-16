@@ -23,12 +23,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 // საჩუქრის თაგი: ამ მიზეზის ყველა ნამუშევარი ხელოვანის მიხედვით
-export default async function GiftPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function GiftPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ sort?: string }>;
+}) {
   const lang = await getLang();
   const t = dictionary[lang];
   const raw = getTagBySlug((await params).slug);
   if (!raw) notFound();
+  const sortParam = (await searchParams).sort;
+  const sort = sortParam === "asc" || sortParam === "desc" ? sortParam : "";
   const entries = worksForTag(raw, lang);
+  if (sort) {
+    entries.sort((a, b) => (sort === "asc" ? (a.work.price ?? Infinity) - (b.work.price ?? Infinity) : (b.work.price ?? -1) - (a.work.price ?? -1)));
+  }
   if (entries.length === 0) notFound();
   const tag = localizeTag(raw, lang);
 
@@ -51,7 +62,26 @@ export default async function GiftPage({ params }: { params: Promise<{ slug: str
         collage={tag.collage}
       />
 
-      <ul className="mt-8 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="mt-6 flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-muted">{t.sort.label}:</span>
+        {([["", t.sort.default], ["asc", t.sort.asc], ["desc", t.sort.desc]] as const).map(([value, label]) => (
+          <Link
+            key={value}
+            href={`/gifts/${tag.slug}${value ? `?sort=${value}` : ""}`}
+            replace
+            scroll={false}
+            aria-current={sort === value ? "true" : undefined}
+            className={`inline-flex min-h-9 items-center rounded-full border px-3 font-medium transition ${
+              sort === value ? "border-accent bg-accent text-on-accent" : "border-border bg-bg text-text hover:border-accent hover:text-accent"
+            }`}
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
+      <p className="mt-2 text-sm text-muted">{t.priceNote}</p>
+
+      <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
         {entries.map(({ artist, work, index }) => (
           <li key={`${artist.slug}/${index}`} className="group relative">
             <Link href={`/artists/${artist.slug}`} className="block">
