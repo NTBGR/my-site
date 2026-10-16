@@ -111,7 +111,7 @@ const ka = {
     unsave: "შენახულიდან ამოღება",
   },
   share: { button: "გაზიარება", copy: "ბმულის კოპირება", copied: "დაკოპირდა" },
-  sort: { label: "დახარისხება", default: "ნაგულისხმევი", asc: "ფასი: ზრდადობით", desc: "ფასი: კლებადობით" },
+  sort: { label: "დალაგება", default: "რეკომენდებული", asc: "ფასი: დაბლიდან მაღლა", desc: "ფასი: მაღლიდან დაბლა" },
   priceNote: "ფასები საორიენტაციოა: ზუსტი ფასი და შეკვეთის პირობები ხელოვანთან დააზუსტე.",
   savedPage: {
     title: "შენახული ნამუშევრები",
@@ -343,7 +343,7 @@ const en: Dict = {
     unsave: "Remove from saved",
   },
   share: { button: "Share", copy: "Copy link", copied: "Copied" },
-  sort: { label: "Sort", default: "Default", asc: "Price: low to high", desc: "Price: high to low" },
+  sort: { label: "Sort by", default: "Featured", asc: "Price: low to high", desc: "Price: high to low" },
   priceNote: "Prices are approximate: confirm the exact price and order details with the maker.",
   savedPage: {
     title: "Saved works",
