@@ -20,8 +20,9 @@ export default function LogoLink({ size = "md" }: { size?: "md" | "lg" }) {
       }}
       className="group flex min-h-11 w-fit items-center font-serif font-semibold tracking-tight text-text transition duration-300 hover:text-accent active:scale-95"
     >
-      {/* ჰედერში ტექსტი ხატულებთან ერთ ხაზზეა: ბლოკი (ტექსტი + ხაზი) ცენტრშია და ტექსტი ხაზის ნახევრით მაღლა ადიოდა, ამიტომ ბლოკს იმდენივე ეშვება */}
-      <span className={`relative inline-flex flex-col items-start ${size === "md" ? "translate-y-[5px] lg:translate-y-[5.5px]" : ""}`}>
+      {/* ხაზი ტექსტის ზომასთან პროპორციულია (ყველგან ერთი და იგივე ფორმა და სისქე). ჰედერში ის ტექსტის ქვეშ ჰაერშია,
+          რომ ტექსტი ხატულებთან და ნავიგაციასთან ერთ ხაზზე იდგეს; ფუტერში ნორმალურად ადგილს იკავებს */}
+      <span className="relative inline-flex flex-col items-start">
         <span
           className={`leading-none ${
             size === "lg"
@@ -32,16 +33,15 @@ export default function LogoLink({ size = "md" }: { size?: "md" | "lg" }) {
           ხელოვანი<span className="text-accent">.</span>
         </span>
         <svg
-          viewBox="0 0 86 7"
-          preserveAspectRatio="none"
-          className="mt-1 h-[6px] w-full text-accent lg:h-[7px]"
+          viewBox="0 0.4 86 5.8"
+          className={`h-auto w-full overflow-visible text-accent ${size === "lg" ? "mt-1" : "absolute left-0 top-full mt-1 lg:mt-0.5"}`}
           aria-hidden
         >
           <path
             className="logo-swoosh"
             d="M2 5 C20 1, 40 1, 84 3"
             stroke="currentColor"
-            strokeWidth="2.8"
+            strokeWidth="1.9"
             fill="none"
             strokeLinecap="round"
             pathLength={1}
