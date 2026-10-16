@@ -347,30 +347,29 @@ export default function WorksGallery({
                     <ArrowButton
                       direction="prev"
                       variant="glass"
+                      size="sm"
                       label={t.home.prev}
                       onClick={() => step(-1)}
-                      className="absolute left-6 top-1/2 hidden -translate-y-1/2 sm:flex"
+                      className="absolute left-2 top-1/2 flex -translate-y-1/2 sm:left-6 sm:h-11 sm:w-11"
                     />
                     <ArrowButton
                       direction="next"
                       variant="glass"
+                      size="sm"
                       label={t.home.next}
                       onClick={() => step(1)}
-                      className="absolute right-6 top-1/2 hidden -translate-y-1/2 sm:flex"
+                      className="absolute right-2 top-1/2 flex -translate-y-1/2 sm:right-6 sm:h-11 sm:w-11"
                     />
                   </div>
                 ) : null}
               </div>
 
-              {/* ქვედა ზოლი: [←] სახელი [→] ერთ რიგში (მობილურზე ისრებით), ქვეშ ყიდვის ღილაკი */}
+              {/* ქვედა ზოლი: სახელი, ქვეშ ყიდვის ღილაკი (ისრები ფოტოს გვერდებზეა) */}
               <div
                 className="flex shrink-0 flex-col items-center gap-3 px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4"
                 onClick={(event) => event.stopPropagation()}
               >
                 <div className="flex w-full items-center gap-3 sm:w-auto">
-                  {works.length > 1 ? (
-                    <ArrowButton direction="prev" variant="glass" size="sm" label={t.home.prev} onClick={() => step(-1)} className="shrink-0 sm:hidden" />
-                  ) : null}
                   <p className="line-clamp-2 min-w-0 flex-1 text-center text-base font-semibold leading-snug tracking-tight sm:text-lg">
                     {current.title}
                     {current.price ? (
@@ -381,9 +380,6 @@ export default function WorksGallery({
                       </span>
                     ) : null}
                   </p>
-                  {works.length > 1 ? (
-                    <ArrowButton direction="next" variant="glass" size="sm" label={t.home.next} onClick={() => step(1)} className="shrink-0 sm:hidden" />
-                  ) : null}
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm font-medium text-white/80">
                   {current.artistHref && current.artistName ? (
