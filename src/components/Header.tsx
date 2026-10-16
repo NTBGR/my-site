@@ -254,6 +254,16 @@ export default function Header({ tags }: { tags: BarTag[] }) {
           {tags.length > 0 ? (
             <div className="mt-2 border-t border-border pt-2">
               <ul className="flex flex-col">
+                <li>
+                  <Link
+                    href="/quiz"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex min-h-11 items-center rounded-2xl px-4 text-sm font-semibold text-accent transition-colors hover:bg-accent-soft"
+                  >
+                    <span aria-hidden className="mr-2">🎯</span>
+                    {t.quiz.title}
+                  </Link>
+                </li>
                 {tags.map((tag) => (
                   <li key={tag.slug}>
                     <Link

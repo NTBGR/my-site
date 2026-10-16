@@ -178,6 +178,18 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               maskImage: `linear-gradient(90deg, ${canLeft ? "transparent, #000 40px" : "#000, #000"}, ${canRight ? "#000 calc(100% - 56px), transparent" : "#000, #000"})`,
             }}
           >
+            <li className="shrink-0">
+              <Link
+                href="/quiz"
+                aria-current={pathname === "/quiz" ? "page" : undefined}
+                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-semibold transition-colors ${
+                  pathname === "/quiz" ? "bg-accent text-on-accent" : "bg-accent-soft text-accent hover:bg-accent hover:text-on-accent"
+                }`}
+              >
+                <span aria-hidden className="mr-1.5">🎯</span>
+                {t.quiz.title}
+              </Link>
+            </li>
             {tags.map((tag) => {
               const active = pathname === `/gifts/${tag.slug}`;
               return (

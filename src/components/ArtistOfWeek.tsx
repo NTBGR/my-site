@@ -3,6 +3,7 @@ import Photo from "@/components/Photo";
 import { getLocalizedArtists } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { currentWeek } from "@/lib/week";
 
 // „ხელოვანი კვირისა“: ყოველ კვირას ახალი ხელოვანი (რიგრიგობით), მოკლე ისტორიით და ნამუშევრებით
 export default async function ArtistOfWeek() {
@@ -10,7 +11,7 @@ export default async function ArtistOfWeek() {
   const t = dictionary[lang];
   const artists = getLocalizedArtists(lang);
   if (artists.length === 0) return null;
-  const week = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
+  const week = currentWeek();
   const artist = artists[week % artists.length];
   const photos = artist.works.filter((work) => work.image).slice(0, 4);
   const hero = artist.cover ?? photos[0]?.image;

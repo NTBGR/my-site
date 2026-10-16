@@ -1,0 +1,52 @@
+import GiftQuiz, { type QuizWork } from "@/components/GiftQuiz";
+import JsonLd from "@/components/JsonLd";
+import { getWorkEntries, isNewWork, workId } from "@/data/artists";
+import { dictionary } from "@/lib/dictionary";
+import { getLang } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
+
+export async function generateMetadata() {
+  const t = dictionary[await getLang()].quiz;
+  return { title: t.title, description: t.intro };
+}
+
+// საჩუქრის შერჩევა: სამი კითხვა და შედეგი უკვე არსებული ნამუშევრებიდან (თაგები, ფასი, ხელობა)
+export default async function QuizPage() {
+  const lang = await getLang();
+  const t = dictionary[lang].quiz;
+  const works: QuizWork[] = getWorkEntries(lang).map(({ artist, work, index }) => ({
+    key: `${artist.slug}/${workId(work, index)}`,
+    title: work.title,
+    price: work.price,
+    image: work.image,
+    artistName: artist.name,
+    artistSlug: artist.slug,
+    tags: work.tags ?? [],
+    kind: artist.categories.includes("samkauli")
+      ? "jewelry"
+      : artist.categories.includes("tekstili")
+        ? "bouquet"
+        : artist.categories.includes("posterebi")
+          ? "poster"
+          : "other",
+    isNew: isNewWork(work),
+  }));
+
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: dictionary[lang].nav.home, item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: t.title, item: `${SITE_URL}/quiz` },
+    ],
+  };
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10">
+      <JsonLd data={ld} />
+      <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">🎯 {t.title}</h1>
+      <p className="mb-8 mt-2 text-muted">{t.intro}</p>
+      <GiftQuiz works={works} />
+    </div>
+  );
+}
