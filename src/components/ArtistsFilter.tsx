@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Artist } from "@/data/artists";
 import ArtistCard from "@/components/ArtistCard";
+import WorksGallery, { type GalleryWork } from "@/components/WorksGallery";
 import { useT } from "@/components/LangProvider";
 import { scoreText } from "@/lib/searchMatch";
 
@@ -17,6 +18,7 @@ export default function ArtistsFilter({
   crafts,
   initialQuery = "",
   searchTexts = {},
+  workSearch = [],
 }: {
   artists: Artist[];
   // ფილტრი საიტის კატეგორიებით (მხოლოდ ის, სადაც ხელოვანი არის)
@@ -24,8 +26,11 @@ export default function ArtistsFilter({
   initialQuery?: string;
   // ძებნის ტექსტი თითო ხელოვანზე: სახელი, ქალაქი, კატეგორია, ნამუშევრების სახელები (ორივე ენაზე)
   searchTexts?: Record<string, string>;
+  // ნამუშევრები ძებნისთვის: ტექსტი (სახელი ორივე ენაზე + ავტორი), კატეგორიები და ბარათი
+  workSearch?: { text: string; categories: string[]; gallery: GalleryWork }[];
 }) {
-  const t = useT().artists;
+  const all = useT();
+  const t = all.artists;
   const [query, setQuery] = useState(initialQuery);
   const [craft, setCraft] = useState("all");
 
@@ -40,6 +45,18 @@ export default function ArtistsFilter({
       .sort((a, b) => b.score - a.score)
       .map((x) => x.artist);
   }, [artists, craft, query, searchTexts]);
+
+  // ნამუშევრები, რომლებიც ძებნას ემთხვევა (საუკეთესო დამთხვევა პირველი); ძებნის გარეშე არაფერი ჩანს
+  const matchedWorks = useMemo(() => {
+    const needle = query.trim();
+    if (!needle) return [];
+    return workSearch
+      .filter((item) => craft === "all" || item.categories.includes(craft))
+      .map((item) => ({ item, score: scoreText(item.text, needle) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((x) => x.item.gallery);
+  }, [workSearch, craft, query]);
 
   const filtersActive = craft !== "all" || query.trim() !== "";
 
@@ -104,7 +121,7 @@ export default function ArtistsFilter({
       </div>
       ) : null}
 
-      {filtered.length === 0 ? (
+      {filtered.length === 0 && matchedWorks.length === 0 ? (
         <div className="mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-10 text-center">
           <p className="text-muted">{t.empty}</p>
           {filtersActive ? (
@@ -118,6 +135,12 @@ export default function ArtistsFilter({
           ) : null}
         </div>
       ) : (
+        <>
+        {filtered.length > 0 ? (
+        <>
+        {matchedWorks.length > 0 ? (
+          <h2 className="mt-8 text-xl font-semibold tracking-tight text-text sm:text-2xl">{all.nav.artists}</h2>
+        ) : null}
         <ul
           key={`${craft}-${query}`}
           className="stagger mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5"
@@ -131,6 +154,17 @@ export default function ArtistsFilter({
             </li>
           ))}
         </ul>
+        </>
+        ) : null}
+        {matchedWorks.length > 0 ? (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold tracking-tight text-text sm:text-2xl">{all.artist.works}</h2>
+            <div className="mt-4">
+              <WorksGallery works={matchedWorks} showSort={false} />
+            </div>
+          </section>
+        ) : null}
+        </>
       )}
     </div>
   );

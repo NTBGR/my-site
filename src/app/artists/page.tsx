@@ -1,6 +1,7 @@
 import ArtistsFilter from "@/components/ArtistsFilter";
 import PageBanner from "@/components/PageBanner";
 import { getLocalizedArtists } from "@/data/artists";
+import { toGalleryWork } from "@/lib/galleryWork";
 import { categories, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -31,6 +32,14 @@ export default async function ArtistsPage({
       [ka.name, ka.city, enArtists[i].city, ...ka.works.map((w) => w.title), ...enArtists[i].works.map((w) => w.title), ...ka.categories.flatMap((slug) => { const c = categories.find((x) => x.slug === slug); return c ? [c.name, c.en.name, c.maker, c.en.maker] : []; })].join(" "),
     ]),
   );
+  // ნამუშევრების ძებნა: სახელი ორივე ენაზე + ავტორი; დამთხვევაზე ბარათი იქვე იხსნება გადიდებულად
+  const workSearch = kaArtists.flatMap((ka, ai) =>
+    ka.works.map((work, wi) => ({
+      text: [work.title, enArtists[ai].works[wi]?.title ?? "", ka.name, enArtists[ai].name].join(" "),
+      categories: ka.categories,
+      gallery: toGalleryWork(artists[ai], artists[ai].works[wi], wi, { showArtist: true }),
+    })),
+  );
   const q = Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "";
 
   return (
@@ -43,7 +52,7 @@ export default async function ArtistsPage({
       />
 
       <div className="mt-8 sm:mt-10">
-        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} searchTexts={searchTexts} />
+        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} searchTexts={searchTexts} workSearch={workSearch} />
       </div>
     </div>
   );

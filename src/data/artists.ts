@@ -8,6 +8,8 @@ export type ArtistWork = {
   url?: string;
   // ფასი ლარში (₾); თუ არ არის, საიტი ფასს არ აჩვენებს
   price?: number;
+  // ფასდაკლება მხოლოდ ამ ნამუშევარზე (%): ხელოვანის საერთო ფასდაკლებას (`sale`) ჩაანაცვლებს
+  salePercent?: number;
   // დამატების თარიღი (YYYY-MM-DD): 30 დღით „ახალი“ ნიშანი ჩანს
   added?: string;
   // თაგების გასაღებები (src/data/tags.ts): საჩუქრის მიზეზი, მაგ. "for-her", "for-mom"
@@ -33,6 +35,12 @@ export type ArtistData = {
   name: string;
   city: string;
   categories: string[];
+  // საიტზე დამატების თარიღი (YYYY-MM-DD): 14 დღით მთავარზე „ახალი ხელოვანი“ ზოლი ჩანს.
+  // თუ არ არის, ავტომატურად იღება ყველაზე ადრეული ნამუშევრის `added`
+  joined?: string;
+  // ფასდაკლება ხელოვანის ყველა ნამუშევარზე: percent (%) და არასავალდებულო `until` (YYYY-MM-DD, ამ დღის ჩათვლით).
+  // გასაშვებად მიუთითე, შესაჩერებლად წაშალე ეს ხაზი ან გასვლის თარიღი დაწერე
+  sale?: { percent: number; until?: string };
   // გარე ფოტო: ხელოვანის ბარათზე სიებში (მაგ. ლოგო). თუ არ არის, პირველი ნამუშევრის ფოტო ან ილუსტრაცია
   cover?: string;
   // ხელოვანის გვერდის ბანერის ფოტო (ბანერის ფერს რომ მოუხდეს). თუ არ არის, ქავერი
@@ -88,6 +96,7 @@ export const artists: ArtistData[] = [
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
     city: "",
     categories: ["posterebi"],
+    sale: { percent: 20 },
     cover: "/artists/tbgr-poster-lab/kvara.jpg",
     banner: "/artists/tbgr-poster-lab/kvara.jpg",
     bio: "TBGR Poster Lab ქმნის მინიმალისტური სტილის პოსტერებს სპორტის ლეგენდებსა და ფეხბურთის კლუბებზე: გმირის ფერები, ციტატა, მოკლე ისტორია და მთავარი მიღწევები ერთ კომპოზიციაში.",
@@ -222,4 +231,41 @@ export function isNewWork(work: ArtistWork): boolean {
   if (!work.added) return false;
   const age = Date.now() - Date.parse(work.added);
   return age >= 0 && age < 30 * 24 * 60 * 60 * 1000;
+}
+
+// ხელოვანი „ახალია“, თუ ბოლო 14 დღეში დაემატა
+export function isNewArtist(artist: ArtistData): boolean {
+  const dates = [artist.joined, ...artist.works.map((work) => work.added)]
+    .filter((d): d is string => Boolean(d))
+    .map((d) => Date.parse(d))
+    .filter((n) => !Number.isNaN(n));
+  if (dates.length === 0) return false;
+  // joined მითითებულია: ის ვარგა; თორემ ყველაზე ადრეული ნამუშევარი (ყველა ნამუშევარს თარიღი უნდა ჰქონდეს, თორემ ხელოვანი ძველია)
+  const explicit = artist.joined ? Date.parse(artist.joined) : undefined;
+  const allDated = artist.works.length > 0 && artist.works.every((work) => work.added);
+  const start = explicit ?? (allDated ? Math.min(...dates) : undefined);
+  if (start === undefined || Number.isNaN(start)) return false;
+  const age = Date.now() - start;
+  return age >= 0 && age < 14 * 24 * 60 * 60 * 1000;
+}
+
+// ფასი ფასდაკლების გათვალისწინებით: price = რასაც მყიდველი იხდის, original/percent მხოლოდ ფასდაკლებისას
+export type Pricing = { price: number; original?: number; percent?: number };
+
+export function pricing(artist: ArtistData, work: ArtistWork): Pricing | undefined {
+  if (work.price === undefined) return undefined;
+  let percent = work.salePercent;
+  if (percent === undefined && artist.sale) {
+    const { until } = artist.sale;
+    // until-ის დღე ჩათვლით (24 საათი თარიღის დასაწყისიდან)
+    const live = !until || Date.now() < Date.parse(until) + 24 * 60 * 60 * 1000;
+    if (live) percent = artist.sale.percent;
+  }
+  if (!percent || percent <= 0 || percent >= 100) return { price: work.price };
+  return { price: Math.round(work.price * (1 - percent / 100)), original: work.price, percent };
+}
+
+// ფასი, რასაც მყიდველი იხდის (ფასდაკლებით)
+export function effectivePrice(artist: ArtistData, work: ArtistWork): number | undefined {
+  return pricing(artist, work)?.price;
 }

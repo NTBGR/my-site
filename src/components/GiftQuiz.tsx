@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import HeartButton from "@/components/HeartButton";
 import { useT } from "@/components/LangProvider";
-import Photo from "@/components/Photo";
+import WorksGallery, { type GalleryWork } from "@/components/WorksGallery";
 
 export type QuizWork = {
   key: string;
@@ -16,6 +15,7 @@ export type QuizWork = {
   tags: string[];
   kind: "jewelry" | "bouquet" | "poster" | "other";
   isNew: boolean;
+  gallery: GalleryWork;
 };
 
 type Who = "her" | "him" | "fans" | "any";
@@ -154,26 +154,9 @@ export default function GiftQuiz({ works }: { works: QuizWork[] }) {
     <div>
       <h2 className="text-2xl font-semibold tracking-tight text-text">{t.resultTitle}</h2>
       {exact ? null : <p className="mt-2 text-muted">{t.closest}</p>}
-      <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 lg:grid-cols-4">
-        {results.map((work) => (
-          <li key={work.key} className="group relative">
-            <Link href={`/artists/${work.artistSlug}`} className="block">
-              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm">
-                {work.image ? (
-                  <Photo src={work.image} alt={`${work.title} - ${work.artistName}`} sizes="(min-width:1024px) 240px, (min-width:640px) 31vw, 46vw" hoverZoom />
-                ) : null}
-              </span>
-              <span className="mt-2 block line-clamp-3 h-[4.5em] px-1 text-sm font-medium leading-snug text-text sm:line-clamp-2 sm:h-[3em] sm:text-base">{work.title}</span>
-              {work.price ? <span className="block px-1 text-sm font-semibold text-text sm:text-base">{work.price} ₾</span> : null}
-              <span className="block truncate px-1 text-xs text-muted sm:text-sm">{work.artistName}</span>
-            </Link>
-            <HeartButton
-              id={work.key}
-              className="absolute right-2 top-2 z-10 h-9 w-9 bg-white/90 text-text shadow-sm backdrop-blur transition after:absolute after:-inset-1 after:content-[''] hover:text-accent"
-            />
-          </li>
-        ))}
-      </ul>
+      <div className="mt-5">
+        <WorksGallery works={results.map((work) => work.gallery)} showSort={false} columns="sm:grid-cols-3 lg:grid-cols-4" />
+      </div>
       <div className="mt-8 flex flex-wrap items-center gap-3">
         <button type="button" onClick={restart} className="inline-flex min-h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition hover:bg-accent-hover">
           {t.restart}

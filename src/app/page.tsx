@@ -2,6 +2,9 @@ import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import ArtistOfWeek from "@/components/ArtistOfWeek";
+import NewArtists from "@/components/NewArtists";
+import NewWorks from "@/components/NewWorks";
+import SalePromo from "@/components/SalePromo";
 import CategoryArt from "@/components/CategoryArt";
 import TrendingWorks from "@/components/TrendingWorks";
 import CategoryCarousel from "@/components/CategoryCarousel";
@@ -125,7 +128,7 @@ export default async function Home() {
           <h2 className="text-balance text-2xl font-semibold leading-[1.1] tracking-tight sm:max-w-[60%] sm:text-5xl lg:max-w-none lg:text-3xl xl:text-4xl">
             {banner.title}
           </h2>
-          <p className="mt-2 line-clamp-2 max-w-md text-sm leading-snug text-white/85 sm:mt-3 sm:max-w-[55%] sm:text-lg lg:max-w-[15rem]">
+          <p className="mt-2 line-clamp-2 max-w-md text-sm leading-snug text-white/85 sm:mt-3 sm:max-w-[55%] sm:text-lg lg:line-clamp-none lg:max-w-[16rem]">
             {banner.text}
           </p>
           <div className="mt-5">
@@ -231,6 +234,8 @@ export default async function Home() {
         </div>
       </section>
 
+      <SalePromo />
+
       {/* კატეგორიები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
         <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
@@ -311,6 +316,8 @@ export default async function Home() {
         </Reveal>
       </section>
 
+      <NewArtists />
+
       <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-10 sm:pt-14">
         <Link
           href="/quiz"
@@ -331,6 +338,8 @@ export default async function Home() {
           </span>
         </Link>
       </section>
+
+      <NewWorks />
 
       <TrendingWorks />
 

@@ -33,7 +33,12 @@ function tbilisiDate(date = new Date()) {
   return new Date(date.getTime() + 4 * 60 * 60 * 1000).toISOString();
 }
 export const monthOf = (date = new Date()) => tbilisiDate(date).slice(0, 7); // 2026-10
-const dayOf = (date = new Date()) => tbilisiDate(date).slice(0, 10); // 2026-10-04
+export const dayOf = (date = new Date()) => tbilisiDate(date).slice(0, 10); // 2026-10-04
+
+// მრიცხველების გასაღები პერიოდის მიხედვით: თვე ("2026-10") ან დღე ("2026-10-17")
+const base = (period: string) => (period.length === 7 ? `clicks:${period}` : `clicks:day:${period}`);
+// დღიური მრიცხველები 60 დღეში იშლება
+const DAY_TTL = 60 * 24 * 60 * 60;
 
 const BOT_UA =
   /bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp|telegram|viber|skype|discord|headless|lighthouse|curl|wget|python|node-fetch|axios/i;
@@ -46,31 +51,57 @@ export function isBot(userAgent: string | null) {
  * ერთი გადასვლის ჩაწერა.
  * total: ყველა დაწკაპუნება; unique: ერთი ადამიანი (ბრაუზერის ქუქი, ან IP+ბრაუზერი) ერთ დღეში ერთხელ ითვლება.
  * ვინაობა არსად ინახება, მხოლოდ მისი ჰეში 1 დღით, დუბლიკატების გასაფილტრად.
+ * workId: თუ გადასვლა კონკრეტულ ნამუშევარზე იყო, ცალკე ითვლება ნამუშევრის მიხედვითაც (რეპორტში „რომელმა ნივთმა მიიქცია ყურადღება“).
  */
-export async function recordClick(slug: string, target: ClickTarget, visitorId: string) {
+export async function recordClick(slug: string, target: ClickTarget, visitorId: string, workId?: string) {
   if (!clicksEnabled) return;
   const month = monthOf();
   const day = dayOf();
   const visitor = createHash("sha256").update(`${visitorId}|${day}`).digest("hex").slice(0, 24);
   const seenKey = `seen:${day}:${slug}:${target}:${visitor}`;
 
+  const dayKey = base(day);
   const [seen] = await pipeline([
     ["SET", seenKey, "1", "NX", "EX", 90000],
     ["HINCRBY", `clicks:${month}:total`, `${slug}:${target}`, 1],
+    ["HINCRBY", `${dayKey}:total`, `${slug}:${target}`, 1],
+    ["EXPIRE", `${dayKey}:total`, DAY_TTL],
   ]);
   if (seen?.result === "OK") {
-    await pipeline([["HINCRBY", `clicks:${month}:unique`, `${slug}:${target}`, 1]]);
+    await pipeline([
+      ["HINCRBY", `clicks:${month}:unique`, `${slug}:${target}`, 1],
+      ["HINCRBY", `${dayKey}:unique`, `${slug}:${target}`, 1],
+      ["EXPIRE", `${dayKey}:unique`, DAY_TTL],
+    ]);
+  }
+
+  if (workId) {
+    // ნამუშევრის მრიცხველი ცალკე ჰეშებშია, ხელოვანის დათვლას არ ეხება. უნიკალური: ერთი ადამიანი ერთ ნამუშევარზე დღეში ერთხელ
+    const workSeenKey = `seen:${day}:${slug}:w:${workId}:${visitor}`;
+    const [workSeen] = await pipeline([
+      ["SET", workSeenKey, "1", "NX", "EX", 90000],
+      ["HINCRBY", `clicks:${month}:worktotal`, `${slug}:${workId}`, 1],
+      ["HINCRBY", `${dayKey}:worktotal`, `${slug}:${workId}`, 1],
+      ["EXPIRE", `${dayKey}:worktotal`, DAY_TTL],
+    ]);
+    if (workSeen?.result === "OK") {
+      await pipeline([
+        ["HINCRBY", `clicks:${month}:workunique`, `${slug}:${workId}`, 1],
+        ["HINCRBY", `${dayKey}:workunique`, `${slug}:${workId}`, 1],
+        ["EXPIRE", `${dayKey}:workunique`, DAY_TTL],
+      ]);
+    }
   }
 }
 
 export type MonthStats = Record<string, { instagram: number; facebook: number; total: number }>;
 
-// თვის სტატისტიკა ხელოვანების მიხედვით (უნიკალური ადამიანები + ჯამური დაწკაპუნებები)
-export async function monthStats(month: string): Promise<MonthStats> {
+// სტატისტიკა ხელოვანების მიხედვით (უნიკალური ადამიანები + ჯამური დაწკაპუნებები): period = თვე ("2026-10") ან დღე ("2026-10-17")
+export async function monthStats(period: string): Promise<MonthStats> {
   if (!clicksEnabled) return {};
   const [unique, total] = await pipeline([
-    ["HGETALL", `clicks:${month}:unique`],
-    ["HGETALL", `clicks:${month}:total`],
+    ["HGETALL", `${base(period)}:unique`],
+    ["HGETALL", `${base(period)}:total`],
   ]);
   const stats: MonthStats = {};
   const read = (r: RedisResult, apply: (slug: string, target: string, n: number) => void) => {
@@ -88,4 +119,38 @@ export async function monthStats(month: string): Promise<MonthStats> {
     row(slug).total += n;
   });
   return stats;
+}
+
+export type WorkClicks = { id: string; people: number; total: number };
+
+// თვის დაწკაპუნებები ნამუშევრების მიხედვით: ხელოვანის slug → ნამუშევრები (ყველაზე მეტი ადამიანით დაწყებული)
+export async function monthWorkStats(period: string): Promise<Record<string, WorkClicks[]>> {
+  if (!clicksEnabled) return {};
+  const [unique, total] = await pipeline([
+    ["HGETALL", `${base(period)}:workunique`],
+    ["HGETALL", `${base(period)}:worktotal`],
+  ]);
+  const byKey = new Map<string, WorkClicks & { slug: string }>();
+  const read = (r: RedisResult, apply: (row: WorkClicks, n: number) => void) => {
+    const flat = (r?.result as string[] | null) ?? [];
+    for (let i = 0; i < flat.length; i += 2) {
+      const sep = flat[i].indexOf(":");
+      if (sep < 0) continue;
+      const slug = flat[i].slice(0, sep);
+      const id = flat[i].slice(sep + 1);
+      const row = byKey.get(flat[i]) ?? { slug, id, people: 0, total: 0 };
+      byKey.set(flat[i], row);
+      apply(row, Number(flat[i + 1]) || 0);
+    }
+  };
+  read(unique, (row, n) => {
+    row.people += n;
+  });
+  read(total, (row, n) => {
+    row.total += n;
+  });
+  const out: Record<string, WorkClicks[]> = {};
+  for (const { slug, ...row } of byKey.values()) (out[slug] ??= []).push(row);
+  for (const list of Object.values(out)) list.sort((a, b) => b.people - a.people || b.total - a.total);
+  return out;
 }

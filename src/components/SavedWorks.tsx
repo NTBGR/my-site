@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import ArtTile from "@/components/ArtTile";
-import HeartButton from "@/components/HeartButton";
 import { useT } from "@/components/LangProvider";
-import Photo from "@/components/Photo";
+import WorksGallery, { type GalleryWork } from "@/components/WorksGallery";
 import ShareButton from "@/components/ShareButton";
 import { useFavorites } from "@/lib/favorites";
 
@@ -15,9 +13,10 @@ export type SavedCard = {
   artistSlug: string;
   image?: string;
   color: string;
+  gallery: GalleryWork;
 };
 
-// შენახული ნამუშევრები (ბრაუზერიდან): ბარათზე დაჭერა ხელოვანის გვერდზე გადადის
+// შენახული ნამუშევრები (ბრაუზერიდან): ფოტოზე დაჭერა იქვე ადიდებს
 export default function SavedWorks({ cards, sharedKeys }: { cards: SavedCard[]; sharedKeys?: string[] }) {
   const t = useT().savedPage;
   const { list } = useFavorites();
@@ -55,27 +54,9 @@ export default function SavedWorks({ cards, sharedKeys }: { cards: SavedCard[]; 
           <ShareButton url={shareUrl} title={t.shareTitle} variant="plain" label={t.share} />
         )}
       </div>
-      <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
-        {saved.map((card) => (
-          <li key={card.key} className="group relative">
-            <Link href={`/artists/${card.artistSlug}`} className="block">
-              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm">
-                {card.image ? (
-                  <Photo src={card.image} alt={`${card.title} - ${card.artistName}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
-                ) : (
-                  <ArtTile color={card.color} variant={0} className="absolute inset-0 h-full w-full" />
-                )}
-              </span>
-              <span className="mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug text-text sm:text-base">{card.title}</span>
-              <span className="block truncate px-1 text-xs text-muted sm:text-sm">{card.artistName}</span>
-            </Link>
-            <HeartButton
-              id={card.key}
-              className="absolute right-2 top-2 z-10 h-9 w-9 bg-white/90 text-text shadow-sm backdrop-blur transition after:absolute after:-inset-1 after:content-[''] hover:text-accent"
-            />
-          </li>
-        ))}
-      </ul>
+      <div className="mt-6">
+        <WorksGallery works={saved.map((card) => card.gallery)} showSort={false} />
+      </div>
       {shared ? null : <p className="mt-8 text-xs text-muted">{t.note}</p>}
     </>
   );

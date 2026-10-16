@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { changeNavDepth } from "@/lib/navDepth";
 
 const STORAGE_KEY = "scroll-positions";
 
@@ -43,6 +44,7 @@ export default function ScrollToTop() {
 
     const onPop = () => {
       fromHistory.current = true;
+      changeNavDepth(-1);
       savePosition(currentPath.current, window.scrollY);
       pendingY.current = loadPositions()[location.pathname];
     };
@@ -86,6 +88,7 @@ export default function ScrollToTop() {
       jump(saved ?? 0);
       return;
     }
+    changeNavDepth(1);
     jump(0);
   }, [pathname]);
 

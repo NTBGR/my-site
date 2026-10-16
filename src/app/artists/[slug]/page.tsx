@@ -4,15 +4,16 @@ import JsonLd from "@/components/JsonLd";
 import ShareButton from "@/components/ShareButton";
 import { SITE_URL } from "@/lib/site";
 import type { ReactNode } from "react";
-import { variantFor } from "@/components/ArtTile";
 import CategoryArt from "@/components/CategoryArt";
 import BannerPhotos from "@/components/BannerPhotos";
+import BackLink from "@/components/BackLink";
 import CopyLink from "@/components/CopyLink";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, localizeArtist, workId, isNewWork } from "@/data/artists";
+import { getArtistBySlug, localizeArtist, pricing } from "@/data/artists";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
+import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
 
 function InstagramIcon() {
@@ -91,7 +92,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title,
     description: artist.bio,
-    openGraph: { title, description: artist.bio, type: "profile", images: ["/opengraph-image"] },
+    // სურათი: opengraph-image.tsx (ამ ხელოვანის ბარათი) თავისით ემატება
+    openGraph: { title, description: artist.bio, type: "profile" },
   };
 }
 
@@ -123,6 +125,8 @@ export default async function ArtistPage({
     .map((slug) => getCategoryBySlug(slug))
     .filter((c) => c !== undefined)
     .map((c) => localizeCategory(c, lang));
+  // ხელოვანის საერთო ფასდაკლება (ბანერის ნიშნისთვის): ის ჩანს, თუ ახლა მართლა მოქმედებს
+  const salePercent = artist.works.map((work) => pricing(artist, work)?.percent).find(Boolean);
   const instagram = artist.instagram ? `/go/${artist.slug}/instagram` : undefined;
   const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
 
@@ -152,12 +156,10 @@ export default async function ArtistPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
-      <Link
+      <BackLink
         href="/artists"
         className="inline-flex min-h-9 items-center text-sm font-medium text-muted transition-colors hover:text-accent"
-      >
-        {t.back}
-      </Link>
+      />
       <JsonLd data={artistLd} />
 
       {/* ბანერი ხელოვანის მთავარი კატეგორიის ფერში */}
@@ -207,6 +209,11 @@ export default async function ArtistPage({
                 {artist.city}
               </span>
             ) : null}
+            {salePercent ? (
+              <span className="rounded-full bg-[#c4302b] px-3 py-0.5 font-bold text-white shadow-sm">
+                🔥 −{salePercent}%
+              </span>
+            ) : null}
           </div>
           <h1 className="mt-2 pr-24 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
             {artist.name}
@@ -248,20 +255,7 @@ export default async function ArtistPage({
           <WorksGallery
             shareUrl={`/artists/${artist.slug}`}
             shareTitle={artist.name}
-            works={artist.works.map((work, i) => ({
-              title: work.title,
-              price: work.price,
-              isNew: isNewWork(work),
-              color: work.color,
-              variant: (variantFor(artist.slug) + i) % 4,
-              url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
-              favKey: `${artist.slug}/${workId(work, i)}`,
-              alt: `${work.title} - ${artist.name}`,
-              network: /facebook\.com|fb\.com|fb\.me/i.test(work.url || artist.instagram || artist.facebook) ? "facebook" as const : "instagram" as const,
-              image: work.image,
-              width: work.width,
-              height: work.height,
-            }))}
+            works={artist.works.map((work, i) => toGalleryWork(artist, work, i))}
           />
         </div>
       </section>

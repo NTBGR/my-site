@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { artists, workId } from "@/data/artists";
-import { clicksEnabled, monthOf, monthStats } from "@/lib/clicks";
+import { clicksEnabled, monthOf, monthStats, monthWorkStats } from "@/lib/clicks";
 import { monthFavorites } from "@/lib/favoriteStats";
 
 export const runtime = "nodejs";
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
 
   const param = req.nextUrl.searchParams.get("month");
   const month = param && /^\d{4}-\d{2}$/.test(param) ? param : previousMonth();
-  const [stats, favs] = await Promise.all([monthStats(month), monthFavorites(month)]);
+  const [stats, favs, workClicks] = await Promise.all([monthStats(month), monthFavorites(month), monthWorkStats(month)]);
 
   const rows = artists
     .map((a) => {
@@ -56,7 +56,15 @@ export async function GET(req: NextRequest) {
       const f = favs[a.slug] ?? { people: 0, saves: 0 };
       const topIndex = f.top ? a.works.findIndex((w, i) => workId(w, i) === f.top!.id) : -1;
       const topTitle = topIndex >= 0 ? a.works[topIndex].title : undefined;
-      return { artist: a, ...s, people: s.instagram + s.facebook, favPeople: f.people, favSaves: f.saves, topTitle, topCount: f.top?.count ?? 0 };
+      // ყველაზე მეტი ადამიანი რომელ ნამუშევარზე გადავიდა (მაქს. 3)
+      const topClicked = (workClicks[a.slug] ?? [])
+        .map((c) => {
+          const i = a.works.findIndex((w, idx) => workId(w, idx) === c.id);
+          return i >= 0 && c.people > 0 ? { title: a.works[i].title, people: c.people } : undefined;
+        })
+        .filter((x): x is { title: string; people: number } => Boolean(x))
+        .slice(0, 3);
+      return { artist: a, ...s, people: s.instagram + s.facebook, favPeople: f.people, favSaves: f.saves, topTitle, topCount: f.top?.count ?? 0, topClicked };
     })
     .sort((a, b) => b.people - a.people);
 
@@ -90,6 +98,13 @@ export async function GET(req: NextRequest) {
             `${inMonth(month)} „ხელოვანიდან“ შენს გვერდზე გადმოვიდა ${r.people} ადამიანი:`,
             `• ინსტაგრამზე: ${r.instagram}`,
             `• ფეისბუქზე: ${r.facebook}`,
+            ...(r.topClicked.length
+              ? [
+                  "",
+                  "ყველაზე მეტი ყურადღება მიიქცია:",
+                  ...r.topClicked.map((c, i) => `${i + 1}. „${c.title}“: ${c.people} ადამიანი`),
+                ]
+              : []),
             ...(r.favSaves
               ? [
                   "",

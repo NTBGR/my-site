@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ArtTile from "@/components/ArtTile";
-import HeartButton from "@/components/HeartButton";
 import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/PageBanner";
-import Photo from "@/components/Photo";
+import WorksGallery from "@/components/WorksGallery";
+import { effectivePrice } from "@/data/artists";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
-import { isNewWork, workId } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
+import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 
@@ -28,19 +27,36 @@ export default async function GiftPage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ sort?: string }>;
+  searchParams: Promise<{ sort?: string; max?: string }>;
 }) {
   const lang = await getLang();
   const t = dictionary[lang];
   const raw = getTagBySlug((await params).slug);
   if (!raw) notFound();
-  const sortParam = (await searchParams).sort;
+  const query = await searchParams;
+  const sortParam = query.sort;
   const sort = sortParam === "asc" || sortParam === "desc" ? sortParam : "";
-  const entries = worksForTag(raw, lang);
+  const all = worksForTag(raw, lang);
+  if (all.length === 0) notFound();
+  // ფასის ფილტრი: მხოლოდ ის საფეხურები, რომლებიც ამ სიას რეალურად ყოფს (ყველა ნამუშევარი 100-მდეა: „100-მდე“ აზრს არ ატარებს)
+  const prices = all.map((entry) => effectivePrice(entry.artist, entry.work)).filter((price): price is number => price !== undefined);
+  const buckets = [50, 100, 150, 200, 300].filter((limit) => prices.some((p) => p <= limit) && prices.some((p) => p > limit));
+  const maxParam = Number(query.max);
+  const max = buckets.includes(maxParam) ? maxParam : 0;
+  const entries = max ? all.filter((entry) => {
+        const price = effectivePrice(entry.artist, entry.work);
+        return price !== undefined && price <= max;
+      }) : all;
+  const hrefFor = (sortValue: string, maxValue: number) => {
+    const params = new URLSearchParams();
+    if (sortValue) params.set("sort", sortValue);
+    if (maxValue) params.set("max", String(maxValue));
+    const qs = params.toString();
+    return `/gifts/${raw.slug}${qs ? `?${qs}` : ""}`;
+  };
   if (sort) {
-    entries.sort((a, b) => (sort === "asc" ? (a.work.price ?? Infinity) - (b.work.price ?? Infinity) : (b.work.price ?? -1) - (a.work.price ?? -1)));
+    entries.sort((a, b) => (sort === "asc" ? (effectivePrice(a.artist, a.work) ?? Infinity) - (effectivePrice(b.artist, b.work) ?? Infinity) : (effectivePrice(b.artist, b.work) ?? -1) - (effectivePrice(a.artist, a.work) ?? -1)));
   }
-  if (entries.length === 0) notFound();
   const tag = localizeTag(raw, lang);
 
   const crumbLd = {
@@ -58,7 +74,7 @@ export default async function GiftPage({
       <PageBanner
         title={`${tag.emoji} ${tag.name}`}
         text={tag.description}
-        badge={t.artists.worksCount(entries.length)}
+        badge={t.artists.worksCount(all.length)}
         collage={tag.collage}
       />
 
@@ -67,7 +83,7 @@ export default async function GiftPage({
         {([["", t.sort.default], ["asc", t.sort.asc], ["desc", t.sort.desc]] as const).map(([value, label]) => (
           <Link
             key={value}
-            href={`/gifts/${tag.slug}${value ? `?sort=${value}` : ""}`}
+            href={hrefFor(value, max)}
             replace
             scroll={false}
             aria-current={sort === value ? "true" : undefined}
@@ -79,36 +95,34 @@ export default async function GiftPage({
           </Link>
         ))}
       </div>
+      {buckets.length > 0 ? (
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-muted">{t.priceFilter.label}:</span>
+          {([[0, t.priceFilter.all], ...buckets.map((limit) => [limit, t.priceFilter.upTo(limit)] as const)] as const).map(([limit, label]) => (
+            <Link
+              key={limit}
+              href={hrefFor(sort, limit)}
+              replace
+              scroll={false}
+              aria-current={max === limit ? "true" : undefined}
+              className={`inline-flex min-h-9 items-center rounded-full border px-3 font-medium transition ${
+                max === limit ? "border-accent bg-accent text-on-accent" : "border-border bg-bg text-text hover:border-accent hover:text-accent"
+              }`}
+            >
+              {label}
+            </Link>
+          ))}
+          {max ? <span className="text-muted">· {t.artists.worksCount(entries.length)}</span> : null}
+        </div>
+      ) : null}
       <p className="mt-2 text-sm text-muted">{t.priceNote}</p>
 
-      <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
-        {entries.map(({ artist, work, index }) => (
-          <li key={`${artist.slug}/${index}`} className="group relative">
-            <Link href={`/artists/${artist.slug}`} className="block">
-              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm">
-                {isNewWork(work) ? <span className="absolute left-2 top-2 z-10 rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold text-on-accent shadow-sm">{t.newBadge}</span> : null}
-                {work.image ? (
-                  <Photo
-                    src={work.image}
-                    alt={`${work.title} - ${artist.name}`}
-                    sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw"
-                    hoverZoom
-                  />
-                ) : (
-                  <ArtTile color={work.color} variant={0} className="absolute inset-0 h-full w-full" />
-                )}
-              </span>
-              <span className="mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug text-text sm:text-base">{work.title}</span>
-              {work.price ? <span className="block px-1 text-sm font-semibold text-text sm:text-base">{work.price} ₾</span> : null}
-              <span className="block truncate px-1 text-xs text-muted sm:text-sm">{artist.name}</span>
-            </Link>
-            <HeartButton
-              id={`${artist.slug}/${workId(work, index)}`}
-              className="absolute right-2 top-2 z-10 h-9 w-9 bg-white/90 text-text shadow-sm backdrop-blur transition after:absolute after:-inset-1 after:content-[''] hover:text-accent"
-            />
-          </li>
-        ))}
-      </ul>
+      <div className="mt-6">
+        <WorksGallery
+          works={entries.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))}
+          showSort={false}
+        />
+      </div>
     </div>
   );
 }

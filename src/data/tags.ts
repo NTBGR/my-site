@@ -1,4 +1,4 @@
-import { getWorkEntries, type WorkEntry } from "@/data/artists";
+import { effectivePrice, getWorkEntries, pricing, type WorkEntry } from "@/data/artists";
 import type { Lang } from "@/lib/dictionary";
 
 // თაგები: ნამუშევრების სწრაფი ჯგუფები საჩუქრის მიზეზის მიხედვით (კატეგორია კი ხელობას აჩვენებს).
@@ -11,6 +11,8 @@ export type Tag = {
   description: string;
   // თუ მითითებულია, ამ ფასამდე (ჩათვლით) ყველა ნამუშევარი ავტომატურად ხვდება თაგში
   maxPrice?: number;
+  // თუ true, თაგში ხვდება ყველა ნამუშევარი, რომელსაც ახლა ფასდაკლება აქვს
+  sale?: boolean;
   // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდიც არ იხსნება და sitemap-შიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
   hidden?: boolean;
   // ბანერის კოლაჟი: სამი კატეგორიის სურათი
@@ -20,6 +22,23 @@ export type Tag = {
 
 // თანმიმდევრობა ზოლში ასეთია
 export const tags: Tag[] = [
+  {
+    slug: "sale",
+    collage: ["posterebi", "sachuqrebi", "keramika"],
+    emoji: "🔥",
+    name: "ფასდაკლებები",
+    description: "ხელნაკეთი ნამუშევრები ფასდაკლებით.",
+    sale: true,
+    en: { name: "Sale", description: "Handmade works at a discount." },
+  },
+  {
+    slug: "for-kids",
+    collage: ["sachuqrebi", "tekstili", "saxlis-dekori"],
+    emoji: "🧸",
+    name: "საჩუქარი ბავშვისთვის",
+    description: "ხელნაკეთი საჩუქრები ბავშვებისთვის.",
+    en: { name: "Gifts for kids", description: "Handmade gifts for kids." },
+  },
   {
     slug: "under-100",
     collage: ["sachuqrebi", "keramika", "tekstili"],
@@ -85,9 +104,12 @@ export function localizeTag(tag: Tag, lang: Lang) {
 
 // ამ თაგის ნამუშევრები
 export function worksForTag(tag: Tag, lang: Lang): WorkEntry[] {
-  return getWorkEntries(lang).filter(({ work }) => {
+  return getWorkEntries(lang).filter(({ artist, work }) => {
     if (work.tags?.includes(tag.slug)) return true;
-    return tag.maxPrice !== undefined && work.price !== undefined && work.price <= tag.maxPrice;
+    if (tag.sale) return Boolean(pricing(artist, work)?.percent);
+    // ფასის თაგი: ფასდაკლებული ფასით
+    const price = effectivePrice(artist, work);
+    return tag.maxPrice !== undefined && price !== undefined && price <= tag.maxPrice;
   });
 }
 

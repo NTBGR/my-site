@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import HeartButton from "@/components/HeartButton";
 import Photo from "@/components/Photo";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -17,12 +18,20 @@ export type GalleryWork = {
   color: string;
   variant: number;
   url?: string;
-  // ფასი ლარში
+  // ფასი ლარში (ფასდაკლებისას უკვე შემცირებული)
   price?: number;
+  // ფასდაკლებისას: ძველი ფასი და პროცენტი
+  oldPrice?: number;
+  salePercent?: number;
   // ბოლო 30 დღეში დამატებული
   isNew?: boolean;
   // ❤️ შენახვის გასაღები ("ავტორი/ნამუშევარი") და alt ტექსტი
   favKey?: string;
+  // სხვადასხვა ხელოვანის სიაში: ავტორის სახელი და გვერდი
+  artistName?: string;
+  artistHref?: string;
+  // პატარა წარწერა ფოტოს ქვედა კუთხეში (მაგ. „❤ 2“)
+  badge?: string;
   alt?: string;
   // სად მიდის ბმული: ღილაკის წარწერისთვის
   network?: "instagram" | "facebook";
@@ -38,14 +47,26 @@ function ratioOf(work: GalleryWork) {
   return work.width && work.height ? work.width / work.height : FALLBACK_RATIO;
 }
 
+const GRID = "grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-x-4 sm:gap-y-6";
+const ROW =
+  "-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:gap-4 sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden";
+
 export default function WorksGallery({
   works: source,
   shareUrl,
   shareTitle,
+  showSort = true,
+  layout = "grid",
+  columns = "sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
 }: {
   works: GalleryWork[];
   shareUrl?: string;
   shareTitle?: string;
+  // ფასით დალაგების არჩევანი (სიას, რომელსაც თავისი დალაგება აქვს, არ სჭირდება)
+  showSort?: boolean;
+  // grid: ბადე; row: ტელეფონზე გვერდზე გადასახვევი ზოლი (მთავარზე)
+  layout?: "grid" | "row";
+  columns?: string;
 }) {
   const t = useT();
   // დახარისხება ფასით (ფასის გარეშე ნამუშევრები ბოლოშია)
@@ -74,8 +95,12 @@ export default function WorksGallery({
     [works.length],
   );
 
+  // სია შეიძლება შემცირდეს გახსნილი ნახვისას (მაგ. რჩეულებიდან ამოღება): მაშინ ნახვა თავისით იხურება
+  const current = open === null ? null : (works[open] ?? null);
+  const isOpen = current !== null;
+
   useEffect(() => {
-    if (open === null) return;
+    if (!isOpen) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => {
@@ -88,14 +113,12 @@ export default function WorksGallery({
       document.body.style.overflow = previous;
       window.removeEventListener("keydown", onKey);
     };
-  }, [open, close, step]);
-
-  const current = open === null ? null : works[open];
+  }, [isOpen, close, step]);
 
   return (
     <>
       {/* ერთნაირი 3:4 ბარათები (ტელეფონის ფოტოს ფორმატი); სრული ფოტო იხსნება დაჭერით */}
-      {pricedCount >= 3 ? (
+      {showSort && pricedCount >= 3 ? (
         <div className="mb-4 flex justify-end">
           <label className="flex items-center gap-2 text-sm text-muted">
             {t.sort.label}
@@ -111,9 +134,9 @@ export default function WorksGallery({
           </label>
         </div>
       ) : null}
-      <ul className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
+      <ul className={`${layout === "row" ? ROW : GRID} ${columns}`}>
         {works.map((work, i) => (
-          <li key={`${work.title}-${i}`} className="group relative">
+          <li key={`${work.favKey ?? work.title}-${i}`} className={`group relative ${layout === "row" ? "w-[44%] shrink-0 snap-start sm:w-auto" : ""}`}>
             {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
             <button
               type="button"
@@ -122,17 +145,33 @@ export default function WorksGallery({
               className="block w-full text-left"
             >
               <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl sm:rounded-[1.5rem]">
-                {work.isNew ? <span className="absolute left-2 top-2 z-10 rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold text-on-accent shadow-sm">{t.newBadge}</span> : null}
+                {work.isNew || work.salePercent ? (
+                  <span className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
+                    {work.salePercent ? <span className="rounded-full bg-[#c4302b] px-2.5 py-1 text-[11px] font-bold text-white shadow-sm">−{work.salePercent}%</span> : null}
+                    {work.isNew ? <span className="rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold text-on-accent shadow-sm">{t.newBadge}</span> : null}
+                  </span>
+                ) : null}
                 {work.image ? (
                   <Photo src={work.image} alt={work.alt ?? work.title} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
                 ) : (
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
                 )}
+                {work.badge ? (
+                  <span className="absolute bottom-2 left-2 z-10 rounded-full bg-black/45 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                    {work.badge}
+                  </span>
+                ) : null}
               </span>
               <span className="mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base">
                 {work.title}
               </span>
-              {work.price ? <span className="mt-0.5 block px-1 text-sm font-semibold text-text sm:text-base">{work.price} ₾</span> : null}
+              {work.price ? (
+                <span className="mt-0.5 block px-1 text-sm font-semibold text-text sm:text-base">
+                  <span className={work.oldPrice ? "text-[#c4302b]" : undefined}>{work.price} ₾</span>
+                  {work.oldPrice ? <s className="ml-1.5 text-xs font-normal text-muted sm:text-sm">{work.oldPrice} ₾</s> : null}
+                </span>
+              ) : null}
+              {work.artistName ? <span className="block truncate px-1 text-xs text-muted sm:text-sm">{work.artistName}</span> : null}
             </button>
             {work.favKey ? (
               <HeartButton
@@ -176,7 +215,13 @@ export default function WorksGallery({
                   {open! + 1} / {works.length}
                 </span>
                 <div className="ml-auto mr-2 flex items-center gap-2">
-                  {shareUrl ? <ShareButton url={shareUrl} title={`${current.title}${shareTitle ? ` - ${shareTitle}` : ""}`} variant="icon" /> : null}
+                  {current.artistHref || shareUrl ? (
+                    <ShareButton
+                      url={current.artistHref ?? shareUrl!}
+                      title={`${current.title}${current.artistName ?? shareTitle ? ` - ${current.artistName ?? shareTitle}` : ""}`}
+                      variant="icon"
+                    />
+                  ) : null}
                   {current.favKey ? (
                     <HeartButton id={current.favKey} className="h-11 w-11 border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white hover:text-black" />
                   ) : null}
@@ -222,6 +267,27 @@ export default function WorksGallery({
                   )}
                 </div>
 
+                {/* წინა და შემდეგი ფოტო წინასწარ იტვირთება (უხილავად), რომ ფურცვლისას მყისიერად გამოჩნდეს */}
+                {works.length > 1
+                  ? [1, -1].map((direction) => {
+                      const neighbor = works[(open! + direction + works.length) % works.length];
+                      if (!neighbor?.image || neighbor.image === current.image) return null;
+                      return (
+                        <Image
+                          key={neighbor.image}
+                          src={neighbor.image}
+                          alt=""
+                          aria-hidden
+                          width={neighbor.width ?? 1000}
+                          height={neighbor.height ?? 1250}
+                          sizes="(min-width: 1024px) 70vw, 95vw"
+                          loading="eager"
+                          className="pointer-events-none absolute h-px w-px opacity-0"
+                        />
+                      );
+                    })
+                  : null}
+
                 {works.length > 1 ? (
                   <div onClick={(event) => event.stopPropagation()}>
                     <ArrowButton
@@ -253,10 +319,23 @@ export default function WorksGallery({
                   ) : null}
                   <p className="line-clamp-2 min-w-0 flex-1 text-center text-base font-semibold leading-snug tracking-tight sm:text-lg">
                     {current.title}
-                    {current.price ? <span className="ml-2 font-bold">· {current.price} ₾</span> : null}
+                    {current.price ? (
+                      <span className="ml-2 font-bold">
+                        · {current.price} ₾
+                        {current.oldPrice ? <s className="ml-1.5 text-sm font-normal text-white/60">{current.oldPrice} ₾</s> : null}
+                        {current.salePercent ? <span className="ml-1.5 rounded-full bg-[#c4302b] px-2 py-0.5 text-xs font-bold">−{current.salePercent}%</span> : null}
+                      </span>
+                    ) : null}
                   </p>
                   {works.length > 1 ? (
                     <ArrowButton direction="next" variant="glass" size="sm" label={t.home.next} onClick={() => step(1)} className="shrink-0 sm:hidden" />
+                  ) : null}
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm font-medium text-white/80">
+                  {current.artistHref && current.artistName ? (
+                    <Link href={current.artistHref} className="underline decoration-white/40 underline-offset-4 transition hover:text-white hover:decoration-white">
+                      {current.artistName}
+                    </Link>
                   ) : null}
                 </div>
                 {current.url ? (

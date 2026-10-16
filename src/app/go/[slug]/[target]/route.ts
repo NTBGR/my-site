@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getArtistBySlug } from "@/data/artists";
+import { getArtistBySlug, workId } from "@/data/artists";
 import { isBot, recordClick, type ClickTarget } from "@/lib/clicks";
 import { allowed, clientIp } from "@/lib/ratelimit";
 
@@ -14,11 +14,15 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
   if (!artist) return NextResponse.redirect(new URL("/artists", req.url));
 
   let url: string | undefined;
+  // კონკრეტული ნამუშევრის კოდი (მხოლოდ w<ნომერი> ბმულზე): რეპორტში „რომელმა ნივთმა მიიქცია ყურადღება“
+  let clickedWork: string | undefined;
   if (linkTarget === "instagram") url = artist.instagram;
   else if (linkTarget === "facebook") url = artist.facebook;
   else if (/^w\d+$/.test(linkTarget)) {
-    const work = artist.works[Number(linkTarget.slice(1))];
+    const index = Number(linkTarget.slice(1));
+    const work = artist.works[index];
     url = work?.url || artist.instagram || artist.facebook;
+    if (work) clickedWork = workId(work, index);
   }
   if (!url) return NextResponse.redirect(new URL(`/artists/${artist.slug}`, req.url));
 
@@ -35,7 +39,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
       // დათვლის შეცდომამ გადასვლა არ უნდა შეაფერხოს
       await Promise.race([
         (async () => {
-          if (await allowed(`go:ip:${clientIp(req.headers)}`, 60, 3600)) await recordClick(artist.slug, target, visitor);
+          if (await allowed(`go:ip:${clientIp(req.headers)}`, 60, 3600)) await recordClick(artist.slug, target, visitor, clickedWork);
         })(),
         new Promise((resolve) => setTimeout(resolve, 1500)),
       ]);

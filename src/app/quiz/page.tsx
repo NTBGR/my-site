@@ -1,6 +1,7 @@
 import GiftQuiz, { type QuizWork } from "@/components/GiftQuiz";
 import JsonLd from "@/components/JsonLd";
-import { getWorkEntries, isNewWork, workId } from "@/data/artists";
+import { effectivePrice, getWorkEntries, isNewWork, workId } from "@/data/artists";
+import { toGalleryWork } from "@/lib/galleryWork";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
@@ -17,7 +18,7 @@ export default async function QuizPage() {
   const works: QuizWork[] = getWorkEntries(lang).map(({ artist, work, index }) => ({
     key: `${artist.slug}/${workId(work, index)}`,
     title: work.title,
-    price: work.price,
+    price: effectivePrice(artist, work),
     image: work.image,
     artistName: artist.name,
     artistSlug: artist.slug,
@@ -30,6 +31,7 @@ export default async function QuizPage() {
           ? "poster"
           : "other",
     isNew: isNewWork(work),
+    gallery: toGalleryWork(artist, work, index, { showArtist: true }),
   }));
 
   const ld = {
