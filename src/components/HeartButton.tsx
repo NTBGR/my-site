@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useT } from "@/components/LangProvider";
 import { useFavorites } from "@/lib/favorites";
 
@@ -8,6 +9,7 @@ export default function HeartButton({ id, className = "", label }: { id: string;
   const t = useT().workPage;
   const { has, toggle } = useFavorites();
   const saved = has(id);
+  const [pop, setPop] = useState(false);
   return (
     <button
       type="button"
@@ -15,12 +17,18 @@ export default function HeartButton({ id, className = "", label }: { id: string;
         event.preventDefault();
         event.stopPropagation();
         toggle(id);
+        // დამატებისას: გულის პულსი და მსუბუქი ვიბრაცია (ტელეფონზე)
+        if (!saved) {
+          navigator.vibrate?.(12);
+          setPop(true);
+          window.setTimeout(() => setPop(false), 450);
+        }
       }}
       aria-pressed={saved}
       aria-label={saved ? t.unsave : t.save}
       className={`inline-flex items-center justify-center gap-2 rounded-full transition duration-300 active:scale-90 ${className}`}
     >
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
+      <svg viewBox="0 0 24 24" className={`h-5 w-5 ${pop ? "heart-pop" : ""}`} fill={saved ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" aria-hidden>
         <path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.7a4.3 4.3 0 0 1 7.5 2.6c0 5.6-7.5 10.2-7.5 10.2Z" />
       </svg>
       {label ? <span className="text-sm font-medium">{saved ? t.unsave : t.save}</span> : null}

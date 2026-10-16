@@ -279,6 +279,22 @@ a:hover > .arrow-slide {
 }
 
 /* კატეგორიის ფოტო ნელა ცურავს და ოდნავ იზრდება (Ken Burns), როგორც ადრე ილუსტრაციები ირხეოდა */
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.heart-pop {
+  animation: heart-pop 0.45s ease-out;
+}
+
 @keyframes art-drift {
   0%,
   100% {
@@ -298,7 +314,8 @@ a:hover > .arrow-slide {
   .art-bob,
   .art-twinkle,
   .art-drift,
-  .float-soft {
+  .float-soft,
+  .heart-pop {
     animation: none;
   }
 }

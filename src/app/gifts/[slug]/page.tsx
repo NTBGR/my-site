@@ -6,7 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/PageBanner";
 import Photo from "@/components/Photo";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
-import { workId } from "@/data/artists";
+import { isNewWork, workId } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
@@ -86,6 +86,7 @@ export default async function GiftPage({
           <li key={`${artist.slug}/${index}`} className="group relative">
             <Link href={`/artists/${artist.slug}`} className="block">
               <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm">
+                {isNewWork(work) ? <span className="absolute left-2 top-2 z-10 rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold text-on-accent shadow-sm">{t.newBadge}</span> : null}
                 {work.image ? (
                   <Photo
                     src={work.image}

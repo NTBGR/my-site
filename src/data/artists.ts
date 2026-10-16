@@ -8,6 +8,8 @@ export type ArtistWork = {
   url?: string;
   // ფასი ლარში (₾); თუ არ არის, საიტი ფასს არ აჩვენებს
   price?: number;
+  // დამატების თარიღი (YYYY-MM-DD): 30 დღით „ახალი“ ნიშანი ჩანს
+  added?: string;
   // თაგების გასაღებები (src/data/tags.ts): საჩუქრის მიზეზი, მაგ. "for-her", "for-mom"
   tags?: string[];
   // ნამდვილი ფოტო: ფაილი public/artists/<slug>/..., მისი ზომები პიქსელებში (პროპორციისთვის).
@@ -137,16 +139,16 @@ export const artists: ArtistData[] = [
     instagram: "https://www.instagram.com/tamusshop3/",
     facebook: "https://www.facebook.com/profile.php?id=100071936977915",
     works: [
-      { title: "თაიგული „ვარდისფერი ყვავილები“", color: "#e58fb0", image: "/artists/tamus-shop/bouquet-pink-blooms.jpg", width: 1200, height: 1598, price: 55, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "ფუმფულა თაიგული „ყვითელი“", color: "#f2a900", image: "/artists/tamus-shop/plush-yellow.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "ფუმფულა თაიგული „ვარდისფერი ვარდები“", color: "#e8559a", image: "/artists/tamus-shop/plush-pink-roses.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "თაიგული „ყვითელი ტიტები თოჯინით“", color: "#f0b400", image: "/artists/tamus-shop/tulips-yellow-doll.jpg", width: 1200, height: 1598, price: 60, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "თაიგული „ტიტები და სიმინდი“", color: "#1f9c86", image: "/artists/tamus-shop/tulips-teal-corn.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "თაიგული „ცისფერი ტიტები“", color: "#2d9fd0", image: "/artists/tamus-shop/tulips-blue-doll.jpg", width: 1200, height: 1600, price: 65, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "თაიგული „ვარდისფერი ტიტები“", color: "#f0a0b8", image: "/artists/tamus-shop/tulips-pink.jpg", width: 1200, height: 1598, price: 35, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "თაიგული „ნარინჯისფერი ტიტები“", color: "#e8501c", image: "/artists/tamus-shop/tulips-orange.jpg", width: 1200, height: 1598, price: 35, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "ფუმფულა თაიგული „წითელი ვარდები“", color: "#c8102e", image: "/artists/tamus-shop/plush-red-roses.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"] },
-      { title: "ფუმფულა თაიგული „წითელი ყვავილები“", color: "#d8201c", image: "/artists/tamus-shop/plush-red-flowers.jpg", width: 1200, height: 1598, price: 25, tags: ["for-mom", "for-her", "never-wilts"] },
+      { title: "თაიგული „ვარდისფერი ყვავილები“", color: "#e58fb0", image: "/artists/tamus-shop/bouquet-pink-blooms.jpg", width: 1200, height: 1598, price: 55, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "ფუმფულა თაიგული „ყვითელი“", color: "#f2a900", image: "/artists/tamus-shop/plush-yellow.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "ფუმფულა თაიგული „ვარდისფერი ვარდები“", color: "#e8559a", image: "/artists/tamus-shop/plush-pink-roses.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "თაიგული „ყვითელი ტიტები თოჯინით“", color: "#f0b400", image: "/artists/tamus-shop/tulips-yellow-doll.jpg", width: 1200, height: 1598, price: 60, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "თაიგული „ტიტები და სიმინდი“", color: "#1f9c86", image: "/artists/tamus-shop/tulips-teal-corn.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "თაიგული „ცისფერი ტიტები“", color: "#2d9fd0", image: "/artists/tamus-shop/tulips-blue-doll.jpg", width: 1200, height: 1600, price: 65, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "თაიგული „ვარდისფერი ტიტები“", color: "#f0a0b8", image: "/artists/tamus-shop/tulips-pink.jpg", width: 1200, height: 1598, price: 35, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "თაიგული „ნარინჯისფერი ტიტები“", color: "#e8501c", image: "/artists/tamus-shop/tulips-orange.jpg", width: 1200, height: 1598, price: 35, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "ფუმფულა თაიგული „წითელი ვარდები“", color: "#c8102e", image: "/artists/tamus-shop/plush-red-roses.jpg", width: 1200, height: 1598, price: 45, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
+      { title: "ფუმფულა თაიგული „წითელი ყვავილები“", color: "#d8201c", image: "/artists/tamus-shop/plush-red-flowers.jpg", width: 1200, height: 1598, price: 25, tags: ["for-mom", "for-her", "never-wilts"], added: "2026-10-14" },
     ],
     en: {
       name: "Tamus Shop",
@@ -213,4 +215,11 @@ export function getWorkEntries(lang: Lang): WorkEntry[] {
   return getLocalizedArtists(lang).flatMap((artist) =>
     artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })),
   );
+}
+
+// ნამუშევარი „ახალია“, თუ ბოლო 30 დღეში დაემატა
+export function isNewWork(work: ArtistWork): boolean {
+  if (!work.added) return false;
+  const age = Date.now() - Date.parse(work.added);
+  return age >= 0 && age < 30 * 24 * 60 * 60 * 1000;
 }

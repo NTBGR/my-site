@@ -19,6 +19,8 @@ export type GalleryWork = {
   url?: string;
   // ფასი ლარში
   price?: number;
+  // ბოლო 30 დღეში დამატებული
+  isNew?: boolean;
   // ❤️ შენახვის გასაღები ("ავტორი/ნამუშევარი") და alt ტექსტი
   favKey?: string;
   alt?: string;
@@ -120,6 +122,7 @@ export default function WorksGallery({
               className="block w-full text-left"
             >
               <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl sm:rounded-[1.5rem]">
+                {work.isNew ? <span className="absolute left-2 top-2 z-10 rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold text-on-accent shadow-sm">{t.newBadge}</span> : null}
                 {work.image ? (
                   <Photo src={work.image} alt={work.alt ?? work.title} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
                 ) : (

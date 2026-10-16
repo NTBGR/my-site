@@ -10,7 +10,7 @@ import BannerPhotos from "@/components/BannerPhotos";
 import CopyLink from "@/components/CopyLink";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, localizeArtist, workId } from "@/data/artists";
+import { getArtistBySlug, localizeArtist, workId, isNewWork } from "@/data/artists";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -251,6 +251,7 @@ export default async function ArtistPage({
             works={artist.works.map((work, i) => ({
               title: work.title,
               price: work.price,
+              isNew: isNewWork(work),
               color: work.color,
               variant: (variantFor(artist.slug) + i) % 4,
               url: (work.url || artist.instagram || artist.facebook) ? `/go/${artist.slug}/w${i}` : undefined,
