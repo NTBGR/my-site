@@ -78,7 +78,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               size="sm"
               label={t.home.prev}
               onClick={() => scrollBy(-1)}
-              className="absolute left-1 top-1/2 z-10 flex -translate-y-1/2"
+              className="absolute left-1 top-1/2 z-10 hidden -translate-y-1/2 sm:flex"
             />
           ) : null}
           {canRight ? (
@@ -87,7 +87,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               size="sm"
               label={t.home.next}
               onClick={() => scrollBy(1)}
-              className="absolute right-2 top-1/2 z-10 flex -translate-y-1/2 sm:right-3 lg:right-6"
+              className="absolute right-2 top-1/2 z-10 hidden -translate-y-1/2 sm:right-3 sm:flex lg:right-6"
             />
           ) : null}
 

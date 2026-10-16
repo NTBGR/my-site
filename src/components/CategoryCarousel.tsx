@@ -152,7 +152,7 @@ export default function CategoryCarousel({
             </button>
           ))}
         </div>
-        <div className="flex gap-2">
+        <div className="hidden gap-2 sm:flex">
           <ArrowButton
             direction="prev"
             label={t.prev}

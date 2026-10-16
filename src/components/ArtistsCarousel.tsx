@@ -3,7 +3,6 @@
 import { Children, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useT } from "@/components/LangProvider";
-import ArrowButton from "@/components/ui/ArrowButton";
 
 const GAP = 16;
 
@@ -89,10 +88,6 @@ export default function ArtistsCarousel({ children }: { children: ReactNode }) {
               />
             </button>
           ))}
-        </div>
-        <div className="flex gap-2">
-          <ArrowButton direction="prev" label={t.prev} onClick={() => goTo(active - 1)} />
-          <ArrowButton direction="next" label={t.next} onClick={() => goTo(active + 1)} />
         </div>
       </div>
     </div>
