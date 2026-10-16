@@ -50,6 +50,19 @@ export async function monthFavorites(month: string): Promise<FavoriteStats> {
   return stats;
 }
 
+// ნამუშევრის მიხედვით: რამდენმა ადამიანმა დაიმახსოვრა (ფავორიტებში დაამატა) ამ თვეში. გასაღები: "ხელოვანი/ნამუშევარი"
+export async function monthWorkFavorites(month: string): Promise<Record<string, number>> {
+  if (!clicksEnabled) return {};
+  const keys = [...validKeys];
+  const results = await pipeline(keys.map((k) => ["SCARD", `favw:${month}:${k}`]));
+  const out: Record<string, number> = {};
+  keys.forEach((k, i) => {
+    const count = Number(results[i]?.result) || 0;
+    if (count > 0) out[k] = count;
+  });
+  return out;
+}
+
 // ყველაზე ხშირად შენახული ნამუშევრები (მიმდინარე და წინა თვე ერთად); 5 წუთით ვინახავთ მეხსიერებაში, რომ ყოველ ვიზიტზე ბაზას არ მივმართოთ
 let trendCache: { at: number; data: { key: string; count: number }[] } | null = null;
 

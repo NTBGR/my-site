@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { artists, workId } from "@/data/artists";
-import { clicksEnabled, monthOf, monthStats, monthWorkStats } from "@/lib/clicks";
-import { monthFavorites } from "@/lib/favoriteStats";
+import { clicksEnabled, conversion, monthOf, monthStats, monthWorkStats, viewStats } from "@/lib/clicks";
+import { monthFavorites, monthWorkFavorites } from "@/lib/favoriteStats";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -48,7 +48,13 @@ export async function GET(req: NextRequest) {
 
   const param = req.nextUrl.searchParams.get("month");
   const month = param && /^\d{4}-\d{2}$/.test(param) ? param : previousMonth();
-  const [stats, favs, workClicks] = await Promise.all([monthStats(month), monthFavorites(month), monthWorkStats(month)]);
+  const [stats, favs, workClicks, favWorks, views] = await Promise.all([
+    monthStats(month),
+    monthFavorites(month),
+    monthWorkStats(month),
+    monthWorkFavorites(month),
+    viewStats(month),
+  ]);
 
   const rows = artists
     .map((a) => {
@@ -56,30 +62,55 @@ export async function GET(req: NextRequest) {
       const f = favs[a.slug] ?? { people: 0, saves: 0 };
       const topIndex = f.top ? a.works.findIndex((w, i) => workId(w, i) === f.top!.id) : -1;
       const topTitle = topIndex >= 0 ? a.works[topIndex].title : undefined;
-      // ყველაზე მეტი ადამიანი რომელ ნამუშევარზე გადავიდა (მაქს. 3)
-      const topClicked = (workClicks[a.slug] ?? [])
-        .map((c) => {
-          const i = a.works.findIndex((w, idx) => workId(w, idx) === c.id);
-          return i >= 0 && c.people > 0 ? { title: a.works[i].title, people: c.people } : undefined;
+      // ყველა ნამუშევარი, რომელზეც რამე მოხდა: გადასვლა (ადამიანი + სულ დაწკაპუნება) და დაგულება; მაქს. 10
+      const workRows = a.works
+        .map((w, idx) => {
+          const id = workId(w, idx);
+          const c = (workClicks[a.slug] ?? []).find((x) => x.id === id);
+          return { title: w.title, people: c?.people ?? 0, clicks: c?.total ?? 0, hearts: favWorks[`${a.slug}/${id}`] ?? 0 };
         })
-        .filter((x): x is { title: string; people: number } => Boolean(x))
-        .slice(0, 3);
-      return { artist: a, ...s, people: s.instagram + s.facebook, favPeople: f.people, favSaves: f.saves, topTitle, topCount: f.top?.count ?? 0, topClicked };
+        .filter((x) => x.people > 0 || x.hearts > 0)
+        .sort((x, y) => y.people - x.people || y.hearts - x.hearts || y.clicks - x.clicks)
+        .slice(0, 10);
+      const v = views[a.slug] ?? { people: 0, total: 0 };
+      return { artist: a, ...s, viewPeople: v.people, viewTotal: v.total, rate: conversion(v.people, s.instagram + s.facebook), people: s.instagram + s.facebook, favPeople: f.people, favSaves: f.saves, topTitle, topCount: f.top?.count ?? 0, workRows };
     })
     .sort((a, b) => b.people - a.people);
 
+  const titleOf = (key: string) => {
+    const [slug, id] = key.split("/");
+    const artist = artists.find((a) => a.slug === slug);
+    const index = artist ? artist.works.findIndex((w, i) => workId(w, i) === id) : -1;
+    return artist && index >= 0 ? `${artist.works[index].title} (${artist.name})` : undefined;
+  };
+  const topClickedAll = Object.entries(workClicks)
+    .flatMap(([slug, list]) => list.map((c) => ({ key: `${slug}/${c.id}`, count: c.people })))
+    .filter((x) => x.count > 0 && titleOf(x.key))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
+  const topSavedAll = Object.entries(favWorks)
+    .map(([key, count]) => ({ key, count }))
+    .filter((x) => titleOf(x.key))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
   const totalPeople = rows.reduce((sum, r) => sum + r.people, 0);
   const totalFavPeople = rows.reduce((sum, r) => sum + r.favPeople, 0);
   const summary = [
     `<b>📊 რეპორტი: ${month}</b>`,
-    `სულ გადავიდა ${totalPeople} ადამიანი.`,
+    `სულ გადავიდა ${totalPeople} ადამიანი (სულ ${rows.reduce((sum, r) => sum + r.total, 0)} დაწკაპუნება).`,
     `ფავორიტებში დაამატა ${totalFavPeople} ადამიანმა (ხელოვანებს შორის ჯამი).`,
     "",
     ...rows.map(
       (r) =>
-        `• ${escapeHtml(r.artist.name)}: <b>${r.people}</b> (ინსტა ${r.instagram}, ფბ ${r.facebook}; დაწკაპუნება ${r.total})` +
+        `• ${escapeHtml(r.artist.name)}: <b>${r.people}</b> გადავიდა (ინსტა ${r.instagram}, ფბ ${r.facebook}; დაწკაპუნება ${r.total}); პროფილზე შევიდა ${r.viewPeople} (${r.viewTotal} ნახვა)${r.rate !== undefined ? `, გადავიდა ≈${r.rate}%` : ""}` +
         (r.favSaves ? `, ❤ ${r.favPeople} ადამიანმა დაიმახსოვრა` : ""),
     ),
+    ...(topClickedAll.length
+      ? ["", "<b>👆 რომელ ნამუშევრებზე გადავიდნენ ყველაზე ხშირად:</b>", ...topClickedAll.map((x, i) => `${i + 1}. ${escapeHtml(titleOf(x.key)!)}: ${x.count}`)]
+      : []),
+    ...(topSavedAll.length
+      ? ["", "<b>❤ რომელი ნამუშევრები დაიმახსოვრეს ყველაზე ხშირად:</b>", ...topSavedAll.map((x, i) => `${i + 1}. ${escapeHtml(titleOf(x.key)!)}: ${x.count}`)]
+      : []),
     "",
     "ქვემოთ თითო ხელოვანზე მზა ტექსტია: შეეხე ბლოკს, დაკოპირდება, და გაუგზავნე.",
   ].join("\n");
@@ -95,14 +126,20 @@ export async function GET(req: NextRequest) {
           [
             `გამარჯობა, ${r.artist.name}! 👋`,
             "",
-            `${inMonth(month)} „ხელოვანიდან“ შენს გვერდზე გადმოვიდა ${r.people} ადამიანი:`,
+            `${inMonth(month)} „ხელოვანიდან“ შენს გვერდზე გადმოვიდა ${r.people} ადამიანი (სულ ${r.total} დაწკაპუნება):`,
             `• ინსტაგრამზე: ${r.instagram}`,
             `• ფეისბუქზე: ${r.facebook}`,
-            ...(r.topClicked.length
+            ...(r.viewPeople > 0
               ? [
                   "",
-                  "ყველაზე მეტი ყურადღება მიიქცია:",
-                  ...r.topClicked.map((c, i) => `${i + 1}. „${c.title}“: ${c.people} ადამიანი`),
+                  `შენს პროფილზე შემოვიდა ${r.viewPeople} ადამიანი (სულ ${r.viewTotal} ნახვა)${r.rate !== undefined ? `, მათგან დაახლოებით ${r.rate}% გადავიდა ინსტაგრამზე ან ფეისბუქზე.` : "."}`,
+                ]
+              : []),
+            ...(r.workRows.length
+              ? [
+                  "",
+                  "ნამუშევრების მიხედვით (👆 გადავიდნენ ადამიანი, ფრჩხილებში სულ დაწკაპუნება; ❤ დაიმახსოვრეს):",
+                  ...r.workRows.map((w, i) => `${i + 1}. „${w.title}“: 👆 ${w.people} (${w.clicks}), ❤ ${w.hearts}`),
                 ]
               : []),
             ...(r.favSaves

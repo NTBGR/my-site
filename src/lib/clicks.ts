@@ -154,3 +154,60 @@ export async function monthWorkStats(period: string): Promise<Record<string, Wor
   for (const list of Object.values(out)) list.sort((a, b) => b.people - a.people || b.total - a.total);
   return out;
 }
+
+// ---------- ხელოვანის პროფილის ნახვები ----------
+// ნახვების მრიცხველები გადასვლებისგან ცალკეა: views:<თვე|day:დღე>:unique/total, ველი = ხელოვანის slug
+const viewBase = (period: string) => (period.length === 7 ? `views:${period}` : `views:day:${period}`);
+
+/**
+ * პროფილის ერთი ნახვა. total: ყველა ნახვა; unique: ერთი ადამიანი დღეში ერთხელ (ვინაობა არ ინახება, მხოლოდ ჰეში 1 დღით).
+ */
+export async function recordView(slug: string, visitorId: string) {
+  if (!clicksEnabled) return;
+  const month = monthOf();
+  const day = dayOf();
+  const visitor = createHash("sha256").update(`view|${visitorId}|${day}`).digest("hex").slice(0, 24);
+  const [seen] = await pipeline([
+    ["SET", `seenview:${day}:${slug}:${visitor}`, "1", "NX", "EX", 90000],
+    ["HINCRBY", `${viewBase(month)}:total`, slug, 1],
+    ["HINCRBY", `${viewBase(day)}:total`, slug, 1],
+    ["EXPIRE", `${viewBase(day)}:total`, DAY_TTL],
+  ]);
+  if (seen?.result === "OK") {
+    await pipeline([
+      ["HINCRBY", `${viewBase(month)}:unique`, slug, 1],
+      ["HINCRBY", `${viewBase(day)}:unique`, slug, 1],
+      ["EXPIRE", `${viewBase(day)}:unique`, DAY_TTL],
+    ]);
+  }
+}
+
+export type ViewStats = Record<string, { people: number; total: number }>;
+
+// პროფილის ნახვები ხელოვანების მიხედვით: period = თვე ("2026-10") ან დღე ("2026-10-17")
+export async function viewStats(period: string): Promise<ViewStats> {
+  if (!clicksEnabled) return {};
+  const [unique, total] = await pipeline([
+    ["HGETALL", `${viewBase(period)}:unique`],
+    ["HGETALL", `${viewBase(period)}:total`],
+  ]);
+  const out: ViewStats = {};
+  const read = (r: RedisResult, apply: (row: { people: number; total: number }, n: number) => void) => {
+    const flat = (r?.result as string[] | null) ?? [];
+    for (let i = 0; i < flat.length; i += 2) apply((out[flat[i]] ??= { people: 0, total: 0 }), Number(flat[i + 1]) || 0);
+  };
+  read(unique, (row, n) => {
+    row.people += n;
+  });
+  read(total, (row, n) => {
+    row.total += n;
+  });
+  return out;
+}
+
+// რამდენი პროცენტი გადავიდა ინსტაგრამზე ან ფეისბუქზე იმათგან, ვინც პროფილზე შემოვიდა.
+// გადასვლა სხვა გვერდებიდანაც შეიძლება (საჩუქრების სია, მთავარი), ამიტომ შეფასებაა და 100%-ს არ აღემატება
+export function conversion(viewPeople: number, clickPeople: number): number | undefined {
+  if (viewPeople <= 0) return undefined;
+  return Math.min(100, Math.round((clickPeople / viewPeople) * 100));
+}

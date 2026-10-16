@@ -8,6 +8,7 @@ import CategoryArt from "@/components/CategoryArt";
 import BannerPhotos from "@/components/BannerPhotos";
 import BackLink from "@/components/BackLink";
 import CopyLink from "@/components/CopyLink";
+import ProfileView from "@/components/ProfileView";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
 import { getArtistBySlug, localizeArtist, pricing } from "@/data/artists";
@@ -161,6 +162,7 @@ export default async function ArtistPage({
         className="inline-flex min-h-9 items-center text-sm font-medium text-muted transition-colors hover:text-accent"
       />
       <JsonLd data={artistLd} />
+      <ProfileView slug={artist.slug} />
 
       {/* ბანერი ხელოვანის მთავარი კატეგორიის ფერში */}
       <section

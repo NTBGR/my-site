@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { artists, workId } from "@/data/artists";
-import { clicksEnabled, dayOf, monthOf, monthStats, monthWorkStats } from "@/lib/clicks";
-import { monthFavorites } from "@/lib/favoriteStats";
+import { clicksEnabled, conversion, dayOf, monthOf, monthStats, monthWorkStats, viewStats } from "@/lib/clicks";
+import { monthFavorites, monthWorkFavorites } from "@/lib/favoriteStats";
 import { STATS_COOKIE, statsConfigured, tokenValid } from "@/lib/statsAuth";
 
 export const dynamic = "force-dynamic";
@@ -61,22 +61,29 @@ function Login({ error, configured }: { error?: string; configured: boolean }) {
 type Period = { id: string; title: string; month?: string };
 
 async function Block({ period, withSaves }: { period: Period; withSaves: boolean }) {
-  const [stats, works, favs] = await Promise.all([
+  const [stats, works, favs, favWorks, views] = await Promise.all([
     monthStats(period.id),
     monthWorkStats(period.id),
     withSaves && period.month ? monthFavorites(period.month) : Promise.resolve({} as Awaited<ReturnType<typeof monthFavorites>>),
+    withSaves && period.month ? monthWorkFavorites(period.month) : Promise.resolve({} as Record<string, number>),
+    viewStats(period.id),
   ]);
   const rows = artists
     .map((artist) => {
       const s = stats[artist.slug] ?? { instagram: 0, facebook: 0, total: 0 };
-      const topWorks = (works[artist.slug] ?? [])
-        .map((c) => {
-          const index = artist.works.findIndex((w, i) => workId(w, i) === c.id);
-          return index >= 0 ? { title: artist.works[index].title, people: c.people, total: c.total } : undefined;
+      // ნამუშევრები, რომლებზეც რაიმე მოხდა: გადასვლა (👆) ან დამახსოვრება (❤)
+      const topWorks = artist.works
+        .map((w, i) => {
+          const id = workId(w, i);
+          const c = (works[artist.slug] ?? []).find((x) => x.id === id);
+          return { title: w.title, people: c?.people ?? 0, total: c?.total ?? 0, hearts: favWorks[`${artist.slug}/${id}`] ?? 0 };
         })
-        .filter((x): x is { title: string; people: number; total: number } => Boolean(x))
-        .slice(0, 5);
-      return { artist, ...s, people: s.instagram + s.facebook, topWorks, favPeople: favs[artist.slug]?.people ?? 0 };
+        .filter((x) => x.people > 0 || x.hearts > 0)
+        .sort((a, b) => b.people - a.people || b.hearts - a.hearts || b.total - a.total)
+        .slice(0, 8);
+      const v = views[artist.slug] ?? { people: 0, total: 0 };
+      const people = s.instagram + s.facebook;
+      return { artist, ...s, people, topWorks, favPeople: favs[artist.slug]?.people ?? 0, viewPeople: v.people, viewTotal: v.total, rate: conversion(v.people, people) };
     })
     .sort((a, b) => b.people - a.people || b.total - a.total);
   const totalPeople = rows.reduce((sum, r) => sum + r.people, 0);
@@ -97,6 +104,15 @@ async function Block({ period, withSaves }: { period: Period; withSaves: boolean
               <h3 className="min-w-0 text-base font-semibold text-text [overflow-wrap:anywhere] sm:text-lg">{r.artist.name}</h3>
               <span className="shrink-0 text-2xl font-semibold tabular-nums text-accent">{r.people}</span>
             </div>
+            <p className="mt-1 text-sm text-text">
+              პროფილზე შემოვიდა: <b>{r.viewPeople}</b> ადამიანი ({r.viewTotal} ნახვა)
+              {r.rate !== undefined ? (
+                <>
+                  {" "}
+                  · გადავიდა ≈ <b className="text-accent">{r.rate}%</b>
+                </>
+              ) : null}
+            </p>
             <p className="mt-1 text-sm text-muted">
               ინსტაგრამი {r.instagram} · ფეისბუქი {r.facebook} · დაწკაპუნება {r.total}
               {withSaves && r.favPeople ? ` · ❤ ${r.favPeople}` : ""}
@@ -107,7 +123,8 @@ async function Block({ period, withSaves }: { period: Period; withSaves: boolean
                   <li key={w.title} className="flex items-baseline justify-between gap-3">
                     <span className="min-w-0 text-text [overflow-wrap:anywhere]">{w.title}</span>
                     <span className="shrink-0 tabular-nums text-muted">
-                      {w.people} <span className="text-xs">({w.total})</span>
+                      👆 {w.people} <span className="text-xs">({w.total})</span>
+                      {withSaves ? <> · ❤ {w.hearts}</> : null}
                     </span>
                   </li>
                 ))}
@@ -134,8 +151,10 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
     <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10">
       <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">სტატისტიკა</h1>
       <p className="mt-1 text-sm text-muted">
-        დიდი რიცხვი = რამდენმა ადამიანმა გადაინაცვლა ხელოვანთან (ერთი ადამიანი დღეში ერთხელ). ფრჩხილებში: სულ დაწკაპუნება.
-        დღის მონაცემები ჩანს მას შემდეგ, რაც ეს გვერდი გაიშვა.
+        დიდი რიცხვი = რამდენი ადამიანი გადავიდა ხელოვანთან: ერთი ადამიანი დღეში ერთხელ (ინსტაგრამი და ფეისბუქი ცალ-ცალკე). ფრჩხილებში: სულ დაწკაპუნება,
+        ერთი ადამიანის განმეორებითიც. 👆 = გადასვლა ამ ნამუშევრიდან, ❤ = ფავორიტებში დაამატა (თვის მონაცემია).
+        „პროფილზე შემოვიდა“ = რამდენმა ადამიანმა გახსნა ხელოვანის გვერდი; „გადავიდა ≈ %“ = მათ რამდენ პროცენტს უდრის ინსტაგრამზე/ფეისბუქზე გადასულები (გადასვლა სხვა გვერდებიდანაც შეიძლება, ამიტომ დაახლოებითია).
+        ვინაობა არსად ინახება, მხოლოდ რიცხვები. დღის მონაცემები ჩანს მას შემდეგ, რაც ეს გვერდი გაიშვა.
       </p>
       {!clicksEnabled ? <p className={`${card} mt-4 text-sm text-accent`}>სტატისტიკის ბაზა დაკავშირებული არ არის.</p> : null}
       <Block period={{ id: day, title: `დღეს, ${dayName(day)}` }} withSaves={false} />
