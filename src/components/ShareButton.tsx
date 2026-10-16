@@ -18,16 +18,20 @@ export default function ShareButton({
   url,
   title,
   variant = "pill",
+  label,
   className = "",
 }: {
   url: string;
   title: string;
-  variant?: "pill" | "icon";
+  variant?: "pill" | "icon" | "plain";
+  label?: string;
   className?: string;
 }) {
   const t = useT().share;
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  // მენიუ ღილაკის მარცხენა კიდეს ეწყობა, თუ ღილაკი ეკრანის მარცხენა ნახევარშია, თორემ მარჯვენას (რომ ეკრანიდან არ გავიდეს)
+  const [alignLeft, setAlignLeft] = useState(false);
   const rootRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
@@ -59,6 +63,8 @@ export default function ShareButton({
         if (error instanceof DOMException && error.name === "AbortError") return;
       }
     }
+    const rect = rootRef.current?.getBoundingClientRect();
+    setAlignLeft(rect ? rect.left < window.innerWidth / 2 : false);
     setOpen((value) => !value);
   }
 
@@ -76,16 +82,18 @@ export default function ShareButton({
   const base =
     variant === "icon"
       ? "inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white backdrop-blur-md transition hover:bg-white hover:text-black"
-      : "inline-flex min-h-10 items-center gap-2 rounded-full border border-white/40 bg-white/15 px-4 text-sm font-medium text-white backdrop-blur-md transition hover:bg-white hover:text-black";
+      : variant === "plain"
+        ? "inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-bg px-4 text-sm font-medium text-text transition hover:border-accent hover:text-accent"
+        : "inline-flex min-h-10 items-center gap-2 rounded-full border border-white/40 bg-white/15 px-4 text-sm font-medium text-white backdrop-blur-md transition hover:bg-white hover:text-black";
 
   return (
     <span ref={rootRef} className="relative inline-flex">
       <button type="button" onClick={onClick} aria-label={t.button} aria-expanded={open} className={`${base} ${className}`.trim()}>
         <ShareIcon />
-        {variant === "pill" ? t.button : null}
+        {variant === "icon" ? null : (label ?? t.button)}
       </button>
       {open ? (
-        <div role="menu" className="absolute right-0 top-full z-[60] mt-2 w-52 rounded-2xl border border-border bg-bg p-1.5 text-text shadow-2xl">
+        <div role="menu" className={`absolute ${alignLeft ? "left-0" : "right-0"} top-full z-[60] mt-2 w-52 rounded-2xl border border-border bg-bg p-1.5 text-text shadow-2xl`}>
           {links().map((item) => (
             <a
               key={item.label}

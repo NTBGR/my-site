@@ -119,6 +119,10 @@ const ka = {
     empty: "ჯერ არაფერი გაქვს შენახული. ნამუშევარზე გულის ღილაკს დააჭირე და აქ გამოჩნდება.",
     browse: "ხელოვანების ნახვა",
     note: "შენახული ნამუშევრები მხოლოდ ამ ბრაუზერში ინახება.",
+    share: "სიის გაგზავნა",
+    shareTitle: "ნამუშევრები, რომლებიც ხელოვანზე მომეწონა",
+    sharedBanner: "ეს ნამუშევრები შენთვის შეარჩიეს.",
+    mine: "ჩემი შენახულები",
   },
   artist: {
     notFoundTitle: "ხელოვანი ვერ მოიძებნა",
@@ -352,6 +356,10 @@ const en: Dict = {
     empty: "Nothing saved yet. Tap the heart on a work and it will show up here.",
     browse: "Browse artists",
     note: "Saved works are kept in this browser only.",
+    share: "Send my list",
+    shareTitle: "Works I liked on Khelovani",
+    sharedBanner: "Someone picked these works for you.",
+    mine: "My saved works",
   },
   artist: {
     notFoundTitle: "Artist not found",

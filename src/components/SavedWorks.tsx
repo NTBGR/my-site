@@ -5,6 +5,7 @@ import ArtTile from "@/components/ArtTile";
 import HeartButton from "@/components/HeartButton";
 import { useT } from "@/components/LangProvider";
 import Photo from "@/components/Photo";
+import ShareButton from "@/components/ShareButton";
 import { useFavorites } from "@/lib/favorites";
 
 export type SavedCard = {
@@ -17,10 +18,15 @@ export type SavedCard = {
 };
 
 // შენახული ნამუშევრები (ბრაუზერიდან): ბარათზე დაჭერა ხელოვანის გვერდზე გადადის
-export default function SavedWorks({ cards }: { cards: SavedCard[] }) {
+export default function SavedWorks({ cards, sharedKeys }: { cards: SavedCard[]; sharedKeys?: string[] }) {
   const t = useT().savedPage;
   const { list } = useFavorites();
-  const saved = cards.filter((card) => list.includes(card.key));
+  // მეგობრის გამოგზავნილი სია (ბმულიდან) ან ჩემი შენახულები (ბრაუზერიდან)
+  const shared = Boolean(sharedKeys && sharedKeys.length > 0);
+  const saved = shared
+    ? (sharedKeys as string[]).map((key) => cards.find((card) => card.key === key)).filter((card): card is SavedCard => Boolean(card))
+    : cards.filter((card) => list.includes(card.key));
+  const shareUrl = `/saved?l=${encodeURIComponent(saved.map((card) => card.key).join(","))}`;
 
   if (saved.length === 0) {
     return (
@@ -37,6 +43,18 @@ export default function SavedWorks({ cards }: { cards: SavedCard[] }) {
   }
   return (
     <>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        {shared ? (
+          <>
+            <p className="text-muted">{t.sharedBanner}</p>
+            <Link href="/saved" className="text-sm font-medium text-accent underline underline-offset-4">
+              {t.mine}
+            </Link>
+          </>
+        ) : (
+          <ShareButton url={shareUrl} title={t.shareTitle} variant="plain" label={t.share} />
+        )}
+      </div>
       <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-6 lg:grid-cols-4 xl:grid-cols-5">
         {saved.map((card) => (
           <li key={card.key} className="group relative">
@@ -58,7 +76,7 @@ export default function SavedWorks({ cards }: { cards: SavedCard[] }) {
           </li>
         ))}
       </ul>
-      <p className="mt-8 text-xs text-muted">{t.note}</p>
+      {shared ? null : <p className="mt-8 text-xs text-muted">{t.note}</p>}
     </>
   );
 }
