@@ -15,7 +15,13 @@ export default async function ArtistOfWeek() {
   const week = currentWeek();
   // ხელით დაფიქსირებული ხელოვანი (src/data/featured.ts) ან კვირის მიხედვით რიგრიგობით
   const artist = artists.find((a) => a.slug === artistOfWeekOverride) ?? artists[week % artists.length];
-  const photos = artist.works.filter((work) => work.image).slice(0, 4);
+  const withImages = artist.works.filter((work) => work.image);
+  // ორი ვერტიკალური ფოტო გვერდიგვერდ (ნამუშევრის ფოტოები 3:4-ია, ამიტომ თითქმის არაფერი იჭრება): პირველი და სხვა სახეობის ნივთი
+  const photos =
+    withImages.length <= 2
+      ? withImages
+      : [withImages[0], withImages[Math.round((withImages.length - 1) * 0.7)]];
+  const grid = photos.length >= 2;
   const hero = artist.cover ?? photos[0]?.image;
   const frame = "border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)]";
 
@@ -25,13 +31,23 @@ export default async function ArtistOfWeek() {
         href={`/artists/${artist.slug}`}
         className={`group grid overflow-hidden rounded-[1.5rem] bg-bg transition duration-300 hover:border-accent hover:shadow-xl sm:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] sm:rounded-[1.75rem] ${frame}`}
       >
-        <div className="relative aspect-[4/3] overflow-hidden bg-surface-2 sm:aspect-auto sm:min-h-[22rem]">
-          {hero ? (
-            <div className="absolute inset-0" style={{ filter: "saturate(.88) sepia(.1)" }}>
-              <Photo src={hero} alt={artist.name} sizes="(min-width:640px) 45vw, 100vw" hoverZoom />
-            </div>
-          ) : null}
-        </div>
+        {grid ? (
+          <div className="grid grid-cols-2 gap-0.5 bg-surface-2" style={{ filter: "saturate(.88) sepia(.1)" }}>
+            {photos.map((work) => (
+              <span key={work.image} className="relative block aspect-[3/4] overflow-hidden">
+                <Photo src={work.image as string} alt={`${work.title} - ${artist.name}`} sizes="(min-width:640px) 24vw, 50vw" hoverZoom />
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="relative aspect-[4/3] overflow-hidden bg-surface-2 sm:aspect-auto sm:min-h-[22rem]">
+            {hero ? (
+              <div className="absolute inset-0" style={{ filter: "saturate(.88) sepia(.1)" }}>
+                <Photo src={hero} alt={artist.name} sizes="(min-width:640px) 45vw, 100vw" hoverZoom />
+              </div>
+            ) : null}
+          </div>
+        )}
         <div className="flex flex-col justify-center gap-3 p-5 sm:p-8">
           <span className="inline-flex w-fit items-center rounded-full bg-accent px-3 py-1 text-xs font-semibold text-on-accent">
             {t.weekArtist.label}
@@ -41,15 +57,6 @@ export default async function ArtistOfWeek() {
             {[artist.category, artist.city].filter(Boolean).join(" · ")} · {t.artists.worksCount(artist.works.length)}
           </p>
           <p className="line-clamp-4 text-base leading-relaxed text-text sm:text-lg">{artist.bio}</p>
-          {photos.length > 1 ? (
-            <div className="mt-1 flex gap-2" aria-hidden>
-              {photos.map((work) => (
-                <span key={work.image} className="relative block h-14 w-14 overflow-hidden rounded-xl bg-surface-2 sm:h-16 sm:w-16">
-                  <Photo src={work.image as string} alt="" sizes="64px" />
-                </span>
-              ))}
-            </div>
-          ) : null}
           <span className="mt-2 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-accent px-5 text-sm font-medium text-on-accent transition duration-300 group-hover:bg-accent-hover">
             {t.weekArtist.cta}
             <span className="arrow-slide" aria-hidden>
