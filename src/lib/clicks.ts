@@ -211,3 +211,23 @@ export function conversion(viewPeople: number, clickPeople: number): number | un
   if (viewPeople <= 0) return undefined;
   return Math.min(100, Math.round((clickPeople / viewPeople) * 100));
 }
+
+// სტატისტიკის გაანულება: წაიშლება მხოლოდ დათვლის გასაღებები (გადასვლები, ნახვები, ფავორიტები და დუბლიკატების ნიშნები).
+// სიხშირის ლიმიტის მრიცხველები (rl:*) და სხვა არაფერი ეხება. აღდგენა შეუძლებელია
+export async function resetStats(): Promise<number> {
+  if (!clicksEnabled) return 0;
+  let deleted = 0;
+  for (const pattern of ["clicks:*", "views:*", "favp:*", "favw:*", "seen:*", "seenview:*"]) {
+    let cursor = "0";
+    do {
+      const [res] = await pipeline([["SCAN", cursor, "MATCH", pattern, "COUNT", 500]]);
+      const [next, keys] = (res?.result as [string, string[]] | undefined) ?? ["0", []];
+      cursor = String(next);
+      if (keys.length > 0) {
+        await pipeline([["DEL", ...keys]]);
+        deleted += keys.length;
+      }
+    } while (cursor !== "0");
+  }
+  return deleted;
+}

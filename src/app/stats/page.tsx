@@ -137,8 +137,8 @@ async function Block({ period, withSaves }: { period: Period; withSaves: boolean
   );
 }
 
-export default async function StatsPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
-  const { error } = await searchParams;
+export default async function StatsPage({ searchParams }: { searchParams: Promise<{ error?: string; reset?: string }> }) {
+  const { error, reset } = await searchParams;
   const configured = statsConfigured();
   const authed = tokenValid((await cookies()).get(STATS_COOKIE)?.value);
   if (!authed) return <Login error={error} configured={configured} />;
@@ -157,9 +157,38 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
         ვინაობა არსად ინახება, მხოლოდ რიცხვები. დღის მონაცემები ჩანს მას შემდეგ, რაც ეს გვერდი გაიშვა.
       </p>
       {!clicksEnabled ? <p className={`${card} mt-4 text-sm text-accent`}>სტატისტიკის ბაზა დაკავშირებული არ არის.</p> : null}
+      {reset === "confirm" ? <p className={`${card} mt-4 text-sm text-accent`}>გაანულება არ შესრულდა: ველში უნდა ჩაგეწერა სიტყვა „გაანულება“.</p> : null}
+      {reset === "error" ? <p className={`${card} mt-4 text-sm text-accent`}>გაანულება ვერ შესრულდა. სცადე თავიდან.</p> : null}
+      {reset && /^\d+$/.test(reset) ? <p className={`${card} mt-4 text-sm text-text`}>სტატისტიკა გაანულდა (წაიშალა {reset} ჩანაწერი).</p> : null}
       <Block period={{ id: day, title: `დღეს, ${dayName(day)}` }} withSaves={false} />
       <Block period={{ id: month, month, title: `ეს თვე: ${monthName(month)}` }} withSaves />
       <Block period={{ id: prev, month: prev, title: `წინა თვე: ${monthName(prev)}` }} withSaves />
+
+      {/* გაანულება: საშიში მოქმედება, ამიტომ ბოლოშია და სიტყვის ჩაწერა სჭირდება */}
+      <section className={`${card} mt-12 border-[#c4302b]/40`}>
+        <h2 className="text-lg font-semibold tracking-tight text-text">სტატისტიკის გაანულება</h2>
+        <p className="mt-1 text-sm text-muted">
+          წაიშლება ყველა გადასვლა, პროფილის ნახვა და ნამუშევრების ❤ (მათ შორის მთავარზე „თვის ფავორიტებიც“ ცარიელდება). აღდგენა შეუძლებელია.
+          შენს ბრაუზერში შენახული გულები არ იშლება.
+        </p>
+        <form method="post" action="/stats/reset" className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <input
+            name="confirm"
+            type="text"
+            autoComplete="off"
+            required
+            placeholder="ჩაწერე: გაანულება"
+            aria-label="დასადასტურებლად ჩაწერე სიტყვა გაანულება"
+            className="h-11 min-w-0 flex-1 rounded-full border border-border bg-bg px-5 text-base text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          />
+          <button
+            type="submit"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-[#c4302b] px-6 text-sm font-medium text-white transition hover:bg-[#a82621] active:scale-95"
+          >
+            გაანულება
+          </button>
+        </form>
+      </section>
     </div>
   );
 }
