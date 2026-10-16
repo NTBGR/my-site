@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
 import SavedLink from "@/components/SavedLink";
@@ -72,7 +72,31 @@ export default function Header({ tags }: { tags: BarTag[] }) {
   // გვერდის შეცვლისას პანელი იხურება
   useEffect(() => {
     setMenuOpen(false);
+    setSearchOpen(false);
+    setQuery("");
   }, [pathname]);
+
+  // ძებნის ველი იხურება Esc-ით ან გარეთ დაჭერით და ტექსტი იწმინდება
+  const headerRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!searchOpen) return;
+    const close = () => {
+      setSearchOpen(false);
+      setQuery("");
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
+    const onPointer = (event: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) close();
+    };
+    window.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [searchOpen]);
 
   // პანელის გახსნისას გვერდის სქროლი იბლოკება; Esc ხურავს
   useEffect(() => {
@@ -94,12 +118,16 @@ export default function Header({ tags }: { tags: BarTag[] }) {
     const q = query.trim();
     setMenuOpen(false);
     setSearchOpen(false);
+    // ძებნის შემდეგ ველი სუფთაა: შემდეგ გახსნაზე ძველი ტექსტი აღარ დარჩება
+    setQuery("");
+    (document.activeElement as HTMLElement | null)?.blur();
     router.push(q ? `/artists?q=${encodeURIComponent(q)}` : "/artists");
   }
 
-  const searchField = (
+  const searchField = (autoFocus = false) => (
     <input
       type="search"
+      autoFocus={autoFocus}
       name="q"
       value={query}
       onChange={(event) => setQuery(event.target.value)}
@@ -111,7 +139,7 @@ export default function Header({ tags }: { tags: BarTag[] }) {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
+      <header ref={headerRef} className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:gap-5 lg:px-10">
           <LogoLink />
 
@@ -142,7 +170,7 @@ export default function Header({ tags }: { tags: BarTag[] }) {
           </nav>
 
           <form onSubmit={onSearch} className="hidden w-52 xl:block 2xl:w-64">
-            {searchField}
+            {searchField()}
           </form>
 
           <div className="hidden lg:block">
@@ -163,6 +191,7 @@ export default function Header({ tags }: { tags: BarTag[] }) {
             aria-expanded={searchOpen}
             onClick={() => {
               setSearchOpen((open) => !open);
+              setQuery("");
               setMenuOpen(false);
             }}
           >
@@ -188,7 +217,7 @@ export default function Header({ tags }: { tags: BarTag[] }) {
 
         {searchOpen ? (
           <div className="menu-enter border-t border-border px-4 py-3 xl:hidden">
-            <form onSubmit={onSearch}>{searchField}</form>
+            <form onSubmit={onSearch}>{searchField(true)}</form>
           </div>
         ) : null}
       </header>
