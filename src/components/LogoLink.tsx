@@ -20,7 +20,8 @@ export default function LogoLink({ size = "md" }: { size?: "md" | "lg" }) {
       }}
       className="group flex min-h-11 w-fit items-center font-serif font-semibold tracking-tight text-text transition duration-300 hover:text-accent active:scale-95"
     >
-      <span className="relative inline-flex flex-col items-start">
+      {/* ჰედერში ტექსტი ხატულებთან ერთ ხაზზეა: ბლოკი (ტექსტი + ხაზი) ცენტრშია და ტექსტი ხაზის ნახევრით მაღლა ადიოდა, ამიტომ ბლოკს იმდენივე ეშვება */}
+      <span className={`relative inline-flex flex-col items-start ${size === "md" ? "translate-y-[5px] lg:translate-y-[5.5px]" : ""}`}>
         <span
           className={`leading-none ${
             size === "lg"
