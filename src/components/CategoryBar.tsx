@@ -182,8 +182,8 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               <Link
                 href="/quiz"
                 aria-current={pathname === "/quiz" ? "page" : undefined}
-                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-semibold transition-colors ${
-                  pathname === "/quiz" ? "bg-accent text-on-accent" : "bg-accent-soft text-accent hover:bg-accent hover:text-on-accent"
+                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
+                  pathname === "/quiz" ? "bg-accent text-on-accent" : "text-muted hover:bg-accent-soft hover:text-accent"
                 }`}
               >
                 <span aria-hidden className="mr-1.5">🎯</span>
