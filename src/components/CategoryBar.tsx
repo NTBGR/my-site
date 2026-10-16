@@ -17,12 +17,42 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   const listRef = useRef<HTMLUListElement | null>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
+  // თხელი ხაზი ზოლის ქვეშ: რამდენი ჩანს და სადაც ვართ
+  const [thumb, setThumb] = useState({ width: 100, left: 0 });
 
   const update = useCallback(() => {
     const el = listRef.current;
     if (!el) return;
     setCanLeft(el.scrollLeft > 4);
     setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+    if (el.scrollWidth > 0) setThumb({ width: (el.clientWidth / el.scrollWidth) * 100, left: (el.scrollLeft / el.scrollWidth) * 100 });
+  }, []);
+
+  // ტელეფონზე სესიაში ერთხელ ზოლი მცირედ გადაინაცვლებს და ბრუნდება: ჩანს, რომ გადაიხვევა
+  useEffect(() => {
+    const el = listRef.current;
+    if (!el) return;
+    try {
+      if (sessionStorage.getItem("chip-nudge")) return;
+      if (!window.matchMedia("(max-width: 639px)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    } catch {
+      return;
+    }
+    const out = setTimeout(() => {
+      // ნიშანი მხოლოდ რეალურად შესრულებულ ბიძგზე იდება
+      try {
+        sessionStorage.setItem("chip-nudge", "1");
+      } catch {}
+      if (el.scrollLeft === 0) el.scrollTo({ left: 64, behavior: "smooth" });
+    }, 1400);
+    const back = setTimeout(() => {
+      if (el.scrollLeft > 0 && el.scrollLeft <= 70) el.scrollTo({ left: 0, behavior: "smooth" });
+    }, 2300);
+    return () => {
+      clearTimeout(out);
+      clearTimeout(back);
+    };
   }, []);
 
   useEffect(() => {
@@ -128,6 +158,11 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               );
             })}
           </ul>
+          {thumb.width < 98 ? (
+            <div aria-hidden className="pointer-events-none mx-4 mb-1.5 h-[3px] rounded-full bg-border sm:hidden">
+              <div className="h-full rounded-full bg-accent/60" style={{ width: `${thumb.width}%`, marginLeft: `${thumb.left}%` }} />
+            </div>
+          ) : null}
         </div>
       </div>
     </nav>

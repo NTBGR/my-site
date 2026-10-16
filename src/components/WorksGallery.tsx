@@ -81,6 +81,31 @@ export default function WorksGallery({
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
   const touchX = useRef<number | null>(null);
+  // ზოლის რეჟიმი (მთავარზე): წერტილები გადასახვევი ზოლის ქვეშ, ტელეფონზე
+  const rowRef = useRef<HTMLUListElement | null>(null);
+  const [rowActive, setRowActive] = useState(0);
+  const ROW_GAP = 12;
+  const rowStep = useCallback(() => {
+    const first = rowRef.current?.children[0] as HTMLElement | undefined;
+    return first ? first.getBoundingClientRect().width + ROW_GAP : 0;
+  }, []);
+  const rowGoTo = useCallback(
+    (index: number) => rowRef.current?.scrollTo({ left: index * rowStep(), behavior: "smooth" }),
+    [rowStep],
+  );
+  useEffect(() => {
+    const track = rowRef.current;
+    if (!track || layout !== "row") return;
+    const onScroll = () => {
+      const stepPx = rowStep();
+      if (stepPx <= 0) return;
+      // ბოლოში ბოლო წერტილი ინათება (ბოლო ბარათი სქროლის ბოლოს თავში ვერ დგება)
+      const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      setRowActive(atEnd ? track.children.length - 1 : Math.min(track.children.length - 1, Math.round(track.scrollLeft / stepPx)));
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => track.removeEventListener("scroll", onScroll);
+  }, [layout, rowStep]);
 
   useEffect(() => setMounted(true), []);
   // სხვა ნამუშევარზე გადასვლისას „დაკოპირდა“ ქრება
@@ -145,7 +170,7 @@ export default function WorksGallery({
           ))}
         </div>
       ) : null}
-      <ul className={`${layout === "row" ? ROW : GRID} ${columns}`}>
+      <ul ref={rowRef} className={`${layout === "row" ? ROW : GRID} ${columns}`}>
         {works.map((work, i) => (
           <li key={`${work.favKey ?? work.title}-${i}`} className={`group relative ${layout === "row" ? "w-[44%] shrink-0 snap-start sm:w-auto" : ""}`}>
             {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
@@ -193,6 +218,24 @@ export default function WorksGallery({
           </li>
         ))}
       </ul>
+
+      {layout === "row" && works.length > 1 ? (
+        <div className="mt-4 flex items-center gap-1.5 sm:hidden" role="tablist" aria-label={t.home.next}>
+          {works.map((work, i) => (
+            <button
+              key={work.favKey ?? i}
+              type="button"
+              role="tab"
+              aria-selected={i === rowActive}
+              aria-label={String(i + 1)}
+              onClick={() => rowGoTo(i)}
+              className="flex h-6 items-center px-0.5"
+            >
+              <span className={`block h-1.5 rounded-full transition-all duration-300 ${i === rowActive ? "w-6 bg-accent" : "w-1.5 bg-border"}`} />
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       {/* სრულეკრანიანი ნახვა: პორტალით body-ში, რომ გვერდის ანიმაცია (transform) პოზიციას არ ცვლიდეს */}
       {current && mounted
