@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Photo from "@/components/Photo";
 import { getLocalizedArtists } from "@/data/artists";
+import { artistOfWeekOverride } from "@/data/featured";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { currentWeek } from "@/lib/week";
@@ -12,7 +13,8 @@ export default async function ArtistOfWeek() {
   const artists = getLocalizedArtists(lang);
   if (artists.length === 0) return null;
   const week = currentWeek();
-  const artist = artists[week % artists.length];
+  // ხელით დაფიქსირებული ხელოვანი (src/data/featured.ts) ან კვირის მიხედვით რიგრიგობით
+  const artist = artists.find((a) => a.slug === artistOfWeekOverride) ?? artists[week % artists.length];
   const photos = artist.works.filter((work) => work.image).slice(0, 4);
   const hero = artist.cover ?? photos[0]?.image;
   const frame = "border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)]";
