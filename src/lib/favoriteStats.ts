@@ -49,3 +49,29 @@ export async function monthFavorites(month: string): Promise<FavoriteStats> {
   });
   return stats;
 }
+
+// ყველაზე ხშირად შენახული ნამუშევრები (მიმდინარე და წინა თვე ერთად); 5 წუთით ვინახავთ მეხსიერებაში, რომ ყოველ ვიზიტზე ბაზას არ მივმართოთ
+let trendCache: { at: number; data: { key: string; count: number }[] } | null = null;
+
+export async function topSavedWorks(limit = 8): Promise<{ key: string; count: number }[]> {
+  if (!clicksEnabled) return [];
+  if (trendCache && Date.now() - trendCache.at < 5 * 60 * 1000) return trendCache.data.slice(0, limit);
+  try {
+    const month = monthOf();
+    const [y, m] = month.split("-").map(Number);
+    const previous = new Date(Date.UTC(y, m - 2, 15)).toISOString().slice(0, 7);
+    const keys = [...validKeys];
+    const results = await pipeline([
+      ...keys.map((k) => ["SCARD", `favw:${month}:${k}`]),
+      ...keys.map((k) => ["SCARD", `favw:${previous}:${k}`]),
+    ]);
+    const data = keys
+      .map((key, i) => ({ key, count: (Number(results[i]?.result) || 0) + (Number(results[keys.length + i]?.result) || 0) }))
+      .filter((x) => x.count > 0)
+      .sort((a, b) => b.count - a.count);
+    trendCache = { at: Date.now(), data };
+    return data.slice(0, limit);
+  } catch {
+    return [];
+  }
+}

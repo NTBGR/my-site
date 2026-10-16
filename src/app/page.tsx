@@ -1,7 +1,9 @@
 import Link from "next/link";
 import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
+import ArtistOfWeek from "@/components/ArtistOfWeek";
 import CategoryArt from "@/components/CategoryArt";
+import TrendingWorks from "@/components/TrendingWorks";
 import CategoryCarousel from "@/components/CategoryCarousel";
 import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
@@ -259,6 +261,8 @@ export default async function Home() {
         </Reveal>
       </section>
 
+      <ArtistOfWeek />
+
       {/* რჩეული ხელოვანები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
         <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
@@ -308,6 +312,8 @@ export default async function Home() {
           </ArtistsCarousel>
         </Reveal>
       </section>
+
+      <TrendingWorks />
 
       {/* როგორ მუშაობს */}
       <section
