@@ -8,7 +8,7 @@ import ArrowButton from "@/components/ui/ArrowButton";
 
 export type BarTag = { slug: string; name: string; emoji: string };
 
-// ჰედერის ქვეშ ზოლი: საჩუქრის შერჩევა და საჩუქრის თაგები.
+// ჰედერის ქვეშ ზოლი: საჩუქრის თაგები (ფასდაკლებები, 100 ₾-მდე...) და ბოლოს საჩუქრის შერჩევა.
 // მარცხენა დაშორება ჩიპის შიდა დაშორებით (px-4) შემცირებულია: პირველი ჩიპის ტექსტი ლოგოსთან ერთ ხაზზე დგას
 export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   const t = useT();
@@ -128,18 +128,6 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               maskImage: `linear-gradient(90deg, ${canLeft ? "transparent, #000 40px" : "#000, #000"}, ${canRight ? "#000 calc(100% - 56px), transparent" : "#000, #000"})`,
             }}
           >
-            <li className="shrink-0">
-              <Link
-                href="/quiz"
-                aria-current={pathname === "/quiz" ? "page" : undefined}
-                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
-                  pathname === "/quiz" ? "bg-accent text-on-accent" : "text-muted hover:bg-accent-soft hover:text-accent"
-                }`}
-              >
-                <span aria-hidden className="mr-1.5">🎯</span>
-                {t.quiz.title}
-              </Link>
-            </li>
             {tags.map((tag) => {
               const active = pathname === `/gifts/${tag.slug}`;
               return (
@@ -157,6 +145,19 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
                 </li>
               );
             })}
+            {/* საჩუქრის შერჩევა ბოლოშია: ფასდაკლებები და ფასის თაგები პირველია */}
+            <li className="shrink-0">
+              <Link
+                href="/quiz"
+                aria-current={pathname === "/quiz" ? "page" : undefined}
+                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
+                  pathname === "/quiz" ? "bg-accent text-on-accent" : "text-muted hover:bg-accent-soft hover:text-accent"
+                }`}
+              >
+                <span aria-hidden className="mr-1.5">🎯</span>
+                {t.quiz.title}
+              </Link>
+            </li>
           </ul>
           {thumb.width < 98 ? (
             <div aria-hidden className="pointer-events-none mx-4 mb-1.5 h-[3px] rounded-full bg-border sm:hidden">
