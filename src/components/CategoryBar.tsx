@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLang, useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import { useDragScroll } from "@/lib/useDragScroll";
 
 export type BarTag = { slug: string; name: string; emoji: string };
 
@@ -17,6 +18,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
   const listRef = useRef<HTMLUListElement | null>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
+  useDragScroll(listRef);
 
   const update = useCallback(() => {
     const el = listRef.current;

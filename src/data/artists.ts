@@ -121,6 +121,7 @@ export const artists: ArtistData[] = [
   },
   {
     slug: "tbgr-poster-lab",
+    joined: "2026-10-19",
     verified: true,
     name: "TBGR Poster Lab",
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს

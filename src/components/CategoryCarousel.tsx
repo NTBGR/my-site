@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import CategoryArt from "@/components/CategoryArt";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import { useDragScroll } from "@/lib/useDragScroll";
 
 export type CarouselSlide = {
   slug: string;
@@ -28,6 +29,7 @@ export default function CategoryCarousel({
   const pausedRef = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [active, setActive] = useState(0);
+  useDragScroll(trackRef);
 
   const step = useCallback(() => {
     const first = trackRef.current?.children[0] as HTMLElement | undefined;
@@ -100,12 +102,12 @@ export default function CategoryCarousel({
     >
       <ul
         ref={trackRef}
-        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto -mt-2 pt-2 -mb-5 px-4 pb-7 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 lg:grid lg:grid-cols-5 lg:overflow-visible [&::-webkit-scrollbar]:hidden"
+        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto -mt-2 pt-2 -mb-5 px-4 pb-7 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide) => (
           <li
             key={slide.slug}
-            className="w-[58%] shrink-0 snap-start sm:w-[46%] lg:w-auto"
+            className="w-[58%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-4*1rem)/5)]"
           >
             <Link
               href={`/categories/${slide.slug}`}
@@ -132,7 +134,7 @@ export default function CategoryCarousel({
         ))}
       </ul>
 
-      <div className="mt-6 flex items-center justify-between gap-4 lg:hidden">
+      <div className="mt-6 flex items-center justify-between gap-4">
         <div className="flex items-center gap-1.5" role="tablist" aria-label={t.categoriesTitle}>
           {slides.map((slide, i) => (
             <button
