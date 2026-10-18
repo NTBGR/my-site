@@ -100,6 +100,7 @@ export default async function GiftPage({
         text={tag.description}
         badge={t.artists.worksCount(all.length)}
         collage={tag.collage}
+        festive={raw.festive}
       />
 
       {/* დალაგება და ფასის ფილტრი: კომპაქტური სეგმენტები, ტელეფონზე ერთ-ერთ რიგში გვერდზე გადასახვევი */}

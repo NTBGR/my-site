@@ -15,20 +15,24 @@ export default function PageBanner({
   text,
   badge,
   collage,
+  festive = false,
   children,
 }: {
   title: string;
   text?: string;
   badge?: string;
   collage: [string, string, string];
+  // საახალწლო ბანერი: მწვანე ფონი და თოვლი
+  festive?: boolean;
   children?: ReactNode;
 }) {
   return (
     <section
-      className="relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
+      className={`relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem] ${festive ? "snow-bg" : ""}`}
       style={{
-        background:
-          "linear-gradient(135deg, #9a826b, #7f6a56 55%, #54443a)",
+        background: festive
+          ? "linear-gradient(135deg, #3f7d5c, #1f5a42 55%, #103b2c)"
+          : "linear-gradient(135deg, #9a826b, #7f6a56 55%, #54443a)",
       }}
     >
       <div className="absolute inset-0 hidden sm:block" aria-hidden>
