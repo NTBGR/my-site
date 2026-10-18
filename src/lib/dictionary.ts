@@ -427,7 +427,7 @@ const en: Dict = {
     promoCta: "Find a gift",
   },
   weekArtist: { label: "Artist of the week", cta: "View profile" },
-  trending: { title: "Favorites of the month", picked: "Handpicked works", saves: (n: number) => `❤ ${n}` },
+  trending: { title: "Favorites of the month", picked: "Featured works", saves: (n: number) => `❤ ${n}` },
   share: { button: "Share", copy: "Copy link", copied: "Copied" },
   priceFilter: { label: "Price", all: "All", upTo: (n: number) => `Up to ${n} ₾` },
   sort: { label: "Sort by", default: "Featured", asc: "Price: low to high", desc: "Price: high to low", short: { asc: "Price ↑", desc: "Price ↓" } },
