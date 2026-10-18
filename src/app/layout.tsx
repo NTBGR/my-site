@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import ScrollToTop from "@/components/ScrollToTop";
 import { dictionary } from "@/lib/dictionary";
 import { activeTags } from "@/data/tags";
+import { buildSearchIndex } from "@/lib/searchIndex";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -48,6 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
       icon: [
         { url: "/favicon.ico", sizes: "any" },
         { url: "/icon.svg", type: "image/svg+xml" },
+        // Google ძიების შედეგში ხატულას იღებს 48px-ის ჯერადი კვადრატიდან: 48, 96 და 192 PNG
+        { url: "/icons/icon-48.png", sizes: "48x48", type: "image/png" },
+        { url: "/icons/icon-96.png", sizes: "96x96", type: "image/png" },
         { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       ],
       apple: "/icons/apple-touch-icon.png",
@@ -80,7 +84,7 @@ export default async function RootLayout({
         <LangProvider lang={lang}>
           <ScrollToTop />
           <Analytics />
-          <Header tags={activeTags(lang)} />
+          <Header tags={activeTags(lang)} searchIndex={buildSearchIndex(lang)} />
           <main className="flex-1">{children}</main>
           <Footer />
         </LangProvider>
