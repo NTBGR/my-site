@@ -7,6 +7,8 @@ import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
 import SavedLink from "@/components/SavedLink";
 import CategoryBar, { type BarTag } from "@/components/CategoryBar";
+import SearchBox from "@/components/SearchBox";
+import type { SearchItem } from "@/lib/searchIndex";
 import LogoLink from "@/components/LogoLink";
 import { useLang, useT } from "@/components/LangProvider";
 import { categories, localizeCategory } from "@/data/categories";
@@ -48,7 +50,7 @@ function MenuIcon({ open }: { open: boolean }) {
   );
 }
 
-export default function Header({ tags }: { tags: BarTag[] }) {
+export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIndex: SearchItem[] }) {
   const router = useRouter();
   const t = useT();
   const lang = useLang();
@@ -124,18 +126,12 @@ export default function Header({ tags }: { tags: BarTag[] }) {
     router.push(q ? `/artists?q=${encodeURIComponent(q)}` : "/artists");
   }
 
-  const searchField = (autoFocus = false) => (
-    <input
-      type="search"
-      autoFocus={autoFocus}
-      name="q"
-      value={query}
-      onChange={(event) => setQuery(event.target.value)}
-      placeholder={t.nav.search}
-      className="h-11 w-full rounded-full border border-border bg-surface px-5 text-base text-text transition-shadow placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:text-sm"
-      aria-label={t.nav.searchLabel}
-    />
-  );
+  // ძებნა შეირჩა ავტოშეთავაზებიდან: ველი იხურება და ტექსტი იწმინდება
+  const afterPick = () => {
+    setSearchOpen(false);
+    setMenuOpen(false);
+    setQuery("");
+  };
 
   return (
     <>
@@ -170,7 +166,7 @@ export default function Header({ tags }: { tags: BarTag[] }) {
           </nav>
 
           <form onSubmit={onSearch} className="hidden w-52 xl:block 2xl:w-64">
-            {searchField()}
+            <SearchBox query={query} setQuery={setQuery} index={searchIndex} variant="desktop" onNavigate={afterPick} />
           </form>
 
           <div className="hidden lg:block">
@@ -217,7 +213,7 @@ export default function Header({ tags }: { tags: BarTag[] }) {
 
         {searchOpen ? (
           <div className="menu-enter border-t border-border px-4 py-3 xl:hidden">
-            <form onSubmit={onSearch}>{searchField(true)}</form>
+            <form onSubmit={onSearch}><SearchBox query={query} setQuery={setQuery} index={searchIndex} variant="panel" autoFocus onNavigate={afterPick} /></form>
           </div>
         ) : null}
       </header>

@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { Artist } from "@/data/artists";
 import ArtistCard from "@/components/ArtistCard";
 import WorksGallery, { type GalleryWork } from "@/components/WorksGallery";
+import type { SearchItem } from "@/lib/searchIndex";
 import { useT } from "@/components/LangProvider";
 import { scoreText } from "@/lib/searchMatch";
 
@@ -19,6 +21,7 @@ export default function ArtistsFilter({
   initialQuery = "",
   searchTexts = {},
   workSearch = [],
+  gifts = [],
 }: {
   artists: Artist[];
   // ფილტრი საიტის კატეგორიებით (მხოლოდ ის, სადაც ხელოვანი არის)
@@ -28,6 +31,8 @@ export default function ArtistsFilter({
   searchTexts?: Record<string, string>;
   // ნამუშევრები ძებნისთვის: ტექსტი (სახელი ორივე ენაზე + ავტორი), კატეგორიები და ბარათი
   workSearch?: { text: string; categories: string[]; gallery: GalleryWork }[];
+  // საჩუქრის თაგები (ძებნის სიტყვებით): ძებნაზე „დედისთვის“, „ბავშვი“ და ა.შ. შესაბამისი საჩუქრის გვერდი ჩანს
+  gifts?: SearchItem[];
 }) {
   const all = useT();
   const t = all.artists;
@@ -57,6 +62,12 @@ export default function ArtistsFilter({
       .sort((a, b) => b.score - a.score)
       .map((x) => x.item.gallery);
   }, [workSearch, craft, query]);
+
+  const giftHits = useMemo(() => {
+    const needle = query.trim();
+    if (needle.length < 2) return [];
+    return gifts.filter((gift) => scoreText(gift.text, needle) > 0).slice(0, 3);
+  }, [gifts, query]);
 
   const filtersActive = craft !== "all" || query.trim() !== "";
 
@@ -121,7 +132,22 @@ export default function ArtistsFilter({
       </div>
       ) : null}
 
-      {filtered.length === 0 && matchedWorks.length === 0 ? (
+      {giftHits.length > 0 ? (
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <span className="text-sm text-muted">{all.artists.giftIdeas}:</span>
+          {giftHits.map((gift) => (
+            <Link
+              key={gift.href}
+              href={gift.href}
+              className="inline-flex min-h-10 items-center rounded-full border border-border bg-surface px-4 text-sm font-medium text-text transition hover:border-accent hover:text-accent"
+            >
+              {gift.label}
+            </Link>
+          ))}
+        </div>
+      ) : null}
+
+      {filtered.length === 0 && matchedWorks.length === 0 && giftHits.length === 0 ? (
         <div className="mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-10 text-center">
           <p className="text-muted">{t.empty}</p>
           {filtersActive ? (

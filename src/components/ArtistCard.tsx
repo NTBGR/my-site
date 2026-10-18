@@ -2,6 +2,7 @@ import Photo from "@/components/Photo";
 import Link from "next/link";
 import type { Artist } from "@/data/artists";
 import CategoryArt from "@/components/CategoryArt";
+import VerifiedMark from "@/components/VerifiedMark";
 import { categoryColor } from "@/data/categories";
 
 // ხელოვანის ბარათი: ფოტო ზემოთ, კრემისფერი პანელი ქვემოთ; თიხისფერი მხოლოდ „გახდი პარტნიორი“ ბარათზეა, რომ ის გამოირჩეოდეს.
@@ -45,6 +46,7 @@ export default function ArtistCard({
         <div className="min-w-0">
           <h3 className="text-[15px] font-semibold leading-snug tracking-tight [overflow-wrap:anywhere] sm:text-lg">
             {artist.name}
+            {artist.verified ? <VerifiedMark className="ml-1 inline-block h-[0.95em] w-[0.95em] translate-y-[1px] text-accent" /> : null}
           </h3>
           {worksLabel ? <p className="mt-0.5 text-xs text-muted sm:text-sm">{worksLabel}</p> : null}
         </div>

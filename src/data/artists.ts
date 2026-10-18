@@ -38,6 +38,9 @@ export type ArtistData = {
   // საიტზე დამატების თარიღი (YYYY-MM-DD): 14 დღით მთავარზე „ახალი ხელოვანი“ ზოლი ჩანს.
   // თუ არ არის, ავტომატურად იღება ყველაზე ადრეული ნამუშევრის `added`
   joined?: string;
+  // „გადამოწმებულია“: ხელით შემოწმებულია, რომ ხელოვანის გვერდი ნამდვილია და აქტიური. ნიშანი ჩანს მის გვერდზე და ბარათზე.
+  // გასაუქმებლად წაშალე ეს ხაზი ან false დაწერე
+  verified?: boolean;
   // ფასდაკლება ხელოვანის ყველა ნამუშევარზე: percent (%) და არასავალდებულო `until` (YYYY-MM-DD, ამ დღის ჩათვლით).
   // გასაშვებად მიუთითე, შესაჩერებლად წაშალე ეს ხაზი ან გასვლის თარიღი დაწერე
   sale?: { percent: number; until?: string };
@@ -58,6 +61,7 @@ export type Artist = ArtistData & { category: string };
 export const artists: ArtistData[] = [
   {
     slug: "zhuzha-ceramics",
+    verified: true,
     name: "ZHU-ZHA Ceramics",
     city: "თბილისი",
     categories: ["keramika", "samkauli"],
@@ -92,6 +96,7 @@ export const artists: ArtistData[] = [
   },
   {
     slug: "tbgr-poster-lab",
+    verified: true,
     name: "TBGR Poster Lab",
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
     city: "",
@@ -138,6 +143,7 @@ export const artists: ArtistData[] = [
   },
   {
     slug: "tamus-shop",
+    verified: true,
     name: "Tamus Shop",
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
     city: "",

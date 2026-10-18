@@ -231,3 +231,20 @@ export async function resetStats(): Promise<number> {
   }
   return deleted;
 }
+
+// ხელოვანის გვერდზე ჩვენებული „ამ თვეში გადავიდა N ადამიანი“. ხშირი კითხვა რომ ბაზას არ დააწვეს, 5 წუთით ვიმახსოვრებთ მეხსიერებაში
+let reachCache: { at: number; month: string; people: Record<string, number> } | null = null;
+
+export async function monthReach(slug: string): Promise<number> {
+  if (!clicksEnabled) return 0;
+  const month = monthOf();
+  if (!reachCache || reachCache.month !== month || Date.now() - reachCache.at > 5 * 60 * 1000) {
+    const stats = await monthStats(month);
+    reachCache = {
+      at: Date.now(),
+      month,
+      people: Object.fromEntries(Object.entries(stats).map(([key, s]) => [key, s.instagram + s.facebook])),
+    };
+  }
+  return reachCache.people[slug] ?? 0;
+}

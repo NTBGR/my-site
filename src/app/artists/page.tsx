@@ -2,6 +2,7 @@ import ArtistsFilter from "@/components/ArtistsFilter";
 import PageBanner from "@/components/PageBanner";
 import { getLocalizedArtists } from "@/data/artists";
 import { toGalleryWork } from "@/lib/galleryWork";
+import { buildSearchIndex } from "@/lib/searchIndex";
 import { categories, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -52,7 +53,7 @@ export default async function ArtistsPage({
       />
 
       <div className="mt-8 sm:mt-10">
-        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} searchTexts={searchTexts} workSearch={workSearch} />
+        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} searchTexts={searchTexts} workSearch={workSearch} gifts={buildSearchIndex(lang).filter((item) => item.kind === "gift")} />
       </div>
     </div>
   );

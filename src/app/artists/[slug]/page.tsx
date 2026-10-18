@@ -11,7 +11,9 @@ import CopyLink from "@/components/CopyLink";
 import ProfileView from "@/components/ProfileView";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, localizeArtist, pricing } from "@/data/artists";
+import { getArtistBySlug, isNewArtist, isNewWork, localizeArtist, pricing } from "@/data/artists";
+import VerifiedMark from "@/components/VerifiedMark";
+import { monthReach } from "@/lib/clicks";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { toGalleryWork } from "@/lib/galleryWork";
@@ -127,6 +129,10 @@ export default async function ArtistPage({
     .filter((c) => c !== undefined)
     .map((c) => localizeCategory(c, lang));
   // ხელოვანის საერთო ფასდაკლება (ბანერის ნიშნისთვის): ის ჩანს, თუ ახლა მართლა მოქმედებს
+  // ახლად დამატებული ნამუშევრები (30 დღე) და ამ თვის გადასვლები (ნაჩვენებია, როცა რიცხვი უკვე ღირსშესანიშნავია)
+  const freshWorks = artist.works.map((work, index) => ({ work, index })).filter(({ work }) => isNewWork(work));
+  const MIN_PUBLIC_REACH = 5;
+  const reach = await monthReach(artist.slug).catch(() => 0);
   const salePercent = artist.works.map((work) => pricing(artist, work)?.percent).find(Boolean);
   const instagram = artist.instagram ? `/go/${artist.slug}/instagram` : undefined;
   const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
@@ -216,6 +222,15 @@ export default async function ArtistPage({
                 🔥 −{salePercent}%
               </span>
             ) : null}
+            {artist.verified ? (
+              <span title={t.verifiedHint} className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
+                <VerifiedMark className="h-3.5 w-3.5" checkColor="#5b4636" />
+                {t.verified}
+              </span>
+            ) : null}
+            {isNewArtist(artist) ? (
+              <span className="rounded-full bg-accent px-3 py-0.5 font-semibold text-on-accent shadow-sm">✦ {t.newArtistChip}</span>
+            ) : null}
           </div>
           <h1 className="mt-2 pr-24 text-balance text-[min(1.75rem,7vw)] font-semibold leading-[1.08] tracking-tight [overflow-wrap:anywhere] sm:pr-0 sm:text-3xl lg:text-4xl xl:text-5xl">
             {artist.name}
@@ -223,6 +238,12 @@ export default async function ArtistPage({
           <p className="mt-1 text-sm text-white/80">
             {all.artists.worksCount(artist.works.length)}
           </p>
+          {reach >= MIN_PUBLIC_REACH ? (
+            <p className="mt-1 text-sm font-medium text-white/90">
+              ↗ {t.monthReach(reach)}
+              <span className="ml-1.5 text-xs font-normal text-white/60">· {t.monthReachNote}</span>
+            </p>
+          ) : null}
 
           <div className="mt-4 flex items-center justify-between gap-3">
             <p className="text-sm font-medium text-white/85">{t.buyHint}</p>
@@ -257,7 +278,18 @@ export default async function ArtistPage({
           ) : null}
         </div>
         <p className="mt-2 text-xs leading-relaxed text-muted sm:mt-1 sm:text-sm">{all.priceNote}</p>
-        <div className="mt-4 sm:mt-5">
+        {freshWorks.length > 0 && freshWorks.length < artist.works.length ? (
+          <div className="mt-5">
+            <h3 className="mb-3 text-base font-semibold tracking-tight text-text sm:text-lg">✦ {t.recentlyAdded}</h3>
+            <WorksGallery
+              layout="row"
+              columns="sm:grid-cols-4 lg:grid-cols-5"
+              showSort={false}
+              works={freshWorks.map(({ work, index }) => toGalleryWork(artist, work, index))}
+            />
+          </div>
+        ) : null}
+        <div className="mt-6 sm:mt-8">
           <WorksGallery
             shareUrl={`/artists/${artist.slug}`}
             shareTitle={artist.name}
@@ -271,6 +303,14 @@ export default async function ArtistPage({
         <div className="rounded-[1.75rem] border border-border bg-surface p-6 sm:p-8">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">{t.about}</h2>
           <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">{artist.bio}</p>
+          {artist.verified ? (
+            <p className="mt-4 flex items-start gap-2 text-sm text-muted">
+              <VerifiedMark className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+              <span>
+                <b className="font-semibold text-text">{t.verified}.</b> {t.verifiedHint}
+              </span>
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-col justify-center rounded-[1.75rem] bg-accent-soft p-6 sm:p-8">
           <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>

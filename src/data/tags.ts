@@ -11,6 +11,8 @@ export type Tag = {
   description: string;
   // თუ მითითებულია, ამ ფასამდე (ჩათვლით) ყველა ნამუშევარი ავტომატურად ხვდება თაგში
   maxPrice?: number;
+  // ძებნისთვის: სიტყვები, რითაც ადამიანი ამ საჩუქარს ეძებს („დედისთვის“, „ბავშვი“, „football“...)
+  keywords?: string[];
   // თუ true, თაგში ხვდება ყველა ნამუშევარი, რომელსაც ახლა ფასდაკლება აქვს
   sale?: boolean;
   // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდიც არ იხსნება და sitemap-შიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
@@ -24,6 +26,7 @@ export type Tag = {
 export const tags: Tag[] = [
   {
     slug: "sale",
+    keywords: ["ფასდაკლება","ფასდაკლებები","ფასდაკლებული","აქცია","გაიაფებული","sale","discount","deal"],
     collage: ["posterebi", "sachuqrebi", "keramika"],
     emoji: "🔥",
     name: "ფასდაკლებები",
@@ -33,6 +36,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-kids",
+    keywords: ["ბავშვი","ბავშვისთვის","ბავშვებისთვის","შვილი","შვილისთვის","kids","kid","child","baby"],
     collage: ["sachuqrebi", "tekstili", "saxlis-dekori"],
     emoji: "🧸",
     name: "საჩუქარი ბავშვისთვის",
@@ -41,6 +45,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "under-100",
+    keywords: ["იაფი","ბიუჯეტი","ბიუჯეტური","ლარამდე","100","cheap","budget","affordable"],
     collage: ["sachuqrebi", "keramika", "tekstili"],
     emoji: "🏷️",
     name: "საჩუქარი 100 ₾-მდე",
@@ -50,6 +55,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-her",
+    keywords: ["ქალი","ქალისთვის","ქალბატონი","ქალბატონისთვის","დედა","დედას","დედისთვის","მეუღლე","ცოლი","ცოლისთვის","გოგო","გოგოს","გოგოსთვის","მეგობარი","და","დისთვის","her","woman","women","girl","girlfriend","mom","mother","wife","sister","ladies"],
     collage: ["samkauli", "tekstili", "sachuqrebi"],
     emoji: "💐",
     name: "საჩუქარი ქალბატონებისთვის",
@@ -58,6 +64,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-him",
+    keywords: ["კაცი","კაცისთვის","მამაკაცი","მამაკაცისთვის","მამა","მამას","მამისთვის","ქმარი","ქმრისთვის","ბიჭი","ბიჭისთვის","ძმა","ძმისთვის","him","man","men","dad","father","husband","boyfriend","brother"],
     collage: ["tyavi", "posterebi", "khis-nakethobebi"],
     emoji: "🎁",
     name: "საჩუქარი მამაკაცებისთვის",
@@ -66,6 +73,7 @@ export const tags: Tag[] = [
   },
   {
     slug: "for-fans",
+    keywords: ["ფეხბურთი","ფეხბურთელი","სპორტი","გულშემატკივარი","გულშემატკივარს","ბარსა","რეალი","football","soccer","sport","sports","fan","fans"],
     collage: ["posterebi", "nakhatebi", "sachuqrebi"],
     emoji: "⚽",
     name: "საჩუქარი გულშემატკივარს",
