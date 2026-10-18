@@ -1,6 +1,6 @@
 import ArtistsFilter from "@/components/ArtistsFilter";
 import PageBanner from "@/components/PageBanner";
-import { getLocalizedArtists } from "@/data/artists";
+import { getLocalizedArtists, workAddedTime } from "@/data/artists";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { buildSearchIndex } from "@/lib/searchIndex";
 import { categories, localizeCategory } from "@/data/categories";
@@ -34,13 +34,14 @@ export default async function ArtistsPage({
     ]),
   );
   // ნამუშევრების ძებნა: სახელი ორივე ენაზე + ავტორი; დამთხვევაზე ბარათი იქვე იხსნება გადიდებულად
-  const workSearch = kaArtists.flatMap((ka, ai) =>
-    ka.works.map((work, wi) => ({
+  const workSearch = kaArtists
+    .flatMap((ka, ai) => ka.works.map((work, wi) => ({ ka, ai, work, wi })))
+    .sort((a, b) => workAddedTime(b.work) - workAddedTime(a.work)) // ყველგან დროით: ახალი პირველი
+    .map(({ ka, ai, work, wi }) => ({
       text: [work.title, enArtists[ai].works[wi]?.title ?? "", ka.name, enArtists[ai].name].join(" "),
       categories: ka.categories,
       gallery: toGalleryWork(artists[ai], artists[ai].works[wi], wi, { showArtist: true }),
-    })),
-  );
+    }));
   const q = Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "";
 
   return (

@@ -75,6 +75,8 @@ const ka = {
     next: "შემდეგი",
     featured: "რჩეული ხელოვანები",
     newWorks: "ახალი ნამუშევრები",
+    allNewWorks: "ყველა ახალი ნამუშევარი",
+    newWorksText: "ბოლო 30 დღეში დამატებული ნამუშევრები, ახლები პირველი.",
     saleBanner: {
       title: (range: string) => `ფასდაკლება ${range}`,
       text: (artists: string) => `${artists}: ხელნაკეთი ნამუშევრები შეღავათიან ფასად.`,
@@ -351,6 +353,8 @@ const en: Dict = {
     next: "Next",
     featured: "Featured artists",
     newWorks: "New works",
+    allNewWorks: "All new works",
+    newWorksText: "Works added in the last 30 days, newest first.",
     saleBanner: {
       title: (range: string) => `Sale ${range}`,
       text: (artists: string) => `${artists}: handmade works at a special price.`,

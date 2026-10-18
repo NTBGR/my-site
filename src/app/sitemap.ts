@@ -7,7 +7,7 @@ import { SITE_URL } from "@/lib/site";
 
 // საძიებო სისტემებისთვის გვერდების სია: ავტომატურად იზრდება, როცა ახალი ხელოვანი ან კატეგორია ემატება
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/artists", "/categories", "/about", "/join", "/blog", "/privacy", "/quiz"];
+  const pages = ["", "/artists", "/categories", "/about", "/join", "/blog", "/privacy", "/quiz", "/new"];
   return [
     ...pages.map((path) => ({ url: `${SITE_URL}${path}` })),
     ...categories.map((category) => ({ url: `${SITE_URL}/categories/${category.slug}` })),

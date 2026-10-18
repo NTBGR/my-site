@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Photo from "@/components/Photo";
-import { getLocalizedArtists, isNewArtist } from "@/data/artists";
+import { getLocalizedArtists, isNewArtist, workAddedTime } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
@@ -19,10 +19,9 @@ export default async function NewArtists() {
       <ul className={`grid gap-3 sm:gap-4 ${fresh.length > 1 ? "lg:grid-cols-2" : ""}`}>
         {fresh.map((artist) => {
           // ახალი ხელოვანის ბარათზე ყველაზე ახლად დამატებული ნამუშევრების ფოტოები ჩანს (თანაბარი თარიღისას სიის რიგით)
-          const addedAt = (work: { added?: string }) => (work.added ? Date.parse(work.added) || 0 : 0);
           const photos = artist.works
             .filter((work) => work.image)
-            .sort((a, b) => addedAt(b) - addedAt(a))
+            .sort((a, b) => workAddedTime(b) - workAddedTime(a))
             .slice(0, 3);
           return (
             <li key={artist.slug}>

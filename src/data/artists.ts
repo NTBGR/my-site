@@ -248,11 +248,17 @@ export function workId(work: ArtistWork, index: number): string {
 
 export type WorkEntry = { artist: Artist; work: ArtistWork; index: number; id: string };
 
-// ყველა ნამუშევარი ერთ სიაში (ავტორთან ერთად)
+// დამატების დრო (ms); თარიღის გარეშე (ძველი) ნამუშევარი 0 არის და სიის ბოლოში ხვდება
+export function workAddedTime(work: { added?: string }): number {
+  return work.added ? Date.parse(work.added) || 0 : 0;
+}
+
+// ყველა ნამუშევარი ერთ სიაში (ავტორთან ერთად): ყველგან დროით, ყველაზე ახლად დამატებული პირველი.
+// თანაბარი თარიღისას რიგი ფაილისაა (sort სტაბილურია)
 export function getWorkEntries(lang: Lang): WorkEntry[] {
-  return getLocalizedArtists(lang).flatMap((artist) =>
-    artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })),
-  );
+  return getLocalizedArtists(lang)
+    .flatMap((artist) => artist.works.map((work, index) => ({ artist, work, index, id: workId(work, index) })))
+    .sort((a, b) => workAddedTime(b.work) - workAddedTime(a.work));
 }
 
 // ნამუშევარი „ახალია“, თუ ბოლო 30 დღეში დაემატა

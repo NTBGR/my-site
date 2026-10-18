@@ -1,3 +1,4 @@
+import Link from "next/link";
 import WorksGallery from "@/components/WorksGallery";
 import { getWorkEntries, isNewWork } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
@@ -17,15 +18,35 @@ export default async function NewWorks() {
 
   return (
     <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
-      <h2 className="mb-5 text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:mb-8 sm:text-3xl lg:text-4xl">
-        {t.newWorks}
-      </h2>
+      <div className="mb-5 flex items-end justify-between gap-4 sm:mb-8">
+        <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
+          {t.newWorks}
+        </h2>
+        <Link
+          href="/new"
+          className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
+        >
+          {t.allNewWorks}
+          <span className="arrow-slide" aria-hidden>
+            →
+          </span>
+        </Link>
+      </div>
       <WorksGallery
         layout="row"
         columns="sm:grid-cols-3 lg:grid-cols-6"
         showSort={false}
         works={fresh.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))}
       />
+      <Link
+        href="/new"
+        className="group mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface px-6 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:hidden"
+      >
+        {t.allNewWorks}
+        <span className="arrow-slide" aria-hidden>
+          →
+        </span>
+      </Link>
     </section>
   );
 }

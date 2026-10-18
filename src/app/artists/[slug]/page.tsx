@@ -11,16 +11,13 @@ import CopyLink from "@/components/CopyLink";
 import ProfileView from "@/components/ProfileView";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, isNewArtist, localizeArtist, pricing } from "@/data/artists";
+import { getArtistBySlug, isNewArtist, localizeArtist, pricing, workAddedTime } from "@/data/artists";
 import VerifiedMark from "@/components/VerifiedMark";
 import { monthReach } from "@/lib/clicks";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
-
-// ნამუშევრები დროით: ყველაზე ახლად დამატებული პირველი; თარიღის გარეშე (ძველი) ნამუშევრები ბოლოში, ფაილში რიგით
-const addedAt = (work: { added?: string }) => (work.added ? Date.parse(work.added) || 0 : 0);
 
 function InstagramIcon() {
   return (
@@ -286,7 +283,7 @@ export default async function ArtistPage({
             shareTitle={artist.name}
             works={artist.works
               .map((work, i) => ({ work, i }))
-              .sort((a, b) => addedAt(b.work) - addedAt(a.work))
+              .sort((a, b) => workAddedTime(b.work) - workAddedTime(a.work))
               .map(({ work, i }) => toGalleryWork(artist, work, i))}
           />
         </div>
