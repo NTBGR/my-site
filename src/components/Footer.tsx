@@ -78,9 +78,14 @@ export default async function Footer() {
       <div className="border-t border-border">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-5 text-sm text-muted sm:px-6 lg:px-10">
           <p>{f.copyright}</p>
-          <Link href="/privacy" className="inline-flex min-h-10 items-center transition-colors hover:text-accent">
-            {f.privacy}
-          </Link>
+          <div className="flex flex-wrap gap-x-6">
+            <Link href="/terms" className="inline-flex min-h-10 items-center transition-colors hover:text-accent">
+              {f.terms}
+            </Link>
+            <Link href="/privacy" className="inline-flex min-h-10 items-center transition-colors hover:text-accent">
+              {f.privacy}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

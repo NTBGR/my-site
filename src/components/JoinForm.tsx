@@ -239,17 +239,25 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
         </p>
       )}
 
-      <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:gap-5">
+      {/* თანხმობა მონიშვნით: მონიშვნის გარეშე ფორმა არ გაიგზავნება */}
+      <label className="flex items-start gap-3 text-sm leading-relaxed text-text sm:col-span-2">
+        <input type="checkbox" name="agree" required className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-accent" />
+        <span>{t.consent}{" "}
+          <Link href="/privacy" target="_blank" className="underline underline-offset-2 hover:text-accent">
+            {t.consentLink}
+          </Link>{" "}
+          {t.consentAnd}{" "}
+          <Link href="/terms" target="_blank" className="underline underline-offset-2 hover:text-accent">
+            {t.consentTerms}
+          </Link>{" "}
+          {t.consentPrice}
+        </span>
+      </label>
+
+      <div className="sm:col-span-2">
         <Button type="submit" disabled={status === "sending"}>
           {status === "sending" ? t.sending : t.submit}
         </Button>
-        <p className="text-xs leading-relaxed text-muted">
-          {t.consent}{" "}
-          <Link href="/privacy" target="_blank" className="underline underline-offset-2 hover:text-accent">
-            {t.consentLink}
-          </Link>
-          .
-        </p>
       </div>
     </form>
   );

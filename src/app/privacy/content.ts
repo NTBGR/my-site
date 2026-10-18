@@ -3,6 +3,8 @@ import type { Lang } from "@/lib/dictionary";
 // კონფიდენციალურობის პოლიტიკა. ტექსტი აღწერს იმას, რასაც საიტი რეალურად აკეთებს:
 // განაცხადის ფორმა (ტელეგრამი/იმეილი), გადასვლების ანონიმური დათვლა (Upstash), ქუქები.
 // საიტის ქცევის შეცვლისას აქაც განაახლე და UPDATED თარიღი შეცვალე.
+// ვერსია (დაემთხვევა updated თარიღს): განაცხადთან ერთად ინახება. შეცვლისას განაახლე updated-იც
+export const PRIVACY_VERSION = "2026-10-19";
 export const CONTACT_EMAIL = "khelovani.ge@gmail.com";
 
 type Section = { title: string; text?: string[]; items?: string[] };
@@ -14,7 +16,7 @@ export const privacy: Record<
   ka: {
     title: "კონფიდენციალურობა",
     intro: "მოკლედ და გასაგებად: რა ინფორმაციას ვაგროვებთ, რატომ და როგორ ვიყენებთ.",
-    updated: "ბოლო განახლება: 15 ოქტომბერი, 2026",
+    updated: "ბოლო განახლება: 19 ოქტომბერი, 2026",
     sections: [
       {
         title: "ვინ ვართ",
@@ -77,7 +79,7 @@ export const privacy: Record<
       },
       {
         title: "ცვლილებები",
-        text: ["თუ ამ წესებს შევცვლით, განახლებული ვერსია აქ გამოქვეყნდება და ზემოთ თარიღიც შეიცვლება."],
+        text: ["თუ ამ წესებს შევცვლით, განახლებული ვერსია აქ გამოქვეყნდება და ზემოთ თარიღიც შეიცვლება. არსებულ ხელოვანებს არსებით ცვლილებას იმეილით ვაცნობებთ."],
       },
     ],
     contactTitle: "კონტაქტი",
@@ -86,7 +88,7 @@ export const privacy: Record<
   en: {
     title: "Privacy",
     intro: "In short and plainly: what we collect, why, and how we use it.",
-    updated: "Last updated: 15 October 2026",
+    updated: "Last updated: 19 October 2026",
     sections: [
       {
         title: "Who we are",
@@ -149,7 +151,7 @@ export const privacy: Record<
       },
       {
         title: "Changes",
-        text: ["If we change these rules, the updated version will be published here and the date above will change."],
+        text: ["If we change these rules, the updated version will be published here and the date above will change. Existing makers will be told of material changes by email."],
       },
     ],
     contactTitle: "Contact",

@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { TERMS_VERSION } from "@/app/terms/content";
+import { PRIVACY_VERSION } from "@/app/privacy/content";
 import { categoryNameKa, cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 import { allowed, clientIp } from "@/lib/ratelimit";
 
@@ -60,8 +62,10 @@ export async function POST(request: Request) {
   const instagram = field(data, "instagram");
   const facebook = field(data, "facebook");
   const comment = field(data, "comment", 1000);
+  // თანხმობის გამშვები უჯრა სავალდებულოა (კლიენტი ამას ისედაც ამოწმებს; აქ — პირდაპირი მოთხოვნებისთვის)
+  const agreed = Boolean(field(data, "agree"));
 
-  if (!name || !brand || !email || !city || !categoryName || !bio || !instagram) {
+  if (!name || !brand || !email || !city || !categoryName || !bio || !instagram || !agreed) {
     return NextResponse.json(
       { error: "required" },
       { status: 400 },
@@ -74,7 +78,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const application = { name, brand, email, city, category: categoryName, instagram, facebook, bio, comment };
+  // თანხმობის ჩანაწერი: როდის და რომელ ვერსიას დათანხმდა (თბილისის დრო), რომ მოთხოვნისას დასტური გვქონდეს
+  const consent = `პირობები ${TERMS_VERSION}, კონფიდენციალურობა ${PRIVACY_VERSION} · ${new Date().toLocaleString("en-GB", { timeZone: "Asia/Tbilisi" })} (თბილისის დრო)`;
+  const application = { name, brand, email, city, category: categoryName, instagram, facebook, bio, comment, consent };
 
   const telegramOn = Boolean(
     process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
@@ -110,6 +116,7 @@ type Application = {
   facebook: string;
   bio: string;
   comment: string;
+  consent: string;
 };
 
 async function sendToTelegram(app: Application) {
@@ -131,6 +138,8 @@ async function sendToTelegram(app: Application) {
     "<b>ბიოგრაფია:</b>",
     escapeHtml(app.bio),
     ...(app.comment ? ["", "<b>კომენტარი:</b>", escapeHtml(app.comment)] : []),
+    "",
+    `<b>თანხმობა:</b> ${escapeHtml(app.consent)}`,
   ].join("\n");
 
   try {
@@ -166,6 +175,7 @@ async function sendToEmail(app: Application) {
     <p><b>ფეისბუქი:</b> ${escapeHtml(app.facebook) || "—"}</p>
     <p><b>ბიოგრაფია:</b><br>${escapeHtml(app.bio).replace(/\n/g, "<br>")}</p>
     ${app.comment ? `<p><b>კომენტარი:</b><br>${escapeHtml(app.comment).replace(/\n/g, "<br>")}</p>` : ""}
+    <p><b>თანხმობა:</b> ${escapeHtml(app.consent)}</p>
   `;
 
   try {
