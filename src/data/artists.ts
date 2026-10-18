@@ -61,6 +61,7 @@ export type Artist = ArtistData & { category: string };
 export const artists: ArtistData[] = [
   {
     slug: "zhuzha-ceramics",
+    joined: "2026-10-18",
     verified: true,
     name: "ZHU-ZHA Ceramics",
     city: "თბილისი",
