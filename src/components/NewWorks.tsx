@@ -13,7 +13,7 @@ export default async function NewWorks() {
   const fresh = getWorkEntries(lang)
     .filter(({ work }) => isNewWork(work))
     .sort((a, b) => Date.parse(b.work.added!) - Date.parse(a.work.added!))
-    .slice(0, 6);
+    .slice(0, 10);
   if (fresh.length === 0) return null;
 
   return (
@@ -34,19 +34,10 @@ export default async function NewWorks() {
       </div>
       <WorksGallery
         layout="row"
-        columns="sm:grid-cols-3 lg:grid-cols-6"
+        columns="sm:grid-cols-3 lg:grid-cols-5"
         showSort={false}
         works={fresh.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))}
       />
-      <Link
-        href="/new"
-        className="group mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface px-6 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:hidden"
-      >
-        {t.allNewWorks}
-        <span className="arrow-slide" aria-hidden>
-          →
-        </span>
-      </Link>
     </section>
   );
 }
