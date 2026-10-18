@@ -139,7 +139,7 @@ export const artists: ArtistData[] = [
       { title: "პოსტერი „იამალი“", color: "#2f4f9e", image: "/artists/tbgr-poster-lab/yamal.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „ალი“", color: "#c2242e", image: "/artists/tbgr-poster-lab/ali.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „რეალ მადრიდი“", color: "#1d4f9c", image: "/artists/tbgr-poster-lab/real-madrid.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
-      { title: "პოსტერი „ბარსელონა“", color: "#a3123f", image: "/artists/tbgr-poster-lab/barcelona-real.jpg", width: 1200, height: 1200, price: 60, tags: ["for-fans", "for-him"] },
+      { title: "პოსტერი „ბარსელონა“", color: "#a3123f", image: "/artists/tbgr-poster-lab/barcelona.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „ლივერპული“", color: "#8a1c1c", image: "/artists/tbgr-poster-lab/liverpool.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „მანჩესტერ იუნაიტედი“", color: "#d8281c", image: "/artists/tbgr-poster-lab/manchester-united.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „მილანი“", color: "#d6122e", image: "/artists/tbgr-poster-lab/milan.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
