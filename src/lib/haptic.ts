@@ -1,6 +1,24 @@
 // მსუბუქი ვიბრაცია შეხებაზე (გულის დაჭერა და სხვ.).
-// Android: navigator.vibrate. iPhone-ის Safari-ს ეს API არ აქვს, ამიტომ iOS 17.4+-ზე ვიყენებთ ფარულ „switch“ ველს, რომლის დაჭერაც სისტემურ ჰაპტიკს რთავს.
+// Android: navigator.vibrate. iPhone-ის Safari-ს ეს API არ აქვს; iOS 17.4+-ზე სისტემურ ჰაპტიკს რთავს ფარული „switch“ ველის გადართვა
+// (ტელეფონის პარამეტრებში „Sounds & Haptics → System Haptics“ ჩართული უნდა იყოს). ველს ერთხელ ვქმნით და ვტოვებთ გვერდზე, რადგან ყოველ ჯერზე ახალი ელემენტი ზოგჯერ არ მუშაობს.
 // ორივე მხოლოდ მომხმარებლის დაჭერის დროს მუშაობს; სადაც არ მუშაობს (დესკტოპი, ძველი ტელეფონი), ჩუმად არაფერს აკეთებს.
+let iosLabel: HTMLLabelElement | undefined;
+
+function iosHaptic() {
+  if (!iosLabel || !iosLabel.isConnected) {
+    const label = document.createElement("label");
+    label.setAttribute("aria-hidden", "true");
+    label.style.display = "none";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.setAttribute("switch", "");
+    label.appendChild(input);
+    document.head.appendChild(label);
+    iosLabel = label;
+  }
+  iosLabel.click();
+}
+
 export function haptic(ms = 30) {
   if (typeof navigator === "undefined" || typeof document === "undefined") return;
   if (typeof navigator.vibrate === "function") {
@@ -8,15 +26,6 @@ export function haptic(ms = 30) {
     return;
   }
   try {
-    const label = document.createElement("label");
-    label.setAttribute("aria-hidden", "true");
-    label.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0;pointer-events:none";
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.setAttribute("switch", "");
-    label.appendChild(input);
-    document.body.appendChild(label);
-    label.click();
-    window.setTimeout(() => label.remove(), 150);
+    iosHaptic();
   } catch {}
 }

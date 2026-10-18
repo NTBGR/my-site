@@ -11,6 +11,7 @@ const inputClass =
   "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
 // ჩამოსაშლელი სია: ბრაუზერის ჩვეულებრივი სტილის ნაცვლად ჩვენი ველის ფორმა და საკუთარი ისარი
+// placeholder ვარიანტი disabled არ არის: iOS-ის ბორბალი მასზე იწყება და „ნახატები“ (პირველი რეალური ვარიანტი) შემთხვევით არ აირჩევა; required ცარიელს მაინც არ გაატარებს
 const selectClass = `${inputClass} mt-0 min-h-12 cursor-pointer appearance-none pr-11 [&>option]:bg-bg [&>option]:text-text`;
 
 function SelectArrow() {
@@ -119,7 +120,7 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
               onChange={(event) => setCity(event.target.value)}
               className={`${selectClass} ${city === "" ? "text-muted" : ""}`}
             >
-              <option value="" disabled>
+              <option value="">
                 {t.cityPlaceholder}
               </option>
               {cities.map((item) => (
@@ -155,7 +156,7 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
               onChange={(event) => setCategory(event.target.value)}
               className={`${selectClass} ${category === "" ? "text-muted" : ""}`}
             >
-              <option value="" disabled>
+              <option value="">
                 {t.categoryPlaceholder}
               </option>
               {categories.map((item) => (
