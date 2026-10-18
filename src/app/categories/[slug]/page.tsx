@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import BackLink from "@/components/BackLink";
 import JsonLd from "@/components/JsonLd";
@@ -103,9 +104,24 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       </section>
 
       {items.length === 0 ? (
-        <p className="mt-8 rounded-[1.75rem] border border-dashed border-border bg-surface p-10 text-center text-muted">
-          {t.categories.empty}
-        </p>
+        <section className="mt-8 flex flex-col items-start gap-4 rounded-[1.75rem] border border-dashed border-border bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:p-10">
+          <div className="max-w-xl">
+            <p className="text-sm text-muted">{t.categories.empty}</p>
+            <h2 className="mt-2 font-serif text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl">
+              ✦ {t.categories.firstTitle}
+            </h2>
+            <p className="mt-2 text-base leading-relaxed text-muted">{t.categories.firstText}</p>
+          </div>
+          <Link
+            href={`/join?category=${category.slug}#apply`}
+            className="group inline-flex min-h-12 shrink-0 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 hover:bg-accent-hover active:scale-95"
+          >
+            {t.categories.firstCta}
+            <span className="arrow-slide" aria-hidden>
+              →
+            </span>
+          </Link>
+        </section>
       ) : (
         <ul className="stagger mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
           {items.map((artist) => (

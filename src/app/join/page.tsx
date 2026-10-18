@@ -2,6 +2,7 @@ import Link from "next/link";
 import BackLink from "@/components/BackLink";
 import JoinForm from "@/components/JoinForm";
 import PageBanner from "@/components/PageBanner";
+import { categories } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 
@@ -9,8 +10,11 @@ export async function generateMetadata() {
   return { title: dictionary[await getLang()].join.title };
 }
 
-export default async function JoinPage() {
+export default async function JoinPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const all = dictionary[await getLang()];
+  // ცარიელი კატეგორიის გვერდიდან მოსულს ფორმაში ეს კატეგორია უკვე არჩეული აქვს
+  const requested = (await searchParams).category;
+  const defaultCategory = categories.some((c) => c.slug === requested) ? requested : undefined;
   const t = all.join;
 
   return (
@@ -95,7 +99,7 @@ export default async function JoinPage() {
           id="apply"
           className="scroll-mt-24 rounded-[1.75rem] border border-border bg-surface p-5 shadow-sm sm:p-8"
         >
-          <JoinForm />
+          <JoinForm defaultCategory={defaultCategory} />
         </div>
       </section>
     </div>

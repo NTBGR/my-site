@@ -32,14 +32,14 @@ function SelectArrow() {
 
 type Status = "idle" | "sending" | "success";
 
-export default function JoinForm() {
+export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: string }) {
   const t = useT().form;
   const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   // „სხვა“ არჩევისას ჩნდება ველი, სადაც ადამიანი თვითონ წერს
   const [city, setCity] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(defaultCategory);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

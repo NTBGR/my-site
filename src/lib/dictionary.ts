@@ -193,6 +193,9 @@ const ka = {
     total: (n: number) => `${n} კატეგორია`,
     back: "← ყველა კატეგორია",
     empty: "ამ კატეგორიაში ნივთები ჯერ არ არის.",
+    firstTitle: "გახდი პირველი ამ კატეგორიაში",
+    firstText: "აქ ჯერ არავინ არის, ამიტომ პირველი პარტნიორი ამ გვერდზე მარტო გამოჩნდება და ყველა დაინტერესებული პირველად მას ნახავს. პირველი 2 თვე უფასოა.",
+    firstCta: "გახდი პარტნიორი",
     count: (n: number) => `${n} ხელოვანი`,
   },
   blog: {
@@ -470,6 +473,9 @@ const en: Dict = {
     total: (n: number) => `${n} categories`,
     back: "← All categories",
     empty: "There are no items in this category yet.",
+    firstTitle: "Be the first in this category",
+    firstText: "Nobody is here yet, so the first partner will be the only one on this page and the first thing visitors see. The first 2 months are free.",
+    firstCta: "Become a partner",
     count: (n: number) => `${n} ${n === 1 ? "artist" : "artists"}`,
   },
   blog: {
