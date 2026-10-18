@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useT } from "@/components/LangProvider";
 import { useFavorites } from "@/lib/favorites";
+import { haptic } from "@/lib/haptic";
 
 // გულის ღილაკი: ნამუშევრის შენახვა/ამოღება
 export default function HeartButton({ id, className = "", label }: { id: string; className?: string; label?: boolean }) {
@@ -17,9 +18,9 @@ export default function HeartButton({ id, className = "", label }: { id: string;
         event.preventDefault();
         event.stopPropagation();
         toggle(id);
-        // დამატებისას: გულის პულსი და მსუბუქი ვიბრაცია (ტელეფონზე)
+        // დამატებისას: გულის პულსი და მსუბუქი ვიბრაცია (Android-ზე და iPhone-ზე iOS 17.4+)
         if (!saved) {
-          navigator.vibrate?.(12);
+          haptic(30);
           setPop(true);
           window.setTimeout(() => setPop(false), 450);
         }
