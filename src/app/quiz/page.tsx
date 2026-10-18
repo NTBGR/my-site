@@ -1,4 +1,5 @@
 import GiftQuiz, { type QuizWork } from "@/components/GiftQuiz";
+import BackLink from "@/components/BackLink";
 import JsonLd from "@/components/JsonLd";
 import { effectivePrice, getWorkEntries, isNewWork, workId } from "@/data/artists";
 import { toGalleryWork } from "@/lib/galleryWork";
@@ -44,7 +45,8 @@ export default async function QuizPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10">
+    <div className="mx-auto max-w-3xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3">
+      <BackLink href="/" home />
       <JsonLd data={ld} />
       <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">🎯 {t.title}</h1>
       <p className="mb-8 mt-2 text-muted">{t.intro}</p>

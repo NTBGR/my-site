@@ -1,4 +1,5 @@
 import ArtistsFilter from "@/components/ArtistsFilter";
+import BackLink from "@/components/BackLink";
 import PageBanner from "@/components/PageBanner";
 import { getLocalizedArtists, workAddedTime } from "@/data/artists";
 import { toGalleryWork } from "@/lib/galleryWork";
@@ -45,7 +46,8 @@ export default async function ArtistsPage({
   const q = Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "";
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
+      <BackLink href="/" home />
       <PageBanner
         title={t.title}
         text={t.text}

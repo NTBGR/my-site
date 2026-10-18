@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackLink from "@/components/BackLink";
 import CategoryArt from "@/components/CategoryArt";
 import PageBanner from "@/components/PageBanner";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
@@ -15,7 +16,8 @@ export default async function CategoriesPage() {
   const t = dictionary[lang];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
+      <BackLink href="/" home />
       <PageBanner
         title={t.categories.title}
         text={t.categories.text}

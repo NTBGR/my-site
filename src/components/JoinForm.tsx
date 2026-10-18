@@ -10,6 +10,26 @@ import { cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 const inputClass =
   "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
 
+// ჩამოსაშლელი სია: ბრაუზერის ჩვეულებრივი სტილის ნაცვლად ჩვენი ველის ფორმა და საკუთარი ისარი
+const selectClass = `${inputClass} mt-0 min-h-12 cursor-pointer appearance-none pr-11 [&>option]:bg-bg [&>option]:text-text`;
+
+function SelectArrow() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 20 20"
+      className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="m5 8 5 5 5-5" />
+    </svg>
+  );
+}
+
 type Status = "idle" | "sending" | "success";
 
 export default function JoinForm() {
@@ -91,23 +111,26 @@ export default function JoinForm() {
       <div>
         <label className="text-sm font-medium text-text">
           {t.city}
-          <select
-            name="city"
-            required
-            value={city}
-            onChange={(event) => setCity(event.target.value)}
-            className={inputClass}
-          >
-            <option value="" disabled>
-              {t.cityPlaceholder}
-            </option>
-            {cities.map((item) => (
-              <option key={item.value} value={item.value}>
-                {lang === "ka" ? item.value : item.en}
+          <span className="relative mt-1.5 block">
+            <select
+              name="city"
+              required
+              value={city}
+              onChange={(event) => setCity(event.target.value)}
+              className={`${selectClass} ${city === "" ? "text-muted" : ""}`}
+            >
+              <option value="" disabled>
+                {t.cityPlaceholder}
               </option>
-            ))}
-            <option value={OTHER_CITY}>{t.otherCity}</option>
-          </select>
+              {cities.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {lang === "ka" ? item.value : item.en}
+                </option>
+              ))}
+              <option value={OTHER_CITY}>{t.otherCity}</option>
+            </select>
+            <SelectArrow />
+          </span>
         </label>
         {city === OTHER_CITY ? (
           <input
@@ -124,23 +147,26 @@ export default function JoinForm() {
       <div>
         <label className="text-sm font-medium text-text">
           {t.category}
-          <select
-            name="category"
-            required
-            value={category}
-            onChange={(event) => setCategory(event.target.value)}
-            className={inputClass}
-          >
-            <option value="" disabled>
-              {t.categoryPlaceholder}
-            </option>
-            {categories.map((item) => (
-              <option key={item.slug} value={item.slug}>
-                {lang === "ka" ? item.name : item.en.name}
+          <span className="relative mt-1.5 block">
+            <select
+              name="category"
+              required
+              value={category}
+              onChange={(event) => setCategory(event.target.value)}
+              className={`${selectClass} ${category === "" ? "text-muted" : ""}`}
+            >
+              <option value="" disabled>
+                {t.categoryPlaceholder}
               </option>
-            ))}
-            <option value={OTHER_CATEGORY}>{t.otherCategory}</option>
-          </select>
+              {categories.map((item) => (
+                <option key={item.slug} value={item.slug}>
+                  {lang === "ka" ? item.name : item.en.name}
+                </option>
+              ))}
+              <option value={OTHER_CATEGORY}>{t.otherCategory}</option>
+            </select>
+            <SelectArrow />
+          </span>
         </label>
         {category === OTHER_CATEGORY ? (
           <input

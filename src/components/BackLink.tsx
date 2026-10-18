@@ -10,15 +10,19 @@ const subscribe = () => () => {};
 
 // „უკან“ ისარი: თუ საიტის შიგნით მოვედი (საჩუქრებიდან, მთავარიდან, შერჩევიდან...), იქვე ბრუნდება, სადაც ვიყავი.
 // თუ გვერდზე პირდაპირ მოვედი, ჩვეულებრივი ბმულია ხელოვანების სიაზე.
-export default function BackLink({ href, className }: { href: string; className?: string }) {
-  const t = useT().artist;
+const DEFAULT_CLASS = "mb-1 inline-flex min-h-9 items-center text-sm font-medium text-muted transition-colors hover:text-accent";
+
+// fallback: წარწერა, როცა გვერდზე პირდაპირ მოვედი (მაგ. "← ყველა კატეგორია"); home: ამის ნაცვლად „← მთავარი“
+export default function BackLink({ href, className, fallback, home }: { href: string; className?: string; fallback?: string; home?: boolean }) {
+  const all = useT();
+  const t = all.artist;
   const router = useRouter();
   const inApp = useSyncExternalStore(subscribe, () => getNavDepth() > 0, () => false);
 
   return (
     <Link
       href={href}
-      className={className}
+      className={className ?? DEFAULT_CLASS}
       onClick={(event) => {
         if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         if (getNavDepth() > 0) {
@@ -27,7 +31,7 @@ export default function BackLink({ href, className }: { href: string; className?
         }
       }}
     >
-      {inApp ? t.backShort : t.back}
+      {inApp ? t.backShort : (fallback ?? (home ? all.backHome : t.back))}
     </Link>
   );
 }

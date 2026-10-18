@@ -7,8 +7,8 @@ export const artistOfWeekOverride: string | null = "zhuzha-ceramics";
 export const pickedWorks: string[] = [
   "zhuzha-ceramics/ring-amore-rose",
   "zhuzha-ceramics/set-red-hearts",
-  "tbgr-poster-lab/kvara",
-  "tbgr-poster-lab/messi",
+  "tbgr-poster-lab/arsenal",
+  "tbgr-poster-lab/old-trafford",
   "zhuzha-ceramics/earrings-wave",
   "zhuzha-ceramics/ring-green-heart",
   "tamus-shop/bouquet-pink-blooms",

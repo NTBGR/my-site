@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BackLink from "@/components/BackLink";
 import JoinForm from "@/components/JoinForm";
 import PageBanner from "@/components/PageBanner";
 import { dictionary } from "@/lib/dictionary";
@@ -13,7 +14,8 @@ export default async function JoinPage() {
   const t = all.join;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-10 lg:px-10">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
+      <BackLink href="/" home />
       {/* ბანერი: ვინც უკვე გადაწყვიტა, ღილაკით პირდაპირ ფორმაზე გადადის */}
       <PageBanner
         title={t.title}

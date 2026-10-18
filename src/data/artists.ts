@@ -89,7 +89,8 @@ export const artists: ArtistData[] = [
       { title: "ბეჭედი „ცეცხლოვანი გული“", color: "#f0642b", image: "/artists/zhuzha-ceramics/ring-flame-heart.jpg", width: 1200, height: 1600, price: 90, tags: ["for-her"], added: "2026-10-18" },
       { title: "ბეჭედი „შავი ტიტა“", color: "#6e6a66", image: "/artists/zhuzha-ceramics/ring-tulip-black.jpg", width: 1200, height: 1600, price: 80, tags: ["for-her"], added: "2026-10-18" },
       { title: "ყელსაბამი „ნარინჯისფერი ვარსკვლავი“", color: "#ec4a22", image: "/artists/zhuzha-ceramics/necklace-orange-star.jpg", width: 1200, height: 1600, price: 120, tags: ["for-mom", "for-her"], added: "2026-10-18" },
-      { title: "გულსაკიდი ოქროს კიდით", color: "#c9a27a", image: "/artists/zhuzha-ceramics/pendant-gold-edge.jpg", width: 1200, height: 1600, price: 70, tags: ["for-mom", "for-her"], added: "2026-10-18" },
+      { title: "ბეჭედი „სადაფის გული“", color: "#e6d9c6", image: "/artists/zhuzha-ceramics/ring-pearl-heart.jpg", width: 1179, height: 1464, price: 90, tags: ["for-her"], added: "2026-10-19" },
+      { title: "ბეჭედი „ALL YOU NEED IS LOVE“", color: "#b3202a", image: "/artists/zhuzha-ceramics/ring-all-you-need.jpg", width: 1179, height: 1549, price: 90, tags: ["for-her"], added: "2026-10-19" },
     ],
     en: {
       name: "ZHU-ZHA Ceramics",
@@ -113,7 +114,8 @@ export const artists: ArtistData[] = [
         "Ring \"Fiery Heart\"",
         "Ring \"Black Tulip\"",
         "Necklace \"Orange Star\"",
-        "Pendant with a gold edge",
+        "Ring \"Pearl Heart\"",
+        "Ring \"All You Need Is Love\"",
       ],
     },
   },
@@ -125,7 +127,7 @@ export const artists: ArtistData[] = [
     city: "",
     categories: ["posterebi"],
     sale: { percent: 20 },
-    cover: "/artists/tbgr-poster-lab/kvara.jpg",
+    cover: "/artists/tbgr-poster-lab/arsenal-champions.jpg",
     banner: "/artists/tbgr-poster-lab/kvara.jpg",
     bio: "TBGR Poster Lab ქმნის მინიმალისტური სტილის პოსტერებს სპორტის ლეგენდებსა და ფეხბურთის კლუბებზე: გმირის ფერები, ციტატა, მოკლე ისტორია და მთავარი მიღწევები ერთ კომპოზიციაში.",
     instagram: "https://www.instagram.com/tbgrposterlab/",
@@ -137,12 +139,24 @@ export const artists: ArtistData[] = [
       { title: "პოსტერი „იამალი“", color: "#2f4f9e", image: "/artists/tbgr-poster-lab/yamal.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „ალი“", color: "#c2242e", image: "/artists/tbgr-poster-lab/ali.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „რეალ მადრიდი“", color: "#1d4f9c", image: "/artists/tbgr-poster-lab/real-madrid.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
-      { title: "პოსტერი „ბარსელონა“", color: "#a3123f", image: "/artists/tbgr-poster-lab/barcelona.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
+      { title: "პოსტერი „ბარსელონა“", color: "#a3123f", image: "/artists/tbgr-poster-lab/barcelona-real.jpg", width: 1200, height: 1200, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „ლივერპული“", color: "#8a1c1c", image: "/artists/tbgr-poster-lab/liverpool.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „მანჩესტერ იუნაიტედი“", color: "#d8281c", image: "/artists/tbgr-poster-lab/manchester-united.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „მილანი“", color: "#d6122e", image: "/artists/tbgr-poster-lab/milan.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „ბაიერნი“", color: "#dc052d", image: "/artists/tbgr-poster-lab/bayern.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
       { title: "პოსტერი „პსჟ“", color: "#0a3a73", image: "/artists/tbgr-poster-lab/psg.jpg", width: 1440, height: 1440, price: 60, tags: ["for-fans", "for-him"] },
+      { title: "პოსტერი „რეალ მადრიდი · ლოგო“", color: "#1d3a8a", image: "/artists/tbgr-poster-lab/real-madrid-logo.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „მილანი · ლოგო“", color: "#d6122e", image: "/artists/tbgr-poster-lab/milan-logo.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „კამ ნოუ“", color: "#a3123f", image: "/artists/tbgr-poster-lab/camp-nou.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „ოლდ ტრაფორდი“", color: "#d8281c", image: "/artists/tbgr-poster-lab/old-trafford.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „არსენალი“", color: "#e0242b", image: "/artists/tbgr-poster-lab/arsenal.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-19" },
+      { title: "პოსტერი „არსენალი · ჩემპიონები“", color: "#d9141c", image: "/artists/tbgr-poster-lab/arsenal-champions.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-19" },
+      { title: "პოსტერი „იუვენტუსი“", color: "#2b2b2b", image: "/artists/tbgr-poster-lab/juventus.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-19" },
+      { title: "პოსტერი „რონალდო · სიუ“", color: "#b8332c", image: "/artists/tbgr-poster-lab/ronaldo-celebration.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „თოფურია“", color: "#c4302b", image: "/artists/tbgr-poster-lab/topuria.jpg", width: 1200, height: 1600, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „რამოსი“", color: "#2b4a7a", image: "/artists/tbgr-poster-lab/ramos.jpg", width: 1200, height: 1200, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „მბაპე“", color: "#1d3a8a", image: "/artists/tbgr-poster-lab/mbappe.jpg", width: 1200, height: 1200, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
+      { title: "პოსტერი „მალდინი“", color: "#d6122e", image: "/artists/tbgr-poster-lab/maldini.jpg", width: 1200, height: 1200, price: 60, tags: ["for-fans", "for-him"], added: "2026-10-17" },
     ],
     en: {
       name: "TBGR Poster Lab",
@@ -161,6 +175,18 @@ export const artists: ArtistData[] = [
         "Poster \"AC Milan\"",
         "Poster \"Bayern München\"",
         "Poster \"PSG\"",
+        "Poster \"Real Madrid · Logo\"",
+        "Poster \"AC Milan · Logo\"",
+        "Poster \"Camp Nou\"",
+        "Poster \"Old Trafford\"",
+        "Poster \"Arsenal F.C.\"",
+        "Poster \"Arsenal · Champions\"",
+        "Poster \"Juventus F.C.\"",
+        "Poster \"Ronaldo · Siuu\"",
+        "Poster \"Topuria\"",
+        "Poster \"Ramos\"",
+        "Poster \"Mbappé\"",
+        "Poster \"Maldini\"",
       ],
     },
   },
@@ -261,11 +287,14 @@ export function getWorkEntries(lang: Lang): WorkEntry[] {
     .sort((a, b) => workAddedTime(b.work) - workAddedTime(a.work));
 }
 
+const DAY = 24 * 60 * 60 * 1000;
+
 // ნამუშევარი „ახალია“, თუ ბოლო 30 დღეში დაემატა
 export function isNewWork(work: ArtistWork): boolean {
   if (!work.added) return false;
   const age = Date.now() - Date.parse(work.added);
-  return age >= 0 && age < 30 * 24 * 60 * 60 * 1000;
+  // თარიღი YYYY-MM-DD UTC-ის შუაღამეა: საქართველოში (UTC+4) დღევანდელი თარიღი ღამით ჯერ „მომავალში“ ჩანს, ამიტომ 1 დღემდე დაშვება
+  return age > -DAY && age < 30 * DAY;
 }
 
 // ხელოვანი „ახალია“, თუ ბოლო 14 დღეში დაემატა
@@ -281,7 +310,7 @@ export function isNewArtist(artist: ArtistData): boolean {
   const start = explicit ?? (allDated ? Math.min(...dates) : undefined);
   if (start === undefined || Number.isNaN(start)) return false;
   const age = Date.now() - start;
-  return age >= 0 && age < 14 * 24 * 60 * 60 * 1000;
+  return age > -DAY && age < 14 * DAY;
 }
 
 // ფასი ფასდაკლების გათვალისწინებით: price = რასაც მყიდველი იხდის, original/percent მხოლოდ ფასდაკლებისას

@@ -11,7 +11,7 @@ import CopyLink from "@/components/CopyLink";
 import ProfileView from "@/components/ProfileView";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, isNewArtist, localizeArtist, pricing, workAddedTime } from "@/data/artists";
+import { getArtistBySlug, isNewArtist, isNewWork, localizeArtist, pricing, workAddedTime } from "@/data/artists";
 import VerifiedMark from "@/components/VerifiedMark";
 import { monthReach } from "@/lib/clicks";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
@@ -119,9 +119,14 @@ export default async function ArtistPage({
   const firstPhoto = artist.works.find((work) => work.image)?.image;
   const bannerPhoto = artist.banner || artist.cover || firstPhoto;
   const cover = bannerPhoto ? { image: bannerPhoto } : undefined;
-  // ბანერში ტრიალებს ქავერი (პირველი) და ხელოვანის ყველა ნამუშევარი
+  // ბანერში ტრიალებს: ჯერ ახალი ნამუშევრები (ბოლო 30 დღე, ყველაზე ახალი პირველი, მაქსიმუმ 8), მერე ქავერი და დანარჩენი ნამუშევრები
+  const freshImages = artist.works
+    .filter((work) => work.image && isNewWork(work))
+    .sort((a, b) => workAddedTime(b) - workAddedTime(a))
+    .slice(0, 8)
+    .map((work) => work.image as string);
   const bannerImages = bannerPhoto
-    ? [bannerPhoto, ...artist.works.map((work) => work.image).filter((src): src is string => !!src && src !== bannerPhoto)]
+    ? [...new Set([...freshImages, bannerPhoto, ...artist.works.map((work) => work.image).filter((src): src is string => !!src)])]
     : [];
   const color = categoryColor(main);
   const cats = artist.categories

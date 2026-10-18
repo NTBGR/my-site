@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Photo from "@/components/Photo";
-import { getLocalizedArtists } from "@/data/artists";
+import { getLocalizedArtists, workAddedTime } from "@/data/artists";
 import { artistOfWeekOverride } from "@/data/featured";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -16,11 +16,9 @@ export default async function ArtistOfWeek() {
   // ხელით დაფიქსირებული ხელოვანი (src/data/featured.ts) ან კვირის მიხედვით რიგრიგობით
   const artist = artists.find((a) => a.slug === artistOfWeekOverride) ?? artists[week % artists.length];
   const withImages = artist.works.filter((work) => work.image);
-  // ორი ვერტიკალური ფოტო გვერდიგვერდ (ნამუშევრის ფოტოები 3:4-ია, ამიტომ თითქმის არაფერი იჭრება): პირველი და სხვა სახეობის ნივთი
-  const photos =
-    withImages.length <= 2
-      ? withImages
-      : [withImages[0], withImages[Math.round((withImages.length - 1) * 0.7)]];
+  // ორი ვერტიკალური ფოტო გვერდიგვერდ (ნამუშევრის ფოტოები 3:4-ია, ამიტომ თითქმის არაფერი იჭრება): ამ ხელოვანის ორი ყველაზე ახლად დამატებული ნამუშევარი
+  // (თარიღის გარეშე ნამუშევრებისას სიის პირველი ორი); sort სტაბილურია
+  const photos = [...withImages].sort((a, b) => workAddedTime(b) - workAddedTime(a)).slice(0, 2);
   const grid = photos.length >= 2;
   const hero = artist.cover ?? photos[0]?.image;
   const frame = "border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)]";
