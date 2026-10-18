@@ -78,6 +78,10 @@ export default function GiftQuiz({ works }: { works: QuizWork[] }) {
     return KIND.filter((option) => option.id === "any" || available.has(option.id));
   }, [works, who, budget]);
 
+  // „ყველას ნახვა“ ბმული არჩეულ პასუხს უნდა მისდევდეს: ადამიანის გვერდი, 100 ₾-მდე ან საერთო სია (150 ₾-მდე გვერდი არ გვაქვს)
+  const seeAllTag = WHO.find((w) => w.id === who)?.tag;
+  const seeAllHref = seeAllTag ? `/gifts/${seeAllTag}` : budget === "b50" || budget === "b100" ? "/gifts/under-100" : "/artists";
+
   const restart = () => {
     setStep(0);
     setWho("any");
@@ -161,7 +165,7 @@ export default function GiftQuiz({ works }: { works: QuizWork[] }) {
         <button type="button" onClick={restart} className="inline-flex min-h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition hover:bg-accent-hover">
           {t.restart}
         </button>
-        <Link href="/gifts/under-100" className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg px-6 text-sm font-medium text-text transition hover:border-accent hover:text-accent">
+        <Link href={seeAllHref} className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg px-6 text-sm font-medium text-text transition hover:border-accent hover:text-accent">
           {t.seeAll}
         </Link>
       </div>

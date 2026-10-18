@@ -24,7 +24,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "rateLimited" }, { status: 429 });
   }
 
-  const data = await request.formData();
+  // არასწორი ფორმატის მოთხოვნა (მაგ. JSON) 500-ს კი არა, 400-ს აბრუნებს
+  let data: FormData;
+  try {
+    data = await request.formData();
+  } catch {
+    return NextResponse.json({ error: "required" }, { status: 400 });
+  }
 
   // ანტისპამ ხაფანგი: ადამიანი ამ ველს ვერ ხედავს
   if (field(data, "website")) {
