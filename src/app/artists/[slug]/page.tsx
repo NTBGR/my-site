@@ -11,13 +11,16 @@ import CopyLink from "@/components/CopyLink";
 import ProfileView from "@/components/ProfileView";
 import WorksGallery from "@/components/WorksGallery";
 import { socialVariant } from "@/components/ui/socialStyles";
-import { getArtistBySlug, isNewArtist, isNewWork, localizeArtist, pricing } from "@/data/artists";
+import { getArtistBySlug, isNewArtist, localizeArtist, pricing } from "@/data/artists";
 import VerifiedMark from "@/components/VerifiedMark";
 import { monthReach } from "@/lib/clicks";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
+
+// ნამუშევრები დროით: ყველაზე ახლად დამატებული პირველი; თარიღის გარეშე (ძველი) ნამუშევრები ბოლოში, ფაილში რიგით
+const addedAt = (work: { added?: string }) => (work.added ? Date.parse(work.added) || 0 : 0);
 
 function InstagramIcon() {
   return (
@@ -129,8 +132,7 @@ export default async function ArtistPage({
     .filter((c) => c !== undefined)
     .map((c) => localizeCategory(c, lang));
   // ხელოვანის საერთო ფასდაკლება (ბანერის ნიშნისთვის): ის ჩანს, თუ ახლა მართლა მოქმედებს
-  // ახლად დამატებული ნამუშევრები (30 დღე) და ამ თვის გადასვლები (ნაჩვენებია, როცა რიცხვი უკვე ღირსშესანიშნავია)
-  const freshWorks = artist.works.map((work, index) => ({ work, index })).filter(({ work }) => isNewWork(work));
+  // ამ თვის გადასვლები (ნაჩვენებია, როცა რიცხვი უკვე ღირსშესანიშნავია)
   const MIN_PUBLIC_REACH = 5;
   const reach = await monthReach(artist.slug).catch(() => 0);
   const salePercent = artist.works.map((work) => pricing(artist, work)?.percent).find(Boolean);
@@ -278,22 +280,14 @@ export default async function ArtistPage({
           ) : null}
         </div>
         <p className="mt-2 text-xs leading-relaxed text-muted sm:mt-1 sm:text-sm">{all.priceNote}</p>
-        {freshWorks.length > 0 && freshWorks.length < artist.works.length ? (
-          <div className="mt-5">
-            <h3 className="mb-3 text-base font-semibold tracking-tight text-text sm:text-lg">✦ {t.recentlyAdded}</h3>
-            <WorksGallery
-              layout="row"
-              columns="sm:grid-cols-4 lg:grid-cols-5"
-              showSort={false}
-              works={freshWorks.map(({ work, index }) => toGalleryWork(artist, work, index))}
-            />
-          </div>
-        ) : null}
         <div className="mt-6 sm:mt-8">
           <WorksGallery
             shareUrl={`/artists/${artist.slug}`}
             shareTitle={artist.name}
-            works={artist.works.map((work, i) => toGalleryWork(artist, work, i))}
+            works={artist.works
+              .map((work, i) => ({ work, i }))
+              .sort((a, b) => addedAt(b.work) - addedAt(a.work))
+              .map(({ work, i }) => toGalleryWork(artist, work, i))}
           />
         </div>
       </section>

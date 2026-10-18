@@ -18,7 +18,12 @@ export default async function NewArtists() {
     <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-10 sm:pt-14">
       <ul className={`grid gap-3 sm:gap-4 ${fresh.length > 1 ? "lg:grid-cols-2" : ""}`}>
         {fresh.map((artist) => {
-          const photos = artist.works.filter((work) => work.image).slice(0, 3);
+          // ახალი ხელოვანის ბარათზე ყველაზე ახლად დამატებული ნამუშევრების ფოტოები ჩანს (თანაბარი თარიღისას სიის რიგით)
+          const addedAt = (work: { added?: string }) => (work.added ? Date.parse(work.added) || 0 : 0);
+          const photos = artist.works
+            .filter((work) => work.image)
+            .sort((a, b) => addedAt(b) - addedAt(a))
+            .slice(0, 3);
           return (
             <li key={artist.slug}>
               <Link
