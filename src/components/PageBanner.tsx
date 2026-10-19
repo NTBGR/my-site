@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import CategoryArt from "@/components/CategoryArt";
-import FestiveArt from "@/components/FestiveArt";
+import Photo from "@/components/Photo";
 import { categoryColor } from "@/data/categories";
 
+// საახალწლო ფოტოები: public/categories/soft-1..3.jpg (Pexels და Unsplash, უფასო ლიცენზია, ატრიბუცია არ სჭირდება).
 // კოლაჟის სამი ილუსტრაციის ადგილი ბანერის მარჯვენა მხარეს
 const POSITIONS = [
   { pos: "right-[22%] top-[12%] w-[15%]", r: "-6deg" },
@@ -43,7 +44,11 @@ export default function PageBanner({
             className={`float absolute ${POSITIONS[i].pos} max-w-[9rem] overflow-hidden rounded-2xl shadow-xl ring-[3px] ring-white/15`}
             style={{ ["--r" as string]: POSITIONS[i].r }}
           >
-            {festive ? <FestiveArt kind={i} /> : <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />}
+            {festive ? (
+              <div className="relative aspect-[4/3]" style={{ filter: "saturate(.86) sepia(.14) contrast(.97) brightness(.98)" }}>
+                <Photo src={`/categories/soft-${["1", "2", "3c"][i]}.jpg`} alt="" sizes="144px" />
+              </div>
+            ) : <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />}
           </div>
         ))}
       </div>
