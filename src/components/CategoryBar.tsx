@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLang, useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import ComingSoonCountdown from "@/components/ComingSoonCountdown";
 import { useDragScroll } from "@/lib/useDragScroll";
 
-export type BarTag = { slug: string; name: string; emoji: string };
+export type BarTag = { slug: string; name: string; emoji: string; opensAtMs?: number };
 
 // ჰედერის ქვეშ ზოლი: საჩუქრის თაგები (ფასდაკლებები, 100 ₾-მდე...) და ბოლოს საჩუქრის შერჩევა.
 // მარცხენა დაშორება ჩიპის შიდა დაშორებით (px-4) შემცირებულია: პირველი ჩიპის ტექსტი ლოგოსთან ერთ ხაზზე დგას
@@ -102,6 +103,23 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
           >
             {tags.map((tag) => {
               const active = pathname === `/gifts/${tag.slug}`;
+              if (tag.opensAtMs) {
+                return (
+                  <li key={tag.slug} className="shrink-0">
+                    <span
+                      aria-disabled="true"
+                      title={tag.name}
+                      className="inline-flex min-h-10 cursor-not-allowed select-none items-center whitespace-nowrap rounded-full border border-dashed border-border px-4 text-sm font-medium text-muted/70"
+                    >
+                      <span aria-hidden className="mr-1.5 opacity-70 grayscale">{tag.emoji}</span>
+                      {tag.name}
+                      <span className="ml-2 rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent tabular-nums">
+                        <ComingSoonCountdown opensAtMs={tag.opensAtMs} />
+                      </span>
+                    </span>
+                  </li>
+                );
+              }
               return (
                 <li key={tag.slug} className="shrink-0">
                   <Link

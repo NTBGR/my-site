@@ -21,6 +21,8 @@ export type Tag = {
   season?: { from: string; to: string };
   // საახალწლო/ზეიმის სტილი ბანერზე (მწვანე ფონი და თოვლი)
   festive?: boolean;
+  // „მალე“: ამ თარიღამდე (YYYY-MM-DD, თბილისის დროით 00:00) თაგი ზოლში ჩანს, მაგრამ გამორთულია (დაჭერა არ შეიძლება, ათვლით); გვერდი, ბანერი, ძებნა და sitemap დამალულია. თარიღზე თავისით ამოქმედდება
+  opensAt?: string;
   // ბანერის კოლაჟი: სამი კატეგორიის სურათი
   collage: [string, string, string];
   en: { name: string; description: string };
@@ -93,6 +95,7 @@ export const tags: Tag[] = [
     description: "ხელნაკეთი საჩუქრები ახალი წლისთვის: პირდაპირ ავტორისგან, რომ ახალი წელი განსაკუთრებული იყოს.",
     // სეზონი: თარიღების შეცვლით ბანერი და გვერდი ადრე ან გვიან გამოჩნდება
     season: { from: "2026-10-19", to: "2027-01-10" },
+    opensAt: "2026-12-01",
     festive: true,
     en: { name: "New Year gifts", description: "Handmade gifts for the New Year, straight from the maker, to make the holidays special." },
   },
@@ -125,14 +128,22 @@ export function isTagVisible(tag: Tag, now: number = Date.now()): boolean {
   return now > Date.parse(tag.season.from) - DAY && now < Date.parse(tag.season.to) + DAY;
 }
 
+// გახსნის დრო მილიწამებში (თბილისი, UTC+4), თუ თაგი ჯერ დაბლოკილია; სხვა შემთხვევაში undefined
+export function lockedUntil(tag: Tag, now: number = Date.now()): number | undefined {
+  if (!tag.opensAt) return undefined;
+  const at = Date.parse(`${tag.opensAt}T00:00:00+04:00`);
+  return now < at ? at : undefined;
+}
+
 export function getTagBySlug(slug: string) {
-  return tags.find((tag) => tag.slug === slug && isTagVisible(tag));
+  return tags.find((tag) => tag.slug === slug && isTagVisible(tag) && lockedUntil(tag) === undefined);
 }
 
 export function localizeTag(tag: Tag, lang: Lang) {
-  return lang === "ka"
+  const base = lang === "ka"
     ? { slug: tag.slug, emoji: tag.emoji, collage: tag.collage, name: tag.name, description: tag.description }
     : { slug: tag.slug, emoji: tag.emoji, collage: tag.collage, ...tag.en };
+  return { ...base, opensAtMs: lockedUntil(tag) };
 }
 
 // ამ თაგის ნამუშევრები
