@@ -45,7 +45,7 @@ export default function PageBanner({
             style={{ ["--r" as string]: POSITIONS[i].r }}
           >
             {festive ? (
-              <div className="relative aspect-[4/3]">
+              <div className="relative aspect-[4/3]" style={{ filter: "saturate(.86) sepia(.14) contrast(.97) brightness(.98)" }}>
                 <Photo src={`/categories/festive-${i + 1}.jpg`} alt="" sizes="144px" />
               </div>
             ) : <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />}
