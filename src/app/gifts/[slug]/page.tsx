@@ -3,8 +3,10 @@ import BackLink from "@/components/BackLink";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/PageBanner";
+import Snowfall from "@/components/Snowfall";
 import WorksGallery from "@/components/WorksGallery";
 import { effectivePrice } from "@/data/artists";
+import { newYearBanner } from "@/data/featured";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
 import { dictionary } from "@/lib/dictionary";
 import { toGalleryWork } from "@/lib/galleryWork";
@@ -81,6 +83,16 @@ export default async function GiftPage({
     entries.sort((a, b) => (sort === "asc" ? (effectivePrice(a.artist, a.work) ?? Infinity) - (effectivePrice(b.artist, b.work) ?? Infinity) : (effectivePrice(b.artist, b.work) ?? -1) - (effectivePrice(a.artist, a.work) ?? -1)));
   }
   const tag = localizeTag(raw, lang);
+  // საახალწლო ბანერზე სამი რეალური ნამუშევარი სამი სხვადასხვა ხელოვანისგან (ახლები წინ)
+  const festivePhotos = raw.festive
+    ? [
+        ...newYearBanner.flatMap((key) => all.filter((entry) => `${entry.artist.slug}/${entry.id}` === key)),
+        ...all.filter((entry, i, list) => entry.work.image && list.findIndex((e) => e.artist.slug === entry.artist.slug) === i),
+      ]
+        .filter((entry, i, list) => entry.work.image && list.indexOf(entry) === i)
+        .slice(0, 3)
+        .map((entry) => ({ src: entry.work.image as string, alt: `${entry.work.title} - ${entry.artist.name}` }))
+    : undefined;
 
   const crumbLd = {
     "@context": "https://schema.org",
@@ -95,12 +107,14 @@ export default async function GiftPage({
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <BackLink href="/" home />
       <JsonLd data={crumbLd} />
+      {raw.festive ? <Snowfall /> : null}
       <PageBanner
         title={`${tag.emoji} ${tag.name}`}
         text={tag.description}
         badge={t.artists.worksCount(all.length)}
         collage={tag.collage}
         festive={raw.festive}
+        festivePhotos={festivePhotos}
       />
 
       {/* დალაგება და ფასის ფილტრი: კომპაქტური სეგმენტები, ტელეფონზე ერთ-ერთ რიგში გვერდზე გადასახვევი */}

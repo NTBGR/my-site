@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import CategoryArt from "@/components/CategoryArt";
+import FestiveArt from "@/components/FestiveArt";
+import GiftTagPhoto from "@/components/GiftTagPhoto";
 import { categoryColor } from "@/data/categories";
 
 // კოლაჟის სამი ილუსტრაციის ადგილი ბანერის მარჯვენა მხარეს
@@ -16,6 +18,7 @@ export default function PageBanner({
   badge,
   collage,
   festive = false,
+  festivePhotos,
   children,
 }: {
   title: string;
@@ -24,6 +27,8 @@ export default function PageBanner({
   collage: [string, string, string];
   // საახალწლო ბანერი: მწვანე ფონი და თოვლი
   festive?: boolean;
+  // საახალწლო ბანერზე ხელოვანების რეალური ნამუშევრების ფოტოები (თუ არ არის, ხატული ილუსტრაციები)
+  festivePhotos?: { src: string; alt: string }[];
   children?: ReactNode;
 }) {
   return (
@@ -39,10 +44,10 @@ export default function PageBanner({
         {collage.map((slug, i) => (
           <div
             key={slug}
-            className={`float absolute ${POSITIONS[i].pos} max-w-[9rem] overflow-hidden rounded-2xl shadow-xl ring-[3px] ring-white/15`}
+            className={`float absolute ${POSITIONS[i].pos} max-w-[9rem] ${festive && festivePhotos?.[i] ? "" : "overflow-hidden rounded-2xl shadow-xl ring-[3px] ring-white/15"}`}
             style={{ ["--r" as string]: POSITIONS[i].r }}
           >
-            <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />
+            {festive ? (festivePhotos?.[i] ? <GiftTagPhoto src={festivePhotos[i].src} alt={festivePhotos[i].alt} /> : <FestiveArt kind={i} />) : <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />}
           </div>
         ))}
       </div>

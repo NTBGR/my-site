@@ -213,6 +213,34 @@ a:hover > .arrow-slide {
     animation: snow-fall 14s linear infinite;
   }
 }
+/* გვერდის ფიფქები (Snowfall კომპონენტი) */
+.snowflake {
+  position: absolute;
+  top: -28px;
+  color: rgb(140 178 205);
+  line-height: 1;
+  text-shadow: 0 0 6px rgb(255 255 255 / 0.9);
+  animation-name: flake-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .snowfall {
+    display: none;
+  }
+}
+@keyframes flake-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(var(--drift, 20px), 55vh, 0) rotate(160deg);
+  }
+  100% {
+    transform: translate3d(calc(var(--drift, 20px) * -0.4), 112vh, 0) rotate(320deg);
+  }
+}
 @keyframes snow-fall {
   from {
     background-position: 0 0;
