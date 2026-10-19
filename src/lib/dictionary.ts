@@ -76,6 +76,7 @@ const ka = {
     featured: "რჩეული ხელოვანები",
     newWorks: "ახალი ნამუშევრები",
     allNewWorks: "ყველა ახალი ნამუშევარი",
+    countdown: { label: "ახალ წლამდე დარჩა", days: "დღე", hours: "საათი", minutes: "წუთი" },
     newWorksText: "ბოლო 30 დღეში დამატებული ნამუშევრები, ახლები პირველი.",
     saleBanner: {
       title: (range: string) => `ფასდაკლება ${range}`,
@@ -361,6 +362,7 @@ const en: Dict = {
     featured: "Featured artists",
     newWorks: "New works",
     allNewWorks: "All new works",
+    countdown: { label: "Until the New Year", days: "days", hours: "hours", minutes: "min" },
     newWorksText: "Works added in the last 30 days, newest first.",
     saleBanner: {
       title: (range: string) => `Sale ${range}`,

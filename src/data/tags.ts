@@ -29,18 +29,6 @@ export type Tag = {
 // თანმიმდევრობა ზოლში ასეთია
 export const tags: Tag[] = [
   {
-    slug: "new-year",
-    keywords: ["ახალი წელი","ახალწელი","საახალწლო","ახალ წელს","შობა","ნაძვის ხე","ნიუ იარ","new year","newyear","christmas","xmas","holiday","gift"],
-    collage: ["sachuqrebi", "keramika", "tekstili"],
-    emoji: "🎄",
-    name: "საახალწლო საჩუქრები",
-    description: "ხელნაკეთი საჩუქრები ახალი წლისთვის: პირდაპირ ავტორისგან, რომ ახალი წელი განსაკუთრებული იყოს.",
-    // სეზონი: თარიღების შეცვლით ბანერი და გვერდი ადრე ან გვიან გამოჩნდება
-    season: { from: "2026-10-19", to: "2027-01-10" },
-    festive: true,
-    en: { name: "New Year gifts", description: "Handmade gifts for the New Year, straight from the maker, to make the holidays special." },
-  },
-  {
     slug: "sale",
     keywords: ["ფასდაკლება","ფასდაკლებები","ფასდაკლებული","აქცია","გაიაფებული","sale","discount","deal"],
     collage: ["posterebi", "sachuqrebi", "keramika"],
@@ -95,6 +83,18 @@ export const tags: Tag[] = [
     name: "საჩუქარი გულშემატკივარს",
     description: "პოსტერები და სხვა საჩუქრები სპორტის გულშემატკივრისთვის.",
     en: { name: "Gifts for fans", description: "Posters and other gifts for sports fans." },
+  },
+  {
+    slug: "new-year",
+    keywords: ["ახალი წელი","ახალწელი","საახალწლო","ახალ წელს","შობა","ნაძვის ხე","ნიუ იარ","new year","newyear","christmas","xmas","holiday","gift"],
+    collage: ["sachuqrebi", "keramika", "tekstili"],
+    emoji: "🎄",
+    name: "საახალწლო საჩუქრები",
+    description: "ხელნაკეთი საჩუქრები ახალი წლისთვის: პირდაპირ ავტორისგან, რომ ახალი წელი განსაკუთრებული იყოს.",
+    // სეზონი: თარიღების შეცვლით ბანერი და გვერდი ადრე ან გვიან გამოჩნდება
+    season: { from: "2026-10-19", to: "2027-01-10" },
+    festive: true,
+    en: { name: "New Year gifts", description: "Handmade gifts for the New Year, straight from the maker, to make the holidays special." },
   },
   {
     slug: "for-mom",

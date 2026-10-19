@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NewYearCountdown from "@/components/NewYearCountdown";
 import Photo from "@/components/Photo";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
 import { dictionary } from "@/lib/dictionary";
@@ -39,6 +40,7 @@ export default async function NewYearPromo() {
             {tag.name}
           </h2>
           <p className="mt-0.5 text-sm text-white/85 sm:text-base">{tag.description}</p>
+          <NewYearCountdown />
           <span className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-full bg-white px-5 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent">
             {t.browse}
             <span className="arrow-slide" aria-hidden>

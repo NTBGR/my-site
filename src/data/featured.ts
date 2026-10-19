@@ -16,10 +16,3 @@ export const pickedWorks: string[] = [
   "tamus-shop/tulips-blue-doll",
   "zhuzha-ceramics/ring-flame-heart",
 ];
-
-// საახალწლო გვერდის ბანერზე სამი ნამუშევარი ხელით ("<ხელოვანის slug>/<ფოტოს ფაილის სახელი>"); თუ ვერ მოიძებნა, ბანერი ავტომატურად ავსებს ახლებით
-export const newYearBanner: string[] = [
-  "zhuzha-ceramics/ring-amore-rose",
-  "tbgr-poster-lab/liverpool",
-  "tamus-shop/bouquet-pink-blooms",
-];
