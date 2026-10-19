@@ -17,6 +17,12 @@ export type Tag = {
   sale?: boolean;
   // დროებით დამალული თაგი: არ ჩანს ზოლში, გვერდიც არ იხსნება და sitemap-შიც არ არის (წაშლა არ სჭირდება, უბრალოდ ამოიღე hidden)
   hidden?: boolean;
+  // სეზონური თაგი: ჩანს მხოლოდ ამ თარიღებს შორის (YYYY-MM-DD, ორივე ჩათვლით); გარეთ ისე იქცევა, როგორც hidden (ზოლში, ძებნაში და sitemap-ში არ არის, გვერდიც არ იხსნება)
+  season?: { from: string; to: string };
+  // საახალწლო/ზეიმის სტილი ბანერზე (მწვანე ფონი და თოვლი)
+  festive?: boolean;
+  // „მალე“: ამ თარიღამდე (YYYY-MM-DD, თბილისის დროით 00:00) თაგი ზოლში ჩანს, მაგრამ გამორთულია (დაჭერა არ შეიძლება, ათვლით); გვერდი, ბანერი, ძებნა და sitemap დამალულია. თარიღზე თავისით ამოქმედდება
+  opensAt?: string;
   // ბანერის კოლაჟი: სამი კატეგორიის სურათი
   collage: [string, string, string];
   en: { name: string; description: string };
@@ -81,6 +87,19 @@ export const tags: Tag[] = [
     en: { name: "Gifts for fans", description: "Posters and other gifts for sports fans." },
   },
   {
+    slug: "new-year",
+    keywords: ["ახალი წელი","ახალწელი","საახალწლო","ახალ წელს","შობა","ნაძვის ხე","ნიუ იარ","new year","newyear","christmas","xmas","holiday","gift"],
+    collage: ["sachuqrebi", "keramika", "tekstili"],
+    emoji: "🎄",
+    name: "საახალწლო საჩუქრები",
+    description: "ხელნაკეთი საჩუქრები ახალი წლისთვის: პირდაპირ ავტორისგან, რომ ახალი წელი განსაკუთრებული იყოს.",
+    // სეზონი: თარიღების შეცვლით ბანერი და გვერდი ადრე ან გვიან გამოჩნდება
+    season: { from: "2026-10-19", to: "2027-01-10" },
+    opensAt: "2026-12-01",
+    festive: true,
+    en: { name: "New Year gifts", description: "Handmade gifts for the New Year, straight from the maker, to make the holidays special." },
+  },
+  {
     slug: "for-mom",
     collage: ["sachuqrebi", "tekstili", "saxlis-dekori"],
     emoji: "🌸",
@@ -100,14 +119,31 @@ export const tags: Tag[] = [
   },
 ];
 
+// ჩანს თუ არა თაგი ახლა: hidden არ არის და სეზონშია (თუ სეზონი აქვს)
+export function isTagVisible(tag: Tag, now: number = Date.now()): boolean {
+  if (tag.hidden) return false;
+  if (!tag.season) return true;
+  // თარიღი UTC-ის შუაღამეა, საქართველო კი UTC+4-ია: დასაწყისს 1 დღით ადრე ვუშვებთ, რომ ღამით „ჯერ არ დაწყებულად“ არ ჩანდეს, ბოლოს კი ბოლო დღეს ვრთავთ
+  const DAY = 24 * 60 * 60 * 1000;
+  return now > Date.parse(tag.season.from) - DAY && now < Date.parse(tag.season.to) + DAY;
+}
+
+// გახსნის დრო მილიწამებში (თბილისი, UTC+4), თუ თაგი ჯერ დაბლოკილია; სხვა შემთხვევაში undefined
+export function lockedUntil(tag: Tag, now: number = Date.now()): number | undefined {
+  if (!tag.opensAt) return undefined;
+  const at = Date.parse(`${tag.opensAt}T00:00:00+04:00`);
+  return now < at ? at : undefined;
+}
+
 export function getTagBySlug(slug: string) {
-  return tags.find((tag) => tag.slug === slug && !tag.hidden);
+  return tags.find((tag) => tag.slug === slug && isTagVisible(tag) && lockedUntil(tag) === undefined);
 }
 
 export function localizeTag(tag: Tag, lang: Lang) {
-  return lang === "ka"
+  const base = lang === "ka"
     ? { slug: tag.slug, emoji: tag.emoji, collage: tag.collage, name: tag.name, description: tag.description }
     : { slug: tag.slug, emoji: tag.emoji, collage: tag.collage, ...tag.en };
+  return { ...base, opensAtMs: lockedUntil(tag) };
 }
 
 // ამ თაგის ნამუშევრები
@@ -123,5 +159,5 @@ export function worksForTag(tag: Tag, lang: Lang): WorkEntry[] {
 
 // მხოლოდ ის თაგები, რომლებსაც ნამუშევარი აქვს (ცარიელი თაგი არ ჩანს)
 export function activeTags(lang: Lang) {
-  return tags.filter((tag) => !tag.hidden && worksForTag(tag, "ka").length > 0).map((tag) => localizeTag(tag, lang));
+  return tags.filter((tag) => isTagVisible(tag) && worksForTag(tag, "ka").length > 0).map((tag) => localizeTag(tag, lang));
 }

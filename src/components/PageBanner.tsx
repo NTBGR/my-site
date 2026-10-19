@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import CategoryArt from "@/components/CategoryArt";
+import FestiveArt from "@/components/FestiveArt";
 import { categoryColor } from "@/data/categories";
 
 // კოლაჟის სამი ილუსტრაციის ადგილი ბანერის მარჯვენა მხარეს
@@ -15,20 +16,24 @@ export default function PageBanner({
   text,
   badge,
   collage,
+  festive = false,
   children,
 }: {
   title: string;
   text?: string;
   badge?: string;
   collage: [string, string, string];
+  // საახალწლო ბანერი: მწვანე ფონი და თოვლი
+  festive?: boolean;
   children?: ReactNode;
 }) {
   return (
     <section
-      className="relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
+      className={`relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem] ${festive ? "snow-bg" : ""}`}
       style={{
-        background:
-          "linear-gradient(135deg, #9a826b, #7f6a56 55%, #54443a)",
+        background: festive
+          ? "linear-gradient(135deg, #3f7d5c, #1f5a42 55%, #103b2c)"
+          : "linear-gradient(135deg, #9a826b, #7f6a56 55%, #54443a)",
       }}
     >
       <div className="absolute inset-0 hidden sm:block" aria-hidden>
@@ -38,7 +43,7 @@ export default function PageBanner({
             className={`float absolute ${POSITIONS[i].pos} max-w-[9rem] overflow-hidden rounded-2xl shadow-xl ring-[3px] ring-white/15`}
             style={{ ["--r" as string]: POSITIONS[i].r }}
           >
-            <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />
+            {festive ? <FestiveArt kind={i} /> : <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />}
           </div>
         ))}
       </div>

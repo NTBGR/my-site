@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import Preferences from "@/components/Preferences";
 import SavedLink from "@/components/SavedLink";
 import CategoryBar, { type BarTag } from "@/components/CategoryBar";
+import ComingSoonCountdown from "@/components/ComingSoonCountdown";
 import SearchBox from "@/components/SearchBox";
 import type { SearchItem } from "@/lib/searchIndex";
 import LogoLink from "@/components/LogoLink";
@@ -289,7 +290,17 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
                     {t.quiz.title}
                   </Link>
                 </li>
-                {tags.map((tag) => (
+                {tags.map((tag) => tag.opensAtMs ? (
+                  <li key={tag.slug}>
+                    <span aria-disabled="true" className="flex min-h-11 cursor-not-allowed select-none items-center rounded-2xl px-4 text-sm font-medium text-muted/70">
+                      <span aria-hidden className="mr-2 opacity-70 grayscale">{tag.emoji}</span>
+                      {tag.name}
+                      <span className="ml-auto rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent tabular-nums">
+                        <ComingSoonCountdown opensAtMs={tag.opensAtMs} />
+                      </span>
+                    </span>
+                  </li>
+                ) : (
                   <li key={tag.slug}>
                     <Link
                       href={`/gifts/${tag.slug}`}

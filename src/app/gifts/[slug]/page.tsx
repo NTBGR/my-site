@@ -3,6 +3,7 @@ import BackLink from "@/components/BackLink";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/PageBanner";
+import Snowfall from "@/components/Snowfall";
 import WorksGallery from "@/components/WorksGallery";
 import { effectivePrice } from "@/data/artists";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
@@ -95,11 +96,13 @@ export default async function GiftPage({
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <BackLink href="/" home />
       <JsonLd data={crumbLd} />
+      {raw.festive ? <Snowfall /> : null}
       <PageBanner
         title={`${tag.emoji} ${tag.name}`}
         text={tag.description}
         badge={t.artists.worksCount(all.length)}
         collage={tag.collage}
+        festive={raw.festive}
       />
 
       {/* დალაგება და ფასის ფილტრი: კომპაქტური სეგმენტები, ტელეფონზე ერთ-ერთ რიგში გვერდზე გადასახვევი */}

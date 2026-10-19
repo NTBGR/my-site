@@ -4,6 +4,7 @@ import { SITE_URL } from "@/lib/site";
 import ArtistOfWeek from "@/components/ArtistOfWeek";
 import NewArtists from "@/components/NewArtists";
 import NewWorks from "@/components/NewWorks";
+import NewYearPromo from "@/components/NewYearPromo";
 import SalePromo from "@/components/SalePromo";
 import CategoryArt from "@/components/CategoryArt";
 import TrendingWorks from "@/components/TrendingWorks";
@@ -235,6 +236,7 @@ export default async function Home() {
       </section>
 
       <SalePromo />
+      <NewYearPromo />
 
       {/* კატეგორიები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">

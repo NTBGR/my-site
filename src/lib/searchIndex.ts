@@ -1,6 +1,6 @@
 import { getLocalizedArtists, getWorkEntries } from "@/data/artists";
 import { categories, localizeCategory } from "@/data/categories";
-import { tags, worksForTag, localizeTag } from "@/data/tags";
+import { tags, worksForTag, localizeTag, isTagVisible, lockedUntil } from "@/data/tags";
 import type { Lang } from "@/lib/dictionary";
 import { scoreText } from "@/lib/searchMatch";
 
@@ -21,7 +21,7 @@ export function buildSearchIndex(lang: Lang): SearchItem[] {
 
   // საჩუქრის თაგები: მხოლოდ ისინი, რომლებშიც ნამუშევარი არის
   for (const tag of tags) {
-    if (tag.hidden || worksForTag(tag, "ka").length === 0) continue;
+    if (!isTagVisible(tag) || lockedUntil(tag) !== undefined || worksForTag(tag, "ka").length === 0) continue;
     const local = localizeTag(tag, lang);
     items.push({
       kind: "gift",

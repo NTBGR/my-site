@@ -193,6 +193,63 @@ a:hover > .arrow-slide {
 
 /* ---------- რედიზაინი: დეკორი და ახალი ანიმაციები ---------- */
 
+/* საახალწლო თოვლი: ორი ფენა პატარა მბზინავი წერტილი, ნელა ეშვება (ანიმაცია გამორთულია, თუ ადამიანს ასე აქვს პარამეტრებში) */
+.snow-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgb(255 255 255 / 0.85), transparent),
+    radial-gradient(2px 2px at 90px 80px, rgb(255 255 255 / 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 150px 20px, rgb(255 255 255 / 0.8), transparent),
+    radial-gradient(2.5px 2.5px at 60px 130px, rgb(255 255 255 / 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 190px 110px, rgb(255 255 255 / 0.75), transparent);
+  background-size: 220px 160px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .snow-bg::before {
+    animation: snow-fall 14s linear infinite;
+  }
+}
+/* გვერდის ფიფქები (Snowfall კომპონენტი) */
+.snowflake {
+  position: absolute;
+  top: -28px;
+  color: rgb(140 178 205);
+  line-height: 1;
+  text-shadow: 0 0 6px rgb(255 255 255 / 0.9);
+  animation-name: flake-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .snowfall {
+    display: none;
+  }
+}
+@keyframes flake-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(var(--drift, 20px), 55vh, 0) rotate(160deg);
+  }
+  100% {
+    transform: translate3d(calc(var(--drift, 20px) * -0.4), 112vh, 0) rotate(320deg);
+  }
+}
+@keyframes snow-fall {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 30px 160px;
+  }
+}
+
 @keyframes float {
   0%,
   100% {
