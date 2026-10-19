@@ -95,7 +95,7 @@ export const tags: Tag[] = [
     description: "ხელნაკეთი საჩუქრები ახალი წლისთვის: პირდაპირ ავტორისგან, რომ ახალი წელი განსაკუთრებული იყოს.",
     // სეზონი: თარიღების შეცვლით ბანერი და გვერდი ადრე ან გვიან გამოჩნდება
     season: { from: "2026-10-19", to: "2027-01-10" },
-    opensAt: "2026-12-01",
+    // opensAt: "2026-12-01", // ჩართე ეს ხაზი, რომ ჩიპი ისევ გამორთული იყოს („მალე“ და ათვლა) მითითებულ თარიღამდე
     festive: true,
     en: { name: "New Year gifts", description: "Handmade gifts for the New Year, straight from the maker, to make the holidays special." },
   },
