@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BackLink from "@/components/BackLink";
+import ApplyShortcut from "@/components/ApplyShortcut";
 import JoinForm from "@/components/JoinForm";
 import PageBanner from "@/components/PageBanner";
 import { categories } from "@/data/categories";
@@ -93,6 +94,12 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
               →
             </span>
           </Link>
+          <Link href="/faq" className="group mt-2 inline-flex items-center gap-2 text-sm font-medium text-accent">
+            {t.faqQuestions}
+            <span className="arrow-slide" aria-hidden>
+              →
+            </span>
+          </Link>
         </div>
 
         <div
@@ -102,6 +109,8 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
           <JoinForm defaultCategory={defaultCategory} />
         </div>
       </section>
+
+      <ApplyShortcut label={all.form.open} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BackLink from "@/components/BackLink";
 import PageBanner from "@/components/PageBanner";
+import SocialIcons from "@/components/SocialIcons";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { CONTACT_EMAIL } from "../privacy/content";
@@ -97,6 +98,7 @@ export default async function AboutPage() {
             {CONTACT_EMAIL}
           </a>
         </p>
+        <SocialIcons className="mt-4" withEmail />
       </section>
     </div>
   );

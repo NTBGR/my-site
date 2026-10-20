@@ -55,13 +55,13 @@ export const terms: Record<
       {
         title: "შეწყვეტა",
         text: [
-          "შეგიძლია ნებისმიერ დროს მოგვწერო და პროფილის მოხსნა მოგვთხოვო, ჩვენ ამას სწრაფად შევასრულებთ. ჩვენც შეგვიძლია პროფილი მოვხსნათ, თუ ამ წესებს დაარღვევ ან ნამუშევრები ხელნაკეთი არ აღმოჩნდება.",
+          "შეგიძლია ნებისმიერ დროს მოგვწერო და გაუქმება მოგვთხოვო, ჩვენ პროფილს სწრაფად მოვხსნით. ჩვენც შეგვიძლია პროფილი მოვხსნათ, თუ ამ წესებს დაარღვევ ან ნამუშევრები ხელნაკეთი არ აღმოჩნდება.",
         ],
       },
       {
         title: "შენი ფოტოები და ტექსტები",
         text: [
-          "ფოტოები, ტექსტები და ნამუშევრები შენი რჩება. განთავსებით საიტზე მათი ჩვენების უფლებას გვაძლევ. პროფილის მოხსნისას მათაც მოვხსნით.",
+          "ფოტოები, ტექსტები და ნამუშევრები შენი რჩება. განთავსებით საიტზე მათი ჩვენების უფლებას გვაძლევ. გაუქმებისას მათაც მოვხსნით.",
         ],
       },
       {
@@ -121,13 +121,13 @@ export const terms: Record<
       {
         title: "Ending it",
         text: [
-          "You can write to us at any time and ask for your profile to be removed; we will do it promptly. We may also remove a profile if these terms are broken or the work turns out not to be handmade.",
+          "You can write to us at any time and ask to cancel; we will promptly remove your profile. We may also remove a profile if these terms are broken or the work turns out not to be handmade.",
         ],
       },
       {
         title: "Your photos and texts",
         text: [
-          "Your photos, texts and works stay yours. By listing, you allow us to show them on the site. When your profile is removed, they are removed too.",
+          "Your photos, texts and works stay yours. By listing, you allow us to show them on the site. When you cancel, they are removed too.",
         ],
       },
       {

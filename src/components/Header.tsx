@@ -8,6 +8,7 @@ import Preferences from "@/components/Preferences";
 import SavedLink from "@/components/SavedLink";
 import CategoryBar, { type BarTag } from "@/components/CategoryBar";
 import ComingSoonCountdown from "@/components/ComingSoonCountdown";
+import SocialIcons from "@/components/SocialIcons";
 import SearchBox from "@/components/SearchBox";
 import type { SearchItem } from "@/lib/searchIndex";
 import LogoLink from "@/components/LogoLink";
@@ -334,6 +335,10 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
                 );
               })}
             </ul>
+          </div>
+
+          <div className="mt-2 border-t border-border px-4 pb-1 pt-3">
+            <SocialIcons size="sm" />
           </div>
 
           <div className="mt-2 border-t border-border pt-3">

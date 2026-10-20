@@ -2,12 +2,6 @@ import Link from "next/link";
 import LogoLink from "@/components/LogoLink";
 import { getT } from "@/lib/i18n";
 
-// საიტის სოციალური ქსელები: ჩაწერე ბმული და ფუტერში გამოჩნდება
-const SOCIAL_LINKS = {
-  instagram: "",
-  facebook: "",
-};
-
 function FooterList({
   title,
   links,
@@ -49,12 +43,8 @@ export default async function Footer() {
     { href: "/blog", label: nav.blog },
     { href: "/#how-it-works", label: f.howItWorks },
     { href: "/join", label: nav.join },
+    { href: "/faq", label: f.faq },
   ];
-  const social = [
-    { href: SOCIAL_LINKS.instagram, label: f.instagram },
-    { href: SOCIAL_LINKS.facebook, label: f.facebook },
-  ].filter((link) => link.href);
-
   return (
     <footer className="relative mt-0 overflow-hidden border-t border-border bg-surface-2">
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-4 pt-10 sm:flex-row sm:justify-between sm:gap-12 sm:px-6 sm:pt-14 lg:px-10">
@@ -64,9 +54,6 @@ export default async function Footer() {
         </div>
         <div className="flex gap-12 sm:gap-16">
           <FooterList title={f.learnMore} links={explore} />
-          {social.length > 0 ? (
-            <FooterList title={f.social} links={social} external />
-          ) : null}
         </div>
       </div>
       <div
