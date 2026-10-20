@@ -14,5 +14,4 @@ export const pickedWorks: string[] = [
   "tamus-shop/bouquet-pink-blooms",
   "zhuzha-ceramics/necklace-orange-star",
   "tamus-shop/tulips-blue-doll",
-  "zhuzha-ceramics/ring-flame-heart",
 ];
