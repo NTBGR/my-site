@@ -97,6 +97,9 @@ export const tags: Tag[] = [
     season: { from: "2026-10-19", to: "2027-01-10" },
     // opensAt: "2026-12-01", // ჩართე ეს ხაზი, რომ ჩიპი ისევ გამორთული იყოს („მალე“ და ათვლა) მითითებულ თარიღამდე
     festive: true,
+    // დროებით ამოღებულია (2026-10-21): ჩიპი, გვერდი, ძებნა და sitemap დამალულია. დასაბრუნებლად: წაშალე შემდეგი hidden ხაზი (+ სურვილისამებრ ჩართე opensAt „მალე“-ს ათვლისთვის) და მთავარზე ბანერისთვის დაამატე <NewYearPromo /> app/page.tsx-ში <SalePromo />-ის შემდეგ.
+    // დანარჩენი (ბანერის ფოტოები public/categories/soft-1, soft-2, soft-3c, ფიფქები, ქაუნთდაუნი, ყველა ნამუშევრის new-year თაგი) მზადაა და ხელუხლებელია
+    hidden: true,
     en: { name: "New Year gifts", description: "Handmade gifts for the New Year, straight from the maker, to make the holidays special." },
   },
   {
