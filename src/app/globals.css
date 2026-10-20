@@ -12,7 +12,6 @@
   --accent: #a84f2c;
   --accent-hover: #8a3d20;
   --accent-soft: #f2e0d4;
-  --verified: #2f8f4e;
   --on-accent: #ffffff;
   color-scheme: light;
 }
@@ -27,7 +26,6 @@ html[data-theme="dark"] {
   --accent: #e8895f;
   --accent-hover: #f0a07c;
   --accent-soft: #35201a;
-  --verified: #5fcf80;
   --on-accent: #1a0f09;
   color-scheme: dark;
 }

@@ -228,7 +228,7 @@ export default async function ArtistPage({
             ) : null}
             {artist.verified ? (
               <span title={t.verifiedHint} className="inline-flex items-center gap-1 rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
-                <VerifiedMark className="h-3.5 w-3.5 text-[#6fe08f]" checkColor="#17381f" />
+                <VerifiedMark className="h-3.5 w-3.5" checkColor="#5b4636" />
                 {t.verified}
               </span>
             ) : null}
@@ -301,7 +301,7 @@ export default async function ArtistPage({
           <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">{artist.bio}</p>
           {artist.verified ? (
             <p className="mt-4 flex items-start gap-2 text-sm text-muted">
-              <VerifiedMark className="mt-0.5 h-4 w-4 shrink-0 text-verified" />
+              <VerifiedMark className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
               <span>
                 <b className="font-semibold text-text">{t.verified}.</b> {t.verifiedHint}
               </span>
