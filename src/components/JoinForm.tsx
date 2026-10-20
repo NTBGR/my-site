@@ -34,7 +34,8 @@ function SelectArrow() {
 type Status = "idle" | "sending" | "success";
 
 export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: string }) {
-  const t = useT().form;
+  const all = useT();
+  const t = all.form;
   const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
@@ -72,12 +73,37 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
     return (
       <div
         role="status"
-        className="max-w-2xl rounded-2xl border border-border bg-surface p-6"
+        tabIndex={-1}
+        // გაგზავნის შემდეგ ფორმა მოკლე შეტყობინებით იცვლება და გვერდი მოკლდება: შეტყობინება ეკრანის ცენტრში უნდა მოვიტანოთ, რომ ტელეფონზე არ დარჩეს ზემოთ დამალული
+        ref={(el) => {
+          if (!el) return;
+          const top = el.getBoundingClientRect().top;
+          if (top < 90 || top > window.innerHeight - 160) el.scrollIntoView({ block: "center", behavior: "smooth" });
+          el.focus({ preventScroll: true });
+        }}
+        className="mx-auto flex max-w-xl flex-col items-center rounded-[1.5rem] bg-accent-soft px-6 py-10 text-center outline-none sm:px-10 sm:py-12"
       >
-        <h3 className="text-lg font-semibold text-text">{t.thanksTitle}</h3>
-        <p className="mt-2 leading-relaxed text-muted">
-          {t.thanksText}
-        </p>
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-on-accent shadow-lg" aria-hidden>
+          <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m5 12.5 4.5 4.5L19 7.5" />
+          </svg>
+        </span>
+        <h3 className="mt-5 font-serif text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.thanksTitle}</h3>
+        <p className="mt-3 max-w-md leading-relaxed text-text/80">{t.thanksText}</p>
+        <div className="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <Link
+            href="/artists"
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-accent px-7 text-sm font-medium text-on-accent transition duration-300 hover:bg-accent-hover active:scale-95"
+          >
+            {all.join.existing}
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-7 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent active:scale-95"
+          >
+            {all.nav.home}
+          </Link>
+        </div>
       </div>
     );
   }
