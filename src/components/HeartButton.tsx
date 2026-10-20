@@ -26,6 +26,8 @@ export default function HeartButton({ id, className = "", label }: { id: string;
         }
       }}
       aria-pressed={saved}
+      // შენახულ გულს ყოველთვის წითელი ფერი აქვს (კლასის ფერს ჩაანაცვლებს), რომ მკაფიოდ ჩანდეს, რომ დაემატა
+      style={saved ? { color: "#e11d48" } : undefined}
       aria-label={saved ? t.unsave : t.save}
       className={`inline-flex items-center justify-center gap-2 rounded-full transition duration-300 active:scale-90 ${className}`}
     >
