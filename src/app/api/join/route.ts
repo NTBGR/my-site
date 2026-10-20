@@ -20,9 +20,11 @@ function escapeHtml(text: string) {
 }
 
 export async function POST(request: Request) {
-  // ბოტებისგან დაცვა: ერთი IP-დან საათში 5 განაცხადი, ყველასგან ერთად საათში 60 (გამოგზავნის სპამი Telegram-ს არ უნდა აავსოს)
+  // ბოტებისგან დაცვა: ერთი IP-დან საათში 5 განაცხადი, ყველასგან ერთად საათში 60 (გამოგზავნის სპამი Telegram-ს არ უნდა აავსოს).
+  // ეს ლიმიტი მხოლოდ სწორად შევსებულ განაცხადებზე ითვლება (ქვემოთ, გაგზავნამდე): ველის შევსება რომ დაავიწყდეს, ადამიანს ცდები არ დაეწვას.
+  // აქ მხოლოდ ფართო დამცავი ლიმიტია უბრალოდ დაუსრულებელი ცდებისგან
   const ip = clientIp(request.headers);
-  if (!(await allowed(`join:ip:${ip}`, 5, 3600)) || !(await allowed("join:all", 60, 3600))) {
+  if (!(await allowed(`join:try:${ip}`, 60, 3600))) {
     return NextResponse.json({ error: "rateLimited" }, { status: 429 });
   }
 
@@ -76,6 +78,10 @@ export async function POST(request: Request) {
       { error: "email" },
       { status: 400 },
     );
+  }
+
+  if (!(await allowed(`join:ip:${ip}`, 5, 3600)) || !(await allowed("join:all", 60, 3600))) {
+    return NextResponse.json({ error: "rateLimited" }, { status: 429 });
   }
 
   // თანხმობის ჩანაწერი: როდის და რომელ ვერსიას დათანხმდა (თბილისის დრო), რომ მოთხოვნისას დასტური გვქონდეს

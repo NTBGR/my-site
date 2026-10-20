@@ -8,7 +8,7 @@ import { categories } from "@/data/categories";
 import { cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 
 const inputClass =
-  "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent";
+  "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent [[data-tried=true]_&:invalid]:border-red-600 [[data-tried=true]_&:invalid]:ring-1 [[data-tried=true]_&:invalid]:ring-red-600";
 
 // ჩამოსაშლელი სია: ბრაუზერის ჩვეულებრივი სტილის ნაცვლად ჩვენი ველის ფორმა და საკუთარი ისარი
 // placeholder ვარიანტი disabled არ არის: iOS-ის ბორბალი მასზე იწყება და „ნახატები“ (პირველი რეალური ვარიანტი) შემთხვევით არ აირჩევა; required ცარიელს მაინც არ გაატარებს
@@ -39,6 +39,7 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
   const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const [tried, setTried] = useState(false);
   // „სხვა“ არჩევისას ჩნდება ველი, სადაც ადამიანი თვითონ წერს
   const [city, setCity] = useState("");
   const [category, setCategory] = useState(defaultCategory);
@@ -111,6 +112,12 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
   return (
     <form
       onSubmit={onSubmit}
+      // ღილაკზე დაჭერის შემდეგ ცარიელი სავალდებულო ველები წითლდება (დაჭერამდე — არა)
+      onInvalidCapture={() => {
+        setTried(true);
+        setError(t.errors.required);
+      }}
+      data-tried={tried}
       className="grid grid-cols-1 gap-5 sm:grid-cols-2"
     >
       <label className="text-sm font-medium text-text">
@@ -267,7 +274,7 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
 
       {/* თანხმობა მონიშვნით: მონიშვნის გარეშე ფორმა არ გაიგზავნება */}
       <label className="flex items-start gap-3 text-sm leading-relaxed text-text sm:col-span-2">
-        <input type="checkbox" name="agree" required className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-accent" />
+        <input type="checkbox" name="agree" required className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-accent [[data-tried=true]_&:invalid]:outline [[data-tried=true]_&:invalid]:outline-2 [[data-tried=true]_&:invalid]:outline-offset-2 [[data-tried=true]_&:invalid]:outline-red-600" />
         <span>{t.consent}{" "}
           <Link href="/privacy" target="_blank" className="underline underline-offset-2 hover:text-accent">
             {t.consentLink}
