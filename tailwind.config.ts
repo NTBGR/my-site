@@ -14,6 +14,7 @@ const config: Config = {
         "surface-2": "var(--surface-2)",
         "on-accent": "var(--on-accent)",
         "accent-soft": "var(--accent-soft)",
+        verified: "var(--verified)",
         text: "var(--text)",
         muted: "var(--muted)",
         border: "var(--border)",
