@@ -27,8 +27,7 @@ export default function CategoryCard({
     <Link
       href={`/categories/${slug}`}
       aria-label={label}
-      className={`group flex h-full flex-col rounded-[1.6rem] border border-border bg-surface p-2 shadow-[0_14px_30px_-24px_rgb(60_40_20/0.6)] transition duration-300 hover:-translate-y-1.5 hover:border-[color:var(--c)] hover:shadow-[0_26px_40px_-24px_rgb(60_40_20/0.7)] active:scale-[0.99] sm:p-2.5 ${className}`.trim()}
-      style={{ ["--c" as string]: color }}
+      className={`group flex h-full flex-col rounded-[1.6rem] border border-border bg-surface p-2 shadow-[0_14px_30px_-24px_rgb(60_40_20/0.6)] transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-[0_26px_40px_-24px_rgb(60_40_20/0.7)] active:scale-[0.99] sm:p-2.5 ${className}`.trim()}
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-[1.15rem] bg-surface-2">
         <div aria-hidden className="absolute inset-0 transition duration-700 ease-out group-hover:scale-[1.06]">
@@ -50,7 +49,7 @@ export default function CategoryCard({
         {/* ისარი ქვემოთ, ღია ფერის: კარუსელის ფერად ისრებში არ ერევა */}
         <span
           aria-hidden
-          className="hidden h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-border bg-surface text-text transition duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
+          className="hidden h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-border bg-surface text-text transition duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent sm:flex"
         >
           <span className="arrow-slide">→</span>
         </span>

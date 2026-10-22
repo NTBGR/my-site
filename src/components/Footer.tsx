@@ -1,7 +1,6 @@
 import Link from "next/link";
 import LogoLink from "@/components/LogoLink";
 import SocialIcons from "@/components/SocialIcons";
-import { categories, localizeCategory } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { RIBBON } from "@/lib/tones";
@@ -21,7 +20,7 @@ function FooterList({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="inline-flex min-h-10 items-center text-[15px] text-[#f4ede4]/85 transition-colors hover:text-white"
+              className="inline-flex min-h-10 items-center py-1 text-[15px] leading-snug text-[#f4ede4]/85 transition-colors hover:text-white"
             >
               {link.label}
             </Link>
@@ -45,15 +44,10 @@ export default async function Footer() {
     { href: "/join", label: nav.join },
     { href: "/faq", label: f.faq },
   ];
-  const cats = categories.map((raw) => {
-    const category = localizeCategory(raw, lang);
-    return { href: `/categories/${category.slug}`, label: category.name };
-  });
-  const half = Math.ceil(cats.length / 2);
 
   return (
     <footer
-      className="relative isolate overflow-hidden bg-[#221914] text-[#f4ede4]"
+      className="relative isolate overflow-hidden bg-[#2a1a12] text-[#f4ede4]"
       style={{ ["--text" as string]: "#f4ede4", ["--accent" as string]: "#e8895f" }}
     >
       <div aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: RIBBON }} />
@@ -71,10 +65,8 @@ export default async function Footer() {
           </Link>
           <SocialIcons className="mt-6" onDark />
         </div>
-        <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3">
+        <div className="lg:justify-self-end">
           <FooterList title={f.learnMore} links={explore} />
-          <FooterList title={nav.categories} links={cats.slice(0, half)} />
-          <FooterList title="&nbsp;" links={cats.slice(half)} />
         </div>
       </div>
       <div

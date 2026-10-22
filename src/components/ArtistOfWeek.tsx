@@ -25,10 +25,10 @@ export default async function ArtistOfWeek() {
   const frame = "border-[1.5px] border-white/25";
 
   return (
-    // ფერადი ზოლი მთელ სიგანეზე: მთავარის რიტმში ერთი გამორჩეული ადგილი
+    // მუქი ტერაკოტის ზოლი მთელ სიგანეზე: მთავარის რიტმში ერთი გამორჩეული ადგილი (საიტის ძირითად ფერში, რომ არ აჭრელდეს)
     <section
       className="relative isolate mt-14 overflow-hidden sm:mt-20"
-      style={{ background: "linear-gradient(135deg, #8a3b57, #5e2a3e 58%, #3d1a29)" }}
+      style={{ background: "linear-gradient(135deg, #8f3f1f, #6a2c15 58%, #431a0b)" }}
     >
       <BannerOrnament className="-z-10" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">

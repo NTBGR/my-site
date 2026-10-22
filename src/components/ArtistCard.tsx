@@ -34,8 +34,7 @@ export default function ArtistCard({
   return (
     <Link
       href={`/artists/${artist.slug}`}
-      className="group flex h-full flex-col rounded-[1.6rem] border border-border bg-surface p-2 text-text shadow-[0_14px_30px_-24px_rgb(60_40_20/0.6)] will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:border-[color:var(--c)] hover:shadow-[0_26px_40px_-24px_rgb(60_40_20/0.7)] active:scale-[0.99] sm:p-2.5"
-      style={{ ["--c" as string]: color }}
+      className="group flex h-full flex-col rounded-[1.6rem] border border-border bg-surface p-2 text-text shadow-[0_14px_30px_-24px_rgb(60_40_20/0.6)] will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-[0_26px_40px_-24px_rgb(60_40_20/0.7)] active:scale-[0.99] sm:p-2.5"
     >
       <div className={`relative overflow-hidden rounded-[1.15rem] bg-surface-2 ${artClassName}`}>
         <div className="absolute inset-0" style={photo?.image ? { filter: "saturate(.88) sepia(.1)" } : undefined}>
@@ -45,11 +44,8 @@ export default function ArtistCard({
             <CategoryArt slug={main} color={color} still className="absolute inset-0 h-full w-full" />
           )}
         </div>
-        {/* კატეგორიის ნიშანი კატეგორიის საკუთარ ფერშია */}
-        <span
-          className="absolute left-2 top-2 z-10 rounded-full px-2.5 py-1 text-[11px] font-semibold text-white shadow-md sm:left-3 sm:top-3 sm:px-3 sm:text-xs"
-          style={{ background: color }}
-        >
+        {/* ხელობის ნიშანი: ყველა ბარათზე ერთნაირი თეთრი, რომ ბარათები არ აჭრელდეს */}
+        <span className="absolute left-2 top-2 z-10 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-[#2a1d17] shadow-sm backdrop-blur sm:left-3 sm:top-3 sm:px-3 sm:text-xs">
           {artist.category}
         </span>
       </div>
@@ -79,7 +75,7 @@ export default function ArtistCard({
         {/* ისარი ქვემოთ, ღია ფერის: კარუსელის ფერად ისრებში არ ერევა */}
         <span
           aria-hidden
-          className="hidden h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-border bg-surface text-text transition duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
+          className="hidden h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-border bg-surface text-text transition duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent sm:flex"
         >
           <span className="arrow-slide">→</span>
         </span>
