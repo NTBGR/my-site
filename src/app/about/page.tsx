@@ -26,7 +26,8 @@ export default async function AboutPage() {
         text={a.intro}
         badge={a.badge}
         collage={["keramika", "tekstili", "nakhatebi"]}
-        tone="berry"
+        tone="clay"
+        photos={false}
       />
 
       {/* ისტორია */}
@@ -70,7 +71,7 @@ export default async function AboutPage() {
       </section>
 
       {/* დასკვნა + მოქმედებები */}
-      <section className="grain relative isolate mt-12 overflow-hidden rounded-[1.75rem] p-6 text-center text-white sm:mt-16 sm:p-12" style={{ background: toneGradient(TONES.berry) }}>
+      <section className="grain relative isolate mt-12 overflow-hidden rounded-[1.75rem] p-6 text-center text-white sm:mt-16 sm:p-12" style={{ background: toneGradient(TONES.clay) }}>
         <div aria-hidden className="blob pointer-events-none absolute -right-16 -top-20 -z-10 h-64 w-64 rounded-full border-[30px] border-white/10" />
         <p className="mx-auto max-w-2xl text-balance font-serif text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
           {a.closing}

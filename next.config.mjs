@@ -13,6 +13,8 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  // ლოკალური სერვერი ტელეფონიდანაც რომ იხსნებოდეს (იგივე Wi-Fi, მისამართი 192.168.x.x:3000); მხოლოდ `next dev`-ზე მოქმედებს
+  allowedDevOrigins: ["192.168.*.*"],
   // ფოტოები AVIF/WebP-ით; quality 75 (ნაგულისხმევი) და 80
   images: { formats: ["image/avif", "image/webp"], qualities: [75, 80] },
   // Next.js-მა თავის ვერსიას თავს არ დაადებდეს პასუხებში

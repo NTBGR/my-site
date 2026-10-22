@@ -24,6 +24,7 @@ export default function PageBanner({
   tone = "clay",
   festive = false,
   ornament = true,
+  photos = true,
   children,
 }: {
   title: string;
@@ -35,6 +36,8 @@ export default function PageBanner({
   festive?: boolean;
   // ფონის მოძრავი ორნამენტი (ფასდაკლების ბანერზე გამორთულია)
   ornament?: boolean;
+  // ფოტოების კოლაჟი (ტექსტურ გვერდებზე, მაგ. ჩვენ შესახებ, წესები, გამორთულია)
+  photos?: boolean;
   children?: ReactNode;
 }) {
   const base = TONES[tone];
@@ -60,9 +63,11 @@ export default function PageBanner({
           className="absolute inset-0"
           style={{ background: "radial-gradient(60% 90% at 88% 8%, rgb(255 255 255 / 0.22), transparent 70%)" }}
         />
-        {festive || !ornament ? null : <BannerOrnament zone="gap" />}
+        {festive || !ornament ? null : <BannerOrnament zone={photos ? "gap" : "right"} />}
       </div>
       {/* დესკტოპზე სამი ფოტო, ტელეფონზე ერთი კუთხეში */}
+      {photos ? (
+      <>
       <div className="absolute inset-0 z-[2] hidden sm:block" aria-hidden>
         {collage.map((slug, i) => (
           <div
@@ -81,9 +86,11 @@ export default function PageBanner({
       >
         {photo(collage[0], 0)}
       </div>
-      <div className="relative z-10 min-h-[8.5rem] p-5 sm:flex sm:min-h-[15rem] sm:max-w-[58%] sm:flex-col sm:justify-center sm:px-10 sm:py-8">
+      </>
+      ) : null}
+      <div className={`relative z-10 min-h-[8.5rem] p-5 sm:flex sm:min-h-[15rem] sm:flex-col sm:justify-center sm:px-10 sm:py-8 ${photos ? "sm:max-w-[58%]" : "sm:max-w-[72%]"}`}>
         {/* ტელეფონზე ფოტოს ადგილი: ტექსტი მას გარს უვლის და ქვემოთ მთელ სიგანეს იყენებს */}
-        <div aria-hidden className="float-right ml-3 h-[4.5rem] w-[5.25rem] sm:hidden" />
+        {photos ? <div aria-hidden className="float-right ml-3 h-[4.5rem] w-[5.25rem] sm:hidden" /> : null}
         {badge ? (
           <p className="mb-2 inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-3 py-0.5 text-xs font-medium backdrop-blur-md">
             {badge}

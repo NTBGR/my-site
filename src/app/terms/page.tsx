@@ -20,6 +20,7 @@ export default async function TermsPage() {
         badge={p.updated}
         collage={["keramika", "samkauli", "tekstili"]}
         tone="ink"
+        photos={false}
       />
 
       <article className="mt-10 max-w-3xl space-y-8 sm:mt-14 sm:space-y-10">

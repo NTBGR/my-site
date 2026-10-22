@@ -19,7 +19,8 @@ export default async function PrivacyPage() {
         text={p.intro}
         badge={p.updated}
         collage={["sachuqrebi", "khis-nakethobebi", "keramika"]}
-        tone="sage"
+        tone="ink"
+        photos={false}
       />
 
       <article className="mt-10 max-w-3xl space-y-8 sm:mt-14 sm:space-y-10">
