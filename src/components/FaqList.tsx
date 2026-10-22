@@ -44,8 +44,7 @@ export default function FaqList({
         {items.map((item, i) => (
           <details key={item.q} className="group rounded-[1.25rem] border-[1.5px] border-border bg-surface px-4 shadow-[0_10px_24px_-20px_rgb(60_40_20/0.5)] transition-colors open:border-accent sm:px-5">
             <summary className="flex min-h-16 cursor-pointer list-none items-center gap-4 py-4 pr-1 text-left marker:hidden [&::-webkit-details-marker]:hidden">
-              <span aria-hidden className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold tabular-nums text-white"
-                style={{ background: [TONES.clay, TONES.teal, TONES.berry, TONES.ink, TONES.sage, TONES.plum][i % 6] }}>
+              <span aria-hidden className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold tabular-nums bg-accent text-white">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="flex-1 text-base font-semibold tracking-tight text-text transition-colors group-hover:text-accent sm:text-lg">

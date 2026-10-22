@@ -18,7 +18,7 @@ import { hasCategoryPhoto } from "@/data/categoryPhotos";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { TONES, toneGradient } from "@/lib/tones";
-import BannerOrnament, { categoryOrnament } from "@/components/BannerOrnament";
+import BannerOrnament from "@/components/BannerOrnament";
 
 
 export default async function Home() {
@@ -97,7 +97,6 @@ export default async function Home() {
       id: "main",
       color: heroBg(TONES.clay),
       tone: TONES.clay,
-      ornament: "circles",
       art: collage(["bechdebi", "keramika", "samkauli"]),
       content: (
         <div className="hero-in">
@@ -127,7 +126,6 @@ export default async function Home() {
       id: banner.slug,
       color: slideColor(banner.slug),
       tone: categoryColor(banner.slug),
-      ornament: categoryOrnament(banner.slug),
       art: collage(related[banner.slug] ?? ["keramika", "samkauli", "nakhatebi"]),
       content: (
         <div>
@@ -182,15 +180,15 @@ export default async function Home() {
                 <div
                   aria-hidden
                   className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #3f7479, #2f5d62 52%, #1a363a)" }}
+                  style={{ background: "linear-gradient(150deg, #c2603a, #a84f2c 52%, #6b2f18)" }}
                 />
-                <BannerOrnament kind="circles" />
+                <BannerOrnament />
                 <div aria-hidden className="absolute inset-x-5 top-5 z-10 grid grid-cols-4 gap-2 sm:inset-x-6 sm:top-6">
                   {["nakhatebi", "posterebi", "keramika", "tyavi"].map((slug, i) => (
                     <div
                       key={slug}
                       className="float-soft print print-sm"
-                      style={{ ["--r" as string]: `${[-4, 3, -2, 4][i]}deg`, animationDelay: `-${i * 1.8}s`, ["--tone" as string]: "#2f5d62" }}
+                      style={{ ["--r" as string]: `${[-4, 3, -2, 4][i]}deg`, animationDelay: `-${i * 1.8}s`, ["--tone" as string]: "#a84f2c" }}
                     >
                       <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-square" />
                     </div>
@@ -215,7 +213,7 @@ export default async function Home() {
                   className="grain absolute inset-0"
                   style={{ background: "linear-gradient(150deg, #a8506d, #8a3b57 52%, #4a1d2f)" }}
                 />
-                <BannerOrnament kind="sparkles" />
+                <BannerOrnament />
                 <div aria-hidden className="absolute left-5 top-5 z-10 flex sm:left-6 sm:top-6">
                   {crafts.map((slug, i) => (
                     <span
@@ -339,18 +337,16 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-10 sm:pt-14">
         <Link
           href="/quiz"
-          className="group grain relative isolate flex flex-col items-start gap-4 overflow-hidden rounded-[1.5rem] p-5 text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.75rem] sm:p-7"
-          style={{ background: "linear-gradient(135deg, #3f7479, #2f5d62 52%, #1a363a)" }}
+          className="group relative isolate flex flex-col items-start gap-4 overflow-hidden rounded-[1.5rem] border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-accent-soft p-5 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.75rem] sm:p-7"
         >
-          <BannerOrnament kind="circles" className="-z-10" />
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+            <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
               <span aria-hidden className="mr-2">🎯</span>
               {dictionary[lang].quiz.promoTitle}
             </h2>
-            <p className="mt-1 text-white/80">{dictionary[lang].quiz.promoText}</p>
+            <p className="mt-1 text-muted">{dictionary[lang].quiz.promoText}</p>
           </div>
-          <span className="btn btn-light shrink-0 group-hover:bg-[#f6c453]">
+          <span className="btn btn-primary shrink-0">
             {dictionary[lang].quiz.promoCta}
             <span className="arrow-slide" aria-hidden>
               →
@@ -388,8 +384,7 @@ export default async function Home() {
             >
               <span
                 aria-hidden
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
-                style={{ background: [TONES.clay, TONES.teal, TONES.berry][i % 3] }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold bg-accent text-white shadow-md"
               >
                 {i + 1}
               </span>

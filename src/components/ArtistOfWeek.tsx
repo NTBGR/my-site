@@ -30,7 +30,7 @@ export default async function ArtistOfWeek() {
       className="relative isolate mt-14 overflow-hidden sm:mt-20"
       style={{ background: "linear-gradient(135deg, #8a3b57, #5e2a3e 58%, #3d1a29)" }}
     >
-      <BannerOrnament kind="sparkles" className="-z-10" />
+      <BannerOrnament className="-z-10" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
       <Link
         href={`/artists/${artist.slug}`}

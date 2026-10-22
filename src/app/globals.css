@@ -595,17 +595,6 @@ a:hover > .arrow-slide {
 }
 
 /* ბანერების მოძრავი ორნამენტები (BannerOrnament): ნელი, მშვიდი მოძრაობა */
-@keyframes orn-twinkle {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scale(0.8) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.12) rotate(20deg);
-  }
-}
 @keyframes orn-drift {
   0%,
   100% {
@@ -624,11 +613,6 @@ a:hover > .arrow-slide {
     transform: translateY(-12px);
   }
 }
-.orn-twinkle {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: orn-twinkle 4.5s ease-in-out infinite;
-}
 .orn-drift {
   animation: orn-drift 14s ease-in-out infinite;
 }
@@ -638,7 +622,6 @@ a:hover > .arrow-slide {
   animation: orn-bob 9s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .orn-twinkle,
   .orn-drift,
   .orn-bob {
     animation: none;

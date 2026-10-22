@@ -139,7 +139,7 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
   return (
     <>
       <header ref={headerRef} className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
-        {/* ფერების ლენტი: საიტის პალიტრა ერთ ხაზზე */}
+        {/* ტერაკოტის ზოლი ზემოთ */}
         <div aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: RIBBON }} />
         <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3.5 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:gap-5 lg:px-10">
           <LogoLink />

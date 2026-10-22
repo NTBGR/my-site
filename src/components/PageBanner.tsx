@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import CategoryArt from "@/components/CategoryArt";
 import Photo from "@/components/Photo";
 import { categoryColor } from "@/data/categories";
-import BannerOrnament, { TONE_ORNAMENT } from "@/components/BannerOrnament";
+import BannerOrnament from "@/components/BannerOrnament";
 import { TONES, toneGradient, type Tone } from "@/lib/tones";
 
 export type BannerTone = Tone;
@@ -60,7 +60,7 @@ export default function PageBanner({
           className="absolute inset-0"
           style={{ background: "radial-gradient(60% 90% at 88% 8%, rgb(255 255 255 / 0.22), transparent 70%)" }}
         />
-        {festive || !ornament ? null : <BannerOrnament kind={TONE_ORNAMENT[tone]} zone="gap" />}
+        {festive || !ornament ? null : <BannerOrnament zone="gap" />}
       </div>
       {/* დესკტოპზე სამი ფოტო, ტელეფონზე ერთი კუთხეში */}
       <div className="absolute inset-0 z-[2] hidden sm:block" aria-hidden>

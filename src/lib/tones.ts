@@ -16,5 +16,5 @@ export function toneGradient(base: string, angle = 135) {
   return `linear-gradient(${angle}deg, color-mix(in srgb, ${base}, white 14%), ${base} 52%, color-mix(in srgb, ${base}, black 40%))`;
 }
 
-// ფერების ლენტი ზედა ზოლისთვის (ჰედერის თავზე და ფუთერზე)
-export const RIBBON = `linear-gradient(90deg, ${TONES.teal}, ${TONES.ink}, ${TONES.plum}, ${TONES.berry}, ${TONES.clay}, ${TONES.marigold}, ${TONES.sage})`;
+// ზედა ზოლი (ჰედერი, ფუთერი, ფორმა): ერთფეროვანი ტერაკოტა, ოდნავ გადასვლით, რომ საიტი არ აჭრელდეს
+export const RIBBON = "linear-gradient(90deg, #96391a, #b84a24 50%, #d0703f)";

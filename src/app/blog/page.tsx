@@ -37,8 +37,7 @@ export default async function BlogPage() {
             >
               <span
                 aria-hidden
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
-                style={{ background: [TONES.sage, TONES.teal, TONES.plum][i % 3] }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold bg-accent text-white shadow-md"
               >
                 {i + 1}
               </span>

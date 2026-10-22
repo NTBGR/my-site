@@ -56,8 +56,7 @@ export default async function AboutPage() {
             <li key={item.title} className="flex gap-4 rounded-[1.25rem] border border-border bg-surface p-5 sm:flex-col sm:gap-3">
               <span
                 aria-hidden
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
-                style={{ background: [TONES.clay, TONES.teal, TONES.berry, TONES.ink][i % 4] }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold bg-accent text-white shadow-md"
               >
                 {i + 1}
               </span>

@@ -6,7 +6,7 @@ import PageBanner from "@/components/PageBanner";
 import { categories } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
-import { RIBBON, TONES } from "@/lib/tones";
+import { RIBBON } from "@/lib/tones";
 
 export async function generateMetadata() {
   return { title: dictionary[await getLang()].join.title };
@@ -54,8 +54,7 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
             >
               <span
                 aria-hidden
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
-                style={{ background: [TONES.clay, TONES.teal, TONES.berry][i % 3] }}
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold bg-accent text-white shadow-md"
               >
                 {i + 1}
               </span>
