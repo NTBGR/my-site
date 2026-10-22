@@ -184,7 +184,7 @@ export default function WorksGallery({
           <li
             key={`${work.favKey ?? work.title}-${i}`}
             data-work
-            className={`group relative ${layout === "row" ? "w-[44%] shrink-0 snap-start sm:w-auto" : ""} ${featureFirst && i === 0 ? "sm:col-span-2 sm:row-span-2" : ""} ${featureFirst && i >= 5 ? "sm:max-lg:hidden" : ""} ${featureFirst && i >= 7 ? "lg:hidden" : ""}`}
+            className={`group relative ${layout === "row" ? "w-[58%] shrink-0 snap-start sm:w-auto" : ""} ${featureFirst && i === 0 ? "sm:col-span-2 sm:row-span-2" : ""} ${featureFirst && i >= 5 ? "sm:max-lg:hidden" : ""} ${featureFirst && i >= 7 ? "lg:hidden" : ""}`}
           >
             {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
             <button
@@ -233,7 +233,7 @@ export default function WorksGallery({
           </li>
         ))}
         {layout === "row" && seeAll ? (
-          <li className="w-[44%] shrink-0 snap-start sm:hidden">
+          <li className="w-[58%] shrink-0 snap-start sm:hidden">
             <SeeAllCard href={seeAll.href} label={seeAll.label} />
           </li>
         ) : null}
