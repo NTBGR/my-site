@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BannerOrnament from "@/components/BannerOrnament";
 import Photo from "@/components/Photo";
 import { getLocalizedArtists, workAddedTime } from "@/data/artists";
 import { artistOfWeekOverride } from "@/data/featured";
@@ -29,8 +30,7 @@ export default async function ArtistOfWeek() {
       className="relative isolate overflow-hidden"
       style={{ background: "linear-gradient(135deg, #8a3b57, #5e2a3e 58%, #3d1a29)" }}
     >
-      <div aria-hidden className="blob pointer-events-none absolute -right-24 -top-28 -z-10 h-80 w-80 rounded-full border-[36px] border-white/[0.07]" />
-      <div aria-hidden className="pointer-events-none absolute -bottom-24 left-[12%] -z-10 h-56 w-56 rounded-full bg-white/[0.06]" />
+      <BannerOrnament kind="sparkles" className="-z-10" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
       <Link
         href={`/artists/${artist.slug}`}

@@ -594,6 +594,57 @@ a:hover > .arrow-slide {
   }
 }
 
+/* ბანერების მოძრავი ორნამენტები (BannerOrnament): ნელი, მშვიდი მოძრაობა */
+@keyframes orn-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12) rotate(20deg);
+  }
+}
+@keyframes orn-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-14px, 10px);
+  }
+}
+@keyframes orn-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.orn-twinkle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orn-twinkle 4.5s ease-in-out infinite;
+}
+.orn-drift {
+  animation: orn-drift 14s ease-in-out infinite;
+}
+.orn-bob {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: orn-bob 9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .orn-twinkle,
+  .orn-drift,
+  .orn-bob {
+    animation: none;
+  }
+}
+
 /* მბზინავი გადავლება ბანერზე: რამდენიმე წამში ერთხელ გადაუქროლებს */
 @keyframes shine-sweep {
   0%,

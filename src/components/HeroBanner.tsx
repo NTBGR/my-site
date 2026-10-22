@@ -3,12 +3,15 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
+import BannerOrnament, { type OrnamentKind } from "@/components/BannerOrnament";
 
 export type BannerSlide = {
   id: string;
   color: string;
   // საბაზო ფერი: ფოტოების ჩარჩოებს ოდნავ ეკრობა, რომ ბეჟისფერი ფოტო ბანერს შეეხამოს
   tone: string;
+  // ფონის მოძრავი ორნამენტი (თითო სლაიდს თავისი)
+  ornament?: OrnamentKind;
   art: ReactNode;
   content: ReactNode;
 };
@@ -105,6 +108,7 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
               className="absolute inset-0"
               style={{ background: "radial-gradient(55% 85% at 82% 12%, rgb(255 255 255 / 0.2), transparent 70%)" }}
             />
+            {slide.ornament ? <BannerOrnament kind={slide.ornament} zone="gap" /> : null}
             <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[54%]">{slide.art}</div>
             <div
               aria-hidden

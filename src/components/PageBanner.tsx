@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import CategoryArt from "@/components/CategoryArt";
 import Photo from "@/components/Photo";
 import { categoryColor } from "@/data/categories";
+import BannerOrnament, { TONE_ORNAMENT } from "@/components/BannerOrnament";
 import { TONES, toneGradient, type Tone } from "@/lib/tones";
 
 export type BannerTone = Tone;
@@ -22,6 +23,7 @@ export default function PageBanner({
   collage,
   tone = "clay",
   festive = false,
+  ornament = true,
   children,
 }: {
   title: string;
@@ -31,6 +33,8 @@ export default function PageBanner({
   tone?: BannerTone;
   // საახალწლო ბანერი: მწვანე ფონი და თოვლი
   festive?: boolean;
+  // ფონის მოძრავი ორნამენტი (ფასდაკლების ბანერზე გამორთულია)
+  ornament?: boolean;
   children?: ReactNode;
 }) {
   const base = TONES[tone];
@@ -50,14 +54,13 @@ export default function PageBanner({
         ["--tone" as string]: festive ? "#1f5a42" : base,
       }}
     >
-      {/* რბილი შუქი და დიდი წრეები: ტელეფონზეც (სადაც კოლაჟი არ ჩანს) ბანერი ცოცხალია */}
+      {/* რბილი შუქი და ფერის მოძრავი ორნამენტი */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
           className="absolute inset-0"
           style={{ background: "radial-gradient(60% 90% at 88% 8%, rgb(255 255 255 / 0.22), transparent 70%)" }}
         />
-        <div className="blob absolute -right-16 -top-20 h-56 w-56 rounded-full border-[28px] border-white/10 sm:h-72 sm:w-72" />
-        <div className="absolute -bottom-24 right-[30%] h-48 w-48 rounded-full bg-white/[0.07]" />
+        {festive || !ornament ? null : <BannerOrnament kind={TONE_ORNAMENT[tone]} zone="gap" />}
       </div>
       {/* დესკტოპზე სამი ფოტო, ტელეფონზე ერთი კუთხეში */}
       <div className="absolute inset-0 z-[2] hidden sm:block" aria-hidden>

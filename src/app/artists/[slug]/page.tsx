@@ -16,6 +16,7 @@ import VerifiedMark from "@/components/VerifiedMark";
 import { monthReach } from "@/lib/clicks";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { toneGradient } from "@/lib/tones";
+import BannerOrnament, { categoryOrnament } from "@/components/BannerOrnament";
 import { dictionary } from "@/lib/dictionary";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
@@ -180,6 +181,7 @@ export default async function ArtistPage({
         className="relative isolate mt-2 overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
         style={{ background: toneGradient(color), ["--tone" as string]: color }}
       >
+        <BannerOrnament kind={categoryOrnament(main)} zone="gap" />
         {/* დესკტოპი/პლანშეტი: მცურავი ფილა მარჯვნივ, მთლიანად ჩანს */}
         <div
           aria-hidden

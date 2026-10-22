@@ -15,6 +15,7 @@ import {
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { toneGradient } from "@/lib/tones";
+import BannerOrnament, { categoryOrnament } from "@/components/BannerOrnament";
 
 export function generateStaticParams() {
   return categories.map((category) => ({ slug: category.slug }));
@@ -68,6 +69,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         className="relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
         style={{ background: toneGradient(color), ["--tone" as string]: color }}
       >
+        <BannerOrnament kind={categoryOrnament(category.slug)} zone="gap" />
         {/* დესკტოპი/პლანშეტი: მცურავი ფილა მარჯვნივ, მთლიანად ჩანს */}
         <div aria-hidden className="absolute right-[6%] top-1/2 hidden w-[24%] max-w-[15rem] -translate-y-1/2 sm:block">
           <div
