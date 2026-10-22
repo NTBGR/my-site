@@ -8,7 +8,7 @@ import { categories } from "@/data/categories";
 import { cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 
 const inputClass =
-  "mt-1.5 w-full rounded-2xl border border-border bg-bg px-4 py-3 text-base text-text sm:text-sm placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent [[data-tried=true]_&:invalid]:border-red-600 [[data-tried=true]_&:invalid]:ring-1 [[data-tried=true]_&:invalid]:ring-red-600";
+  "field mt-1.5 sm:text-sm [[data-tried=true]_&:invalid]:border-red-600 [[data-tried=true]_&:invalid]:ring-1 [[data-tried=true]_&:invalid]:ring-red-600";
 
 // ჩამოსაშლელი სია: ბრაუზერის ჩვეულებრივი სტილის ნაცვლად ჩვენი ველის ფორმა და საკუთარი ისარი
 // placeholder ვარიანტი disabled არ არის: iOS-ის ბორბალი მასზე იწყება და „ნახატები“ (პირველი რეალური ვარიანტი) შემთხვევით არ აირჩევა; required ცარიელს მაინც არ გაატარებს
@@ -100,7 +100,7 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
           </Link>
           <Link
             href="/"
-            className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface px-7 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent active:scale-95"
+            className="btn btn-outline"
           >
             {all.nav.home}
           </Link>

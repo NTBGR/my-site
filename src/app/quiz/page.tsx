@@ -1,6 +1,7 @@
 import GiftQuiz, { type QuizWork } from "@/components/GiftQuiz";
 import BackLink from "@/components/BackLink";
 import JsonLd from "@/components/JsonLd";
+import PageBanner from "@/components/PageBanner";
 import { effectivePrice, getWorkEntries, isNewWork, workId } from "@/data/artists";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { dictionary } from "@/lib/dictionary";
@@ -45,12 +46,13 @@ export default async function QuizPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3">
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <BackLink href="/" home />
       <JsonLd data={ld} />
-      <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">🎯 {t.title}</h1>
-      <p className="mb-8 mt-2 text-muted">{t.intro}</p>
-      <GiftQuiz works={works} />
+      <PageBanner title={`🎯 ${t.title}`} text={t.intro} collage={["sachuqrebi", "keramika", "samkauli"]} tone="teal" />
+      <div className="mx-auto mt-8 max-w-3xl sm:mt-10">
+        <GiftQuiz works={works} />
+      </div>
     </div>
   );
 }

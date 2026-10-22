@@ -102,6 +102,7 @@ export default async function GiftPage({
         text={tag.description}
         badge={t.artists.worksCount(all.length)}
         collage={tag.collage}
+        tone={tag.slug === "sale" ? "marigold" : "clay"}
         festive={raw.festive}
       />
 

@@ -53,6 +53,7 @@ export default async function ArtistsPage({
         text={t.text}
         badge={dictionary[lang].categories.total(crafts.length)}
         collage={["nakhatebi", "keramika", "skulptura"]}
+        tone="clay"
       />
 
       <div className="mt-8 sm:mt-10">

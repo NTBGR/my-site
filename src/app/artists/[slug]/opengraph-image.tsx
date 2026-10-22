@@ -35,7 +35,7 @@ async function toDataUrl(origin: string, image: string): Promise<string | null> 
 const BG = "#f6f1ea";
 const TEXT = "#1d1a17";
 const MUTED = "#6a6158";
-const ACCENT = "#a84f2c";
+const ACCENT = "#b84a24";
 
 function Photo({ src, rotate, top, left, width, height }: { src: string; rotate: number; top: number; left: number; width: number; height: number }) {
   return (

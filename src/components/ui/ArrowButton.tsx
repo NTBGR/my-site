@@ -9,8 +9,9 @@ type Props = {
 };
 
 const variantClass = {
+  // ღია ფონზე: ტერაკოტის წრე ფერადი ჩრდილით; ჰოვერზე მუქდება და იზრდება
   surface:
-    "border-transparent bg-text text-bg shadow-lg shadow-black/15 hover:bg-accent hover:text-on-accent",
+    "border-transparent bg-accent text-on-accent shadow-[0_10px_20px_-10px_var(--accent)] hover:bg-accent-hover hover:shadow-[0_14px_26px_-10px_var(--accent)]",
   glass:
     "border-white/25 bg-white/15 text-white backdrop-blur-md hover:border-white hover:bg-white hover:text-black",
 };
@@ -28,7 +29,7 @@ export default function ArrowButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className={`group flex ${size === "sm" ? "h-9 w-9" : "h-11 w-11"} items-center justify-center rounded-full border transition duration-300 hover:scale-105 active:scale-90 ${variantClass[variant]} ${className}`.trim()}
+      className={`group flex ${size === "sm" ? "h-9 w-9" : "h-11 w-11"} items-center justify-center rounded-full border transition duration-300 hover:scale-110 active:scale-90 ${variantClass[variant]} ${className}`.trim()}
     >
       <svg
         viewBox="0 0 24 24"

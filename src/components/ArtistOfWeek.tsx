@@ -21,10 +21,17 @@ export default async function ArtistOfWeek() {
   const photos = [...withImages].sort((a, b) => workAddedTime(b) - workAddedTime(a)).slice(0, 2);
   const grid = photos.length >= 2;
   const hero = artist.cover ?? photos[0]?.image;
-  const frame = "border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)]";
+  const frame = "border-[1.5px] border-white/25";
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
+    // ფერადი ზოლი მთელ სიგანეზე: მთავარის რიტმში ერთი გამორჩეული ადგილი
+    <section
+      className="relative isolate overflow-hidden"
+      style={{ background: "linear-gradient(135deg, #8a3b57, #5e2a3e 58%, #3d1a29)" }}
+    >
+      <div aria-hidden className="blob pointer-events-none absolute -right-24 -top-28 -z-10 h-80 w-80 rounded-full border-[36px] border-white/[0.07]" />
+      <div aria-hidden className="pointer-events-none absolute -bottom-24 left-[12%] -z-10 h-56 w-56 rounded-full bg-white/[0.06]" />
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-10">
       <Link
         href={`/artists/${artist.slug}`}
         className={`group grid overflow-hidden rounded-[1.5rem] bg-bg transition duration-300 hover:border-accent hover:shadow-xl sm:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] sm:rounded-[1.75rem] ${frame}`}
@@ -63,6 +70,7 @@ export default async function ArtistOfWeek() {
           </span>
         </div>
       </Link>
+      </div>
     </section>
   );
 }

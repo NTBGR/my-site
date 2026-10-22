@@ -23,7 +23,7 @@ const toDataUrl = async (url: string) => {
 const BG = "#f6f1ea";
 const TEXT = "#1d1a17";
 const MUTED = "#6a6158";
-const ACCENT = "#a84f2c";
+const ACCENT = "#b84a24";
 
 function Photo({
   src,

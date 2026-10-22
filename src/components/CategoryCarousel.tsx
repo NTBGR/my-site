@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import CategoryArt from "@/components/CategoryArt";
+import CategoryCard from "@/components/CategoryCard";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
 import { useDragScroll } from "@/lib/useDragScroll";
@@ -12,6 +11,10 @@ export type CarouselSlide = {
   name: string;
   description: string;
   color: string;
+  // ბარათის კუთხეში: რამდენი ხელოვანია ამ კატეგორიაში (ცარიელ კატეგორიაზე არ ჩანს)
+  count?: string;
+  // ცარიელ კატეგორიაზე რაოდენობის ნაცვლად („მალე“)
+  soon?: string;
 };
 
 const GAP = 16;
@@ -102,34 +105,21 @@ export default function CategoryCarousel({
     >
       <ul
         ref={trackRef}
-        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto -mt-2 pt-2 -mb-5 px-4 pb-7 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
+        className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto -mt-3 pt-3 -mb-5 px-4 pb-7 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide) => (
           <li
             key={slide.slug}
             className="w-[58%] shrink-0 snap-start sm:w-[46%] lg:w-[calc((100%-4*1rem)/5)]"
           >
-            <Link
-              href={`/categories/${slide.slug}`}
-              className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] text-white transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.99]"
-              style={{ background: `color-mix(in srgb, ${slide.color}, black 34%)` }}
-            >
-              <CategoryArt slug={slide.slug} color={slide.color} still className="aspect-[16/10] w-full sm:aspect-[4/3]" />
-              <div className="flex flex-1 flex-col items-start gap-3 p-4 sm:p-5">
-                <h3 className="text-lg font-semibold leading-tight tracking-tight sm:text-xl lg:text-base xl:text-lg">
-                  {slide.name}
-                </h3>
-                <p className="mt-1 hidden max-w-xs text-sm text-white/75 sm:block lg:hidden">
-                  {slide.description}
-                </p>
-                <span className="mt-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-black transition duration-300 group-hover:bg-accent group-hover:text-on-accent lg:px-3 lg:py-1.5 lg:text-xs">
-                  {t.browse}
-                  <span className="arrow-slide" aria-hidden>
-                    →
-                  </span>
-                </span>
-              </div>
-            </Link>
+            <CategoryCard
+              slug={slide.slug}
+              name={slide.name}
+              color={slide.color}
+              label={`${slide.name} · ${t.browse}`}
+              badge={slide.count ?? slide.soon}
+              muted={!slide.count}
+            />
           </li>
         ))}
       </ul>

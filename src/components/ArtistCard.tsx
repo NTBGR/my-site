@@ -25,37 +25,51 @@ export default function ArtistCard({
       : undefined;
   const main = artist.categories[0] ?? "nakhatebi";
 
+  const color = categoryColor(main);
+
+  // იგივე ფორმა, რაც კატეგორიის ბარათს (CategoryCard): კრემისფერი ჩარჩო, ფოტო 4:5, ქვემოთ სახელი და ფერადი ისარი
   return (
     <Link
       href={`/artists/${artist.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg text-text will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:border-accent hover:shadow-xl active:scale-[0.99] sm:rounded-[1.75rem]"
+      className="group flex h-full flex-col rounded-[1.6rem] border border-border bg-surface p-2 text-text shadow-[0_14px_30px_-24px_rgb(60_40_20/0.6)] will-change-transform [backface-visibility:hidden] transition duration-300 hover:-translate-y-1.5 hover:border-[color:var(--c)] hover:shadow-[0_26px_40px_-24px_rgb(60_40_20/0.7)] active:scale-[0.99] sm:p-2.5"
+      style={{ ["--c" as string]: color }}
     >
-      <div className={`relative overflow-hidden bg-surface-2 ${artClassName}`}>
+      <div className={`relative overflow-hidden rounded-[1.15rem] bg-surface-2 ${artClassName}`}>
         <div className="absolute inset-0" style={photo?.image ? { filter: "saturate(.88) sepia(.1)" } : undefined}>
           {photo?.image ? (
             <Photo src={photo.image} alt={`${artist.name} - ${photo.title}`} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
           ) : (
-            <CategoryArt slug={main} color={categoryColor(main)} still className="absolute inset-0 h-full w-full" />
+            <CategoryArt slug={main} color={color} still className="absolute inset-0 h-full w-full" />
           )}
         </div>
-        <span className="absolute left-2 top-2 z-10 rounded-full bg-black/35 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md sm:left-3 sm:top-3 sm:px-3 sm:text-xs">
+        {/* კატეგორიის ნიშანი კატეგორიის საკუთარ ფერშია */}
+        <span
+          className="absolute left-2 top-2 z-10 rounded-full px-2.5 py-1 text-[11px] font-semibold text-white shadow-md sm:left-3 sm:top-3 sm:px-3 sm:text-xs"
+          style={{ background: color }}
+        >
           {artist.category}
         </span>
-      </div>
-      <div className="flex flex-1 items-end justify-between gap-3 p-3.5 sm:p-4">
-        <div className="min-w-0">
-          <h3 className="text-[15px] font-semibold leading-snug tracking-tight [overflow-wrap:anywhere] sm:text-lg">
-            {artist.name}
-            {artist.verified ? <VerifiedMark className="ml-1 inline-block h-[0.95em] w-[0.95em] translate-y-[1px] text-accent" /> : null}
-          </h3>
-          {worksLabel ? <p className="mt-0.5 text-xs text-muted sm:text-sm">{worksLabel}</p> : null}
-        </div>
+        {/* ისარი ფოტოს კუთხეშია (არა ქვემოთ), რომ კარუსელის ისრებში არ აერიოს */}
         <span
-          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent transition duration-300 group-hover:bg-accent group-hover:text-on-accent sm:flex"
           aria-hidden
+          className="absolute right-2.5 top-2.5 z-10 hidden h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#2a1d17] shadow-md backdrop-blur transition duration-300 group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
         >
           <span className="arrow-slide">→</span>
         </span>
+      </div>
+      <div className="flex flex-1 items-end justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
+        <div className="min-w-0">
+          <h3 className="font-serif text-base font-semibold leading-snug tracking-tight [overflow-wrap:break-word] sm:text-lg">
+            {artist.name}
+            {artist.verified ? <VerifiedMark className="ml-1 inline-block h-[0.95em] w-[0.95em] translate-y-[1px] text-accent" /> : null}
+          </h3>
+          {worksLabel ? (
+            <p className="mt-1 flex items-center gap-1.5 whitespace-nowrap text-xs font-medium text-muted">
+              <span aria-hidden className="h-2 w-2 shrink-0 rounded-full" style={{ background: color }} />
+              {worksLabel}
+            </p>
+          ) : null}
+        </div>
       </div>
     </Link>
   );

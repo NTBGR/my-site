@@ -58,6 +58,7 @@ export default function WorksGallery({
   showSort = true,
   layout = "grid",
   columns = "sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
+  featureFirst = false,
 }: {
   works: GalleryWork[];
   shareUrl?: string;
@@ -67,6 +68,8 @@ export default function WorksGallery({
   // grid: ბადე; row: ტელეფონზე გვერდზე გადასახვევი ზოლი (მთავარზე)
   layout?: "grid" | "row";
   columns?: string;
+  // პირველი ნამუშევარი დიდია (2×2 ბადეში, ტელეფონზე ჩვეულებრივი); ბადე ორ სავსე რიგად იკვრება: პლანშეტზე 5 ნამუშევარი, დესკტოპზე 7
+  featureFirst?: boolean;
 }) {
   const t = useT();
   // დახარისხება ფასით (ფასის გარეშე ნამუშევრები ბოლოშია)
@@ -147,7 +150,7 @@ export default function WorksGallery({
         <div
           role="group"
           aria-label={t.sort.label}
-          className="mb-4 inline-flex max-w-full overflow-x-auto rounded-full border border-border bg-surface p-1 text-[13px] font-medium [scrollbar-width:none] sm:text-sm [&::-webkit-scrollbar]:hidden"
+          className="mb-4 inline-flex max-w-full overflow-x-auto rounded-full border-[1.5px] border-border bg-surface p-1 text-[13px] font-medium [scrollbar-width:none] sm:text-sm [&::-webkit-scrollbar]:hidden"
         >
           {(
             [
@@ -162,7 +165,7 @@ export default function WorksGallery({
               aria-pressed={sort === value}
               onClick={() => setSort(value)}
               className={`min-h-8 shrink-0 whitespace-nowrap rounded-full px-3 transition ${
-                sort === value ? "bg-accent text-on-accent" : "text-muted hover:text-accent"
+                sort === value ? "bg-accent font-semibold text-on-accent shadow-[0_6px_14px_-8px_var(--accent)]" : "text-muted hover:text-accent"
               }`}
             >
               {label}
@@ -172,15 +175,19 @@ export default function WorksGallery({
       ) : null}
       <ul ref={rowRef} className={`${layout === "row" ? ROW : GRID} ${columns}`}>
         {works.map((work, i) => (
-          <li key={`${work.favKey ?? work.title}-${i}`} className={`group relative ${layout === "row" ? "w-[44%] shrink-0 snap-start sm:w-auto" : ""}`}>
+          <li
+            key={`${work.favKey ?? work.title}-${i}`}
+            className={`group relative ${layout === "row" ? "w-[44%] shrink-0 snap-start sm:w-auto" : ""} ${featureFirst && i === 0 ? "sm:col-span-2 sm:row-span-2" : ""} ${featureFirst && i >= 5 ? "sm:max-lg:hidden" : ""} ${featureFirst && i >= 7 ? "lg:hidden" : ""}`}
+          >
             {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
             <button
               type="button"
               onClick={() => setOpen(i)}
               aria-label={work.title}
-              className="block w-full text-left"
+              className={`block w-full text-left ${featureFirst && i === 0 ? "sm:flex sm:h-full sm:flex-col" : ""}`}
             >
-              <span className="relative block aspect-[3/4] w-full overflow-hidden rounded-[1.25rem] bg-surface-2 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-2xl sm:rounded-[1.5rem]">
+              <span className={`${featureFirst && i === 0 ? "sm:flex-1" : ""} block rounded-[1.35rem] border border-border bg-surface p-1.5 shadow-[0_14px_28px_-22px_rgb(60_40_20/0.55)] transition duration-300 group-hover:-translate-y-1 group-hover:border-accent group-hover:shadow-[0_26px_40px_-22px_rgb(184_74_36/0.6)] sm:rounded-[1.6rem]`}>
+              <span className={`relative block aspect-[3/4] w-full overflow-hidden rounded-[1rem] bg-surface-2 sm:rounded-[1.2rem] ${featureFirst && i === 0 ? "sm:aspect-auto sm:h-full" : ""}`}>
                 {work.isNew || work.salePercent ? (
                   <span className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
                     {work.salePercent ? <span className="rounded-full bg-[#c4302b] px-2.5 py-1 text-[11px] font-bold text-white shadow-sm">−{work.salePercent}%</span> : null}
@@ -198,11 +205,12 @@ export default function WorksGallery({
                   </span>
                 ) : null}
               </span>
-              <span className="mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base">
+              </span>
+              <span className={`mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base ${featureFirst && i === 0 ? "sm:font-serif sm:text-xl sm:font-semibold" : ""}`}>
                 {work.title}
               </span>
               {work.price ? (
-                <span className="mt-0.5 block px-1 text-sm font-semibold text-text sm:text-base">
+                <span className="mt-0.5 block px-1 text-sm font-bold text-text sm:text-base">
                   <span className={work.oldPrice ? "text-[#c4302b]" : undefined}>{work.price} ₾</span>
                   {work.oldPrice ? <s className="ml-1.5 text-xs font-normal text-muted sm:text-sm">{work.oldPrice} ₾</s> : null}
                 </span>
@@ -212,7 +220,7 @@ export default function WorksGallery({
             {work.favKey ? (
               <HeartButton
                 id={work.favKey}
-                className="absolute right-2 top-2 z-10 h-9 w-9 bg-white/90 text-text shadow-sm backdrop-blur transition after:absolute after:-inset-1 after:content-[''] hover:text-accent"
+                className="absolute right-2 top-2 z-10 h-9 w-9 bg-white/90 text-text shadow-sm backdrop-blur transition after:absolute after:-inset-1 after:content-[''] hover:scale-110 hover:bg-white hover:text-accent hover:shadow-md"
               />
             ) : null}
           </li>

@@ -9,9 +9,10 @@
   --text: #1d1a17;
   --muted: #6a6158;
   --border: #e3d9cb;
-  --accent: #a84f2c;
-  --accent-hover: #8a3d20;
-  --accent-soft: #f2e0d4;
+  /* ცოცხალი ტერაკოტა: უფრო მკვეთრი, ვიდრე ადრე, მაგრამ ტექსტად კრემისფერ ფონზეც იკითხება (≈4.6:1) */
+  --accent: #b84a24;
+  --accent-hover: #96391a;
+  --accent-soft: #f9e3d6;
   --on-accent: #ffffff;
   color-scheme: light;
 }
@@ -483,6 +484,132 @@ a:hover > .arrow-slide {
 }
 @media (prefers-reduced-motion: reduce) {
   .glow-btn {
+    animation: none;
+  }
+}
+
+/* ---------- ახალი დიზაინის საფუძველი ---------- */
+
+@layer components {
+  /* ფოტო „ამობეჭდილ“ კრემისფერ ჩარჩოში: ფერად ბანერზე ბეჟისფერი ფოტოები ასე ბუნებრივად ჯდება; ბანერის ფერი (--tone) ოდნავ ეკრობა ფოტოს */
+  .print {
+    position: relative;
+    padding: 5px;
+    border-radius: 1.1rem;
+    background: #fbf6ee;
+    box-shadow:
+      0 22px 32px -14px rgb(0 0 0 / 0.5),
+      0 2px 6px rgb(0 0 0 / 0.18);
+  }
+  .print > * {
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .print::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: 0.75rem;
+    background: var(--tone, transparent);
+    mix-blend-mode: soft-light;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  
+  .print-sm {
+    padding: 3px;
+    border-radius: 0.85rem;
+  }
+  .print-sm > * {
+    border-radius: 0.6rem;
+  }
+  .print-sm::after {
+    inset: 3px;
+    border-radius: 0.6rem;
+  }
+}
+
+/* ღილაკები: ერთი ენა მთელ საიტზე */
+@layer components {
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 text-sm font-semibold transition duration-300 active:scale-95;
+  }
+  /* მთავარი ღილაკი: ტერაკოტის გრადიენტი, ფერადი ჩრდილი; ჰოვერზე ამოდის, ნათდება და შუქი გადაუქროლებს */
+  .btn-primary {
+    @apply relative overflow-hidden text-on-accent shadow-[0_12px_24px_-12px_var(--accent)] hover:-translate-y-0.5 hover:shadow-[0_18px_30px_-12px_var(--accent)];
+    background-image: linear-gradient(135deg, color-mix(in srgb, var(--accent), #ff9a5c 22%), var(--accent) 55%, var(--accent-hover));
+  }
+  .btn-primary:hover {
+    filter: brightness(1.06) saturate(1.08);
+  }
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 0.35) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+  }
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary::after {
+      display: none;
+    }
+  }
+  .btn-light {
+    @apply bg-white text-[#2a1d17] shadow-[0_10px_22px_-12px_rgb(0_0_0/0.55)] hover:-translate-y-0.5 hover:bg-[#fff4e2] hover:text-accent hover:shadow-xl;
+  }
+  .btn-ghost-light {
+    @apply border-[1.5px] border-white/45 bg-transparent text-white hover:-translate-y-0.5 hover:border-white hover:bg-white/15;
+  }
+  .btn-outline {
+    @apply border-[1.5px] border-[color-mix(in_srgb,var(--text)_22%,transparent)] bg-transparent text-text hover:-translate-y-0.5 hover:border-accent hover:bg-accent-soft hover:text-accent;
+  }
+}
+
+/* სექციის სათაურის ხელით დახატული ხაზი: ლოგოს ხაზის ექო */
+.title-mark {
+  position: relative;
+  padding-bottom: 0.7rem;
+}
+.title-mark::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 3.25rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: rotate(-1.5deg);
+}
+
+/* ველები: ერთიანი სტილი ფორმებზე */
+@layer components {
+  .field {
+    @apply w-full rounded-2xl border-[1.5px] border-border bg-surface px-4 py-3 text-base text-text transition duration-200 placeholder:text-muted focus:border-accent focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent)_18%,transparent)];
+  }
+}
+
+/* მბზინავი გადავლება ბანერზე: რამდენიმე წამში ერთხელ გადაუქროლებს */
+@keyframes shine-sweep {
+  0%,
+  55% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(520%) skewX(-20deg);
+  }
+}
+
+.shine-sweep {
+  animation: shine-sweep 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shine-sweep {
     animation: none;
   }
 }

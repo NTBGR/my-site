@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
+import PageBanner from "@/components/PageBanner";
 
+// 404 გვერდების სათაური: იგივე ფერადი ბანერი, რაც სხვა გვერდებზე, დიდი გამჭვირვალე „404“-ით უკანა ფონზე
 export default function PageHeader({
   title,
   text,
-  eyebrow,
+  eyebrow = "404",
   children,
 }: {
   title: string;
@@ -12,28 +14,18 @@ export default function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <header className="relative isolate overflow-hidden border-b border-border">
-      <div
-        aria-hidden
-        className="blob pointer-events-none absolute -right-24 -top-32 -z-10 h-80 w-80 rounded-full bg-accent-soft blur-3xl"
-      />
-      <div className="hero-in mx-auto max-w-7xl px-4 pb-8 pt-10 sm:px-6 lg:px-10 sm:pb-16 sm:pt-20">
-        {eyebrow ? (
-          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            {eyebrow}
-          </p>
-        ) : null}
-        <h1 className="text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-text sm:text-6xl">
-          {title}
-        </h1>
-        {text ? (
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
-            {text}
-          </p>
-        ) : null}
-        {children ? <div className="mt-8">{children}</div> : null}
+    <div className="mx-auto max-w-7xl px-4 pb-16 pt-4 sm:px-6 sm:pb-24 sm:pt-6 lg:px-10">
+      <div className="relative">
+        <PageBanner title={title} text={text} badge={eyebrow} collage={["keramika", "samkauli", "nakhatebi"]} tone="clay">
+          {children}
+        </PageBanner>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-2 right-4 z-[1] select-none font-serif text-[7rem] font-semibold leading-none text-white/10 sm:hidden"
+        >
+          404
+        </span>
       </div>
-    </header>
+    </div>
   );
 }

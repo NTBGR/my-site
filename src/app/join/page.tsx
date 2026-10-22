@@ -6,6 +6,7 @@ import PageBanner from "@/components/PageBanner";
 import { categories } from "@/data/categories";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { RIBBON, TONES } from "@/lib/tones";
 
 export async function generateMetadata() {
   return { title: dictionary[await getLang()].join.title };
@@ -27,10 +28,11 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
         text={t.text}
         badge={t.benefits[0].title}
         collage={["tyavi", "keramika", "samkauli"]}
+        tone="marigold"
       >
         <a
           href="#apply"
-          className="group inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
+          className="group btn btn-light"
         >
           {all.form.open}
           <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">
@@ -41,18 +43,19 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
 
       {/* რას მიიღებ: სამი ბარათი ერთ რიგში */}
       <section className="mt-10 sm:mt-14">
-        <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+        <h2 className="title-mark text-2xl font-semibold tracking-tight text-text sm:text-3xl">
           {t.benefitsTitle}
         </h2>
         <ul className="stagger mt-5 grid gap-3 sm:gap-4 md:grid-cols-3">
           {t.benefits.map((item, i) => (
             <li
               key={item.title}
-              className="flex gap-4 rounded-[1.25rem] border border-border bg-surface p-4 sm:p-5 md:flex-col md:gap-3"
+              className="flex gap-4 rounded-[1.25rem] border border-border bg-surface p-4 shadow-[0_12px_28px_-22px_rgb(60_40_20/0.5)] sm:p-5 md:flex-col md:gap-3"
             >
               <span
                 aria-hidden
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif font-semibold text-accent"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
+                style={{ background: [TONES.clay, TONES.teal, TONES.berry][i % 3] }}
               >
                 {i + 1}
               </span>
@@ -104,8 +107,9 @@ export default async function JoinPage({ searchParams }: { searchParams: Promise
 
         <div
           id="apply"
-          className="scroll-mt-24 rounded-[1.75rem] border border-border bg-surface p-5 shadow-sm sm:p-8"
+          className="relative scroll-mt-24 overflow-hidden rounded-[1.75rem] border border-border bg-surface p-5 pt-7 shadow-[0_24px_48px_-32px_rgb(60_40_20/0.55)] sm:p-8 sm:pt-10"
         >
+          <div aria-hidden className="absolute inset-x-0 top-0 h-1.5" style={{ background: RIBBON }} />
           <JoinForm defaultCategory={defaultCategory} />
         </div>
       </section>

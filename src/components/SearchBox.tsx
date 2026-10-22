@@ -81,14 +81,14 @@ export default function SearchBox({
         aria-autocomplete="list"
         aria-controls="search-suggestions"
         aria-activedescendant={current >= 0 ? `search-option-${current}` : undefined}
-        className="h-11 w-full rounded-full border border-border bg-surface px-5 text-base text-text transition-shadow placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:text-sm"
+        className="h-11 w-full rounded-full border-[1.5px] border-border bg-surface px-5 text-base text-text transition duration-200 placeholder:text-muted focus:border-accent focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent)_18%,transparent)] sm:text-sm"
         aria-label={t.nav.searchLabel}
       />
       {showList ? (
         <ul
           id="search-suggestions"
           role="listbox"
-          className={`z-[60] overflow-hidden rounded-2xl border border-border bg-bg p-1.5 ${
+          className={`z-[60] overflow-hidden rounded-[1.25rem] border-[1.5px] border-border bg-surface p-1.5 ${
             variant === "desktop" ? "absolute left-0 top-full mt-2 w-[min(24rem,90vw)] shadow-2xl" : "mt-2"
           }`}
         >
@@ -111,7 +111,7 @@ export default function SearchBox({
                   <span className="block truncate text-sm font-medium">{item.label}</span>
                   {item.sub ? <span className="block truncate text-xs text-muted">{item.sub}</span> : null}
                 </span>
-                <span className="shrink-0 rounded-full bg-surface px-2 py-0.5 text-[11px] font-medium text-muted">{t.nav.suggestKinds[item.kind]}</span>
+                <span className="shrink-0 rounded-full bg-accent-soft px-2.5 py-0.5 text-[11px] font-semibold text-accent">{t.nav.suggestKinds[item.kind]}</span>
               </Link>
             </li>
           ))}

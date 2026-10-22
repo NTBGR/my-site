@@ -1,5 +1,6 @@
 import SavedWorks, { type SavedCard } from "@/components/SavedWorks";
 import BackLink from "@/components/BackLink";
+import PageBanner from "@/components/PageBanner";
 import { getWorkEntries } from "@/data/artists";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { dictionary } from "@/lib/dictionary";
@@ -24,7 +25,7 @@ export default async function SavedPage({ searchParams }: { searchParams: Promis
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <BackLink href="/" home />
-      <h1 className="text-3xl font-semibold tracking-tight text-text sm:text-4xl">{dictionary[lang].savedPage.title}</h1>
+      <PageBanner title={dictionary[lang].savedPage.title} collage={["samkauli", "keramika", "nakhatebi"]} tone="berry" />
       <SavedWorks cards={cards} sharedKeys={listParam ? listParam.split(",").filter((key) => cards.some((card) => card.key === key)).slice(0, 60) : undefined} />
     </div>
   );

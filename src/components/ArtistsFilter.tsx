@@ -97,7 +97,7 @@ export default function ArtistsFilter({
             onChange={(event) => setQuery(event.target.value)}
             placeholder={t.searchPlaceholder}
             aria-label={t.searchPlaceholder}
-            className="h-11 w-full rounded-full border border-border bg-surface pl-11 pr-4 text-base text-text transition-shadow placeholder:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:text-sm"
+            className="h-12 w-full rounded-full border-[1.5px] border-border bg-surface pl-11 pr-4 text-base text-text shadow-[0_10px_22px_-18px_rgb(60_40_20/0.5)] transition duration-200 placeholder:text-muted focus:border-accent focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent)_18%,transparent)] sm:text-sm"
           />
         </div>
         <p className="text-sm text-muted" aria-live="polite">
@@ -121,7 +121,7 @@ export default function ArtistsFilter({
               onClick={() => setCraft(item.slug)}
               className={`${chipBase} ${
                 active
-                  ? "border-transparent bg-accent text-on-accent"
+                  ? "border-transparent bg-accent font-semibold text-on-accent shadow-[0_8px_18px_-10px_var(--accent)]"
                   : "border-border bg-surface text-text hover:border-accent hover:text-accent"
               }`}
             >
@@ -139,7 +139,7 @@ export default function ArtistsFilter({
             <Link
               key={gift.href}
               href={gift.href}
-              className="inline-flex min-h-10 items-center rounded-full border border-border bg-surface px-4 text-sm font-medium text-text transition hover:border-accent hover:text-accent"
+              className="inline-flex min-h-10 items-center rounded-full border-[1.5px] border-border bg-surface px-4 text-sm font-medium text-text transition hover:-translate-y-0.5 hover:border-accent hover:text-accent"
             >
               {gift.label}
             </Link>
@@ -154,7 +154,7 @@ export default function ArtistsFilter({
             <button
               type="button"
               onClick={reset}
-              className="mt-4 inline-flex min-h-10 items-center rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition hover:border-accent hover:text-accent active:scale-95"
+              className="btn btn-outline mt-4 min-h-10"
             >
               {t.reset}
             </button>
@@ -165,7 +165,7 @@ export default function ArtistsFilter({
         {filtered.length > 0 ? (
         <>
         {matchedWorks.length > 0 ? (
-          <h2 className="mt-8 text-xl font-semibold tracking-tight text-text sm:text-2xl">{all.nav.artists}</h2>
+          <h2 className="title-mark mt-8 text-xl font-semibold tracking-tight text-text sm:text-2xl">{all.nav.artists}</h2>
         ) : null}
         <ul
           key={`${craft}-${query}`}
@@ -184,7 +184,7 @@ export default function ArtistsFilter({
         ) : null}
         {matchedWorks.length > 0 ? (
           <section className="mt-10">
-            <h2 className="text-xl font-semibold tracking-tight text-text sm:text-2xl">{all.artist.works}</h2>
+            <h2 className="title-mark text-xl font-semibold tracking-tight text-text sm:text-2xl">{all.artist.works}</h2>
             <div className="mt-4">
               <WorksGallery works={matchedWorks} showSort={false} />
             </div>

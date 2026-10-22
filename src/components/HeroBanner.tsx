@@ -7,6 +7,8 @@ import ArrowButton from "@/components/ui/ArrowButton";
 export type BannerSlide = {
   id: string;
   color: string;
+  // საბაზო ფერი: ფოტოების ჩარჩოებს ოდნავ ეკრობა, რომ ბეჟისფერი ფოტო ბანერს შეეხამოს
+  tone: string;
   art: ReactNode;
   content: ReactNode;
 };
@@ -94,9 +96,15 @@ export default function HeroBanner({ slides }: { slides: BannerSlide[] }) {
           <div
             key={slide.id}
             aria-hidden={i !== active}
+            style={{ ["--tone" as string]: slide.tone }}
             className="relative min-h-[20.5rem] w-full shrink-0 snap-center snap-always sm:min-h-[24rem] lg:min-h-[24rem]"
           >
             <div className="absolute inset-0" style={{ background: slide.color }} />
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{ background: "radial-gradient(55% 85% at 82% 12%, rgb(255 255 255 / 0.2), transparent 70%)" }}
+            />
             <div className="absolute inset-0 lg:left-auto lg:right-0 lg:w-[54%]">{slide.art}</div>
             <div
               aria-hidden

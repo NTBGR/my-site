@@ -3,6 +3,7 @@ import BackLink from "@/components/BackLink";
 import PageBanner from "@/components/PageBanner";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { TONES, toneGradient } from "@/lib/tones";
 
 export async function generateMetadata() {
   return { title: dictionary[await getLang()].blog.title };
@@ -20,11 +21,12 @@ export default async function BlogPage() {
         text={t.text}
         badge={t.badge}
         collage={["tekstili", "khis-nakethobebi", "saxlis-dekori"]}
+        tone="sage"
       />
 
       {/* რაზე დავწერთ */}
       <section className="mt-10 sm:mt-14">
-        <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+        <h2 className="title-mark text-2xl font-semibold tracking-tight text-text sm:text-3xl">
           {t.topicsTitle}
         </h2>
         <ul className="stagger mt-5 grid gap-3 sm:gap-4 md:grid-cols-3">
@@ -35,7 +37,8 @@ export default async function BlogPage() {
             >
               <span
                 aria-hidden
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif font-semibold text-accent"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
+                style={{ background: [TONES.sage, TONES.teal, TONES.plum][i % 3] }}
               >
                 {i + 1}
               </span>
@@ -51,19 +54,19 @@ export default async function BlogPage() {
       </section>
 
       {/* ხელოვანებისთვის: ისტორიის მოყოლა + ბმულები */}
-      <section className="mt-10 flex flex-col gap-5 rounded-[1.5rem] bg-accent-soft p-5 sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <section className="grain relative isolate mt-10 flex flex-col gap-5 overflow-hidden rounded-[1.5rem] p-5 text-white sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-8" style={{ background: toneGradient(TONES.sage) }}>
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-text sm:text-2xl">
+          <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
             {t.storyTitle}
           </h2>
-          <p className="mt-1 max-w-xl text-sm leading-relaxed text-text/75 sm:text-base">
+          <p className="mt-1 max-w-xl text-sm leading-relaxed text-white/85 sm:text-base">
             {t.storyText}
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-3">
           <Link
             href="/join"
-            className="group inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+            className="group btn btn-light"
           >
             {all.nav.join}
             <span className="arrow-slide" aria-hidden>
@@ -72,7 +75,7 @@ export default async function BlogPage() {
           </Link>
           <Link
             href="/artists"
-            className="inline-flex min-h-12 items-center rounded-full border border-border bg-surface px-6 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent"
+            className="btn btn-ghost-light"
           >
             {t.cta}
           </Link>

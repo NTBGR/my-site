@@ -11,13 +11,13 @@ export default async function NotFound() {
       <div className="flex flex-wrap gap-3">
         <Link
           href="/"
-          className="inline-flex items-center rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition duration-300 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-lg"
+          className="group btn btn-light"
         >
           {t.home}
         </Link>
         <Link
           href="/artists"
-          className="inline-flex items-center rounded-full border border-border bg-surface px-6 py-3 text-sm font-medium text-text transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:text-accent"
+          className="btn btn-ghost-light"
         >
           {t.artists}
         </Link>

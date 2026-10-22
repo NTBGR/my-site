@@ -1,5 +1,6 @@
 import JsonLd from "@/components/JsonLd";
 import SocialIcons from "@/components/SocialIcons";
+import { TONES, toneGradient } from "@/lib/tones";
 
 // ხშირად დასმული კითხვები: ღია სია გამყოფი ხაზებით (ბარათების გარეშე), ნომრებით და ისრით. გახსნადია <details>-ით (დამატებითი JavaScript არ სჭირდება).
 // დიდ ეკრანზე სათაური მარცხნივ რჩება, სია მარჯვნივ; სტრუქტურირებული მონაცემები Google-ისთვის (FAQPage)
@@ -39,11 +40,12 @@ export default function FaqList({
         {title}
       </h2>
 
-      <div className="divide-y divide-border border-y border-border">
+      <div className="grid gap-3">
         {items.map((item, i) => (
-          <details key={item.q} className="group">
+          <details key={item.q} className="group rounded-[1.25rem] border-[1.5px] border-border bg-surface px-4 shadow-[0_10px_24px_-20px_rgb(60_40_20/0.5)] transition-colors open:border-accent sm:px-5">
             <summary className="flex min-h-16 cursor-pointer list-none items-center gap-4 py-4 pr-1 text-left marker:hidden [&::-webkit-details-marker]:hidden">
-              <span aria-hidden className="w-7 shrink-0 text-sm font-semibold tabular-nums text-accent/70">
+              <span aria-hidden className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold tabular-nums text-white"
+                style={{ background: [TONES.clay, TONES.teal, TONES.berry, TONES.ink, TONES.sage, TONES.plum][i % 6] }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className="flex-1 text-base font-semibold tracking-tight text-text transition-colors group-hover:text-accent sm:text-lg">
@@ -62,23 +64,23 @@ export default function FaqList({
                 <path d="m5 8 5 5 5-5" />
               </svg>
             </summary>
-            <p className="pb-5 pl-11 pr-8 text-[15px] leading-relaxed text-muted sm:text-base">{item.a}</p>
+            <p className="pb-5 pl-12 pr-6 text-[15px] leading-relaxed text-muted sm:text-base">{item.a}</p>
           </details>
         ))}
       </div>
 
       {/* ბოლოში ერთი სუფთა ხაზი: ტექსტი მარცხნივ, ხატულები მარჯვნივ (ტელეფონზე ერთმანეთის ქვეშ, ორივე მარცხნივ) */}
-      <div className="mt-6 flex flex-col gap-4 rounded-[1.5rem] bg-accent-soft p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <div className="grain relative isolate mt-6 flex flex-col gap-4 overflow-hidden rounded-[1.5rem] p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-6" style={{ background: toneGradient(TONES.ink) }}>
         <div>
-          <p className="text-lg font-semibold tracking-tight text-text">{contactTitle}</p>
-          <p className="mt-1 text-sm leading-relaxed text-text/80">
+          <p className="text-lg font-semibold tracking-tight">{contactTitle}</p>
+          <p className="mt-1 text-sm leading-relaxed text-white/85">
             {contactText}{" "}
-            <a href={`mailto:${contactEmail}`} className="font-medium text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent">
+            <a href={`mailto:${contactEmail}`} className="font-medium text-white underline decoration-white/50 underline-offset-4 hover:decoration-white">
               {contactEmail}
             </a>
           </p>
         </div>
-        <SocialIcons withEmail />
+        <SocialIcons withEmail onDark />
       </div>
     </section>
   );

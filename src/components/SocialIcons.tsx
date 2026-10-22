@@ -4,7 +4,7 @@ import { FACEBOOK_URL, INSTAGRAM_URL } from "@/lib/site";
 // საიტის საკუთარი ინსტაგრამი და ფეისბუქი ხატულებით. ჩანს მხოლოდ ის, რომლის ბმულიც src/lib/site.ts-შია მითითებული
 // ფეისბუქი პირველია, მერე ინსტაგრამი
 // withEmail: ელფოსტის ხატულაც (კონტაქტის ადგილებზე: კითხვები, ჩვენ შესახებ); ფუტერში და მენიუში მხოლოდ სოც ქსელებია
-export default function SocialIcons({ className = "", size = "md", withEmail = false }: { className?: string; size?: "sm" | "md"; withEmail?: boolean }) {
+export default function SocialIcons({ className = "", size = "md", withEmail = false, onDark = false }: { className?: string; size?: "sm" | "md"; withEmail?: boolean; onDark?: boolean }) {
   const box = size === "sm" ? "h-10 w-10" : "h-11 w-11";
   const items = [
     {
@@ -53,7 +53,11 @@ export default function SocialIcons({ className = "", size = "md", withEmail = f
             target={item.key === "email" ? undefined : "_blank"}
             rel={item.key === "email" ? undefined : "noopener noreferrer"}
             aria-label={item.label}
-            className={`inline-flex ${box} items-center justify-center rounded-full border border-border bg-surface text-text transition duration-300 hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-on-accent active:scale-95`}
+            className={`inline-flex ${box} items-center justify-center rounded-full border transition duration-300 hover:-translate-y-0.5 active:scale-95 ${
+              onDark
+                ? "border-white/25 bg-white/10 text-white hover:border-white hover:bg-white hover:text-[#221914]"
+                : "border-border bg-surface text-text hover:border-accent hover:bg-accent hover:text-on-accent"
+            }`}
           >
             {item.icon}
           </a>

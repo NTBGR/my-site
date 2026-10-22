@@ -13,7 +13,8 @@ import SearchBox from "@/components/SearchBox";
 import type { SearchItem } from "@/lib/searchIndex";
 import LogoLink from "@/components/LogoLink";
 import { useLang, useT } from "@/components/LangProvider";
-import { categories, localizeCategory } from "@/data/categories";
+import { categories, categoryColor, localizeCategory } from "@/data/categories";
+import { RIBBON } from "@/lib/tones";
 
 const navHrefs = ["/artists", "/categories", "/blog", "/about"] as const;
 
@@ -138,7 +139,9 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
   return (
     <>
       <header ref={headerRef} className="sticky top-0 z-40 border-b border-border bg-[color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:gap-5 lg:px-10">
+        {/* ფერების ლენტი: საიტის პალიტრა ერთ ხაზზე */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: RIBBON }} />
+        <div className="mx-auto flex max-w-7xl items-center gap-1.5 px-4 py-3.5 max-[359px]:px-3 sm:gap-3 sm:px-6 lg:gap-5 lg:px-10">
           <LogoLink />
 
           <nav
@@ -157,7 +160,7 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
                   aria-current={active ? "page" : undefined}
                   className={`inline-flex min-h-10 items-center rounded-full px-4 text-sm font-medium transition-colors ${
                     active
-                      ? "bg-accent-soft text-accent"
+                      ? "bg-accent font-semibold text-on-accent shadow-[0_8px_16px_-10px_var(--accent)]"
                       : "text-muted hover:bg-accent-soft hover:text-accent"
                   }`}
                 >
@@ -245,7 +248,8 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
             menuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="mb-3 flex items-center justify-between">
+          <div aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: RIBBON }} />
+          <div className="mb-3 mt-1 flex items-center justify-between">
             <span className="font-serif text-2xl font-semibold leading-none tracking-tight text-text">
               ხელოვანი<span className="text-accent">.</span>
             </span>
@@ -267,9 +271,9 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
                 href={link.href}
                 aria-current={active ? "page" : undefined}
                 onClick={() => setMenuOpen(false)}
-                className={`flex min-h-12 items-center rounded-2xl px-4 text-base font-medium transition-colors ${
+                className={`flex min-h-12 items-center rounded-2xl px-4 text-base font-medium transition duration-200 ${
                   active
-                    ? "bg-accent-soft text-accent"
+                    ? "bg-accent font-semibold text-on-accent"
                     : "text-text hover:bg-accent-soft hover:text-accent"
                 }`}
               >
@@ -329,6 +333,7 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
                       onClick={() => setMenuOpen(false)}
                       className="flex min-h-11 items-center rounded-2xl px-4 text-sm font-medium text-text transition-colors hover:bg-accent-soft hover:text-accent"
                     >
+                      <span aria-hidden className="mr-3 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: categoryColor(category.slug) }} />
                       {category.name}
                     </Link>
                   </li>

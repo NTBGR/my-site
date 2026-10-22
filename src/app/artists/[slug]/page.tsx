@@ -15,6 +15,7 @@ import { getArtistBySlug, isNewArtist, isNewWork, localizeArtist, pricing, workA
 import VerifiedMark from "@/components/VerifiedMark";
 import { monthReach } from "@/lib/clicks";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
+import { toneGradient } from "@/lib/tones";
 import { dictionary } from "@/lib/dictionary";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
@@ -177,17 +178,15 @@ export default async function ArtistPage({
       {/* ბანერი ხელოვანის მთავარი კატეგორიის ფერში */}
       <section
         className="relative isolate mt-2 overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem]"
-        style={{
-          background: `linear-gradient(135deg, color-mix(in srgb, ${color}, white 14%), ${color} 55%, color-mix(in srgb, ${color}, black 34%))`,
-        }}
+        style={{ background: toneGradient(color), ["--tone" as string]: color }}
       >
         {/* დესკტოპი/პლანშეტი: მცურავი ფილა მარჯვნივ, მთლიანად ჩანს */}
         <div
           aria-hidden
-          className={`absolute right-[6%] top-1/2 hidden -translate-y-1/2 sm:block ${cover ? "w-[16%] max-w-[10rem]" : "w-[24%] max-w-[15rem]"}`}
+          className={`absolute right-[6%] top-1/2 hidden -translate-y-1/2 sm:block ${cover ? "w-[14%] max-w-[8.75rem]" : "w-[24%] max-w-[15rem]"}`}
         >
           <div
-            className="float overflow-hidden rounded-[1.25rem] shadow-2xl ring-4 ring-white/15"
+            className="float print"
             style={{ ["--r" as string]: "4deg" }}
           >
             {cover?.image ? (
@@ -200,7 +199,7 @@ export default async function ArtistPage({
         {/* მობილურზე: პატარა ილუსტრაცია კუთხეში */}
         <div
           aria-hidden
-          className={`float absolute right-4 top-4 z-10 overflow-hidden rounded-xl shadow-xl ring-2 ring-white/20 sm:hidden ${cover ? "w-[5.5rem]" : "w-[4.5rem]"}`}
+          className={`float print print-sm absolute right-4 top-4 z-10 sm:hidden ${cover ? "w-[5.75rem]" : "w-[4.75rem]"}`}
           style={{ ["--r" as string]: "5deg" }}
         >
           {cover?.image ? (
@@ -211,7 +210,7 @@ export default async function ArtistPage({
         </div>
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/35 via-black/5 to-transparent" />
 
-        <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[13rem] sm:max-w-[62%] sm:px-10 sm:py-6">
+        <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[14rem] sm:max-w-[62%] sm:px-10 sm:py-6">
           <div className="flex flex-wrap gap-2 pr-24 text-xs font-medium sm:pr-0">
             <span className="rounded-full border border-white/30 bg-white/10 px-3 py-0.5 backdrop-blur-md">
               {artist.category}
@@ -265,7 +264,7 @@ export default async function ArtistPage({
       {/* ნამუშევრები */}
       <section className="mt-8 sm:mt-10">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.works}</h2>
+          <h2 className="title-mark text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.works}</h2>
           {cats.length > 1 ? (
             <div className="flex items-center gap-2 text-sm max-sm:order-last max-sm:-mx-4 max-sm:w-[calc(100%+2rem)] max-sm:overflow-x-auto max-sm:px-4 max-sm:pb-1 max-sm:[scrollbar-width:none] max-sm:[&::-webkit-scrollbar]:hidden">
               <span className="hidden text-muted sm:inline">{t.alsoIn}</span>
@@ -296,7 +295,7 @@ export default async function ArtistPage({
 
       {/* ავტორის შესახებ + ყიდვის ბლოკი */}
       <section className="mt-10 grid gap-4 sm:mt-14 lg:grid-cols-[3fr_2fr]">
-        <div className="rounded-[1.75rem] border border-border bg-surface p-6 sm:p-8">
+        <div className="rounded-[1.75rem] border border-border bg-surface p-6 shadow-[0_18px_36px_-28px_rgb(60_40_20/0.5)] sm:p-8">
           <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">{t.about}</h2>
           <p className="mt-3 text-lg leading-relaxed text-text sm:text-xl">{artist.bio}</p>
           {artist.verified ? (
@@ -308,9 +307,9 @@ export default async function ArtistPage({
             </p>
           ) : null}
         </div>
-        <div className="flex flex-col justify-center rounded-[1.75rem] bg-accent-soft p-6 sm:p-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-text">{t.ctaTitle}</h2>
-          <p className="mt-2 leading-relaxed text-text/75">{t.ctaText}</p>
+        <div className="grain relative isolate flex flex-col justify-center overflow-hidden rounded-[1.75rem] p-6 text-white sm:p-8" style={{ background: toneGradient(color) }}>
+          <h2 className="text-2xl font-semibold tracking-tight">{t.ctaTitle}</h2>
+          <p className="mt-2 leading-relaxed text-white/85">{t.ctaText}</p>
           <div className="mt-5 flex flex-wrap gap-2">
             <SocialLink href={instagram} icon={<InstagramIcon />} label={t.instagram} variant="instagram" message={t.dmMessageArtist} />
             <SocialLink href={facebook} icon={<FacebookIcon />} label={t.facebook} variant="facebook" message={t.dmMessageArtist} />

@@ -4,6 +4,7 @@ import PageBanner from "@/components/PageBanner";
 import SocialIcons from "@/components/SocialIcons";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { TONES, toneGradient } from "@/lib/tones";
 import { CONTACT_EMAIL } from "../privacy/content";
 import { about } from "./content";
 
@@ -25,11 +26,12 @@ export default async function AboutPage() {
         text={a.intro}
         badge={a.badge}
         collage={["keramika", "tekstili", "nakhatebi"]}
+        tone="berry"
       />
 
       {/* ისტორია */}
       <section className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-[1fr_2fr] lg:gap-12">
-        <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{a.storyTitle}</h2>
+        <h2 className="title-mark text-2xl font-semibold tracking-tight text-text sm:text-3xl">{a.storyTitle}</h2>
         <div className="max-w-2xl space-y-4">
           {a.story.map((paragraph, i) => (
             <p
@@ -48,13 +50,14 @@ export default async function AboutPage() {
 
       {/* პრინციპები */}
       <section className="mt-12 sm:mt-16">
-        <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">{a.principlesTitle}</h2>
+        <h2 className="title-mark text-2xl font-semibold tracking-tight text-text sm:text-3xl">{a.principlesTitle}</h2>
         <ul className="stagger mt-5 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
           {a.principles.map((item, i) => (
             <li key={item.title} className="flex gap-4 rounded-[1.25rem] border border-border bg-surface p-5 sm:flex-col sm:gap-3">
               <span
                 aria-hidden
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif font-semibold text-accent"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
+                style={{ background: [TONES.clay, TONES.teal, TONES.berry, TONES.ink][i % 4] }}
               >
                 {i + 1}
               </span>
@@ -68,14 +71,15 @@ export default async function AboutPage() {
       </section>
 
       {/* დასკვნა + მოქმედებები */}
-      <section className="mt-12 rounded-[1.75rem] bg-accent-soft p-6 text-center sm:mt-16 sm:p-12">
-        <p className="mx-auto max-w-2xl text-balance font-serif text-2xl font-semibold leading-snug tracking-tight text-text sm:text-3xl">
+      <section className="grain relative isolate mt-12 overflow-hidden rounded-[1.75rem] p-6 text-center text-white sm:mt-16 sm:p-12" style={{ background: toneGradient(TONES.berry) }}>
+        <div aria-hidden className="blob pointer-events-none absolute -right-16 -top-20 -z-10 h-64 w-64 rounded-full border-[30px] border-white/10" />
+        <p className="mx-auto max-w-2xl text-balance font-serif text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
           {a.closing}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link
             href="/categories"
-            className="group inline-flex min-h-12 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 hover:-translate-y-0.5 hover:shadow-lg active:scale-95"
+            className="group btn btn-light"
           >
             {a.browse}
             <span className="arrow-slide" aria-hidden>
@@ -84,21 +88,21 @@ export default async function AboutPage() {
           </Link>
           <Link
             href="/join"
-            className="inline-flex min-h-12 items-center rounded-full border border-border bg-surface px-6 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent"
+            className="btn btn-ghost-light"
           >
             {nav.join}
           </Link>
         </div>
-        <p className="mt-7 text-sm text-text/70">
+        <p className="mt-7 text-sm text-white/80">
           {a.contact}{" "}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="font-medium text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+            className="font-medium text-white underline decoration-white/50 underline-offset-4 hover:decoration-white"
           >
             {CONTACT_EMAIL}
           </a>
         </p>
-        <SocialIcons className="mt-4" withEmail />
+        <SocialIcons className="mt-4 justify-center" withEmail onDark />
       </section>
     </div>
   );

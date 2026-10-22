@@ -1,28 +1,27 @@
 import Link from "next/link";
 import LogoLink from "@/components/LogoLink";
-import { getT } from "@/lib/i18n";
+import SocialIcons from "@/components/SocialIcons";
+import { categories, localizeCategory } from "@/data/categories";
+import { dictionary } from "@/lib/dictionary";
+import { getLang } from "@/lib/i18n";
+import { RIBBON } from "@/lib/tones";
 
 function FooterList({
   title,
   links,
-  external = false,
 }: {
   title: string;
   links: { href: string; label: string }[];
-  external?: boolean;
 }) {
   return (
     <div>
-      <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">
-        {title}
-      </h2>
+      <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#e8c9a8]">{title}</h2>
       <ul>
         {links.map((link) => (
           <li key={link.label}>
             <Link
               href={link.href}
-              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="inline-flex min-h-10 items-center text-[15px] text-text transition-colors hover:text-accent"
+              className="inline-flex min-h-10 items-center text-[15px] text-[#f4ede4]/85 transition-colors hover:text-white"
             >
               {link.label}
             </Link>
@@ -33,43 +32,65 @@ function FooterList({
   );
 }
 
+// ფუთერი ყოველთვის მუქია (ორივე თემაში): საიტს ქვემოდან „სიმძიმეს“ და სიმდიდრეს აძლევს
 export default async function Footer() {
-  const { footer: f, nav } = await getT();
+  const lang = await getLang();
+  const { footer: f, nav } = dictionary[lang];
 
   const explore = [
     { href: "/about", label: f.about },
     { href: "/artists", label: nav.artists },
-    { href: "/categories", label: nav.categories },
     { href: "/blog", label: nav.blog },
     { href: "/#how-it-works", label: f.howItWorks },
     { href: "/join", label: nav.join },
     { href: "/faq", label: f.faq },
   ];
+  const cats = categories.map((raw) => {
+    const category = localizeCategory(raw, lang);
+    return { href: `/categories/${category.slug}`, label: category.name };
+  });
+  const half = Math.ceil(cats.length / 2);
+
   return (
-    <footer className="relative mt-0 overflow-hidden border-t border-border bg-surface-2">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-4 pt-10 sm:flex-row sm:justify-between sm:gap-12 sm:px-6 sm:pt-14 lg:px-10">
+    <footer
+      className="relative isolate overflow-hidden bg-[#221914] text-[#f4ede4]"
+      style={{ ["--text" as string]: "#f4ede4", ["--accent" as string]: "#e8895f" }}
+    >
+      <div aria-hidden className="absolute inset-x-0 top-0 h-[3px]" style={{ background: RIBBON }} />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 -top-24 -z-10 h-80 w-80 rounded-full border-[40px] border-white/[0.04]"
+      />
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 pb-6 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1.2fr_2fr] lg:gap-16 lg:px-10">
         <div>
           <LogoLink size="lg" />
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted">{f.tagline}</p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-[#f4ede4]/75">{f.tagline}</p>
+          <Link href="/join" className="btn btn-light mt-6">
+            <span aria-hidden>✦</span>
+            {nav.join}
+          </Link>
+          <SocialIcons className="mt-6" onDark />
         </div>
-        <div className="flex gap-12 sm:gap-16">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3">
           <FooterList title={f.learnMore} links={explore} />
+          <FooterList title={nav.categories} links={cats.slice(0, half)} />
+          <FooterList title="&nbsp;" links={cats.slice(half)} />
         </div>
       </div>
       <div
         aria-hidden
-        className="pointer-events-none select-none px-4 text-center font-serif text-[16vw] font-semibold leading-none tracking-tighter text-text opacity-[0.05] sm:text-[9rem]"
+        className="pointer-events-none select-none px-4 text-center font-serif text-[16vw] font-semibold leading-none tracking-tighter text-white opacity-[0.05] sm:text-[9rem]"
       >
         ხელოვანი
       </div>
-      <div className="border-t border-border">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-5 text-sm text-muted sm:px-6 lg:px-10">
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-5 text-sm text-[#f4ede4]/65 sm:px-6 lg:px-10">
           <p>{f.copyright}</p>
           <div className="flex flex-wrap gap-x-6">
-            <Link href="/terms" className="inline-flex min-h-10 items-center transition-colors hover:text-accent">
+            <Link href="/terms" className="inline-flex min-h-10 items-center transition-colors hover:text-white">
               {f.terms}
             </Link>
-            <Link href="/privacy" className="inline-flex min-h-10 items-center transition-colors hover:text-accent">
+            <Link href="/privacy" className="inline-flex min-h-10 items-center transition-colors hover:text-white">
               {f.privacy}
             </Link>
           </div>

@@ -2,21 +2,25 @@ import type { ReactNode } from "react";
 import CategoryArt from "@/components/CategoryArt";
 import Photo from "@/components/Photo";
 import { categoryColor } from "@/data/categories";
+import { TONES, toneGradient, type Tone } from "@/lib/tones";
+
+export type BannerTone = Tone;
 
 // საახალწლო ფოტოები: public/categories/soft-1..3.jpg (Pexels და Unsplash, უფასო ლიცენზია, ატრიბუცია არ სჭირდება).
-// კოლაჟის სამი ილუსტრაციის ადგილი ბანერის მარჯვენა მხარეს
+// კოლაჟის სამი ფოტოს ადგილი ბანერის მარჯვენა მხარეს
 const POSITIONS = [
-  { pos: "right-[22%] top-[12%] w-[15%]", r: "-6deg" },
-  { pos: "right-[5%] top-[8%] w-[15%]", r: "5deg" },
-  { pos: "right-[13%] top-[46%] w-[14%]", r: "-2deg" },
+  { pos: "right-[24%] top-[14%] w-[15%]", r: "-6deg" },
+  { pos: "right-[5%] top-[9%] w-[16%]", r: "5deg" },
+  { pos: "right-[14%] top-[48%] w-[14%]", r: "-2deg" },
 ];
 
-// გვერდის დაბალი ფერადი ბანერი: ბეჯი, სათაური, ტექსტი და ილუსტრაციების კოლაჟი
+// გვერდის დაბალი ფერადი ბანერი: ბეჯი, სათაური, ტექსტი და ფოტოების კოლაჟი „ამობეჭდილ“ ჩარჩოებში
 export default function PageBanner({
   title,
   text,
   badge,
   collage,
+  tone = "clay",
   festive = false,
   children,
 }: {
@@ -24,24 +28,34 @@ export default function PageBanner({
   text?: string;
   badge?: string;
   collage: [string, string, string];
+  tone?: BannerTone;
   // საახალწლო ბანერი: მწვანე ფონი და თოვლი
   festive?: boolean;
   children?: ReactNode;
 }) {
+  const base = TONES[tone];
   return (
     <section
-      className={`relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem] ${festive ? "snow-bg" : ""}`}
+      className={`relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem] ${festive ? "snow-bg" : "grain"}`}
       style={{
-        background: festive
-          ? "linear-gradient(135deg, #3f7d5c, #1f5a42 55%, #103b2c)"
-          : "linear-gradient(135deg, #9a826b, #7f6a56 55%, #54443a)",
+        background: festive ? "linear-gradient(135deg, #3f7d5c, #1f5a42 55%, #103b2c)" : toneGradient(base),
+        ["--tone" as string]: festive ? "#1f5a42" : base,
       }}
     >
-      <div className="absolute inset-0 hidden sm:block" aria-hidden>
+      {/* რბილი შუქი და დიდი წრეები: ტელეფონზეც (სადაც კოლაჟი არ ჩანს) ბანერი ცოცხალია */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(60% 90% at 88% 8%, rgb(255 255 255 / 0.22), transparent 70%)" }}
+        />
+        <div className="blob absolute -right-16 -top-20 h-56 w-56 rounded-full border-[28px] border-white/10 sm:h-72 sm:w-72" />
+        <div className="absolute -bottom-24 right-[30%] h-48 w-48 rounded-full bg-white/[0.07]" />
+      </div>
+      <div className="absolute inset-0 z-[2] hidden sm:block" aria-hidden>
         {collage.map((slug, i) => (
           <div
             key={slug}
-            className={`float absolute ${POSITIONS[i].pos} max-w-[9rem] overflow-hidden rounded-2xl shadow-xl ring-[3px] ring-white/15`}
+            className={`float print absolute ${POSITIONS[i].pos} max-w-[9.5rem]`}
             style={{ ["--r" as string]: POSITIONS[i].r }}
           >
             {festive ? (

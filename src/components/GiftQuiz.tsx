@@ -42,7 +42,7 @@ const KIND: { id: Kind; emoji: string }[] = [
 ];
 
 const optionClass =
-  "flex min-h-14 w-full items-center gap-3 rounded-2xl border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg px-4 text-left text-base font-medium text-text transition duration-200 hover:border-accent hover:bg-accent-soft active:scale-[0.99]";
+  "flex min-h-14 w-full items-center gap-3 rounded-2xl border-[1.5px] border-border bg-surface px-4 text-left text-base font-medium text-text shadow-[0_10px_22px_-18px_rgb(60_40_20/0.5)] transition duration-200 hover:-translate-y-0.5 hover:border-accent hover:bg-accent-soft active:scale-[0.99]";
 
 export default function GiftQuiz({ works }: { works: QuizWork[] }) {
   const t = useT().quiz;
@@ -165,7 +165,7 @@ export default function GiftQuiz({ works }: { works: QuizWork[] }) {
         <button type="button" onClick={restart} className="inline-flex min-h-11 items-center rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition hover:bg-accent-hover">
           {t.restart}
         </button>
-        <Link href={seeAllHref} className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg px-6 text-sm font-medium text-text transition hover:border-accent hover:text-accent">
+        <Link href={seeAllHref} className="btn btn-outline min-h-11">
           {t.seeAll}
         </Link>
       </div>

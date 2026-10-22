@@ -17,6 +17,7 @@ import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { hasCategoryPhoto } from "@/data/categoryPhotos";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
+import { TONES, toneGradient } from "@/lib/tones";
 
 
 export default async function Home() {
@@ -29,16 +30,16 @@ export default async function Home() {
   const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));
 
-  const whiteButton =
-    "group inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 text-sm font-medium text-black transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95";
+  const whiteButton = "group btn btn-light";
   const arrow = (
     <span className="arrow-slide" aria-hidden>
       →
     </span>
   );
 
-  // სლაიდის ფონის ფერი კატეგორიის პალიტრიდანაა (იგივე თბილი მიწისფერი ოჯახი, რაც ფოტოებს)
-  const slideColor = (slug: string) => categoryColor(slug);
+  // სლაიდის ფონი: კატეგორიის საკუთარი ფერი, ზემოდან ოდნავ ნათელი, ქვემოდან ღრმა
+  const heroBg = toneGradient;
+  const slideColor = (slug: string) => heroBg(categoryColor(slug));
 
 
   // მცურავი, დახრილი ფოტოების კოლაჟი ბანერის მარჯვენა მხარეს (ტელეფონზე სამი პატარა კუთხეში): ყველა სლაიდზე ერთნაირია
@@ -52,7 +53,7 @@ export default async function Home() {
         ].map((tile, i) => (
           <div
             key={slugs[i]}
-            className={`float absolute ${tile.pos} overflow-hidden rounded-2xl shadow-xl ring-2 ring-white/20 ${tile.delay}`}
+            className={`float print absolute ${tile.pos} ${tile.delay}`}
             style={{ ["--r" as string]: tile.r }}
           >
             <CategoryArt slug={slugs[i]} color={categoryColor(slugs[i])} className="aspect-square sm:aspect-[3/4]" />
@@ -61,19 +62,19 @@ export default async function Home() {
       </div>
       <div className="relative hidden h-full w-full lg:block" aria-hidden>
         <div
-          className="float absolute left-[24%] top-[10%] w-[32%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15"
+          className="float print absolute left-[24%] top-[10%] w-[32%]"
           style={{ ["--r" as string]: "-6deg" }}
         >
           <CategoryArt slug={slugs[0]} color={categoryColor(slugs[0])} className="aspect-[3/4]" />
         </div>
         <div
-          className="float absolute right-[6%] top-[6%] w-[30%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-2.5s]"
+          className="float print absolute right-[6%] top-[6%] w-[30%] [animation-delay:-2.5s]"
           style={{ ["--r" as string]: "5deg" }}
         >
           <CategoryArt slug={slugs[1]} color={categoryColor(slugs[1])} className="aspect-[4/5]" />
         </div>
         <div
-          className="float absolute right-[24%] top-[50%] w-[28%] overflow-hidden rounded-[1.5rem] shadow-2xl ring-4 ring-white/15 [animation-delay:-4.5s]"
+          className="float print absolute right-[24%] top-[50%] w-[28%] [animation-delay:-4.5s]"
           style={{ ["--r" as string]: "-3deg" }}
         >
           <CategoryArt slug={slugs[2]} color={categoryColor(slugs[2])} className="aspect-[4/3]" />
@@ -93,7 +94,8 @@ export default async function Home() {
   const bannerSlides: BannerSlide[] = [
     {
       id: "main",
-      color: "#8f5a43",
+      color: heroBg(TONES.clay),
+      tone: TONES.clay,
       art: collage(["bechdebi", "keramika", "samkauli"]),
       content: (
         <div className="hero-in">
@@ -122,6 +124,7 @@ export default async function Home() {
     ...t.banners.filter((banner) => hasCategoryPhoto(banner.slug)).map((banner): BannerSlide => ({
       id: banner.slug,
       color: slideColor(banner.slug),
+      tone: categoryColor(banner.slug),
       art: collage(related[banner.slug] ?? ["keramika", "samkauli", "nakhatebi"]),
       content: (
         <div>
@@ -176,14 +179,14 @@ export default async function Home() {
                 <div
                   aria-hidden
                   className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #8c7560, #735f4c 52%, #4a3c2f)" }}
+                  style={{ background: "linear-gradient(150deg, #3f7479, #2f5d62 52%, #1a363a)" }}
                 />
                 <div aria-hidden className="absolute inset-x-5 top-5 z-10 grid grid-cols-4 gap-2 sm:inset-x-6 sm:top-6">
                   {["nakhatebi", "posterebi", "keramika", "tyavi"].map((slug, i) => (
                     <div
                       key={slug}
-                      className="float-soft overflow-hidden rounded-xl shadow-lg ring-2 ring-white/15"
-                      style={{ ["--r" as string]: `${[-4, 3, -2, 4][i]}deg`, animationDelay: `-${i * 1.8}s` }}
+                      className="float-soft print print-sm"
+                      style={{ ["--r" as string]: `${[-4, 3, -2, 4][i]}deg`, animationDelay: `-${i * 1.8}s`, ["--tone" as string]: "#2f5d62" }}
                     >
                       <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-square" />
                     </div>
@@ -206,13 +209,13 @@ export default async function Home() {
                 <div
                   aria-hidden
                   className="grain absolute inset-0"
-                  style={{ background: "linear-gradient(150deg, #b97b58, #9d6044 52%, #5e3a2a)" }}
+                  style={{ background: "linear-gradient(150deg, #a8506d, #8a3b57 52%, #4a1d2f)" }}
                 />
                 <div aria-hidden className="absolute left-5 top-5 z-10 flex sm:left-6 sm:top-6">
                   {crafts.map((slug, i) => (
                     <span
                       key={slug}
-                      className="float-soft -ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#9d6044] first:ml-0"
+                      className="float-soft -ml-3 block h-14 w-14 overflow-hidden rounded-full shadow-lg ring-[3px] ring-[#fbf6ee] first:ml-0"
                       style={{ ["--r" as string]: "0deg", animationDelay: `-${i * 2.2}s` }}
                     >
                       <CategoryArt slug={slug} color={categoryColor(slug)} className="h-full w-full" />
@@ -239,12 +242,15 @@ export default async function Home() {
       {/* კატეგორიები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
         <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
-            {t.categoriesTitle}
-          </h2>
+          <div>
+            <h2 className="title-mark text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
+              {t.categoriesTitle}
+            </h2>
+            <p className="mt-3 max-w-xl text-sm text-muted sm:text-base">{dictionary[lang].categories.text}</p>
+          </div>
           <Link
             href="/categories"
-            className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
+            className="group btn btn-outline hidden min-h-10 shrink-0 px-5 sm:inline-flex"
           >
             {t.allCategories}
             <span className="arrow-slide" aria-hidden>
@@ -256,12 +262,18 @@ export default async function Home() {
         <Reveal>
           <CategoryCarousel
             autoplay={false}
-            slides={cats.map((c) => ({
-              slug: c.slug,
-              name: c.name,
-              description: c.description,
-              color: categoryColor(c.slug),
-            }))}
+            slides={cats
+              .map((c) => ({ c, n: artists.filter((a) => a.categories.includes(c.slug)).length }))
+              // კატეგორიები, სადაც უკვე არიან ხელოვანები, პირველია (სტაბილური დალაგება: დანარჩენი თავის რიგში რჩება)
+              .sort((a, b) => Number(b.n > 0) - Number(a.n > 0))
+              .map(({ c, n }) => ({
+                slug: c.slug,
+                name: c.name,
+                description: c.description,
+                color: categoryColor(c.slug),
+                count: n > 0 ? dictionary[lang].artists.count(n) : undefined,
+                soon: t.countdown.soon,
+              }))}
           />
         </Reveal>
       </section>
@@ -269,12 +281,12 @@ export default async function Home() {
       {/* რჩეული ხელოვანები */}
       <section className="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20">
         <Reveal className="mb-5 sm:mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
+          <h2 className="title-mark text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.featured}
           </h2>
           <Link
             href="/artists"
-            className="group hidden min-h-10 shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium text-text transition duration-300 hover:border-accent hover:text-accent sm:inline-flex"
+            className="group btn btn-outline hidden min-h-10 shrink-0 px-5 sm:inline-flex"
           >
             {t.fullList}
             <span className="arrow-slide" aria-hidden>
@@ -288,7 +300,7 @@ export default async function Home() {
               <ArtistCard
                 key={artist.slug}
                 artist={artist}
-                artClassName="aspect-[4/5] sm:aspect-square"
+                artClassName="aspect-[4/5]"
                 worksLabel={dictionary[lang].artists.worksCount(artist.works.length)}
               />
             ))}
@@ -296,7 +308,8 @@ export default async function Home() {
             <Link
               key="join"
               href="/join"
-              className="group flex h-full min-h-72 flex-col justify-between overflow-hidden rounded-[1.5rem] bg-accent p-5 text-on-accent transition duration-300 hover:-translate-y-1.5 hover:bg-accent-hover hover:shadow-2xl active:scale-[0.99] sm:rounded-[1.75rem] sm:p-6"
+              className="group grain relative isolate flex h-full min-h-72 flex-col justify-between overflow-hidden rounded-[1.5rem] p-5 text-white transition duration-300 hover:-translate-y-1.5 hover:shadow-2xl active:scale-[0.99] sm:rounded-[1.75rem] sm:p-6"
+              style={{ background: toneGradient(TONES.clay) }}
             >
               <span aria-hidden className="text-3xl opacity-80">
                 ✦
@@ -321,16 +334,18 @@ export default async function Home() {
       <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-10 sm:pt-14">
         <Link
           href="/quiz"
-          className="group flex flex-col items-start gap-4 rounded-[1.5rem] border-[1.5px] border-[color-mix(in_srgb,var(--text)_18%,transparent)] bg-bg p-5 transition duration-300 hover:border-accent hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.75rem] sm:p-7"
+          className="group grain relative isolate flex flex-col items-start gap-4 overflow-hidden rounded-[1.5rem] p-5 text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl sm:flex-row sm:items-center sm:justify-between sm:rounded-[1.75rem] sm:p-7"
+          style={{ background: "linear-gradient(135deg, #3f7479, #2f5d62 52%, #1a363a)" }}
         >
+          <div aria-hidden className="blob pointer-events-none absolute -right-14 -top-20 -z-10 h-56 w-56 rounded-full border-[26px] border-white/10" />
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
               <span aria-hidden className="mr-2">🎯</span>
               {dictionary[lang].quiz.promoTitle}
             </h2>
-            <p className="mt-1 text-muted">{dictionary[lang].quiz.promoText}</p>
+            <p className="mt-1 text-white/80">{dictionary[lang].quiz.promoText}</p>
           </div>
-          <span className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-on-accent transition duration-300 group-hover:bg-accent-hover">
+          <span className="btn btn-light shrink-0 group-hover:bg-[#f6c453]">
             {dictionary[lang].quiz.promoCta}
             <span className="arrow-slide" aria-hidden>
               →
@@ -346,12 +361,13 @@ export default async function Home() {
       <ArtistOfWeek />
 
       {/* როგორ მუშაობს */}
+      <div className="bg-surface-2">
       <section
         id="how-it-works"
-        className="mx-auto max-w-7xl scroll-mt-24 px-4 pt-14 sm:px-6 lg:px-10 sm:pt-20"
+        className="mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16 lg:px-10"
       >
         <Reveal className="mb-5 sm:mb-8">
-          <h2 className="text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
+          <h2 className="title-mark text-balance text-2xl font-semibold leading-tight tracking-tight text-text sm:text-3xl lg:text-4xl">
             {t.how}
           </h2>
         </Reveal>
@@ -367,7 +383,8 @@ export default async function Home() {
             >
               <span
                 aria-hidden
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-soft font-serif text-base font-semibold text-accent"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold text-white shadow-md"
+                style={{ background: [TONES.clay, TONES.teal, TONES.berry][i % 3] }}
               >
                 {i + 1}
               </span>
@@ -390,6 +407,7 @@ export default async function Home() {
           </span>
         </Link>
       </section>
+      </div>
 
       {/* შემოქმედის ბანერი */}
       <section className="mx-auto max-w-7xl px-4 pb-14 pt-14 sm:px-6 lg:px-10 sm:pb-20 sm:pt-20">
@@ -413,7 +431,7 @@ export default async function Home() {
             </div>
             <Link
               href="/join"
-              className="group inline-flex min-h-12 shrink-0 self-start sm:self-auto items-center gap-2 rounded-full bg-on-accent px-7 text-sm font-medium text-accent transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-95"
+              className="group btn btn-light shrink-0 self-start sm:self-auto"
             >
               {dictionary[lang].nav.join}
               <span className="arrow-slide" aria-hidden>

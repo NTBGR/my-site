@@ -96,7 +96,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
 
           <ul
             ref={listRef}
-            className="flex gap-1.5 overflow-x-auto py-2.5 pl-0 pr-12 [scrollbar-width:none] sm:pl-2 sm:pr-6 lg:pl-6 lg:pr-10 [&::-webkit-scrollbar]:hidden"
+            className="flex gap-1.5 overflow-x-auto py-2.5 pl-3 pr-12 [scrollbar-width:none] sm:pl-2 sm:pr-6 lg:pl-6 lg:pr-10 [&::-webkit-scrollbar]:hidden"
             style={{
               maskImage: `linear-gradient(90deg, ${canLeft ? "transparent, #000 40px" : "#000, #000"}, ${canRight ? "#000 calc(100% - 56px), transparent" : "#000, #000"})`,
             }}
@@ -126,7 +126,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
                     href={`/gifts/${tag.slug}`}
                     aria-current={active ? "page" : undefined}
                     className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
-                      active ? "bg-accent text-on-accent" : "text-muted hover:bg-accent-soft hover:text-accent"
+                      active ? "bg-accent font-semibold text-on-accent shadow-[0_6px_14px_-8px_var(--accent)]" : "text-muted hover:bg-accent-soft hover:text-accent"
                     }`}
                   >
                     <span aria-hidden className="mr-1.5">{tag.emoji}</span>

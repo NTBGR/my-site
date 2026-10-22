@@ -18,8 +18,8 @@ export default function Chip({
       aria-pressed={selected}
       className={`inline-flex min-h-11 items-center rounded-full px-4 text-sm transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
         selected
-          ? "bg-accent text-on-accent"
-          : "border border-border bg-surface text-text hover:border-accent"
+          ? "bg-accent font-semibold text-on-accent shadow-[0_8px_18px_-10px_var(--accent)]"
+          : "border-[1.5px] border-border bg-surface text-text hover:border-accent hover:text-accent"
       } ${className}`.trim()}
       {...rest}
     >

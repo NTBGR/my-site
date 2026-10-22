@@ -4,14 +4,13 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 type Variant = "primary" | "secondary";
 
 const variantClass: Record<Variant, string> = {
-  primary:
-    "border-transparent bg-accent text-on-accent hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-md",
+  primary: "btn-primary",
   secondary:
-    "border-border bg-surface text-text hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-sm",
+    "border-[1.5px] border-border bg-surface text-text hover:-translate-y-0.5 hover:border-accent hover:text-accent hover:shadow-md",
 };
 
 const baseClass =
-  "inline-flex min-h-12 items-center justify-center rounded-full px-7 text-sm font-medium transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50";
+  "btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:pointer-events-none disabled:opacity-50";
 
 function cn(...parts: Array<string | undefined>) {
   return parts.filter(Boolean).join(" ");

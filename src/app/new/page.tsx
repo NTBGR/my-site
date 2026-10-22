@@ -40,6 +40,7 @@ export default async function NewWorksPage() {
         text={t.home.newWorksText}
         badge={t.artists.worksCount(entries.length)}
         collage={["keramika", "samkauli", "tekstili"]}
+        tone="plum"
       />
       <p className="mt-5 text-xs leading-relaxed text-muted sm:text-sm">{t.priceNote}</p>
       <div className="mt-4">

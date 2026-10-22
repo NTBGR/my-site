@@ -10,7 +10,7 @@ export default async function ArtistNotFound() {
     <PageHeader title={t.notFoundTitle} text={t.notFoundText}>
       <Link
         href="/artists"
-        className="inline-flex items-center rounded-full bg-accent px-6 py-3 text-sm font-medium text-on-accent transition duration-300 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-lg"
+        className="group btn btn-light"
       >
         {t.list}
       </Link>
