@@ -27,7 +27,7 @@ export default async function ArtistOfWeek() {
   return (
     // ფერადი ზოლი მთელ სიგანეზე: მთავარის რიტმში ერთი გამორჩეული ადგილი
     <section
-      className="relative isolate overflow-hidden"
+      className="relative isolate mt-14 overflow-hidden sm:mt-20"
       style={{ background: "linear-gradient(135deg, #8a3b57, #5e2a3e 58%, #3d1a29)" }}
     >
       <BannerOrnament kind="sparkles" className="-z-10" />
