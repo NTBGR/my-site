@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import CategoryCard from "@/components/CategoryCard";
+import SeeAllCard from "@/components/SeeAllCard";
 import { useT } from "@/components/LangProvider";
 import ArrowButton from "@/components/ui/ArrowButton";
 import { useDragScroll } from "@/lib/useDragScroll";
@@ -122,6 +123,10 @@ export default function CategoryCarousel({
             />
           </li>
         ))}
+        {/* ტელეფონზე ბოლო ბარათი: ყველა კატეგორია (როგორც რჩეულ ხელოვანებზე) */}
+        <li className="w-[58%] shrink-0 snap-start sm:hidden">
+          <SeeAllCard href="/categories" label={t.allCategories} />
+        </li>
       </ul>
 
       <div className="mt-6 flex items-center justify-between gap-4">

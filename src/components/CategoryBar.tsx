@@ -96,7 +96,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
 
           <ul
             ref={listRef}
-            className="flex gap-1.5 overflow-x-auto py-2.5 pl-3 pr-12 [scrollbar-width:none] sm:pl-2 sm:pr-6 lg:pl-6 lg:pr-10 [&::-webkit-scrollbar]:hidden"
+            className="flex gap-1.5 overflow-x-auto py-2.5 pl-1 pr-12 [scrollbar-width:none] sm:pl-2 sm:pr-6 lg:pl-6 lg:pr-10 [&::-webkit-scrollbar]:hidden"
             style={{
               maskImage: `linear-gradient(90deg, ${canLeft ? "transparent, #000 40px" : "#000, #000"}, ${canRight ? "#000 calc(100% - 56px), transparent" : "#000, #000"})`,
             }}
@@ -109,7 +109,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
                     <span
                       aria-disabled="true"
                       title={tag.name}
-                      className="inline-flex min-h-10 cursor-not-allowed select-none items-center whitespace-nowrap rounded-full border border-dashed border-border px-4 text-sm font-medium text-muted/70"
+                      className="inline-flex min-h-10 cursor-not-allowed select-none items-center whitespace-nowrap rounded-full border border-dashed border-border px-3 text-sm sm:px-4 font-medium text-muted/70"
                     >
                       <span aria-hidden className="mr-1.5 opacity-70 grayscale">{tag.emoji}</span>
                       {tag.name}
@@ -125,7 +125,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
                   <Link
                     href={`/gifts/${tag.slug}`}
                     aria-current={active ? "page" : undefined}
-                    className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
+                    className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-3 text-sm font-medium transition-colors sm:px-4 ${
                       active ? "bg-accent font-semibold text-on-accent shadow-[0_6px_14px_-8px_var(--accent)]" : "text-muted hover:bg-accent-soft hover:text-accent"
                     }`}
                   >
@@ -140,7 +140,7 @@ export default function CategoryBar({ tags }: { tags: BarTag[] }) {
               <Link
                 href="/quiz"
                 aria-current={pathname === "/quiz" ? "page" : undefined}
-                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors ${
+                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-3 text-sm font-medium transition-colors sm:px-4 ${
                   pathname === "/quiz" ? "bg-accent text-on-accent" : "text-muted hover:bg-accent-soft hover:text-accent"
                 }`}
               >

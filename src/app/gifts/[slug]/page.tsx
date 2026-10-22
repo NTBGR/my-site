@@ -98,7 +98,7 @@ export default async function GiftPage({
       <JsonLd data={crumbLd} />
       {raw.festive ? <Snowfall /> : null}
       <PageBanner
-        title={`${tag.emoji} ${tag.name}`}
+        title={`${tag.emoji} ${tag.name}`}
         text={tag.description}
         badge={t.artists.worksCount(all.length)}
         collage={tag.collage}

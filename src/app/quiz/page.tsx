@@ -49,7 +49,7 @@ export default async function QuizPage() {
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">
       <BackLink href="/" home />
       <JsonLd data={ld} />
-      <PageBanner title={`🎯 ${t.title}`} text={t.intro} collage={["sachuqrebi", "keramika", "samkauli"]} tone="teal" />
+      <PageBanner title={`🎯 ${t.title}`} text={t.intro} collage={["sachuqrebi", "keramika", "samkauli"]} tone="teal" />
       <div className="mx-auto mt-8 max-w-3xl sm:mt-10">
         <GiftQuiz works={works} />
       </div>

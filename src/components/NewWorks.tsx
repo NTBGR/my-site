@@ -46,12 +46,9 @@ export default async function NewWorks() {
         columns="sm:grid-cols-4 lg:grid-cols-5"
         showSort={false}
         featureFirst={fresh.length >= 5}
+        seeAll={{ href: "/new", label: t.allNewWorks }}
         works={fresh.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))}
       />
-      {/* ტელეფონზე ზედა ღილაკი არ ჩანს: ბმული ზოლის ქვემოთაა */}
-      <Link href="/new" className="group btn btn-outline mt-5 w-full sm:hidden">
-        {allLink}
-      </Link>
     </section>
   );
 }

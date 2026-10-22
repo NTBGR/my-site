@@ -34,6 +34,14 @@ export default function PageBanner({
   children?: ReactNode;
 }) {
   const base = TONES[tone];
+  const photo = (slug: string, i: number) =>
+    festive ? (
+      <div className="relative aspect-[4/3]" style={{ filter: "saturate(.86) sepia(.14) contrast(.97) brightness(.98)" }}>
+        <Photo src={`/categories/soft-${["1", "2", "3c"][i]}.jpg`} alt="" sizes="144px" />
+      </div>
+    ) : (
+      <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />
+    );
   return (
     <section
       className={`relative isolate overflow-hidden rounded-[1.5rem] text-white shadow-lg lg:rounded-[2rem] ${festive ? "snow-bg" : "grain"}`}
@@ -51,6 +59,7 @@ export default function PageBanner({
         <div className="blob absolute -right-16 -top-20 h-56 w-56 rounded-full border-[28px] border-white/10 sm:h-72 sm:w-72" />
         <div className="absolute -bottom-24 right-[30%] h-48 w-48 rounded-full bg-white/[0.07]" />
       </div>
+      {/* დესკტოპზე სამი ფოტო, ტელეფონზე ერთი კუთხეში */}
       <div className="absolute inset-0 z-[2] hidden sm:block" aria-hidden>
         {collage.map((slug, i) => (
           <div
@@ -58,15 +67,20 @@ export default function PageBanner({
             className={`float print absolute ${POSITIONS[i].pos} max-w-[9.5rem]`}
             style={{ ["--r" as string]: POSITIONS[i].r }}
           >
-            {festive ? (
-              <div className="relative aspect-[4/3]" style={{ filter: "saturate(.86) sepia(.14) contrast(.97) brightness(.98)" }}>
-                <Photo src={`/categories/soft-${["1", "2", "3c"][i]}.jpg`} alt="" sizes="144px" />
-              </div>
-            ) : <CategoryArt slug={slug} color={categoryColor(slug)} className="aspect-[4/3]" />}
+            {photo(slug, i)}
           </div>
         ))}
       </div>
-      <div className="relative z-10 flex min-h-[11rem] flex-col justify-center p-5 sm:min-h-[15rem] sm:max-w-[58%] sm:px-10 sm:py-8">
+      <div
+        aria-hidden
+        className="float print print-sm absolute right-4 top-4 z-[2] w-[5.25rem] sm:hidden"
+        style={{ ["--r" as string]: "5deg" }}
+      >
+        {photo(collage[0], 0)}
+      </div>
+      <div className="relative z-10 min-h-[8.5rem] p-5 sm:flex sm:min-h-[15rem] sm:max-w-[58%] sm:flex-col sm:justify-center sm:px-10 sm:py-8">
+        {/* ტელეფონზე ფოტოს ადგილი: ტექსტი მას გარს უვლის და ქვემოთ მთელ სიგანეს იყენებს */}
+        <div aria-hidden className="float-right ml-3 h-[4.5rem] w-[5.25rem] sm:hidden" />
         {badge ? (
           <p className="mb-2 inline-flex w-fit items-center rounded-full border border-white/30 bg-white/10 px-3 py-0.5 text-xs font-medium backdrop-blur-md">
             {badge}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import HeartButton from "@/components/HeartButton";
+import SeeAllCard from "@/components/SeeAllCard";
 import Photo from "@/components/Photo";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -59,6 +60,7 @@ export default function WorksGallery({
   layout = "grid",
   columns = "sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
   featureFirst = false,
+  seeAll,
 }: {
   works: GalleryWork[];
   shareUrl?: string;
@@ -70,6 +72,8 @@ export default function WorksGallery({
   columns?: string;
   // პირველი ნამუშევარი დიდია (2×2 ბადეში, ტელეფონზე ჩვეულებრივი); ბადე ორ სავსე რიგად იკვრება: პლანშეტზე 5 ნამუშევარი, დესკტოპზე 7
   featureFirst?: boolean;
+  // ზოლის რეჟიმში, ტელეფონზე: ბოლო ბარათი „ყველას ნახვა“
+  seeAll?: { href: string; label: string };
 }) {
   const t = useT();
   // დახარისხება ფასით (ფასის გარეშე ნამუშევრები ბოლოშია)
@@ -104,7 +108,9 @@ export default function WorksGallery({
       if (stepPx <= 0) return;
       // ბოლოში ბოლო წერტილი ინათება (ბოლო ბარათი სქროლის ბოლოს თავში ვერ დგება)
       const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-      setRowActive(atEnd ? track.children.length - 1 : Math.min(track.children.length - 1, Math.round(track.scrollLeft / stepPx)));
+      // „ყველას ნახვა“ ბარათს წერტილი არ აქვს: ვითვლით მხოლოდ ნამუშევრებს
+      const count = track.querySelectorAll(":scope > li[data-work]").length;
+      setRowActive(atEnd ? count - 1 : Math.min(count - 1, Math.round(track.scrollLeft / stepPx)));
     };
     track.addEventListener("scroll", onScroll, { passive: true });
     return () => track.removeEventListener("scroll", onScroll);
@@ -177,6 +183,7 @@ export default function WorksGallery({
         {works.map((work, i) => (
           <li
             key={`${work.favKey ?? work.title}-${i}`}
+            data-work
             className={`group relative ${layout === "row" ? "w-[44%] shrink-0 snap-start sm:w-auto" : ""} ${featureFirst && i === 0 ? "sm:col-span-2 sm:row-span-2" : ""} ${featureFirst && i >= 5 ? "sm:max-lg:hidden" : ""} ${featureFirst && i >= 7 ? "lg:hidden" : ""}`}
           >
             {/* ფოტო ზემოთ, სახელი ქვემოთ: სახელი ნამუშევარს აღარ ფარავს */}
@@ -225,6 +232,11 @@ export default function WorksGallery({
             ) : null}
           </li>
         ))}
+        {layout === "row" && seeAll ? (
+          <li className="w-[44%] shrink-0 snap-start sm:hidden">
+            <SeeAllCard href={seeAll.href} label={seeAll.label} />
+          </li>
+        ) : null}
       </ul>
 
       {layout === "row" && works.length > 1 ? (

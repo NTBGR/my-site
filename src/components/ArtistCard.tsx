@@ -59,7 +59,7 @@ export default function ArtistCard({
       </div>
       <div className="flex flex-1 items-end justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
         <div className="min-w-0">
-          <h3 className="font-serif text-base font-semibold leading-snug tracking-tight [overflow-wrap:break-word] sm:text-lg">
+          <h3 className="line-clamp-2 min-h-[2.75em] font-serif text-base font-semibold leading-snug tracking-tight [overflow-wrap:break-word] sm:text-lg">
             {artist.name}
             {artist.verified ? <VerifiedMark className="ml-1 inline-block h-[0.95em] w-[0.95em] translate-y-[1px] text-accent" /> : null}
           </h3>

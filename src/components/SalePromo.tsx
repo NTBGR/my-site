@@ -38,7 +38,19 @@ export default async function SalePromo() {
         <div aria-hidden className="pointer-events-none absolute inset-0 z-[2] overflow-hidden">
           <div className="shine-sweep h-full w-1/5 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         </div>
-        <div className="min-w-0">
+        {/* ტელეფონზე ერთი ფოტო კუთხეში (დესკტოპზე სამი ფოტო მარჯვნივ) */}
+        {photos[0] ? (
+          <span
+            aria-hidden
+            className="float-soft print print-sm absolute right-4 top-4 z-[3] block h-[4.75rem] w-[3.75rem] sm:hidden"
+            style={{ ["--r" as string]: "5deg", ["--tone" as string]: "#94561a" }}
+          >
+            <span className="relative block h-full w-full">
+              <Photo src={photos[0].work.image as string} alt="" sizes="60px" />
+            </span>
+          </span>
+        ) : null}
+        <div className={`min-w-0 ${photos[0] ? "pr-[4.5rem] sm:pr-0" : ""}`}>
           <h2 className="text-xl font-semibold tracking-tight sm:text-3xl">
             <span aria-hidden className="mr-1.5">🔥</span>
             {t.title(range)}

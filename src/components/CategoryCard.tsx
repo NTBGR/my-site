@@ -44,7 +44,7 @@ export default function CategoryCard({
       </div>
       <div className="flex flex-1 items-end justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
         <div className="min-w-0">
-          <h3 className="font-serif text-base font-semibold leading-snug tracking-tight text-text [overflow-wrap:break-word] sm:text-lg">
+          <h3 className="line-clamp-2 min-h-[2.75em] font-serif text-base font-semibold leading-snug tracking-tight text-text [overflow-wrap:break-word] sm:text-lg">
             {name}
           </h3>
           {badge ? (
