@@ -70,10 +70,10 @@ export default async function ArtistOpengraphImage({ params }: { params: Promise
     loadFont(new URL("../../../assets/og-fonts/NotoSansGeorgian-Medium.ttf", import.meta.url)),
   ]);
 
-  // ფოტოები: ხელოვანის ბოლო ნამუშევრები (პირველი ფოტოს მიხედვით ქავერიც), მაქსიმუმ სამი
+  // ფოტოები: ქავერი და ნამუშევრები, მაქსიმუმ ოთხი (კიდეებზე: მესენჯერი და ვაიბერი სურათს შუიდან ჭრიან, ტექსტი ამიტომ ცენტრშია)
   const origin = process.env.NODE_ENV === "development" ? `http://localhost:${process.env.PORT ?? 3000}` : SITE_URL;
   const sources = artist
-    ? [artist.cover, ...artist.works.map((work) => work.image)].filter((src, i, all): src is string => Boolean(src) && all.indexOf(src) === i).slice(0, 3)
+    ? [artist.cover, ...artist.works.map((work) => work.image)].filter((src, i, all): src is string => Boolean(src) && all.indexOf(src) === i).slice(0, 4)
     : [];
   const photos = (await Promise.all(sources.map((src) => toDataUrl(origin, src)))).filter((src): src is string => Boolean(src));
   const salePercent = artist ? artist.works.map((work) => pricing(artist, work)?.percent).find(Boolean) : undefined;
@@ -84,33 +84,39 @@ export default async function ArtistOpengraphImage({ params }: { params: Promise
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: BG, fontFamily: "Sans" }}>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "72px 0 64px 80px", width: 660 }}>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            <div style={{ display: "flex", fontFamily: "Serif", fontSize: 48, color: TEXT }}>
-              ხელოვანი<span style={{ color: ACCENT }}>.</span>
-            </div>
-            <svg width="215" height="12" viewBox="0 0 86 7" style={{ marginTop: 4 }}>
-              <path d="M2 5 C20 1, 40 1, 84 3" stroke={ACCENT} strokeWidth="2.8" fill="none" strokeLinecap="round" />
-            </svg>
-          </div>
+        {photos[0] ? <Photo src={photos[0]} rotate={-7} top={58} left={34} width={220} height={280} /> : null}
+        {photos[1] ? <Photo src={photos[1]} rotate={6} top={52} left={946} width={210} height={270} /> : null}
+        {photos[2] ? <Photo src={photos[2]} rotate={5} top={360} left={70} width={200} height={220} /> : null}
+        {photos[3] ? <Photo src={photos[3]} rotate={-4} top={350} left={930} width={210} height={240} /> : null}
 
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {salePercent ? (
-              <div style={{ display: "flex", marginBottom: 20 }}>
-                <div style={{ display: "flex", background: "#c4302b", color: "#fff", fontSize: 30, padding: "6px 22px", borderRadius: 40 }}>-{salePercent}%</div>
-              </div>
-            ) : null}
-            <div style={{ fontFamily: "Serif", fontSize: name.length > 18 ? 68 : 84, lineHeight: 1.05, color: TEXT, letterSpacing: -1 }}>{name}</div>
-            <div style={{ marginTop: 22, fontSize: 32, lineHeight: 1.35, color: MUTED }}>{subtitle}</div>
-            <div style={{ marginTop: 6, fontSize: 28, color: MUTED }}>{count}</div>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: 300,
+            width: 600,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ display: "flex", fontFamily: "Serif", fontSize: 46, color: TEXT }}>
+            ხელოვანი<span style={{ color: ACCENT }}>.</span>
           </div>
-
-          <div style={{ fontSize: 24, color: MUTED }}>{SITE_HOST}</div>
+          <svg width="205" height="12" viewBox="0 0 86 7" style={{ marginTop: 4 }}>
+            <path d="M2 5 C20 1, 40 1, 84 3" stroke={ACCENT} strokeWidth="2.8" fill="none" strokeLinecap="round" />
+          </svg>
+          {salePercent ? (
+            <div style={{ display: "flex", marginTop: 30, background: "#c4302b", color: "#fff", fontSize: 30, padding: "6px 22px", borderRadius: 40 }}>-{salePercent}%</div>
+          ) : null}
+          <div style={{ marginTop: salePercent ? 18 : 40, fontFamily: "Serif", fontSize: name.length > 16 ? 64 : 80, lineHeight: 1.06, color: TEXT, letterSpacing: -1 }}>{name}</div>
+          <div style={{ marginTop: 22, fontSize: 32, lineHeight: 1.35, color: MUTED }}>{subtitle}</div>
+          <div style={{ marginTop: 6, fontSize: 28, color: MUTED }}>{count}</div>
+          <div style={{ marginTop: 26, fontSize: 24, color: ACCENT }}>{SITE_HOST}</div>
         </div>
-
-        {photos[0] ? <Photo src={photos[0]} rotate={-6} top={64} left={700} width={270} height={340} /> : null}
-        {photos[1] ? <Photo src={photos[1]} rotate={5} top={96} left={950} width={220} height={285} /> : null}
-        {photos[2] ? <Photo src={photos[2]} rotate={-3} top={372} left={770} width={290} height={235} /> : null}
       </div>
     ),
     {
