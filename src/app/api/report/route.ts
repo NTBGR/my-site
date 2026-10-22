@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { artists, workId } from "@/data/artists";
 import { clicksEnabled, conversion, monthOf, monthStats, monthWorkStats, viewStats } from "@/lib/clicks";
 import { monthFavorites, monthWorkFavorites } from "@/lib/favoriteStats";
+import { daysLeftText, memberships, onDay } from "@/lib/membership";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -94,6 +95,8 @@ export async function GET(req: NextRequest) {
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
   const totalPeople = rows.reduce((sum, r) => sum + r.people, 0);
+  // ვადები: ვისაც 30 დღეში ეწურება ან უკვე გაუვიდა (თვის შეჯამებაში)
+  const deadlines = memberships(artists).filter(({ m }) => m.daysLeft <= 30);
   const totalFavPeople = rows.reduce((sum, r) => sum + r.favPeople, 0);
   const summary = [
     `<b>📊 რეპორტი: ${month}</b>`,
@@ -110,6 +113,9 @@ export async function GET(req: NextRequest) {
       : []),
     ...(topSavedAll.length
       ? ["", "<b>❤ რომელი ნამუშევრები დაიმახსოვრეს ყველაზე ხშირად:</b>", ...topSavedAll.map((x, i) => `${i + 1}. ${escapeHtml(titleOf(x.key)!)}: ${x.count}`)]
+      : []),
+    ...(deadlines.length
+      ? ["", "<b>⏳ ვადები (30 დღეში):</b>", ...deadlines.map(({ artist, m }) => `• ${escapeHtml(artist.name)}: ${m.paid ? "გამოწერა" : "უფასო პერიოდი"} იწურება ${onDay(m.end)}, ${daysLeftText(m.daysLeft)}`)]
       : []),
     "",
     "ქვემოთ თითო ხელოვანზე მზა ტექსტია: შეეხე ბლოკს, დაკოპირდება, და გაუგზავნე.",

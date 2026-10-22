@@ -38,6 +38,12 @@ export type ArtistData = {
   // საიტზე დამატების თარიღი (YYYY-MM-DD): 14 დღით მთავარზე „ახალი ხელოვანი“ ზოლი ჩანს.
   // თუ არ არის, ავტომატურად იღება ყველაზე ადრეული ნამუშევრის `added`
   joined?: string;
+  // უფასო პერიოდი თვეებში, `joined`-იდან (ნაგულისხმევი 2). ვადები და დარჩენილი დღეები ჩანს /stats-ზე, გაფრთხილება მოდის ტელეგრამში
+  freeMonths?: number;
+  // მუდმივად უფასო (ვადა არ აქვს, გაფრთხილება არ მოდის): პირველი ხელოვანები
+  freeForever?: boolean;
+  // გამოწერა გადახდილია ამ დღემდე (YYYY-MM-DD): ყოველი გადახდის შემდეგ გადაწიე. თუ არ არის, მოქმედებს მხოლოდ უფასო პერიოდი
+  paidUntil?: string;
   // „გადამოწმებულია“: ხელით შემოწმებულია, რომ ხელოვანის გვერდი ნამდვილია და აქტიური. ნიშანი ჩანს მის გვერდზე და ბარათზე.
   // გასაუქმებლად წაშალე ეს ხაზი ან false დაწერე
   verified?: boolean;
@@ -62,6 +68,7 @@ export const artists: ArtistData[] = [
   {
     slug: "zhuzha-ceramics",
     joined: "2026-10-18",
+    freeForever: true,
     verified: true,
     name: "ZHU-ZHA Ceramics",
     city: "თბილისი",
@@ -118,6 +125,7 @@ export const artists: ArtistData[] = [
   {
     slug: "tbgr-poster-lab",
     joined: "2026-10-19",
+    freeForever: true,
     verified: true,
     name: "TBGR Poster Lab",
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
@@ -189,6 +197,7 @@ export const artists: ArtistData[] = [
   },
   {
     slug: "tamus-shop",
+    freeForever: true,
     verified: true,
     name: "Tamus Shop",
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს

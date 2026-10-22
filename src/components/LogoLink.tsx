@@ -34,7 +34,10 @@ export default function LogoLink({ size = "md" }: { size?: "md" | "lg" }) {
         <svg
           viewBox="0 0 86 7"
           preserveAspectRatio="none"
-          className="-mt-[3.5px] h-[6px] w-full text-accent min-[360px]:-mt-[2px] sm:mt-0 lg:mt-1 lg:h-[7px]"
+          className={`w-full text-accent ${
+            // დიდ ლოგოს (ფუთერი) საკუთარი დაშორება: ჰედერის მჭიდრო დაშორებით ხაზი ასოების ქვედა ნაწილს კვეთდა
+            size === "lg" ? "mt-2 h-[7px] sm:mt-2.5 sm:h-[8px]" : "-mt-[3.5px] h-[6px] min-[360px]:-mt-[2px] sm:mt-0 lg:mt-1 lg:h-[7px]"
+          }`}
           aria-hidden
         >
           <path

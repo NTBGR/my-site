@@ -3,6 +3,7 @@ import { artists, workId } from "@/data/artists";
 import { clicksEnabled, conversion, dayOf, monthOf, monthStats, monthWorkStats, viewStats } from "@/lib/clicks";
 import { monthFavorites, monthWorkFavorites } from "@/lib/favoriteStats";
 import { STATS_COOKIE, statsConfigured, tokenValid } from "@/lib/statsAuth";
+import { daysLeftText, memberships, onDay, type MembershipStatus } from "@/lib/membership";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,52 @@ function Login({ error, configured }: { error?: string; configured: boolean }) {
       ) : null}
       {message ? <p className="mt-4 text-sm text-accent">{message}</p> : null}
     </div>
+  );
+}
+
+// ხელოვანების ვადები: უფასო პერიოდი / გადახდილი გამოწერა, ყველაზე ახლოს მყოფი ვადა პირველი
+const STATUS: Record<MembershipStatus, { label: string; className: string }> = {
+  trial: { label: "უფასო", className: "bg-[#e3efe0] text-[#2f5a2a]" },
+  paid: { label: "გადახდილი", className: "bg-[#dfe8f5] text-[#24406e]" },
+  soon: { label: "მალე იწურება", className: "bg-[#fdeccf] text-[#7a4a06]" },
+  expired: { label: "ვადა გავიდა", className: "bg-[#fbe0de] text-[#9b1c17]" },
+  forever: { label: "მუდმივად უფასო", className: "bg-[#ece6f6] text-[#4a3d73]" },
+};
+
+function Deadlines() {
+  const rows = memberships(artists);
+  return (
+    <section className="mt-8">
+      <h2 className="text-xl font-semibold tracking-tight text-text sm:text-2xl">ხელოვანების ვადები</h2>
+      <p className="mt-1 text-sm text-muted">
+        უფასო პერიოდი იწყება <code>joined</code> თარიღიდან (<code>src/data/artists.ts</code>); ხანგრძლივობა <code>freeMonths</code> (ნაგულისხმევი 2 თვე), ან <code>freeForever</code> მუდმივად უფასოსთვის.
+        გადახდის შემდეგ ჩაწერე <code>paidUntil</code>. ტელეგრამში გაფრთხილება მოდის 7, 3 და 1 დღით ადრე, ვადის დღეს და მეორე დღეს.
+      </p>
+      <ul className="mt-3 grid gap-3 lg:grid-cols-2">
+        {rows.map(({ artist, m }) => {
+          const tone = m.forever ? STATUS.forever : m.daysLeft < 0 ? STATUS.expired : m.daysLeft <= 7 ? STATUS.soon : m.daysLeft <= 14 ? { ...STATUS.soon, label: m.paid ? "გადახდილი" : "უფასო" } : STATUS[m.status];
+          return (
+            <li key={artist.slug} className={card}>
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="min-w-0 text-base font-semibold text-text [overflow-wrap:anywhere] sm:text-lg">{artist.name}</h3>
+                <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${tone.className}`}>{tone.label}</span>
+              </div>
+              {m.forever ? (
+                <p className="mt-1 text-sm text-text">ვადა არ აქვს</p>
+              ) : (
+                <p className="mt-1 text-sm text-text">
+                  იწურება <b>{onDay(m.end)}</b> ({m.end}) · <b>{daysLeftText(m.daysLeft)}</b>
+                </p>
+              )}
+              <p className="mt-1 text-sm text-muted">
+                დაიწყო {onDay(m.start)}{m.forever ? "" : ` · უფასო ${m.freeMonths} თვე`}
+                {m.paid ? ` · გადახდილია ${onDay(m.end)}-მდე` : ""}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 
@@ -160,6 +207,7 @@ export default async function StatsPage({ searchParams }: { searchParams: Promis
       {reset === "confirm" ? <p className={`${card} mt-4 text-sm text-accent`}>გაანულება არ შესრულდა: ველში უნდა ჩაგეწერა სიტყვა „გაანულება“.</p> : null}
       {reset === "error" ? <p className={`${card} mt-4 text-sm text-accent`}>გაანულება ვერ შესრულდა. სცადე თავიდან.</p> : null}
       {reset && /^\d+$/.test(reset) ? <p className={`${card} mt-4 text-sm text-text`}>სტატისტიკა გაანულდა (წაიშალა {reset} ჩანაწერი).</p> : null}
+      <Deadlines />
       <Block period={{ id: day, title: `დღეს, ${dayName(day)}` }} withSaves={false} />
       <Block period={{ id: month, month, title: `ეს თვე: ${monthName(month)}` }} withSaves />
       <Block period={{ id: prev, month: prev, title: `წინა თვე: ${monthName(prev)}` }} withSaves />

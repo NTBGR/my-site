@@ -26,6 +26,9 @@ export default function ArtistCard({
   const main = artist.categories[0] ?? "nakhatebi";
 
   const color = categoryColor(main);
+  const cut = artist.name.lastIndexOf(" ") + 1;
+  const nameHead = artist.name.slice(0, cut);
+  const nameTail = artist.name.slice(cut);
 
   // იგივე ფორმა, რაც კატეგორიის ბარათს (CategoryCard): კრემისფერი ჩარჩო, ფოტო 4:5, ქვემოთ სახელი და ფერადი ისარი
   return (
@@ -49,19 +52,22 @@ export default function ArtistCard({
         >
           {artist.category}
         </span>
-        {/* ისარი ფოტოს კუთხეშია (არა ქვემოთ), რომ კარუსელის ისრებში არ აერიოს */}
-        <span
-          aria-hidden
-          className="absolute right-2.5 top-2.5 z-10 hidden h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#2a1d17] shadow-md backdrop-blur transition duration-300 group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
-        >
-          <span className="arrow-slide">→</span>
-        </span>
       </div>
-      <div className="flex flex-1 items-end justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
+      <div className="flex flex-1 items-start justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
         <div className="min-w-0">
           <h3 className="line-clamp-2 min-h-[2.75em] font-serif text-base font-semibold leading-snug tracking-tight [overflow-wrap:break-word] sm:text-lg">
-            {artist.name}
-            {artist.verified ? <VerifiedMark className="ml-1 inline-block h-[0.95em] w-[0.95em] translate-y-[1px] text-accent" /> : null}
+            {/* ნიშანი სახელის ბოლო სიტყვასთან ერთად გადადის ახალ ხაზზე, მარტო არასდროს რჩება */}
+            {artist.verified ? (
+              <>
+                {nameHead}
+                <span className="whitespace-nowrap">
+                  {nameTail}
+                  <VerifiedMark className="ml-1 inline-block h-[0.95em] w-[0.95em] -translate-y-[0.15em] text-accent" />
+                </span>
+              </>
+            ) : (
+              artist.name
+            )}
           </h3>
           {worksLabel ? (
             <p className="mt-1 flex items-center gap-1.5 whitespace-nowrap text-xs font-medium text-muted">
@@ -70,6 +76,13 @@ export default function ArtistCard({
             </p>
           ) : null}
         </div>
+        {/* ისარი ქვემოთ, ღია ფერის: კარუსელის ფერად ისრებში არ ერევა */}
+        <span
+          aria-hidden
+          className="hidden h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-border bg-surface text-text transition duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
+        >
+          <span className="arrow-slide">→</span>
+        </span>
       </div>
     </Link>
   );

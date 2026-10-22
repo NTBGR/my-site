@@ -34,15 +34,8 @@ export default function CategoryCard({
         <div aria-hidden className="absolute inset-0 transition duration-700 ease-out group-hover:scale-[1.06]">
           <CategoryArt slug={slug} color={color} still className="absolute inset-0 h-full w-full" />
         </div>
-        {/* ისარი ფოტოს კუთხეშია (არა ქვემოთ), რომ კარუსელის ისრებში არ აერიოს */}
-        <span
-          aria-hidden
-          className="absolute right-2.5 top-2.5 z-10 hidden h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#2a1d17] shadow-md backdrop-blur transition duration-300 group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
-        >
-          <span className="arrow-slide">→</span>
-        </span>
       </div>
-      <div className="flex flex-1 items-end justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
+      <div className="flex flex-1 items-start justify-between gap-3 px-1.5 pb-1 pt-3 sm:px-2 sm:pt-3.5">
         <div className="min-w-0">
           <h3 className="line-clamp-2 min-h-[2.75em] font-serif text-base font-semibold leading-snug tracking-tight text-text [overflow-wrap:break-word] sm:text-lg">
             {name}
@@ -54,6 +47,13 @@ export default function CategoryCard({
             </p>
           ) : null}
         </div>
+        {/* ისარი ქვემოთ, ღია ფერის: კარუსელის ფერად ისრებში არ ერევა */}
+        <span
+          aria-hidden
+          className="hidden h-9 w-9 shrink-0 items-center justify-center self-end rounded-full border border-border bg-surface text-text transition duration-300 group-hover:border-[color:var(--c)] group-hover:bg-[color:var(--c)] group-hover:text-white sm:flex"
+        >
+          <span className="arrow-slide">→</span>
+        </span>
       </div>
     </Link>
   );
