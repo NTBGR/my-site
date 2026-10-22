@@ -213,7 +213,7 @@ export default function WorksGallery({
                 ) : null}
               </span>
               </span>
-              <span className={`mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base ${featureFirst && i === 0 ? "sm:font-serif sm:text-xl sm:font-semibold" : ""}`}>
+              <span className={`mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base`}>
                 {work.title}
               </span>
               {work.price ? (
