@@ -27,7 +27,7 @@ export default async function QuizPage() {
     tags: work.tags ?? [],
     kind: artist.categories.includes("samkauli")
       ? "jewelry"
-      : artist.categories.includes("tekstili")
+      : artist.categories.includes("tekstili") || artist.categories.includes("naqsovi")
         ? "bouquet"
         : artist.categories.includes("posterebi")
           ? "poster"

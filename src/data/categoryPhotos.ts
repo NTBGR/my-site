@@ -14,6 +14,7 @@ export const categoryPhotos: Record<string, CategoryPhoto> = {
   // ძველი გასაღები „ბეჭდები“ (ბანერებზე): ცალკე სურათი, რომ სამკაულთან ერთნაირი არ იყოს
   bechdebi: photo("bechdebi"),
   tekstili: photo("tekstili"),
+  naqsovi: photo("naqsovi-knit"),
   tyavi: photo("tyavi"),
   "khis-nakethobebi": photo("khis-nakethobebi"),
   "saxlis-dekori": photo("saxlis-dekori"),

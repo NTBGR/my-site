@@ -202,7 +202,7 @@ export const artists: ArtistData[] = [
     name: "Tamus Shop",
     // ქალაქი ჯერ უცნობია: ცარიელზე საიტი უბრალოდ არ აჩვენებს
     city: "",
-    categories: ["tekstili", "sachuqrebi"],
+    categories: ["naqsovi", "tekstili", "sachuqrebi"],
     cover: "/artists/tamus-shop/bouquet-pink-blooms.jpg",
     banner: "/artists/tamus-shop/bouquet-pink-blooms.jpg",
     bio: "ჰობი, რომელიც ბიზნესად იქცა. მე ვარ თამუ და უკვე 5 წელია ხელით ნაქსოვი ნივთების მაღაზია მაქვს. Tamus Shop-ში შეხვდებით უამრავ ფერად ნივთს: ძაფის ტიტებისა და ვარდების თაიგულებს, ფუმფულა ძაფის თაიგულებს და ამიგურუმის პატარა თოჯინებს. ასეთი თაიგული არ ჭკნება და საჩუქრად დიდხანს ინახება.",
