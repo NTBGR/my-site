@@ -97,6 +97,13 @@ function Deadlines() {
                 დაიწყო {onDay(m.start)}{m.forever ? "" : ` · უფასო ${m.freeMonths} თვე`}
                 {m.paid ? ` · გადახდილია ${onDay(m.end)}-მდე` : ""}
               </p>
+              {artist.consent ? (
+                <p className="mt-1 text-sm text-muted">
+                  თანხმობა: პირობები {artist.consent.terms}, კონფიდენციალურობა {artist.consent.privacy} · {artist.consent.at} · ფორმაში ეწერა: {artist.consent.offer}
+                </p>
+              ) : (
+                <p className="mt-1 text-sm text-muted">თანხმობის ჩანაწერი არ არის (ხელით დაემატა)</p>
+              )}
             </li>
           );
         })}
