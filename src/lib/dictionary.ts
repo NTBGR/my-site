@@ -77,7 +77,7 @@ const ka = {
     newWorks: "ახალი ნამუშევრები",
     allNewWorks: "ყველა ახალი ნამუშევარი",
     countdown: { label: "ახალ წლამდე დარჩა", days: "დღე", hours: "საათი", minutes: "წუთი", soon: "მალე", dShort: "დ", hShort: "სთ", mShort: "წთ" },
-    newWorksText: "ბოლო 30 დღეში დამატებული ნამუშევრები, ახლები პირველი.",
+    newWorksText: "ბოლო 30 დღეში დამატებული ნამუშევრები.",
     saleBanner: {
       title: (range: string) => `ფასდაკლება ${range}`,
       text: (artists: string) => `${artists}: ხელნაკეთი ნამუშევრები შეღავათიან ფასად.`,
@@ -171,6 +171,7 @@ const ka = {
     newArtistChip: "ახალი ხელოვანი",
     monthReach: (n: number) => `ამ თვეში ხელოვანთან გადავიდა ${n} ადამიანი`,
     monthReachNote: "ჩვენი დადასტურებული სტატისტიკა",
+    savedTotal: (n: number) => `❤ ფავორიტებში ${n}-ჯერ შეინახეს`,
     instagram: "ინსტაგრამი",
     facebook: "ფეისბუქი",
     works: "ნამუშევრები",
@@ -382,7 +383,7 @@ const en: Dict = {
     newWorks: "New works",
     allNewWorks: "All new works",
     countdown: { label: "Until the New Year", days: "days", hours: "hours", minutes: "min", soon: "Soon", dShort: "d", hShort: "h", mShort: "m" },
-    newWorksText: "Works added in the last 30 days, newest first.",
+    newWorksText: "Works added in the last 30 days.",
     saleBanner: {
       title: (range: string) => `Sale ${range}`,
       text: (artists: string) => `${artists}: handmade works at a special price.`,
@@ -475,6 +476,7 @@ const en: Dict = {
     newArtistChip: "New artist",
     monthReach: (n: number) => `${n} ${n === 1 ? "person" : "people"} went to the maker this month`,
     monthReachNote: "Our verified stats",
+    savedTotal: (n: number) => `❤ Saved to favorites ${n} ${n === 1 ? "time" : "times"}`,
     instagram: "Instagram",
     facebook: "Facebook",
     works: "Works",

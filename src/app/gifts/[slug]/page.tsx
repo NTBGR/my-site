@@ -8,6 +8,7 @@ import WorksGallery from "@/components/WorksGallery";
 import { effectivePrice } from "@/data/artists";
 import { getTagBySlug, localizeTag, worksForTag } from "@/data/tags";
 import { dictionary } from "@/lib/dictionary";
+import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
@@ -58,6 +59,7 @@ export default async function GiftPage({
   const raw = getTagBySlug((await params).slug);
   if (!raw) notFound();
   const query = await searchParams;
+  const saves = await saveCounts();
   const sortParam = query.sort;
   const sort = sortParam === "asc" || sortParam === "desc" ? sortParam : "";
   const all = worksForTag(raw, lang);
@@ -135,7 +137,7 @@ export default async function GiftPage({
 
       <div className="mt-6">
         <WorksGallery
-          works={entries.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))}
+          works={entries.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true, saves }))}
           showSort={false}
         />
       </div>

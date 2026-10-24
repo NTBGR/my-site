@@ -2,6 +2,7 @@ import SavedWorks, { type SavedCard } from "@/components/SavedWorks";
 import BackLink from "@/components/BackLink";
 import PageBanner from "@/components/PageBanner";
 import { getWorkEntries } from "@/data/artists";
+import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -13,6 +14,7 @@ export async function generateMetadata() {
 export default async function SavedPage({ searchParams }: { searchParams: Promise<{ l?: string }> }) {
   const lang = await getLang();
   const listParam = (await searchParams).l;
+  const saves = await saveCounts();
   const cards: SavedCard[] = getWorkEntries(lang).map(({ artist, work, index, id }) => ({
     key: `${artist.slug}/${id}`,
     title: work.title,
@@ -20,7 +22,7 @@ export default async function SavedPage({ searchParams }: { searchParams: Promis
     artistSlug: artist.slug,
     image: work.image,
     color: work.color,
-    gallery: toGalleryWork(artist, work, index, { showArtist: true }),
+    gallery: toGalleryWork(artist, work, index, { showArtist: true, saves }),
   }));
   return (
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-1 sm:px-6 sm:pb-24 sm:pt-3 lg:px-10">

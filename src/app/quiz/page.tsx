@@ -3,6 +3,7 @@ import BackLink from "@/components/BackLink";
 import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/PageBanner";
 import { effectivePrice, getWorkEntries, isNewWork, workId } from "@/data/artists";
+import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
@@ -17,6 +18,7 @@ export async function generateMetadata() {
 export default async function QuizPage() {
   const lang = await getLang();
   const t = dictionary[lang].quiz;
+  const saves = await saveCounts();
   const works: QuizWork[] = getWorkEntries(lang).map(({ artist, work, index }) => ({
     key: `${artist.slug}/${workId(work, index)}`,
     title: work.title,
@@ -33,7 +35,7 @@ export default async function QuizPage() {
           ? "poster"
           : "other",
     isNew: isNewWork(work),
-    gallery: toGalleryWork(artist, work, index, { showArtist: true }),
+    gallery: toGalleryWork(artist, work, index, { showArtist: true, saves }),
   }));
 
   const ld = {

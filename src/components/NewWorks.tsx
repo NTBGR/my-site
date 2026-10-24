@@ -2,6 +2,7 @@ import Link from "next/link";
 import WorksGallery from "@/components/WorksGallery";
 import { getWorkEntries, isNewWork } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
+import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
 
@@ -10,7 +11,8 @@ import { getLang } from "@/lib/i18n";
 export default async function NewWorks() {
   const lang = await getLang();
   const t = dictionary[lang].home;
-  const fresh = getWorkEntries(lang)
+  const saves = await saveCounts();
+  const fresh =getWorkEntries(lang)
     .filter(({ work }) => isNewWork(work))
     .sort((a, b) => Date.parse(b.work.added!) - Date.parse(a.work.added!))
     .slice(0, 7);
@@ -47,7 +49,7 @@ export default async function NewWorks() {
         showSort={false}
         featureFirst={fresh.length >= 5}
         seeAll={{ href: "/new", label: t.allNewWorks }}
-        works={fresh.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))}
+        works={fresh.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true, saves }))}
       />
     </section>
   );

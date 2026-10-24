@@ -5,6 +5,7 @@ import PageBanner from "@/components/PageBanner";
 import WorksGallery from "@/components/WorksGallery";
 import { getWorkEntries, isNewWork } from "@/data/artists";
 import { dictionary } from "@/lib/dictionary";
+import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
 import { SITE_URL } from "@/lib/site";
@@ -19,6 +20,7 @@ export async function generateMetadata() {
 export default async function NewWorksPage() {
   const lang = await getLang();
   const t = dictionary[lang];
+  const saves = await saveCounts();
   const entries = getWorkEntries(lang).filter(({ work }) => isNewWork(work));
   if (entries.length === 0) redirect("/artists");
 
@@ -44,7 +46,7 @@ export default async function NewWorksPage() {
       />
       <p className="mt-5 text-xs leading-relaxed text-muted sm:text-sm">{t.priceNote}</p>
       <div className="mt-4">
-        <WorksGallery works={entries.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true }))} />
+        <WorksGallery works={entries.map(({ artist, work, index }) => toGalleryWork(artist, work, index, { showArtist: true, saves }))} />
       </div>
     </div>
   );

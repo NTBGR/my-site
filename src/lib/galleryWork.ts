@@ -9,9 +9,11 @@ export function toGalleryWork(
   artist: Artist,
   work: ArtistWork,
   index: number,
-  opts: { showArtist?: boolean; badge?: string } = {},
+  opts: { showArtist?: boolean; badge?: string; saves?: Record<string, number> } = {},
 ): GalleryWork {
   const id = workId(work, index);
+  // ❤ რიცხვი ჩანს მხოლოდ მაშინ, როცა ერთმა ადამიანმა მაინც შეინახა
+  const saved = opts.saves?.[`${artist.slug}/${id}`];
   const cost = pricing(artist, work);
   const link = work.url || artist.instagram || artist.facebook;
   return {
@@ -31,6 +33,6 @@ export function toGalleryWork(
     height: work.height,
     artistName: opts.showArtist ? artist.name : undefined,
     artistHref: opts.showArtist ? `/artists/${artist.slug}` : undefined,
-    badge: opts.badge,
+    badge: opts.badge ?? (saved ? `❤ ${saved}` : undefined),
   };
 }

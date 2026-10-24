@@ -14,6 +14,7 @@ import { socialVariant } from "@/components/ui/socialStyles";
 import { getArtistBySlug, isNewArtist, isNewWork, localizeArtist, pricing, workAddedTime } from "@/data/artists";
 import VerifiedMark from "@/components/VerifiedMark";
 import { monthReach } from "@/lib/clicks";
+import { artistSaves } from "@/lib/favoriteStats";
 import { categoryColor, getCategoryBySlug, localizeCategory } from "@/data/categories";
 import { toneGradient } from "@/lib/tones";
 import BannerOrnament from "@/components/BannerOrnament";
@@ -139,6 +140,8 @@ export default async function ArtistPage({
   // ამ თვის გადასვლები (ნაჩვენებია, როცა რიცხვი უკვე ღირსშესანიშნავია)
   const MIN_PUBLIC_REACH = 5;
   const reach = await monthReach(artist.slug).catch(() => 0);
+  // ფავორიტებში შენახვები (ამ და წინა თვე): ჯამი ბანერში და ❤ რიცხვი ნამუშევარზე; ნული არსად ჩანს
+  const saves = await artistSaves(artist.slug).catch(() => ({ byWork: {} as Record<string, number>, total: 0 }));
   const salePercent = artist.works.map((work) => pricing(artist, work)?.percent).find(Boolean);
   const instagram = artist.instagram ? `/go/${artist.slug}/instagram` : undefined;
   const facebook = artist.facebook ? `/go/${artist.slug}/facebook` : undefined;
@@ -243,6 +246,7 @@ export default async function ArtistPage({
           <p className="mt-1 text-sm text-white/80">
             {all.artists.worksCount(artist.works.length)}
           </p>
+          {saves.total > 0 ? <p className="mt-1 text-sm font-medium text-white/90">{t.savedTotal(saves.total)}</p> : null}
           {reach >= MIN_PUBLIC_REACH ? (
             <p className="mt-1 text-sm font-medium text-white/90">
               ↗ {t.monthReach(reach)}
@@ -290,7 +294,7 @@ export default async function ArtistPage({
             works={artist.works
               .map((work, i) => ({ work, i }))
               .sort((a, b) => workAddedTime(b.work) - workAddedTime(a.work))
-              .map(({ work, i }) => toGalleryWork(artist, work, i))}
+              .map(({ work, i }) => toGalleryWork(artist, work, i, { saves: saves.byWork }))}
           />
         </div>
       </section>

@@ -2,6 +2,7 @@ import ArtistsFilter from "@/components/ArtistsFilter";
 import BackLink from "@/components/BackLink";
 import PageBanner from "@/components/PageBanner";
 import { getLocalizedArtists, workAddedTime } from "@/data/artists";
+import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { buildSearchIndex } from "@/lib/searchIndex";
 import { categories, localizeCategory } from "@/data/categories";
@@ -19,6 +20,7 @@ export default async function ArtistsPage({
 }) {
   const lang = await getLang();
   const t = dictionary[lang].artists;
+  const saves = await saveCounts();
   const artists = getLocalizedArtists(lang);
   // ფილტრის ღილაკები: პროფესიები („კერამიკოსები“), კატეგორიებიდან, სადაც ერთი ხელოვანი მაინც არის
   const crafts = categories
@@ -41,7 +43,7 @@ export default async function ArtistsPage({
     .map(({ ka, ai, work, wi }) => ({
       text: [work.title, enArtists[ai].works[wi]?.title ?? "", ka.name, enArtists[ai].name].join(" "),
       categories: ka.categories,
-      gallery: toGalleryWork(artists[ai], artists[ai].works[wi], wi, { showArtist: true }),
+      gallery: toGalleryWork(artists[ai], artists[ai].works[wi], wi, { showArtist: true, saves }),
     }));
   const q = Array.isArray(rawQ) ? rawQ[0] : rawQ ?? "";
 

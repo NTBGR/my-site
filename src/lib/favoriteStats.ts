@@ -67,8 +67,29 @@ export async function monthWorkFavorites(month: string): Promise<Record<string, 
 let trendCache: { at: number; data: { key: string; count: number }[] } | null = null;
 
 export async function topSavedWorks(limit = 8): Promise<{ key: string; count: number }[]> {
+  return (await savedCounts()).slice(0, limit);
+}
+
+// ყველა ნამუშევრის შენახვები ერთ ობიექტად (გასაღები „ხელოვანი/ნამუშევარი“): ბარათებზე ❤ რიცხვისთვის; ვისაც არავინ შეუნახავს, აქ არ არის
+export async function saveCounts(): Promise<Record<string, number>> {
+  return Object.fromEntries((await savedCounts()).map(({ key, count }) => [key, count]));
+}
+
+// ერთი ხელოვანის ნამუშევრების შენახვები (გასაღები „ხელოვანი/ნამუშევარი“) და მათი ჯამი: ხელოვანის გვერდზე საჯაროდ ჩანს
+export async function artistSaves(slug: string): Promise<{ byWork: Record<string, number>; total: number }> {
+  const byWork: Record<string, number> = {};
+  let total = 0;
+  for (const { key, count } of await savedCounts()) {
+    if (!key.startsWith(`${slug}/`)) continue;
+    byWork[key] = count;
+    total += count;
+  }
+  return { byWork, total };
+}
+
+async function savedCounts(): Promise<{ key: string; count: number }[]> {
   if (!clicksEnabled) return [];
-  if (trendCache && Date.now() - trendCache.at < 5 * 60 * 1000) return trendCache.data.slice(0, limit);
+  if (trendCache && Date.now() - trendCache.at < 5 * 60 * 1000) return trendCache.data;
   try {
     const month = monthOf();
     const [y, m] = month.split("-").map(Number);
@@ -83,7 +104,7 @@ export async function topSavedWorks(limit = 8): Promise<{ key: string; count: nu
       .filter((x) => x.count > 0)
       .sort((a, b) => b.count - a.count);
     trendCache = { at: Date.now(), data };
-    return data.slice(0, limit);
+    return data;
   } catch {
     return [];
   }
