@@ -64,15 +64,8 @@ function SocialLink({
   const base =
     "inline-flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-full border px-3.5 text-sm font-medium sm:flex-none sm:gap-2.5 sm:px-5";
 
-  // ბმული ჯერ არ არის: ღილაკი მაინც ჩანს, ოღონდ მკრთალია
-  if (!href) {
-    return (
-      <span aria-disabled="true" title={label} className={`${base} ${socialVariant[variant]} cursor-not-allowed opacity-40`}>
-        {icon}
-        <span>{label}</span>
-      </span>
-    );
-  }
+  // ბმული არ არის (მაგ. ფეისბუქი): ღილაკი საერთოდ არ ჩანს
+  if (!href) return null;
 
   return (
     <CopyLink
@@ -255,7 +248,7 @@ export default async function ArtistPage({
           ) : null}
 
           <div className="mt-4 flex items-center justify-between gap-3">
-            <p className="text-sm font-medium text-white/85">{t.buyHint}</p>
+            {instagram || facebook ? <p className="text-sm font-medium text-white/85">{t.buyHint}</p> : <span />}
             {/* ტელეფონზე გაზიარება მხოლოდ ხატულაა და ტექსტის რიგშია, რომ ღილაკები ერთ რიგში ეტეოდეს */}
             <ShareButton url={`/artists/${artist.slug}`} title={artist.name} variant="icon" className="shrink-0 sm:hidden" />
           </div>

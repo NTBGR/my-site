@@ -33,6 +33,8 @@ export type GalleryWork = {
   artistHref?: string;
   // პატარა წარწერა ფოტოს ქვედა კუთხეში (მაგ. „❤ 2“)
   badge?: string;
+  // ბარათზე ფოტოს ცენტრის წერტილი („x% y%“)
+  focal?: string;
   alt?: string;
   // სად მიდის ბმული: ღილაკის წარწერისთვის
   network?: "instagram" | "facebook";
@@ -202,7 +204,7 @@ export default function WorksGallery({
                   </span>
                 ) : null}
                 {work.image ? (
-                  <Photo src={work.image} alt={work.alt ?? work.title} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
+                  <Photo src={work.image} alt={work.alt ?? work.title} focal={work.focal} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
                 ) : (
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
                 )}

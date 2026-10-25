@@ -23,6 +23,8 @@ export async function recordFavorite(key: string, visitorId: string) {
     ["EXPIRE", `favp:${month}:${slug}`, TTL],
     ["SADD", `favw:${month}:${key}`, visitor],
     ["EXPIRE", `favw:${month}:${key}`, TTL],
+    // პირველი შენახვის დრო (NX: მეორეჯერ არ იცვლება): ტოპში თანაბარი რაოდენობისას ვინც ადრე მიიღო გული, ის წინაა
+    ["ZADD", "favfirst", "NX", Date.now(), key],
   ]);
 }
 
@@ -98,11 +100,16 @@ async function savedCounts(): Promise<{ key: string; count: number }[]> {
     const results = await pipeline([
       ...keys.map((k) => ["SCARD", `favw:${month}:${k}`]),
       ...keys.map((k) => ["SCARD", `favw:${previous}:${k}`]),
+      ["ZRANGE", "favfirst", 0, -1, "WITHSCORES"],
     ]);
+    // პირველი შენახვის დრო თითო ნამუშევარზე; ვისაც ჩანაწერი არ აქვს (ძველი გულები), ყველაზე ადრეულად ითვლება
+    const firstRaw = results[keys.length * 2]?.result;
+    const first = new Map<string, number>();
+    if (Array.isArray(firstRaw)) for (let i = 0; i + 1 < firstRaw.length; i += 2) first.set(String(firstRaw[i]), Number(firstRaw[i + 1]) || 0);
     const data = keys
       .map((key, i) => ({ key, count: (Number(results[i]?.result) || 0) + (Number(results[keys.length + i]?.result) || 0) }))
       .filter((x) => x.count > 0)
-      .sort((a, b) => b.count - a.count);
+      .sort((a, b) => b.count - a.count || (first.get(a.key) ?? 0) - (first.get(b.key) ?? 0));
     trendCache = { at: Date.now(), data };
     return data;
   } catch {
