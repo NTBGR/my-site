@@ -104,6 +104,19 @@ export const categories: Category[] = [
     },
   },
   {
+    slug: "epoqsidi",
+    name: "ეპოქსიდი",
+    description: "ეპოქსიდის ფისით ნაკეთი სინები, ქვეშსადებები, სამკაული და დეკორი.",
+    maker: "ეპოქსიდის ოსტატი",
+    makers: "ეპოქსიდის ოსტატები",
+    en: {
+      name: "Epoxy resin",
+      description: "Trays, coasters, jewelry and decor made from epoxy resin.",
+      maker: "Resin artist",
+      makers: "Resin artists",
+    },
+  },
+  {
     slug: "tyavi",
     name: "ტყავის ნაწარმი",
     description: "ხელნაკეთი ჩანთები, საფულეები და აქსესუარები.",
@@ -168,6 +181,7 @@ const palette: Record<string, string> = {
   samkauli: "#8a3b57",
   tekstili: "#5c6f3f",
   naqsovi: "#7a6a1f",
+  epoqsidi: "#2e7d78",
   tyavi: "#8a4a22",
   "khis-nakethobebi": "#6b4a2e",
   "saxlis-dekori": "#4a6a8a",

@@ -15,6 +15,7 @@ export const categoryPhotos: Record<string, CategoryPhoto> = {
   bechdebi: photo("bechdebi"),
   tekstili: photo("tekstili"),
   naqsovi: photo("naqsovi-knit"),
+  epoqsidi: photo("epoxy-resin"),
   tyavi: photo("tyavi"),
   "khis-nakethobebi": photo("khis-nakethobebi"),
   "saxlis-dekori": photo("saxlis-dekori"),
