@@ -1,10 +1,10 @@
 import type { ArtistData } from "@/data/artists";
 
 // ხელოვანის უფასო პერიოდი და გამოწერა: როდის დაიწყო, როდის იწურება და რამდენი დღე დარჩა.
-// დაწყება: `joined` (ან, თუ არ არის, ყველაზე ადრეული ნამუშევრის `added`); ხანგრძლივობა: `freeMonths` (ნაგულისხმევი 2 თვე);
+// დაწყება: `joined` (ან, თუ არ არის, ყველაზე ადრეული ნამუშევრის `added`); ხანგრძლივობა: `freeMonths` (ნაგულისხმევი 3 თვე);
 // თუ ხელოვანმა გადაიხადა, `paidUntil` ვადას აგრძელებს. ყველა თარიღი თბილისის დროით
 
-export const DEFAULT_FREE_MONTHS = 2;
+export const DEFAULT_FREE_MONTHS = 3;
 const DAY = 24 * 60 * 60 * 1000;
 
 export type MembershipStatus = "trial" | "paid" | "soon" | "expired" | "forever";

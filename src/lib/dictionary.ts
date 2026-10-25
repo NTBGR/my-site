@@ -104,7 +104,7 @@ const ka = {
       },
     ],
     bannerTitle: "ყიდი ხელნაკეთს ინსტაგრამზე?",
-    bannerText: "განათავსე შენი ნამუშევრები აქ და იპოვე ახალი მყიდველები. პირველი 2 თვე უფასოა, შემდეგ 20 ₾ თვეში.",
+    bannerText: "განათავსე შენი ნამუშევრები აქ და იპოვე ახალი მყიდველები. პირველი 3 თვე უფასოა, შემდეგ 20 ₾ თვეში.",
   },
   artists: {
     title: "ხელოვანები",
@@ -197,7 +197,7 @@ const ka = {
     back: "← ყველა კატეგორია",
     empty: "ამ კატეგორიაში ნივთები ჯერ არ არის.",
     firstTitle: "გახდი პირველი ამ კატეგორიაში",
-    firstText: "აქ ჯერ არავინ არის, ამიტომ პირველი პარტნიორი ამ გვერდზე მარტო გამოჩნდება და ყველა დაინტერესებული პირველად მას ნახავს. პირველი 2 თვე უფასოა, შემდეგ 20 ₾ თვეში.",
+    firstText: "აქ ჯერ არავინ არის, ამიტომ პირველი პარტნიორი ამ გვერდზე მარტო გამოჩნდება და ყველა დაინტერესებული პირველად მას ნახავს. პირველი 3 თვე უფასოა, შემდეგ 20 ₾ თვეში.",
     firstCta: "გახდი პარტნიორი",
     count: (n: number) => `${n} ხელოვანი`,
   },
@@ -230,8 +230,8 @@ const ka = {
     benefitsTitle: "რას მიიღებ",
     benefits: [
       {
-        title: "პირველი 2 თვე უფასოდ",
-        text: "განთავსება ორი თვის განმავლობაში სრულიად უფასოა, ვალდებულების გარეშე. შემდეგ 20 ₾ თვეში, გაყიდვებზე პროცენტის გარეშე.",
+        title: "პირველი 3 თვე უფასოდ",
+        text: "განთავსება სამი თვის განმავლობაში სრულიად უფასოა, ვალდებულების გარეშე. შემდეგ 20 ₾ თვეში, გაყიდვებზე პროცენტის გარეშე.",
       },
       {
         title: "ახალი მყიდველები",
@@ -249,7 +249,7 @@ const ka = {
     faqMore: "ვერ იპოვე პასუხი?",
     faqMoreText: "მოგვწერე და სწრაფად გიპასუხებთ.",
     faq: [
-      { q: "რა ღირს?", a: "პირველი 2 თვე სრულიად უფასოა, ვალდებულების გარეშე. მერე 20 ₾ თვეში. გაყიდვებზე პროცენტს არ ვიღებთ: ჩვენს საიტზე არაფერი იყიდება და მთელი შემოსავალი შენია." },
+      { q: "რა ღირს?", a: "პირველი 3 თვე სრულიად უფასოა, ვალდებულების გარეშე. მერე 20 ₾ თვეში. გაყიდვებზე პროცენტს არ ვიღებთ: ჩვენს საიტზე არაფერი იყიდება და მთელი შემოსავალი შენია." },
       { q: "ჩამომაჭრიან თანხას ავტომატურად?", a: "არა. ავტომატური ჩამოჭრა არ ხდება. უფასო პერიოდის დასრულებამდე წინასწარ შეგატყობინებთ, როგორ ხდება გადახდა, და ის მხოლოდ შენი თანხმობით დაიწყება." },
       { q: "რას გააკეთებთ ჩემთვის?", a: "შენი გვერდი ნამუშევრებით, ფასებით და ინსტაგრამის/ფეისბუქის ღილაკებით, ადგილი კატეგორიებსა და ძიებაში, საჩუქრების გვერდებზე გამოჩენა და ჩვენი სოც ქსელებიდან გაცნობა." },
       { q: "როგორ გავიგებ, მუშაობს თუ არა?", a: "ყოველი თვის 1 რიცხვში გამოგიგზავნით რეპორტს: რამდენმა ადამიანმა აღმოაჩინა შენი გვერდი და რამდენი გადავიდა შენს ინსტაგრამზე ან ფეისბუქზე. ციფრები რეალურია და ზუსტად იმას აჩვენებს, რაც მოხდა." },
@@ -292,7 +292,7 @@ const ka = {
     consentLink: "კონფიდენციალურობის წესებს",
     consentAnd: "და",
     consentTerms: "პირობებს",
-    consentPrice: "(უფასო 2 თვის შემდეგ 20 ₾ თვეში).",
+    consentPrice: "(უფასო 3 თვის შემდეგ 20 ₾ თვეში).",
     submit: "გაგზავნა",
     sending: "იგზავნება...",
     thanksTitle: "გმადლობთ!",
@@ -411,7 +411,7 @@ const en: Dict = {
       },
     ],
     bannerTitle: "Selling handmade on Instagram?",
-    bannerText: "List your work here and reach new buyers. The first 2 months are free, then 20 GEL a month.",
+    bannerText: "List your work here and reach new buyers. The first 3 months are free, then 20 GEL a month.",
   },
   artists: {
     title: "Artists",
@@ -502,7 +502,7 @@ const en: Dict = {
     back: "← All categories",
     empty: "There are no items in this category yet.",
     firstTitle: "Be the first in this category",
-    firstText: "Nobody is here yet, so the first partner will be the only one on this page and the first thing visitors see. The first 2 months are free, then 20 GEL a month.",
+    firstText: "Nobody is here yet, so the first partner will be the only one on this page and the first thing visitors see. The first 3 months are free, then 20 GEL a month.",
     firstCta: "Become a partner",
     count: (n: number) => `${n} ${n === 1 ? "artist" : "artists"}`,
   },
@@ -535,8 +535,8 @@ const en: Dict = {
     benefitsTitle: "What you get",
     benefits: [
       {
-        title: "First 2 months free",
-        text: "Listing is completely free for two months, no strings attached. After that, 20 GEL a month with no commission on sales.",
+        title: "First 3 months free",
+        text: "Listing is completely free for three months, no strings attached. After that, 20 GEL a month with no commission on sales.",
       },
       {
         title: "New buyers",
@@ -554,7 +554,7 @@ const en: Dict = {
     faqMore: "Did not find your answer?",
     faqMoreText: "Write to us and we will answer quickly.",
     faq: [
-      { q: "What does it cost?", a: "The first 2 months are completely free, no strings attached. After that it is 20 GEL a month. We take no commission: nothing is sold on our site and all the income is yours." },
+      { q: "What does it cost?", a: "The first 3 months are completely free, no strings attached. After that it is 20 GEL a month. We take no commission: nothing is sold on our site and all the income is yours." },
       { q: "Will you charge me automatically?", a: "No. Nothing is charged automatically. Before the free period ends we will tell you how payment works, and it only starts with your agreement." },
       { q: "What do you do for me?", a: "Your page with your works, prices and Instagram/Facebook buttons, a place in categories and search, a spot on gift pages and promotion from our social media." },
       { q: "How will I know it works?", a: "On the 1st of every month we email you a report: how many people discovered your page and how many went to your Instagram or Facebook. The numbers are real and show exactly what happened." },
