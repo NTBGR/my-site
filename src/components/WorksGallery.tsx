@@ -52,7 +52,7 @@ function ratioOf(work: GalleryWork) {
 
 const GRID = "grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-x-4 sm:gap-y-6";
 const ROW =
-  "-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:gap-4 sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden";
+  "-mx-4 -mt-2 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 pt-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:gap-4 sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden sm:mt-0 sm:pt-0";
 
 export default function WorksGallery({
   works: source,
@@ -195,7 +195,7 @@ export default function WorksGallery({
               aria-label={work.title}
               className={`block w-full text-left ${featureFirst && i === 0 ? "sm:flex sm:h-full sm:flex-col" : ""}`}
             >
-              <span className={`${featureFirst && i === 0 ? "sm:flex-1" : ""} block rounded-[1.35rem] border border-border bg-surface p-1.5 shadow-[0_14px_28px_-22px_rgb(60_40_20/0.55)] transition duration-300 group-hover:-translate-y-1 group-hover:border-accent group-hover:shadow-[0_26px_40px_-22px_rgb(184_74_36/0.6)] sm:rounded-[1.6rem]`}>
+              <span className={`${featureFirst && i === 0 ? "sm:flex-1" : ""} block rounded-[1.35rem] border border-border bg-surface p-1.5 shadow-[0_14px_28px_-22px_rgb(60_40_20/0.55)] transition duration-300 [@media(hover:hover)]:group-hover:-translate-y-1 [@media(hover:hover)]:group-hover:border-accent [@media(hover:hover)]:group-hover:shadow-[0_26px_40px_-22px_rgb(184_74_36/0.6)] sm:rounded-[1.6rem]`}>
               <span className={`relative block aspect-[3/4] w-full overflow-hidden rounded-[1rem] bg-surface-2 sm:rounded-[1.2rem] ${featureFirst && i === 0 ? "sm:aspect-auto sm:h-full" : ""}`}>
                 {work.isNew || work.salePercent ? (
                   <span className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
@@ -215,7 +215,7 @@ export default function WorksGallery({
                 ) : null}
               </span>
               </span>
-              <span className={`mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors group-hover:text-accent sm:text-base`}>
+              <span className={`mt-2 block line-clamp-3 h-[4.5em] sm:line-clamp-2 sm:h-[3em] px-1 text-sm font-medium leading-snug tracking-tight text-text transition-colors [@media(hover:hover)]:group-hover:text-accent sm:text-base`}>
                 {work.title}
               </span>
               {work.price ? (
