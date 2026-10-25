@@ -124,6 +124,7 @@ const ka = {
     unsave: "შენახულიდან ამოღება",
   },
   newBadge: "ახალი",
+  priceByAgreement: "ფასი შეთანხმებით",
   quiz: {
     title: "საჩუქრის შერჩევა",
     intro: "სამი კითხვა და მოგიძებნით ხელნაკეთ საჩუქარს.",
@@ -429,6 +430,7 @@ const en: Dict = {
     unsave: "Remove from saved",
   },
   newBadge: "New",
+  priceByAgreement: "Price by agreement",
   quiz: {
     title: "Gift finder",
     intro: "Three questions and we'll find a handmade gift for you.",

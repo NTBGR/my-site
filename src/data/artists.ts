@@ -306,7 +306,6 @@ export const artists: ArtistData[] = [
       { title: "ნამუშევრების ჩამოკიდება", color: "#c9a98a", image: "/artists/glontinini/orig-5.jpg", width: 1080, height: 720, focal: "54% 50%", added: "2026-10-25" },
       { title: "პოსტერები", color: "#c9a98a", image: "/artists/glontinini/orig-6.jpg", width: 1080, height: 720, focal: "50% 50%", added: "2026-10-25" },
       { title: "პოსტერები · ახლო კადრი", color: "#c9a98a", image: "/artists/glontinini/orig-7.jpg", width: 1080, height: 720, focal: "56% 50%", added: "2026-10-25" },
-      { title: "პოსტერები „Winged or Fallen“ და „A Tale of Two Times“", color: "#c9a98a", image: "/artists/glontinini/orig-8.jpg", width: 1080, height: 720, focal: "80% 50%", added: "2026-10-25" },
       { title: "პოსტერები „A Tale of Two Times“ და „Winged or Fallen“", color: "#c9a98a", image: "/artists/glontinini/orig-9.jpg", width: 1080, height: 720, focal: "4% 50%", added: "2026-10-25" },
     ],
     en: {
@@ -321,7 +320,6 @@ export const artists: ArtistData[] = [
         "Hanging the works",
         "Posters",
         "Posters · close-up",
-        "Posters \"Winged or Fallen\" and \"A Tale of Two Times\"",
         "Posters \"A Tale of Two Times\" and \"Winged or Fallen\"",
       ],
     },

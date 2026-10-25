@@ -223,7 +223,9 @@ export default function WorksGallery({
                   <span className={work.oldPrice ? "text-[#c4302b]" : undefined}>{work.price} ₾</span>
                   {work.oldPrice ? <s className="ml-1.5 text-xs font-normal text-muted sm:text-sm">{work.oldPrice} ₾</s> : null}
                 </span>
-              ) : null}
+              ) : (
+                <span className="mt-0.5 block px-1 text-sm font-medium text-muted sm:text-base">{t.priceByAgreement}</span>
+              )}
               {work.artistName ? <span className="block truncate px-1 text-xs text-muted sm:text-sm">{work.artistName}</span> : null}
             </button>
             {work.favKey ? (
@@ -400,7 +402,9 @@ export default function WorksGallery({
                         {current.oldPrice ? <s className="ml-1.5 text-sm font-normal text-white/60">{current.oldPrice} ₾</s> : null}
                         {current.salePercent ? <span className="ml-1.5 rounded-full bg-[#c4302b] px-2 py-0.5 text-xs font-bold">−{current.salePercent}%</span> : null}
                       </span>
-                    ) : null}
+                    ) : (
+                      <span className="ml-2 text-sm font-medium text-white/70">· {t.priceByAgreement}</span>
+                    )}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm font-medium text-white/80">
