@@ -104,7 +104,7 @@ const ka = {
       },
     ],
     bannerTitle: "ყიდი ხელნაკეთს ინსტაგრამზე?",
-    bannerText: "განათავსე შენი ნამუშევრები აქ და იპოვე ახალი მყიდველები. პირველი 3 თვე უფასოა, შემდეგ 20 ₾ თვეში.",
+    bannerText: "განათავსე შენი ნამუშევრები აქ და იპოვე ახალი მყიდველები. პირველი 3 თვე სრულიად უფასოა, შემდეგ 20 ₾ თვეში.",
   },
   artists: {
     title: "ხელოვანები",
@@ -197,7 +197,7 @@ const ka = {
     back: "← ყველა კატეგორია",
     empty: "ამ კატეგორიაში ნივთები ჯერ არ არის.",
     firstTitle: "გახდი პირველი ამ კატეგორიაში",
-    firstText: "აქ ჯერ არავინ არის, ამიტომ პირველი პარტნიორი ამ გვერდზე მარტო გამოჩნდება და ყველა დაინტერესებული პირველად მას ნახავს. პირველი 3 თვე უფასოა, შემდეგ 20 ₾ თვეში.",
+    firstText: "აქ ჯერ არავინ არის, ამიტომ პირველი პარტნიორი ამ გვერდზე მარტო გამოჩნდება და ყველა დაინტერესებული პირველად მას ნახავს. პირველი 3 თვე სრულიად უფასოა, შემდეგ 20 ₾ თვეში.",
     firstCta: "გახდი პარტნიორი",
     count: (n: number) => `${n} ხელოვანი`,
   },
@@ -230,7 +230,7 @@ const ka = {
     benefitsTitle: "რას მიიღებ",
     benefits: [
       {
-        title: "პირველი 3 თვე უფასოდ",
+        title: "პირველი 3 თვე სრულიად უფასოდ",
         text: "განთავსება სამი თვის განმავლობაში სრულიად უფასოა, ვალდებულების გარეშე. შემდეგ 20 ₾ თვეში, გაყიდვებზე პროცენტის გარეშე.",
       },
       {
@@ -292,7 +292,7 @@ const ka = {
     consentLink: "კონფიდენციალურობის წესებს",
     consentAnd: "და",
     consentTerms: "პირობებს",
-    consentPrice: "(უფასო 3 თვის შემდეგ 20 ₾ თვეში).",
+    consentPrice: "(სრულიად უფასო 3 თვის შემდეგ 20 ₾ თვეში).",
     submit: "გაგზავნა",
     sending: "იგზავნება...",
     thanksTitle: "გმადლობთ!",
@@ -411,7 +411,7 @@ const en: Dict = {
       },
     ],
     bannerTitle: "Selling handmade on Instagram?",
-    bannerText: "List your work here and reach new buyers. The first 3 months are free, then 20 GEL a month.",
+    bannerText: "List your work here and reach new buyers. The first 3 months are completely free, then 20 GEL a month.",
   },
   artists: {
     title: "Artists",
@@ -502,7 +502,7 @@ const en: Dict = {
     back: "← All categories",
     empty: "There are no items in this category yet.",
     firstTitle: "Be the first in this category",
-    firstText: "Nobody is here yet, so the first partner will be the only one on this page and the first thing visitors see. The first 3 months are free, then 20 GEL a month.",
+    firstText: "Nobody is here yet, so the first partner will be the only one on this page and the first thing visitors see. The first 3 months are completely free, then 20 GEL a month.",
     firstCta: "Become a partner",
     count: (n: number) => `${n} ${n === 1 ? "artist" : "artists"}`,
   },
@@ -535,7 +535,7 @@ const en: Dict = {
     benefitsTitle: "What you get",
     benefits: [
       {
-        title: "First 3 months free",
+        title: "First 3 months completely free",
         text: "Listing is completely free for three months, no strings attached. After that, 20 GEL a month with no commission on sales.",
       },
       {

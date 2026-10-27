@@ -170,7 +170,8 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
             })}
           </nav>
 
-          <form onSubmit={onSearch} className="hidden w-52 xl:block 2xl:w-64">
+          {/* suppressHydrationWarning: iPhone-ის Chrome ფორმას თავის __gcruniqueid ატრიბუტს უმატებს და ლოკალზე შეცდომის ფანჯარა ამოხტებოდა */}
+          <form onSubmit={onSearch} className="hidden w-52 xl:block 2xl:w-64" suppressHydrationWarning>
             <SearchBox query={query} setQuery={setQuery} index={searchIndex} variant="desktop" onNavigate={afterPick} />
           </form>
 
@@ -218,7 +219,7 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
 
         {searchOpen ? (
           <div className="menu-enter border-t border-border px-4 py-3 xl:hidden">
-            <form onSubmit={onSearch}><SearchBox query={query} setQuery={setQuery} index={searchIndex} variant="panel" autoFocus onNavigate={afterPick} /></form>
+            <form onSubmit={onSearch} suppressHydrationWarning><SearchBox query={query} setQuery={setQuery} index={searchIndex} variant="panel" autoFocus onNavigate={afterPick} /></form>
           </div>
         ) : null}
       </header>
@@ -263,6 +264,12 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
             </button>
           </div>
 
+          {/* „გახდი პარტნიორი“ მენიუს თავშია, რომ ტელეფონზე გრძელი სიის ბოლომდე ჩასქროლვა არ დაჭირდეს */}
+          <Button href="/join" className="glow-btn mb-2 w-full gap-2">
+            <span aria-hidden>✦</span>
+            {t.nav.join}
+          </Button>
+
           {navLinks.map((link) => {
             const active = isActive(link.href);
             return (
@@ -273,7 +280,7 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
                 onClick={() => setMenuOpen(false)}
                 className={`flex min-h-12 items-center rounded-2xl px-4 text-base font-medium transition duration-200 ${
                   active
-                    ? "bg-accent font-semibold text-on-accent"
+                    ? "bg-accent-soft font-semibold text-accent"
                     : "text-text hover:bg-accent-soft hover:text-accent"
                 }`}
               >
@@ -350,12 +357,6 @@ export default function Header({ tags, searchIndex }: { tags: BarTag[]; searchIn
             <Preferences />
           </div>
 
-          <Button
-            href="/join"
-            className="glow-btn mt-auto w-full"
-          >
-            {t.nav.join}
-          </Button>
         </nav>
       </div>
     </>

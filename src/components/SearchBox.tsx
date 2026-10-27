@@ -63,6 +63,7 @@ export default function SearchBox({
       }}
     >
       <input
+        suppressHydrationWarning
         type="search"
         name="q"
         value={query}

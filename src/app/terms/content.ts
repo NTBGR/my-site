@@ -6,7 +6,7 @@ import { CONTACT_EMAIL } from "@/app/privacy/content";
 export { CONTACT_EMAIL };
 export const PRICE_GEL = 20;
 // ვერსია (დაემთხვევა updated თარიღს): განაცხადთან ერთად ინახება, რომ ვიცოდეთ, რომელ ტექსტს დათანხმდა ხელოვანი. პირობების შეცვლისას განაახლე აქაც და updated-შიც
-export const TERMS_VERSION = "2026-10-25";
+export const TERMS_VERSION = "2026-10-27";
 
 type Section = { title: string; text?: string[]; items?: string[] };
 
@@ -17,7 +17,7 @@ export const terms: Record<
   ka: {
     title: "წესები და პირობები",
     intro: "მოკლედ და გასაგებად: რა გვაქვს შეთანხმებული ხელოვანებთან, რა ღირს და როგორ წყდება თანამშრომლობა.",
-    updated: "ბოლო განახლება: 25 ოქტომბერი, 2026",
+    updated: "ბოლო განახლება: 27 ოქტომბერი, 2026",
     sections: [
       {
         title: "რას ვაკეთებთ",
@@ -37,7 +37,7 @@ export const terms: Record<
       {
         title: "ფასი",
         items: [
-          "პირველი 3 თვე უფასოა. უფასო პერიოდი იწყება იმ დღეს, როცა შენი პროფილი საიტზე გამოჩნდება.",
+          "პირველი 3 თვე სრულიად უფასოა. უფასო პერიოდი იწყება იმ დღეს, როცა შენი პროფილი საიტზე გამოჩნდება.",
           "ამის შემდეგ თანამშრომლობა ღირს 20 ₾ თვეში.",
           "გაყიდვებზე პროცენტს არ ვიღებთ: საიტზე გაყიდვა არ ხდება და ყველა შემოსავალი შენია.",
           "გადახდის წესს უფასო პერიოდის დასრულებამდე წინასწარ შეგატყობინებთ. ავტომატური ჩამოჭრა არ ხდება: შენი თანხმობის გარეშე არაფერს გადაიხდი.",
@@ -83,7 +83,7 @@ export const terms: Record<
   en: {
     title: "Terms",
     intro: "In short and plainly: what we agree with makers, what it costs and how it ends.",
-    updated: "Last updated: 25 October 2026",
+    updated: "Last updated: 27 October 2026",
     sections: [
       {
         title: "What we do",
@@ -103,7 +103,7 @@ export const terms: Record<
       {
         title: "Price",
         items: [
-          "The first 3 months are free. The free period starts the day your profile appears on the site.",
+          "The first 3 months are completely free. The free period starts the day your profile appears on the site.",
           "After that it costs 20 GEL per month.",
           "We take no commission: nothing is sold on the site, and all sales income is yours.",
           "We will tell you how payment works before the free period ends. Nothing is charged automatically: you pay nothing without your agreement.",
