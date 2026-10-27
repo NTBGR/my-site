@@ -295,9 +295,13 @@ const ka = {
     consentPrice: "(განთავსება სრულიად უფასოა).",
     submit: "გაგზავნა",
     sending: "იგზავნება...",
+    contactNote:
+      "ინსტაგრამზე ან ფეისბუქზე დაგიკავშირდებით ფოტოებთან და ფასებთან დაკავშირებით. ყურადღებით იყავი: შეტყობინება შეიძლება „მოთხოვნებში“ ან სპამში ჩავარდეს.",
     thanksTitle: "გმადლობთ!",
     thanksText:
-      "განაცხადი მივიღეთ. ინფორმაციას გადავამოწმებთ და მალე დაგიკავშირდებით.",
+      "განაცხადი მივიღეთ. ინფორმაციას გადავამოწმებთ და ინსტაგრამზე ან ფეისბუქზე დაგიკავშირდებით, რომ ფოტოები და ფასები გამოგვიგზავნო.",
+    thanksNote:
+      "ყურადღებით იყავი: ჩვენი შეტყობინება შეიძლება „მოთხოვნებში“ ან სპამში ჩავარდეს.",
     errors: {
       required: "შეავსე ყველა სავალდებულო ველი.",
       email: "იმეილის მისამართი არასწორია.",
@@ -600,9 +604,13 @@ const en: Dict = {
     consentPrice: "(listing is completely free).",
     submit: "Send",
     sending: "Sending...",
+    contactNote:
+      "We will message you on Instagram or Facebook about photos and prices. Keep an eye out: our message may land in message requests or spam.",
     thanksTitle: "Thank you!",
     thanksText:
-      "We received your application. We will review it and get back to you soon.",
+      "We received your application. We will review it and contact you on Instagram or Facebook to ask for your photos and prices.",
+    thanksNote:
+      "Please keep an eye out: our message may land in your message requests or spam.",
     errors: {
       required: "Please fill in all required fields.",
       email: "The email address is invalid.",

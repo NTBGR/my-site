@@ -590,7 +590,7 @@ a:hover > .arrow-slide {
 /* ველები: ერთიანი სტილი ფორმებზე */
 @layer components {
   .field {
-    @apply w-full rounded-2xl border-[1.5px] border-border bg-surface px-4 py-3 text-base text-text transition duration-200 placeholder:text-muted focus:border-accent focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--accent)_18%,transparent)];
+    @apply w-full rounded-2xl border-[1.5px] border-border bg-surface px-4 py-3 text-base text-text transition duration-200 placeholder:text-muted focus:border-[color-mix(in_srgb,var(--text)_60%,transparent)] focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--text)_8%,transparent)];
   }
 }
 

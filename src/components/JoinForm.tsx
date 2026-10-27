@@ -91,6 +91,7 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
         </span>
         <h3 className="mt-5 font-serif text-2xl font-semibold tracking-tight text-text sm:text-3xl">{t.thanksTitle}</h3>
         <p className="mt-3 max-w-md leading-relaxed text-text/80">{t.thanksText}</p>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-text/70">{t.thanksNote}</p>
         <div className="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           <Link
             href="/artists"
@@ -286,6 +287,9 @@ export default function JoinForm({ defaultCategory = "" }: { defaultCategory?: s
           {t.consentPrice}
         </span>
       </label>
+
+      {/* რა ხდება გაგზავნის შემდეგ: ინსტაგრამზე ვწერთ, შეტყობინება შეიძლება სპამში ჩავარდეს */}
+      <p className="rounded-2xl bg-accent-soft px-4 py-3 text-sm leading-relaxed text-text/80 sm:col-span-2">{t.contactNote}</p>
 
       <div className="sm:col-span-2">
         <Button type="submit" disabled={status === "sending"}>
