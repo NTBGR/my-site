@@ -2,7 +2,7 @@ import type { Lang } from "@/lib/dictionary";
 import { CONTACT_EMAIL } from "@/app/privacy/content";
 
 // ხელოვანებთან თანამშრომლობის წესები და პირობები. მარტივი ენით დაწერილი პროექტი, იურისტს არ გადაუხედავს.
-// ფასი: 20 ₾ თვეში 2 უფასო თვის შემდეგ (2026-10-19-ის გადაწყვეტილება). შეცვლისას აქაც და src/lib/dictionary.ts-შიც განაახლე.
+// ფასი: რეგისტრაცია და განთავსება სრულიად უფასოა (გადაწყვეტილება 2026-10-27). შეცვლისას აქაც და src/lib/dictionary.ts-შიც განაახლე.
 export { CONTACT_EMAIL };
 export const PRICE_GEL = 20;
 // ვერსია (დაემთხვევა updated თარიღს): განაცხადთან ერთად ინახება, რომ ვიცოდეთ, რომელ ტექსტს დათანხმდა ხელოვანი. პირობების შეცვლისას განაახლე აქაც და updated-შიც
@@ -37,11 +37,8 @@ export const terms: Record<
       {
         title: "ფასი",
         items: [
-          "პირველი 3 თვე სრულიად უფასოა. უფასო პერიოდი იწყება იმ დღეს, როცა შენი პროფილი საიტზე გამოჩნდება.",
-          "ამის შემდეგ თანამშრომლობა ღირს 20 ₾ თვეში.",
+          "რეგისტრაცია და განთავსება სრულიად უფასოა, ვალდებულების გარეშე.",
           "გაყიდვებზე პროცენტს არ ვიღებთ: საიტზე გაყიდვა არ ხდება და ყველა შემოსავალი შენია.",
-          "გადახდის წესს უფასო პერიოდის დასრულებამდე წინასწარ შეგატყობინებთ. ავტომატური ჩამოჭრა არ ხდება: შენი თანხმობის გარეშე არაფერს გადაიხდი.",
-          "ფასის შეცვლის შემთხვევაში წინასწარ გაგაფრთხილებთ.",
         ],
       },
       {
@@ -103,11 +100,8 @@ export const terms: Record<
       {
         title: "Price",
         items: [
-          "The first 3 months are completely free. The free period starts the day your profile appears on the site.",
-          "After that it costs 20 GEL per month.",
+          "Signing up and listing is completely free, no strings attached.",
           "We take no commission: nothing is sold on the site, and all sales income is yours.",
-          "We will tell you how payment works before the free period ends. Nothing is charged automatically: you pay nothing without your agreement.",
-          "If the price ever changes, we will warn you in advance.",
         ],
       },
       {
