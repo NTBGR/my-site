@@ -1,7 +1,7 @@
 import ArtistsFilter from "@/components/ArtistsFilter";
 import BackLink from "@/components/BackLink";
 import PageBanner from "@/components/PageBanner";
-import { getLocalizedArtists, workAddedTime } from "@/data/artists";
+import { getLocalizedArtists, newestArtistsFirst, workAddedTime } from "@/data/artists";
 import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { buildSearchIndex } from "@/lib/searchIndex";
@@ -59,7 +59,7 @@ export default async function ArtistsPage({
       />
 
       <div className="mt-8 sm:mt-10">
-        <ArtistsFilter key={q} artists={artists} crafts={crafts} initialQuery={q} searchTexts={searchTexts} workSearch={workSearch} gifts={buildSearchIndex(lang).filter((item) => item.kind === "gift")} />
+        <ArtistsFilter key={q} artists={newestArtistsFirst(artists)} crafts={crafts} initialQuery={q} searchTexts={searchTexts} workSearch={workSearch} gifts={buildSearchIndex(lang).filter((item) => item.kind === "gift")} />
       </div>
     </div>
   );

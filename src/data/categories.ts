@@ -78,6 +78,19 @@ export const categories: Category[] = [
     },
   },
   {
+    slug: "chantebi",
+    name: "ჩანთები და აქსესუარები",
+    description: "ხელნაკეთი ჩანთები, საფულეები, ბრელოკები და სხვა აქსესუარები.",
+    maker: "აქსესუარების ოსტატი",
+    makers: "აქსესუარების ოსტატები",
+    en: {
+      name: "Bags & accessories",
+      description: "Handmade bags, wallets, keychains and other accessories.",
+      maker: "Accessory maker",
+      makers: "Accessory makers",
+    },
+  },
+  {
     slug: "tekstili",
     name: "ტექსტილი",
     description: "შარფები, ხალიჩები, ნაქარგი და ქსოვილზე დაბეჭდილი ნივთები.",
@@ -179,6 +192,7 @@ const palette: Record<string, string> = {
   keramika: "#9a6a1c",
   skulptura: "#5b4d82",
   samkauli: "#8a3b57",
+  chantebi: "#7a5a6e",
   tekstili: "#5c6f3f",
   naqsovi: "#7a6a1f",
   epoqsidi: "#2e7d78",

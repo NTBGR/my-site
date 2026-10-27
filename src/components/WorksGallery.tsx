@@ -35,6 +35,8 @@ export type GalleryWork = {
   badge?: string;
   // ბარათზე ფოტოს ცენტრის წერტილი („x% y%“)
   focal?: string;
+  // "contain": ფოტო მთლიანად ჩანს ფონზე (ჰორიზონტალური ან დაბალი ხარისხის ფოტო, რომ არ გადიდდეს და არ დაიჭრას)
+  fit?: "contain";
   alt?: string;
   // სად მიდის ბმული: ღილაკის წარწერისთვის
   network?: "instagram" | "facebook";
@@ -204,7 +206,7 @@ export default function WorksGallery({
                   </span>
                 ) : null}
                 {work.image ? (
-                  <Photo src={work.image} alt={work.alt ?? work.title} focal={work.focal} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
+                  <Photo src={work.image} alt={work.alt ?? work.title} focal={work.focal} fit={work.fit} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
                 ) : (
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
                 )}

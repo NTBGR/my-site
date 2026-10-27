@@ -32,6 +32,7 @@ export function toGalleryWork(
     width: work.width,
     height: work.height,
     focal: work.focal,
+    fit: work.fit,
     artistName: opts.showArtist ? artist.name : undefined,
     artistHref: opts.showArtist ? `/artists/${artist.slug}` : undefined,
     badge: opts.badge ?? (saved ? `❤ ${saved}` : undefined),

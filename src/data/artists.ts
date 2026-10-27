@@ -22,6 +22,8 @@ export type ArtistWork = {
   // ბარათზე ფოტოს რომელი წერტილი დარჩეს ცენტრში, როცა ფოტო 3:4-ში იჭრება: „x% y%“ (მაგ. "80% 50%": მარჯვნივ). ნაგულისხმევი "50% 50%".
   // სრულეკრანიან ნახვაში ფოტო მთლიანად ჩანს, ამიტომ მხოლოდ ბარათზე მოქმედებს
   focal?: string;
+  // "contain": ბარათზე ფოტო მთლიანად ჩანს, ცენტრში, ფონზე (ჰორიზონტალური ან პატარა ფოტოსთვის, რომ არ დაიჭრას და არ გაბუნდოვანდეს)
+  fit?: "contain";
 };
 
 type ArtistText = {
@@ -324,6 +326,115 @@ export const artists: ArtistData[] = [
       ],
     },
   },
+  {
+    slug: "mandeli",
+    joined: "2026-10-27",
+    freeMonths: 3,
+    consent: { terms: "2026-10-25", privacy: "2026-10-19", at: "2026-10-27 21:57", offer: "პირველი 3 თვე უფასო, შემდეგ 20 ₾ თვეში" },
+    name: "მანდელი",
+    city: "ახმეტა",
+    categories: ["tekstili"],
+    cover: "/artists/mandeli/navy-tunic.jpg",
+    banner: "/artists/mandeli/navy-tunic.jpg",
+    bio: "ვქარგავ ხევსურულ სამოსს ტრადიციული ორნამენტებითა და ფერებით: პერანგებს, ჟილეტებს და სხვა ნაქარგ ნივთებს. ასევე ვკერავ ჩოხებს. შეკვეთის, ზომისა და ფერის შესახებ მომწერეთ ინსტაგრამზე.",
+    instagram: "https://www.instagram.com/rusudani7843/",
+    facebook: "",
+    works: [
+      { title: "ხევსურული ნაქარგი პერანგი, ლურჯი", color: "#2b3350", image: "/artists/mandeli/navy-tunic.jpg", width: 1080, height: 1620, price: 1700, added: "2026-10-27" },
+      { title: "ხევსურული ნაქარგი პერანგი, შავი", color: "#2a2424", image: "/artists/mandeli/black-shirt.jpg", width: 900, height: 2000, focal: "50% 58%", price: 1200, added: "2026-10-27" },
+      { title: "თეთრი ჩოხა ორნამენტით", color: "#e8e1d4", image: "/artists/mandeli/white-chokha.jpg", width: 900, height: 2000, price: 500, added: "2026-10-27" },
+      { title: "შავი ჟილეტი ჯვრის ნაქარგით", color: "#23252e", image: "/artists/mandeli/embroidered-vest.jpg", width: 900, height: 2000, price: 300, added: "2026-10-27" },
+    ],
+    en: {
+      name: "Mandeli",
+      city: "Akhmeta",
+      bio: "I embroider Khevsur clothing with traditional ornaments and colours: shirts, vests and other embroidered pieces. I also sew chokhas. For orders, sizes and colours, message me on Instagram.",
+      workTitles: [
+        "Khevsur embroidered shirt, navy",
+        "Khevsur embroidered shirt, black",
+        "White chokha with ornament",
+        "Black vest with embroidered cross",
+      ],
+    },
+  },
+  {
+    slug: "salita",
+    joined: "2026-10-27",
+    freeMonths: 3,
+    consent: { terms: "2026-10-27", privacy: "2026-10-19", at: "2026-10-27 22:29", offer: "რეგისტრაცია და განთავსება სრულიად უფასოა" },
+    name: "სალიტა",
+    city: "ბოლნისი",
+    categories: ["chantebi", "samkauli", "saxlis-dekori"],
+    cover: "/artists/salita/phone-strap-pearl.jpg",
+    banner: "/artists/salita/phone-strap-pearl.jpg",
+    bio: "ვამზადებ ხელნაკეთ ჩანთებს, ზარდახშებს და აქსესუარებს თეთრი და ბროლის მძივებით. თითოეული ნივთი მძივ-მძივ, ხელით იწყობა. შეკვეთის შესახებ მომწერეთ ინსტაგრამზე.",
+    instagram: "https://www.instagram.com/sali.handmade.bags/",
+    facebook: "",
+    works: [
+      { title: "ტელეფონის საკიდი მძივებით", color: "#e9dccb", image: "/artists/salita/phone-strap-pearl.jpg", width: 1080, height: 1440, price: 20, added: "2026-10-27" },
+      { title: "ტელეფონის ჩანთა მძივებით", color: "#c9d1bd", image: "/artists/salita/phone-pouch-pearl.jpg", width: 1080, height: 1440, price: 60, added: "2026-10-27" },
+      { title: "ზარდახშა სარკით, მძივებით", color: "#e6ddd2", image: "/artists/salita/pearl-mirror-box.jpg", width: 900, height: 1600, focal: "50% 62%", price: 150, added: "2026-10-27" },
+      { title: "ზარდახშა მძივებით", color: "#e4d9cf", image: "/artists/salita/pearl-box.jpg", width: 1080, height: 1440, price: 80, added: "2026-10-27" },
+      { title: "წელის ჩანთა, ვერცხლისფერი", color: "#d9d9d6", image: "/artists/salita/waist-bag-silver-34.jpg", width: 1080, height: 1440, price: 70, added: "2026-10-27" },
+      { title: "წელის ჩანთა, შავი", color: "#c9d6dc", image: "/artists/salita/waist-bag-black.jpg", width: 1080, height: 1440, price: 70, added: "2026-10-27" },
+      { title: "საბარათე საფულე, შავი", color: "#e8e6e2", image: "/artists/salita/card-wallet-black-34.jpg", width: 1080, height: 1440, price: 35, added: "2026-10-27" },
+      { title: "ყელსაბამი თეთრი მძივებით", color: "#d8473a", image: "/artists/salita/pearl-collar-34.jpg", width: 1080, height: 1440, price: 40, added: "2026-10-27" },
+      { title: "ბრელოკი „პატარა ჩანთა“", color: "#e6e2df", image: "/artists/salita/keychain-mini-bags-34.jpg", width: 1080, height: 1440, price: 15, added: "2026-10-27" },
+    ],
+    en: {
+      name: "Salita",
+      city: "Bolnisi",
+      bio: "I make handmade bags, jewellery boxes and accessories with white and crystal beads. Every piece is put together by hand, bead by bead. For orders, message me on Instagram.",
+      workTitles: [
+        "Beaded phone strap",
+        "Beaded phone pouch",
+        "Beaded jewellery box with mirror",
+        "Beaded jewellery box",
+        "Waist bag, silver",
+        "Waist bag, black",
+        "Card wallet, black",
+        "White beaded collar necklace",
+        "Keychain \"Mini bag\"",
+      ],
+    },
+  },
+  {
+    slug: "saflora",
+    joined: "2026-10-27",
+    freeMonths: 3,
+    consent: { terms: "2026-10-27", privacy: "2026-10-19", at: "2026-10-27 22:41", offer: "რეგისტრაცია და განთავსება სრულიად უფასოა" },
+    name: "Saflora",
+    city: "წალენჯიხა",
+    categories: ["tekstili", "saxlis-dekori"],
+    cover: "/artists/saflora/clock-embroidered.jpg",
+    banner: "/artists/saflora/scene-clock-terrarium.jpg",
+    bio: "მე ვარ სალომე ჭანტურია, პროფესიით ბუნების მასწავლებელი. Saflora იმ სურვილით შევქმენი, რომ საკუთარი ხელით შემექმნა განსხვავებული, ორიგინალური ნივთები, რომლებშიც ჩემი ფანტაზია და შრომა იქნება. ვქარგავ მაისურებს, საათებს და ზარდახშებს, ვაწყობ სუკულენტების კომპოზიციებს. მყავს პატარა ბიჭი და მასთან ერთად ამ საქმის კეთება ჩემთვის დიდი გამოწვევა და ერთგვარი თერაპიაა.",
+    instagram: "https://www.instagram.com/chanturiasalo/",
+    facebook: "https://www.facebook.com/profile.php?id=61585035908187",
+    works: [
+      { title: "ნაქარგი საათი", color: "#a9bccb", image: "/artists/saflora/clock-embroidered.jpg", width: 1057, height: 1397, price: 55, added: "2026-10-27" },
+      { title: "ზარდახშა ნაქარგი სახურავით", color: "#d9c3a5", image: "/artists/saflora/jewelry-box-34.jpg", width: 1080, height: 1440, price: 40, added: "2026-10-27" },
+      { title: "სუკულენტები შუშის ბურთში", color: "#b9cfdc", image: "/artists/saflora/terrariums-34.jpg", width: 1080, height: 1440, price: 40, added: "2026-10-27" },
+      { title: "სუკულენტები წიგნის ფორმის ქოთანში", color: "#cfe0c6", image: "/artists/saflora/succulents-book-pot.jpg", width: 1074, height: 1433, price: 50, added: "2026-10-27" },
+      { title: "ნაკრები: საათი და სუკულენტები", color: "#b7c9dc", image: "/artists/saflora/scene-composition-34.jpg", width: 1080, height: 1440, added: "2026-10-27" },
+      { title: "ნაქარგი მაისური, ლურჯი წარწერით", color: "#e9ece8", image: "/artists/saflora/tshirt-blue.jpg", width: 1080, height: 1440, price: 40, added: "2026-10-27" },
+      { title: "ნაქარგი მაისური, ფერადი წარწერით", color: "#eef0ec", image: "/artists/saflora/tshirt-colour.jpg", width: 1080, height: 1399, price: 40, added: "2026-10-27" },
+    ],
+    en: {
+      name: "Saflora",
+      city: "Tsalenjikha",
+      bio: "I am Salome Chanturia, a science teacher by profession. I started Saflora wanting to make distinctive, original things with my own hands, carrying my imagination and work. I embroider T-shirts, clocks and jewellery boxes, and arrange succulent compositions. I have a little boy, and doing this together with him is a big challenge for me and a kind of therapy.",
+      workTitles: [
+        "Embroidered clock",
+        "Jewellery box with embroidered lid",
+        "Succulents in a glass globe",
+        "Succulents in a book-shaped pot",
+        "Set: clock and succulents",
+        "Embroidered T-shirt, blue lettering",
+        "Embroidered T-shirt, colourful lettering",
+      ],
+    },
+  },
 ];
 
 export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
@@ -387,6 +498,20 @@ export function isNewWork(work: ArtistWork): boolean {
   const age = Date.now() - Date.parse(work.added);
   // თარიღი YYYY-MM-DD UTC-ის შუაღამეა: საქართველოში (UTC+4) დღევანდელი თარიღი ღამით ჯერ „მომავალში“ ჩანს, ამიტომ 1 დღემდე დაშვება
   return age > -DAY && age < 30 * DAY;
+}
+
+// ხელოვანის სიებში საჩვენებლად: ყველაზე ახლად დამატებული პირველი (მარცხნივ).
+// თარიღი: `joined`, თორემ ყველაზე ადრეული ნამუშევრის `added`; თანაბარისას ფაილში უფრო ქვემოთ ჩაწერილი პირველი
+export function newestArtistsFirst<T extends ArtistData>(list: T[]): T[] {
+  const time = (artist: T) => {
+    if (artist.joined) return Date.parse(artist.joined) || 0;
+    const dates = artist.works.map(workAddedTime).filter((n) => n > 0);
+    return dates.length ? Math.min(...dates) : 0;
+  };
+  return list
+    .map((artist, i) => ({ artist, i, t: time(artist) }))
+    .sort((a, b) => b.t - a.t || b.i - a.i)
+    .map((x) => x.artist);
 }
 
 // ხელოვანი „ახალია“, თუ ბოლო 14 დღეში დაემატა

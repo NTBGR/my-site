@@ -5,7 +5,7 @@ import JsonLd from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import ArtistCard from "@/components/ArtistCard";
 import CategoryArt from "@/components/CategoryArt";
-import { getLocalizedArtists } from "@/data/artists";
+import { getLocalizedArtists, newestArtistsFirst } from "@/data/artists";
 import {
   categories,
   categoryColor,
@@ -46,7 +46,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
   const category = localizeCategory(raw, lang);
   const color = categoryColor(category.slug);
-  const items = getLocalizedArtists(lang).filter((artist) =>
+  const items = newestArtistsFirst(getLocalizedArtists(lang)).filter((artist) =>
     artist.categories.includes(category.slug),
   );
 

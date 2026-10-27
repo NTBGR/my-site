@@ -12,7 +12,7 @@ import HeroBanner, { type BannerSlide } from "@/components/HeroBanner";
 import ArtistCard from "@/components/ArtistCard";
 import ArtistsCarousel from "@/components/ArtistsCarousel";
 import Reveal from "@/components/Reveal";
-import { getLocalizedArtists } from "@/data/artists";
+import { getLocalizedArtists, newestArtistsFirst } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { hasCategoryPhoto } from "@/data/categoryPhotos";
 import { dictionary } from "@/lib/dictionary";
@@ -26,7 +26,7 @@ export default async function Home() {
   const t = dictionary[lang].home;
   const artists = getLocalizedArtists(lang);
   // ტელეფონზე ფურცვლით ჩანს ექვსამდე ხელოვანი და ბოლოს „ყველა ხელოვანი“ ბარათი; დესკტოპზე ხუთამდე (ერთი რიგი)
-  const featured = artists.slice(0, 6);
+  const featured = newestArtistsFirst(artists).slice(0, 6);
   // ხელოვანების სხვადასხვა ხელობა „გაიცანი ხელოვანები“ ქარდისთვის
   const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));

@@ -13,6 +13,8 @@ export const categoryPhotos: Record<string, CategoryPhoto> = {
   samkauli: photo("samkauli"),
   // ძველი გასაღები „ბეჭდები“ (ბანერებზე): ცალკე სურათი, რომ სამკაულთან ერთნაირი არ იყოს
   bechdebi: photo("bechdebi"),
+  // ჯერ სალიტას ნამუშევრის ფოტო (მარგალიტის ტელეფონის ჩანთა), სანამ კატეგორიის ცალკე ილუსტრაცია გვექნება
+  chantebi: photo("chantebi", "50% 60%"),
   tekstili: photo("tekstili"),
   naqsovi: photo("naqsovi-knit"),
   epoqsidi: photo("epoxy-waves-warm", "50% 88%"),
