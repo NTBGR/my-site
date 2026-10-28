@@ -2,7 +2,7 @@ import { effectivePrice, getWorkEntries, pricing, type WorkEntry } from "@/data/
 import type { Lang } from "@/lib/dictionary";
 
 // თაგები: ნამუშევრების სწრაფი ჯგუფები საჩუქრის მიზეზის მიხედვით (კატეგორია კი ხელობას აჩვენებს).
-// ნამუშევარს თაგი ეძლევა ხელით (artists.ts-ში `tags`), გარდა ფასიანი თაგისა: ის ფასიდან ავტომატურად გამოდის.
+// ნამუშევარს თაგი ეძლევა ხელით (src/data/makers/<slug>.ts-ში `tags`), გარდა ფასიანი თაგისა: ის ფასიდან ავტომატურად გამოდის.
 export type Tag = {
   slug: string;
   // ემოჯი წარწერის წინ (ზოლში და გვერდის სათაურში)

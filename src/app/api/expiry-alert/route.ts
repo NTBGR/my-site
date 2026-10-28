@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
     if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
       return NextResponse.json({ error: "telegram not configured" }, { status: 503 });
     }
-    const text = ["<b>⏳ ხელოვანების ვადები</b>", "", ...lines, "", "გაგრძელების შემდეგ src/data/artists.ts-ში ჩაწერე paidUntil."].join("\n");
+    const text = ["<b>⏳ ხელოვანების ვადები</b>", "", ...lines, "", "გაგრძელების შემდეგ src/data/makers/ (ხელოვანის ფაილი)-ში ჩაწერე paidUntil."].join("\n");
     const res = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

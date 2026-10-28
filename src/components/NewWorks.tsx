@@ -7,7 +7,7 @@ import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
 import { getLang } from "@/lib/i18n";
 
-// მთავარზე „ახალი ნამუშევრები“: ბოლო 30 დღეში დამატებული (src/data/artists.ts-ში `added` თარიღით), შემთხვევითი რიგით, მხოლოდ კარგი ხარისხის ფოტოებით (hasCardQualityPhoto).
+// მთავარზე „ახალი ნამუშევრები“: ბოლო 30 დღეში დამატებული (src/data/makers/<slug>.ts-ში `added` თარიღით), შემთხვევითი რიგით, მხოლოდ კარგი ხარისხის ფოტოებით (hasCardQualityPhoto).
 // უახლესი დიდ ბარათზეა, დანარჩენი ექვსი გვერდით (ბადე ორ სავსე რიგად). თუ ახალი ნამუშევარი არ არის, ზოლი საერთოდ არ ჩანს.
 export default async function NewWorks() {
   const lang = await getLang();

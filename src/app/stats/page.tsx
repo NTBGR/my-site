@@ -74,7 +74,7 @@ function Deadlines() {
     <section className="mt-8">
       <h2 className="text-xl font-semibold tracking-tight text-text sm:text-2xl">ხელოვანების ვადები</h2>
       <p className="mt-1 text-sm text-muted">
-        უფასო პერიოდი იწყება <code>joined</code> თარიღიდან (<code>src/data/artists.ts</code>); ხანგრძლივობა <code>freeMonths</code> (ნაგულისხმევი 3 თვე), ან <code>freeForever</code> მუდმივად უფასოსთვის.
+        უფასო პერიოდი იწყება <code>joined</code> თარიღიდან (<code>src/data/makers/ (ხელოვანის ფაილი)</code>); ხანგრძლივობა <code>freeMonths</code> (ნაგულისხმევი 3 თვე), ან <code>freeForever</code> მუდმივად უფასოსთვის.
         გადახდის შემდეგ ჩაწერე <code>paidUntil</code>. ტელეგრამში გაფრთხილება მოდის 7, 3 და 1 დღით ადრე, ვადის დღეს და მეორე დღეს.
       </p>
       <ul className="mt-3 grid gap-3 lg:grid-cols-2">
