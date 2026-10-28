@@ -15,6 +15,7 @@ import Reveal from "@/components/Reveal";
 import { getLocalizedArtists, newestArtistsFirst } from "@/data/artists";
 import { categories, categoryColor, localizeCategory } from "@/data/categories";
 import { hasCategoryPhoto } from "@/data/categoryPhotos";
+import { newArtistsPinned } from "@/data/featured";
 import { dictionary } from "@/lib/dictionary";
 import { getLang } from "@/lib/i18n";
 import { TONES, toneGradient } from "@/lib/tones";
@@ -26,7 +27,8 @@ export default async function Home() {
   const t = dictionary[lang].home;
   const artists = getLocalizedArtists(lang);
   // ტელეფონზე ფურცვლით ჩანს ექვსამდე ხელოვანი და ბოლოს „ყველა ხელოვანი“ ბარათი; დესკტოპზე ხუთამდე (ერთი რიგი)
-  const featured = newestArtistsFirst(artists).slice(0, 6);
+  const pinned = newArtistsPinned.map((slug) => artists.find((a) => a.slug === slug)).filter((a): a is (typeof artists)[number] => Boolean(a));
+  const featured = [...pinned, ...newestArtistsFirst(artists).filter((a) => !pinned.includes(a))].slice(0, 6);
   // ხელოვანების სხვადასხვა ხელობა „გაიცანი ხელოვანები“ ქარდისთვის
   const crafts = Array.from(new Set(artists.map((a) => a.categories[0]).filter(Boolean))).slice(0, 3);
   const cats = categories.map((c) => localizeCategory(c, lang));

@@ -206,7 +206,7 @@ export default function WorksGallery({
                   </span>
                 ) : null}
                 {work.image ? (
-                  <Photo src={work.image} alt={work.alt ?? work.title} focal={work.focal} fit={work.fit} sizes="(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw" hoverZoom />
+                  <Photo src={work.image} alt={work.alt ?? work.title} focal={work.focal} fit={work.fit} sizes={featureFirst && i === 0 ? "(min-width:1280px) 480px, (min-width:1024px) 46vw, (min-width:640px) 62vw, 46vw" : "(min-width:1280px) 240px, (min-width:1024px) 23vw, (min-width:640px) 31vw, 46vw"} hoverZoom />
                 ) : (
                   <ArtTile color={work.color} variant={work.variant} className="absolute inset-0 h-full w-full" />
                 )}

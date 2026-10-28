@@ -41,7 +41,7 @@ export const categories: Category[] = [
   {
     slug: "keramika",
     name: "კერამიკა და ჭურჭელი",
-    description: "ხელნაკეთი თიხის თასები, ლანგრები და ვაზები.",
+    description: "ხელნაკეთი თიხის თასები, ლანგრები და ლარნაკები.",
     maker: "კერამიკოსი",
     makers: "კერამიკოსები",
     en: {
@@ -158,7 +158,7 @@ export const categories: Category[] = [
   {
     slug: "saxlis-dekori",
     name: "სახლის დეკორი",
-    description: "სანთლები, ვაზები, ჩარჩოები და სხვა ინტერიერის ნივთები.",
+    description: "სანთლები, ლარნაკები, ჩარჩოები და სხვა ინტერიერის ნივთები.",
     maker: "დეკორატორი",
     makers: "დეკორატორები",
     en: {

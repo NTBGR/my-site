@@ -1,7 +1,7 @@
 import Link from "next/link";
 import WorksGallery from "@/components/WorksGallery";
 import { getWorkEntries, hasCardQualityPhoto, isNewWork } from "@/data/artists";
-import { newWorksFeatured } from "@/data/featured";
+import { newWorksFeatured, newWorksPriorityArtists } from "@/data/featured";
 import { dictionary } from "@/lib/dictionary";
 import { saveCounts } from "@/lib/favoriteStats";
 import { toGalleryWork } from "@/lib/galleryWork";
@@ -25,7 +25,7 @@ export default async function NewWorks() {
   const all = getWorkEntries(lang);
   const featured = newWorksFeatured ? all.find((entry) => `${entry.artist.slug}/${entry.id}` === newWorksFeatured) : undefined;
   const byArtist = new Map<string, ReturnType<typeof getWorkEntries>>();
-  for (const entry of all.filter((e) => e !== featured && isNewWork(e.work) && hasCardQualityPhoto(e.work))) {
+  for (const entry of all.filter((e) => e !== featured && (newWorksPriorityArtists.length > 0 ? newWorksPriorityArtists.includes(e.artist.slug) : isNewWork(e.work)) && hasCardQualityPhoto(e.work))) {
     byArtist.set(entry.artist.slug, [...(byArtist.get(entry.artist.slug) ?? []), entry]);
   }
   const queues = shuffle([...byArtist.values()].map((list) => shuffle(list)));
