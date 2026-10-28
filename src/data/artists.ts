@@ -806,8 +806,8 @@ export const artists: ArtistData[] = [
     categories: ["khis-nakethobebi"],
     cover: "/artists/wood-more/nardi-portrait.jpg",
     banner: "/artists/wood-more/nardi-portrait.jpg",
-    bio: "ყველა დეტალს ხელით ვხატავ და შემდეგ ვკვეთავ ხეზე ❤️ ვაკეთებ ნარდს, ხატის კიოტებს, კვეთილ ტრიბუნებსა და კარებს. შეკვეთისთვის მომწერეთ ინსტაგრამზე.",
-    instagram: "https://www.instagram.com/daviti_art",
+    bio: "ყველა დეტალს ხელით ვხატავ და შემდეგ ვკვეთავ ხეზე ❤️ ვაკეთებ ნარდს, ხატის კიოტებს, კვეთილ ტრიბუნებსა და კარებს. შეკვეთისთვის მომწერეთ ფეისბუქზე.",
+    instagram: "",
     facebook: "https://www.facebook.com/share/1A3dTdxL7p/",
     works: [
       { title: "ხატის კიოტი, წმინდა ნინო", color: "#c99a35", image: "/artists/wood-more/icon-frame-nino.jpg", width: 720, height: 960, added: "2026-10-29" },
@@ -827,7 +827,7 @@ export const artists: ArtistData[] = [
     en: {
       name: "Wood more",
       city: "Tbilisi",
-      bio: "I draw every detail by hand and then carve it into wood ❤️ I make backgammon sets, icon frames, carved lecterns and doors. For orders, message me on Instagram.",
+      bio: "I draw every detail by hand and then carve it into wood ❤️ I make backgammon sets, icon frames, carved lecterns and doors. For orders, message me on Facebook.",
       workTitles: [
         "Icon frame, Saint Nino",
         "Icon frame, John the Baptist",
