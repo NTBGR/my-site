@@ -1,24 +1,22 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
-import { SITE_HOST, SITE_URL } from "@/lib/site";
+import { SITE_HOST } from "@/lib/site";
 import { dictionary } from "@/lib/dictionary";
 
 // გაზიარების სურათი (ფეისბუქი, მესენჯერი, ვაიბერი...): ბოტებს ენის ქუქი არ აქვთ, ამიტომ ქართულია
-export const runtime = "edge";
 export const alt = dictionary.ka.meta.shareTitle;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// ბილდმა ფონტები რომ იპოვოს, მისამართები სტატიკური უნდა იყოს
-const loadFont = (url: URL) => fetch(url).then((res) => res.arrayBuffer());
-
-// ფოტოებს საიტის სტატიკური ფაილებიდან ვიღებთ (edge ფუნქციის ზომა 1MB-ს არ უნდა აღემატებოდეს, ფოტოების ჩაშენება კი გადააჭარბებდა)
-const toDataUrl = async (url: string) => {
-  const buffer: ArrayBuffer = await (await fetch(url)).arrayBuffer();
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-  return "data:image/jpeg;base64," + btoa(binary);
+// სურათი არასდროს იცვლება, ამიტომ ბილდის დროს ერთხელ იხატება და CDN-იდან გაიცემა (ბოტები სერვერს აღარ ტვირთავენ).
+// ფონტები და ფოტოები პირდაპირ ფაილებიდან იკითხება
+const root = process.cwd();
+const loadFont = async (file: string) => {
+  const buffer = await readFile(path.join(root, "src/assets/og-fonts", file));
+  return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer;
 };
+const toDataUrl = async (file: string) => "data:image/jpeg;base64," + (await readFile(path.join(root, "public/categories", file))).toString("base64");
 
 const BG = "#f6f1ea";
 const TEXT = "#1d1a17";
@@ -67,14 +65,14 @@ function Photo({
 // ლოგო და სათაური ცენტრალურ 600px-ში დგას, ფოტოები კი კიდეებზეა (მოჭრისას მხოლოდ ისინი იკარგება)
 export default async function OpengraphImage() {
   const [photoA, photoB, photoC, photoD] = await Promise.all([
-    toDataUrl(`${SITE_URL}/categories/keramika-main.jpg`),
-    toDataUrl(`${SITE_URL}/categories/nakhatebi.jpg`),
-    toDataUrl(`${SITE_URL}/categories/samkauli.jpg`),
-    toDataUrl(`${SITE_URL}/categories/posterebi.jpg`),
+    toDataUrl("keramika-main.jpg"),
+    toDataUrl("nakhatebi.jpg"),
+    toDataUrl("samkauli.jpg"),
+    toDataUrl("posterebi.jpg"),
   ]);
   const [serif, sans] = await Promise.all([
-    loadFont(new URL("../assets/og-fonts/NotoSerifGeorgian-Bold.ttf", import.meta.url)),
-    loadFont(new URL("../assets/og-fonts/NotoSansGeorgian-Medium.ttf", import.meta.url)),
+    loadFont("NotoSerifGeorgian-Bold.ttf"),
+    loadFont("NotoSansGeorgian-Medium.ttf"),
   ]);
   const { meta } = dictionary.ka;
 
