@@ -421,6 +421,8 @@ export const artists: ArtistData[] = [
       { title: "ნაკრები: საათი და სუკულენტები", color: "#b7c9dc", image: "/artists/saflora/scene-composition-34.jpg", width: 1080, height: 1440, added: "2026-10-27" },
       { title: "ნაქარგი მაისური, ლურჯი წარწერით", color: "#e9ece8", image: "/artists/saflora/tshirt-blue.jpg", width: 1080, height: 1440, price: 40, added: "2026-10-27" },
       { title: "ნაქარგი მაისური, ფერადი წარწერით", color: "#eef0ec", image: "/artists/saflora/tshirt-colour.jpg", width: 1080, height: 1399, price: 40, added: "2026-10-27" },
+      { title: "ნაკრები: წიგნის ქოთნები და შუშის ბურთები", color: "#cdbfae", image: "/artists/saflora/succulents-books-globes-34.jpg", width: 1080, height: 1440, added: "2026-10-28" },
+      { title: "ნაკრები: სუკულენტები ფიგურულ ქოთნებში", color: "#c9b08a", image: "/artists/saflora/succulents-animal-pots-34.jpg", width: 1080, height: 1440, added: "2026-10-28" },
     ],
     en: {
       name: "Saflora",
@@ -434,6 +436,8 @@ export const artists: ArtistData[] = [
         "Set: clock and succulents",
         "Embroidered T-shirt, blue lettering",
         "Embroidered T-shirt, colourful lettering",
+        "Set: succulents in book pots and glass globes",
+        "Set: succulents in figure-shaped pots",
       ],
     },
   },
@@ -536,6 +540,7 @@ export const artists: ArtistData[] = [
       { title: "ნაკრები: ჩანთა და საფულეები", color: "#9a2f35", image: "/artists/nene-leather-craft/set-bag-wallets-34.jpg", width: 1080, height: 1440, added: "2026-10-28" },
       { title: "ჩანთა ჯაჭვით, წითელი ტყავის", color: "#7f1d2a", image: "/artists/nene-leather-craft/bag-red-chain.jpg", width: 1080, height: 1826, focal: "50% 62%", price: 139, added: "2026-10-28" },
       { title: "ჩანთა წითელი ტყავის, მოდელი 2", color: "#8a2a22", image: "/artists/nene-leather-craft/bag-red-flowers.jpg", width: 1080, height: 1874, focal: "50% 70%", price: 139, added: "2026-10-28" },
+      { title: "ტყავის ქისა", color: "#a5521f", image: "/artists/nene-leather-craft/pouch-croc.jpg", width: 1080, height: 1441, price: 60, added: "2026-10-28" },
     ],
     en: {
       name: "NeNe Leather Craft",
@@ -551,6 +556,7 @@ export const artists: ArtistData[] = [
         "Set: bag and wallets",
         "Red leather bag with a chain",
         "Red leather bag, model 2",
+        "Leather drawstring pouch",
       ],
     },
   },
