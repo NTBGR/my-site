@@ -1,32 +1,33 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
-import { getArtistBySlug, localizeArtist, pricing } from "@/data/artists";
-import { SITE_HOST, SITE_URL } from "@/lib/site";
+import { artists, getArtistBySlug, localizeArtist, pricing } from "@/data/artists";
+import { SITE_HOST } from "@/lib/site";
 import { dictionary } from "@/lib/dictionary";
 
 // ხელოვანის გაზიარების ბარათი (ფეისბუქი, მესენჯერი, ვაიბერი...): მისი სახელი და ნამუშევრების ფოტოები.
 // ბოტებს ენის ქუქი არ აქვთ, ამიტომ ქართულია.
-// დინამიკურია: ფოტოები საიტიდან მოგვაქვს, ბილდის დროს კი ახალი ხელოვანის ფოტო საიტზე ჯერ არ არის
-export const runtime = "edge";
-export const dynamic = "force-dynamic";
+// სტატიკურია: ყველა ხელოვანის ბარათი ბილდის დროს ერთხელ იხატება (generateStaticParams) და CDN-იდან გაიცემა, ამიტომ ბოტები სერვერს აღარ ტვირთავენ.
+// ფოტოები და ფონტები პირდაპირ ფაილებიდან იკითხება (ახალი ხელოვანის ფოტოც რეპოშია, ბილდის დროს უკვე არსებობს).
 export const alt = dictionary.ka.meta.shareTitle;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// ბილდმა ფონტები რომ იპოვოს, მისამართები სტატიკური უნდა იყოს
-const loadFont = (url: URL) => fetch(url).then((res) => res.arrayBuffer());
+export function generateStaticParams() {
+  return artists.map((artist) => ({ slug: artist.slug }));
+}
 
-// ფოტო პატარა ზომით (Next-ის ოპტიმიზატორიდან, 384px) და base64-ად, რომ edge ფუნქცია მსუბუქი დარჩეს.
-// ფოტო ვერ ჩაიტვირთა: ბარათი ფოტოს გარეშეც გამოვა
-async function toDataUrl(origin: string, image: string): Promise<string | null> {
+const root = process.cwd();
+const loadFont = async (file: string) => {
+  const buffer = await readFile(path.join(root, "src/assets/og-fonts", file));
+  return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer;
+};
+
+// ფოტო base64-ად public-იდან; ვერ ჩაიტვირთა: ბარათი ფოტოს გარეშეც გამოვა
+async function toDataUrl(image: string): Promise<string | null> {
   try {
-    const res = await fetch(`${origin}/_next/image?url=${encodeURIComponent(image)}&w=384&q=75`, { headers: { Accept: "image/jpeg" } });
-    if (!res.ok) return null;
-    const type = res.headers.get("content-type") ?? "";
-    if (!/jpe?g|png/.test(type)) return null;
-    const bytes = new Uint8Array(await res.arrayBuffer());
-    let binary = "";
-    for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-    return `data:${type.split(";")[0]};base64,` + btoa(binary);
+    const type = image.endsWith(".png") ? "image/png" : "image/jpeg";
+    return `data:${type};base64,` + (await readFile(path.join(root, "public", image))).toString("base64");
   } catch {
     return null;
   }
@@ -66,16 +67,15 @@ export default async function ArtistOpengraphImage({ params }: { params: Promise
   const raw = getArtistBySlug(slug);
   const artist = raw ? localizeArtist(raw, "ka") : undefined;
   const [serif, sans] = await Promise.all([
-    loadFont(new URL("../../../assets/og-fonts/NotoSerifGeorgian-Bold.ttf", import.meta.url)),
-    loadFont(new URL("../../../assets/og-fonts/NotoSansGeorgian-Medium.ttf", import.meta.url)),
+    loadFont("NotoSerifGeorgian-Bold.ttf"),
+    loadFont("NotoSansGeorgian-Medium.ttf"),
   ]);
 
   // ფოტოები: ქავერი და ნამუშევრები, მაქსიმუმ ოთხი (კიდეებზე: მესენჯერი და ვაიბერი სურათს შუიდან ჭრიან, ტექსტი ამიტომ ცენტრშია)
-  const origin = process.env.NODE_ENV === "development" ? `http://localhost:${process.env.PORT ?? 3000}` : SITE_URL;
   const sources = artist
     ? [artist.cover, ...artist.works.map((work) => work.image)].filter((src, i, all): src is string => Boolean(src) && all.indexOf(src) === i).slice(0, 4)
     : [];
-  const photos = (await Promise.all(sources.map((src) => toDataUrl(origin, src)))).filter((src): src is string => Boolean(src));
+  const photos = (await Promise.all(sources.map((src) => toDataUrl(src)))).filter((src): src is string => Boolean(src));
   const salePercent = artist ? artist.works.map((work) => pricing(artist, work)?.percent).find(Boolean) : undefined;
   const name = artist?.name ?? dictionary.ka.meta.title;
   const subtitle = artist ? [artist.category, artist.city].filter(Boolean).join(" · ") : "";
@@ -121,8 +121,6 @@ export default async function ArtistOpengraphImage({ params }: { params: Promise
     ),
     {
       ...size,
-      // ბარათი დინამიკურია, ამიტომ CDN-ში ვინახავთ: ბოტები (ფეისბუქი, ვაიბერი) მყისიერად მიიღებენ, ხელოვანის ცვლილება კი დღე-ღამეში გამოჩნდება
-      headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800" },
       fonts: [
         { name: "Serif", data: serif, weight: 700, style: "normal" },
         { name: "Sans", data: sans, weight: 500, style: "normal" },
