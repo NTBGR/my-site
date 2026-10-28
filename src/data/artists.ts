@@ -410,7 +410,7 @@ export const artists: ArtistData[] = [
     categories: ["tekstili", "saxlis-dekori"],
     cover: "/artists/saflora/clock-embroidered.jpg",
     banner: "/artists/saflora/scene-clock-terrarium.jpg",
-    bio: "მე ვარ სალომე ჭანტურია, პროფესიით ბუნების მასწავლებელი. Saflora იმ სურვილით შევქმენი, რომ საკუთარი ხელით შემექმნა განსხვავებული, ორიგინალური ნივთები, რომლებშიც ჩემი ფანტაზია და შრომა იქნება. ვქარგავ მაისურებს, საათებს და ზარდახშებს, ვაწყობ სუკულენტების კომპოზიციებს. მყავს პატარა ბიჭი და მასთან ერთად ამ საქმის კეთება ჩემთვის დიდი გამოწვევა და ერთგვარი თერაპიაა.",
+    bio: "Sa-flora არის ხელნაკეთი ნივთების პატარა, სიყვარულით შექმნილი სივრცე, სადაც ბუნება, ხელოვნება და ხელსაქმე ერთმანეთს ერწყმის. 🌿 აქ იქმნება სუკულენტები, ნაქარგი ტანსაცმელი, დეკორატიული საათები, ზარდახშები და სხვა უნიკალური ნივთები: თითოეული ხელით და განსაკუთრებული სითბოთი. 🤍 მყავს პატარა ბიჭი და მასთან ერთად ამ საქმის კეთება ჩემთვის ერთგვარი გამოწვევაცაა და თერაპიაც.",
     instagram: "https://www.instagram.com/chanturiasalo/",
     facebook: "https://www.facebook.com/profile.php?id=61585035908187",
     works: [
@@ -427,7 +427,7 @@ export const artists: ArtistData[] = [
     en: {
       name: "Saflora",
       city: "Tsalenjikha",
-      bio: "I am Salome Chanturia, a science teacher by profession. I started Saflora wanting to make distinctive, original things with my own hands, carrying my imagination and work. I embroider T-shirts, clocks and jewellery boxes, and arrange succulent compositions. I have a little boy, and doing this together with him is a big challenge for me and a kind of therapy.",
+      bio: "Sa-flora is a small space of handmade things, created with love, where nature, art and handicraft blend together. 🌿 Here we make succulents, embroidered clothing, decorative clocks, jewellery boxes and other unique pieces: each by hand and with special warmth. 🤍 I have a little boy, and doing this work together with him is both a challenge and a kind of therapy for me.",
       workTitles: [
         "Embroidered clock",
         "Jewellery box with embroidered lid",
