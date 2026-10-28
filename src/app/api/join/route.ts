@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { TERMS_VERSION } from "@/app/terms/content";
+import { TERMS_SUMMARY, TERMS_VERSION } from "@/app/terms/content";
 import { PRIVACY_VERSION } from "@/app/privacy/content";
 import { categoryNameKa, cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 import { allowed, clientIp } from "@/lib/ratelimit";
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
   }
 
   // თანხმობის ჩანაწერი: როდის და რომელ ვერსიას დათანხმდა (თბილისის დრო), რომ მოთხოვნისას დასტური გვქონდეს
-  const consent = `პირობები ${TERMS_VERSION}, კონფიდენციალურობა ${PRIVACY_VERSION} · ${new Date().toLocaleString("en-GB", { timeZone: "Asia/Tbilisi" })} (თბილისის დრო)`;
+  const consent = `პირობები ${TERMS_VERSION} (${TERMS_SUMMARY}), კონფიდენციალურობა ${PRIVACY_VERSION} · ${new Date().toLocaleString("en-GB", { timeZone: "Asia/Tbilisi" })} (თბილისის დრო)`;
   const application = { name, brand, email, city, category: categoryName, instagram, facebook, bio, comment, consent };
 
   const telegramOn = Boolean(

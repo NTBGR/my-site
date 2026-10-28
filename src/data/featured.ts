@@ -15,3 +15,7 @@ export const pickedWorks: string[] = [
   "zhuzha-ceramics/necklace-orange-star",
   "tamus-shop/tulips-blue-doll",
 ];
+
+// მთავარის „ახალი ნამუშევრების“ დიდი ბარათი: ყოველთვის ეს ნამუშევარია (კარგი ხარისხის ფოტო), დანარჩენი შემთხვევითი რიგითაა.
+// ჩაწერე "<ხელოვანის slug>/<ფოტოს ფაილის სახელი გაფართოების გარეშე>"; null-ის შემთხვევაში დიდიც შემთხვევითია
+export const newWorksFeatured: string | null = "zhuzha-ceramics/ring-pearl-heart";

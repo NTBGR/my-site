@@ -22,6 +22,8 @@ export type ArtistWork = {
   // ბარათზე ფოტოს რომელი წერტილი დარჩეს ცენტრში, როცა ფოტო 3:4-ში იჭრება: „x% y%“ (მაგ. "80% 50%": მარჯვნივ). ნაგულისხმევი "50% 50%".
   // სრულეკრანიან ნახვაში ფოტო მთლიანად ჩანს, ამიტომ მხოლოდ ბარათზე მოქმედებს
   focal?: string;
+  // true: ფოტო ბუნდოვანია ან დაბალი ხარისხისაა (ორიგინალი): მთავარის „ახალ ნამუშევრებში“ არ ჩანს, ხელოვანის გვერდზე კი ჩანს
+  lowQuality?: boolean;
   // "contain": ბარათზე ფოტო მთლიანად ჩანს, ცენტრში, ფონზე (ჰორიზონტალური ან პატარა ფოტოსთვის, რომ არ დაიჭრას და არ გაბუნდოვანდეს)
   fit?: "contain";
 };
@@ -302,13 +304,13 @@ export const artists: ArtistData[] = [
     facebook: "",
     works: [
       { title: "პოსტერი „A Tale of Two Times“", color: "#c9a98a", image: "/artists/glontinini/orig-4.jpg", width: 1080, height: 1620, focal: "50% 100%", added: "2026-10-25" },
-      { title: "პოსტერი „Winged or Fallen“", color: "#c9a98a", image: "/artists/glontinini/orig-1.jpg", width: 1080, height: 720, focal: "79% 50%", added: "2026-10-25" },
-      { title: "პოსტერი „ნიღაბი და ცხენი“", color: "#c9a98a", image: "/artists/glontinini/orig-2.jpg", width: 1080, height: 720, focal: "50% 50%", added: "2026-10-25" },
-      { title: "Glontinini · პოსტერების კოლექცია I", color: "#c9a98a", image: "/artists/glontinini/orig-3.jpg", width: 1080, height: 720, focal: "60% 50%", added: "2026-10-25" },
-      { title: "Glontinini · პოსტერების კოლექცია II", color: "#c9a98a", image: "/artists/glontinini/orig-5.jpg", width: 1080, height: 720, focal: "54% 50%", added: "2026-10-25" },
-      { title: "Glontinini · პოსტერების კოლექცია III", color: "#c9a98a", image: "/artists/glontinini/orig-6.jpg", width: 1080, height: 720, focal: "50% 50%", added: "2026-10-25" },
-      { title: "Glontinini · პოსტერების კოლექცია IV", color: "#c9a98a", image: "/artists/glontinini/orig-7.jpg", width: 1080, height: 720, focal: "56% 50%", added: "2026-10-25" },
-      { title: "პოსტერები „A Tale of Two Times“ და „Winged or Fallen“", color: "#c9a98a", image: "/artists/glontinini/orig-9.jpg", width: 1080, height: 720, focal: "4% 50%", added: "2026-10-25" },
+      { title: "პოსტერი „Winged or Fallen“", color: "#c9a98a", image: "/artists/glontinini/orig-1.jpg", width: 1080, height: 720, focal: "79% 50%", lowQuality: true, added: "2026-10-25" },
+      { title: "პოსტერი „ნიღაბი და ცხენი“", color: "#c9a98a", image: "/artists/glontinini/orig-2.jpg", width: 1080, height: 720, focal: "50% 50%", lowQuality: true, added: "2026-10-25" },
+      { title: "Glontinini · პოსტერების კოლექცია I", color: "#c9a98a", image: "/artists/glontinini/orig-3.jpg", width: 1080, height: 720, focal: "60% 50%", lowQuality: true, added: "2026-10-25" },
+      { title: "Glontinini · პოსტერების კოლექცია II", color: "#c9a98a", image: "/artists/glontinini/orig-5.jpg", width: 1080, height: 720, focal: "54% 50%", lowQuality: true, added: "2026-10-25" },
+      { title: "Glontinini · პოსტერების კოლექცია III", color: "#c9a98a", image: "/artists/glontinini/orig-6.jpg", width: 1080, height: 720, focal: "50% 50%", lowQuality: true, added: "2026-10-25" },
+      { title: "Glontinini · პოსტერების კოლექცია IV", color: "#c9a98a", image: "/artists/glontinini/orig-7.jpg", width: 1080, height: 720, focal: "56% 50%", lowQuality: true, added: "2026-10-25" },
+      { title: "პოსტერები „A Tale of Two Times“ და „Winged or Fallen“", color: "#c9a98a", image: "/artists/glontinini/orig-9.jpg", width: 1080, height: 720, focal: "4% 50%", lowQuality: true, added: "2026-10-25" },
     ],
     en: {
       name: "Glontinini",
@@ -435,6 +437,178 @@ export const artists: ArtistData[] = [
       ],
     },
   },
+  {
+    slug: "cozy-lights",
+    joined: "2026-10-28",
+    freeMonths: 3,
+    consent: { terms: "2026-10-27", privacy: "2026-10-19", at: "2026-10-27 22:44", offer: "რეგისტრაცია და განთავსება სრულიად უფასოა" },
+    name: "Cozy lights",
+    city: "თბილისი",
+    categories: ["saxlis-dekori", "sachuqrebi"],
+    cover: "/artists/cozy-lights/bouquet-box-burgundy.jpg",
+    banner: "/artists/cozy-lights/bouquet-box-burgundy.jpg",
+    bio: "„თბილი ნათება“: ხელნაკეთი დეკორატიული სურნელოვანი სანთლები, რომლებსაც დიდი სიყვარულით ვქმნით. თაიგულები, ბროწეულები და სასაჩუქრე ნაკრებები. შეკვეთისთვის მომწერეთ ინსტაგრამზე.",
+    instagram: "https://www.instagram.com/cozylights54/",
+    facebook: "https://www.facebook.com/share/1ERzRwRE29/",
+    works: [
+      { title: "სანთლების თაიგული ყუთში, ბორდო", color: "#c8798a", image: "/artists/cozy-lights/bouquet-box-burgundy.jpg", width: 896, height: 1121, price: 45, added: "2026-10-28" },
+      { title: "სანთლების თაიგული ჩანთაში", color: "#e2d3c3", image: "/artists/cozy-lights/bouquet-bag-brown-34.jpg", width: 1080, height: 1440, price: 60, added: "2026-10-28" },
+      { title: "ბროწეულის სანთლები", color: "#e6dcd5", image: "/artists/cozy-lights/pomegranates.jpg", width: 840, height: 1050, price: 20, added: "2026-10-28" },
+      { title: "ტიტების თაიგულის სანთელი", color: "#e8e4de", image: "/artists/cozy-lights/tulip-bouquets.jpg", width: 1080, height: 1351, price: 12, added: "2026-10-28" },
+      { title: "ნაკრები: ყვავილის სანთლები ყუთებში", color: "#ece4dc", image: "/artists/cozy-lights/peony-boxes.jpg", width: 1184, height: 1578, price: 10, added: "2026-10-28" },
+      { title: "ნაკრები: სანთლები სასაჩუქრე ყუთში", color: "#eadccf", image: "/artists/cozy-lights/gift-set-box-34.jpg", width: 1080, height: 1440, price: 25, added: "2026-10-28" },
+    ],
+    en: {
+      name: "Cozy lights",
+      city: "Tbilisi",
+      bio: "Cozy lights (“Tbili natheba”): handmade decorative scented candles, made with a lot of love. Bouquets, pomegranates and gift sets. For orders, message me on Instagram.",
+      workTitles: [
+        "Candle bouquet in a box, burgundy",
+        "Candle bouquet in a bag",
+        "Pomegranate candles",
+        "Tulip bouquet candle",
+        "Set: flower candles in boxes",
+        "Set: candles in a gift box",
+      ],
+    },
+  },
+  {
+    slug: "nino-handmade",
+    joined: "2026-10-28",
+    freeMonths: 3,
+    consent: { terms: "2026-10-27", privacy: "2026-10-19", at: "2026-10-27 22:46", offer: "რეგისტრაცია და განთავსება სრულიად უფასოა" },
+    name: "Nino handmade",
+    city: "თბილისი",
+    categories: ["naqsovi"],
+    cover: "/artists/nino-handmade/bunny-rattle-pink-34.jpg",
+    banner: "/artists/nino-handmade/bunny-rattle-pink-34.jpg",
+    bio: "მე ვარ ნინო. ვქსოვ სათამაშოებს და თითქმის ყველაფერს: კურდღლებს, ჟირაფებს, იხვებს, საწოვარას სამაგრებსა და ჩხარუნებს. შეკვეთისთვის მომწერეთ ინსტაგრამზე.",
+    instagram: "https://www.instagram.com/niniko1003/",
+    facebook: "",
+    works: [
+      { title: "ნაკრები: იხვის წყვილი", color: "#e3d3c2", image: "/artists/nino-handmade/ducks-pair.jpg", width: 720, height: 1280, focal: "50% 35%", price: 150, added: "2026-10-28" },
+      { title: "ნაკრები: ჟირაფები, ჩხარუნები და სამაგრები", color: "#d9d0c0", image: "/artists/nino-handmade/giraffes-set.jpg", width: 720, height: 960, price: 120, added: "2026-10-28" },
+      { title: "ნაქსოვი თოჯინა წითელი თმით", color: "#5f7d52", image: "/artists/nino-handmade/red-hair-doll.jpg", width: 720, height: 960, price: 140, added: "2026-10-28" },
+      { title: "ნაკრები: კურდღელი, სამაგრი და ჩხარუნა, ვარდისფერი", color: "#efd9de", image: "/artists/nino-handmade/bunny-set-pink-34.jpg", width: 1080, height: 1440, price: 120, added: "2026-10-28" },
+      { title: "ნაკრები: კურდღელი, სამაგრი და ჩხარუნა, იისფერი", color: "#e6dbef", image: "/artists/nino-handmade/bunny-set-purple.jpg", width: 720, height: 960, price: 120, added: "2026-10-28" },
+      { title: "კურდღელი თეთრ კაბაში", color: "#f0e4e4", image: "/artists/nino-handmade/bunny-white-dress-34.jpg", width: 1080, height: 1440, price: 70, added: "2026-10-28" },
+      { title: "ნაკრები: კურდღელი და ჩხარუნა", color: "#efd0d7", image: "/artists/nino-handmade/bunny-rattle-pink-34.jpg", width: 1080, height: 1440, price: 120, added: "2026-10-28" },
+      { title: "ჟირაფი: გოგო ან ბიჭი", color: "#e8cf7a", image: "/artists/nino-handmade/giraffes-plush-pair.jpg", width: 720, height: 960, price: 150, added: "2026-10-28" },
+      { title: "იხვი ვარდისფერი ბაფთით", color: "#d9a35a", image: "/artists/nino-handmade/duck-bow.jpg", width: 720, height: 960, price: 70, added: "2026-10-28" },
+    ],
+    en: {
+      name: "Nino handmade",
+      city: "Tbilisi",
+      bio: "I am Nino. I crochet toys and almost anything: bunnies, giraffes, ducks, pacifier clips and rattles. For orders, message me on Instagram.",
+      workTitles: [
+        "Set: a pair of ducks",
+        "Set: giraffes, rattles and clips",
+        "Crocheted doll with red hair",
+        "Set: bunny, clip and rattle, pink",
+        "Set: bunny, clip and rattle, purple",
+        "Bunny in a white dress",
+        "Set: bunny and rattle",
+        "Giraffe: girl or boy",
+        "Duck with a pink bow",
+      ],
+    },
+  },
+  {
+    slug: "nene-leather-craft",
+    joined: "2026-10-28",
+    freeMonths: 3,
+    consent: { terms: "2026-10-27", privacy: "2026-10-19", at: "2026-10-27 22:52", offer: "რეგისტრაცია და განთავსება სრულიად უფასოა" },
+    name: "NeNe Leather Craft",
+    city: "თბილისი",
+    categories: ["tyavi", "chantebi"],
+    cover: "/artists/nene-leather-craft/bag-red-with-wallet.jpg",
+    banner: "/artists/nene-leather-craft/bag-red-with-wallet.jpg",
+    bio: "NeNe Leather Craft ამზადებს ნატურალური ტყავის ჩანთებსა და საფულეებს მხოლოდ ხელით. შეკვეთისთვის მომწერეთ ინსტაგრამზე.",
+    instagram: "https://www.instagram.com/neneleather/",
+    facebook: "https://www.facebook.com/share/1KFbZwPezD/",
+    works: [
+      { title: "მოზრდილი საფულე ფოთლებით, ორი განყოფილებით", color: "#8a5a34", image: "/artists/nene-leather-craft/wallet-leaves.jpg", width: 1080, height: 1440, price: 60, added: "2026-10-28" },
+      { title: "მოზრდილი საფულე ყვითელი ფოთლებით, ორი განყოფილებით", color: "#8a5a34", image: "/artists/nene-leather-craft/wallet-yellow-leaf.jpg", width: 1080, height: 1441, price: 60, added: "2026-10-28" },
+      { title: "მოზრდილი საფულე გოგრით, ორი განყოფილებით", color: "#b5402c", image: "/artists/nene-leather-craft/wallet-pumpkin.jpg", width: 1080, height: 1420, price: 60, added: "2026-10-28" },
+      { title: "2 განყოფილებიანი საბარათე გვირილებით", color: "#2f5a52", image: "/artists/nene-leather-craft/cardholder-daisies.jpg", width: 1080, height: 1440, price: 30, added: "2026-10-28" },
+      { title: "2 განყოფილებიანი საბარათე ბროწეულით", color: "#53503c", image: "/artists/nene-leather-craft/cardholder-pomegranate.jpg", width: 1080, height: 1329, price: 30, added: "2026-10-28" },
+      { title: "ჩანთა წითელი ტყავის, მოდელი 1", color: "#b02a24", image: "/artists/nene-leather-craft/bag-red-with-wallet.jpg", width: 1080, height: 1767, focal: "50% 55%", price: 139, added: "2026-10-28" },
+      { title: "ნაკრები: ჩანთა და საფულეები", color: "#9a2f35", image: "/artists/nene-leather-craft/set-bag-wallets-34.jpg", width: 1080, height: 1440, added: "2026-10-28" },
+      { title: "ჩანთა ჯაჭვით, წითელი ტყავის", color: "#7f1d2a", image: "/artists/nene-leather-craft/bag-red-chain.jpg", width: 1080, height: 1826, focal: "50% 62%", price: 139, added: "2026-10-28" },
+      { title: "ჩანთა წითელი ტყავის, მოდელი 2", color: "#8a2a22", image: "/artists/nene-leather-craft/bag-red-flowers.jpg", width: 1080, height: 1874, focal: "50% 70%", price: 139, added: "2026-10-28" },
+    ],
+    en: {
+      name: "NeNe Leather Craft",
+      city: "Tbilisi",
+      bio: "NeNe Leather Craft makes natural leather bags and wallets by hand only. For orders, message me on Instagram.",
+      workTitles: [
+        "Large two-compartment wallet with leaves",
+        "Large two-compartment wallet with yellow leaves",
+        "Large two-compartment wallet with a pumpkin",
+        "Two-compartment card holder with daisies",
+        "Two-compartment card holder with pomegranates",
+        "Red leather bag, model 1",
+        "Set: bag and wallets",
+        "Red leather bag with a chain",
+        "Red leather bag, model 2",
+      ],
+    },
+  },
+  {
+    slug: "ivlisi",
+    joined: "2026-10-28",
+    freeMonths: 3,
+    consent: { terms: "2026-10-27", privacy: "2026-10-19", at: "2026-10-27 22:33", offer: "რეგისტრაცია და განთავსება სრულიად უფასოა" },
+    name: "Ivlisi",
+    city: "თბილისი",
+    categories: ["saxlis-dekori", "skulptura"],
+    cover: "/artists/ivlisi/pomegranate-lemons-34.jpg",
+    banner: "/artists/ivlisi/pomegranate-lemons-34.jpg",
+    bio: "მე ვარ ნათია ზაქარაძე, მარიამის დედა, განათლებით მათემატიკოსი, ყოფილი საბანკო ანალიტიკოსი 20 წლიანი სტაჟით. ახლა ვაკეთებ ხელნაკეთ დეკორაციებსა და სანთლებს: სრულიად ხელნაკეთი სასანთლეები სურნელოვანი სოიოს სანთლის შიგთავსით, სასაჩუქრე შეფუთვით. ჩემთვის მთავარია ხარისხი, კრეატივი და ინდივიდუალიზმი. შეკვეთისთვის მომწერეთ ინსტაგრამზე. „ივლისი“ არის სივრცე, სადაც ხელნაკეთი დეკორაცია, სანთლები და სინათლე ერთიანდება, რათა ყოველდღიურობას მეტი სითბო და სილამაზე შემატოს.",
+    instagram: "https://www.instagram.com/ivlisi_/",
+    facebook: "https://www.facebook.com/share/19PGx34q7R/",
+    works: [
+      { title: "ნაკრები: ბროწეულის სანთლები ყვავილებით, ცისფერი", color: "#6cc3c6", image: "/artists/ivlisi/pomegranate-turquoise-flowers-34.jpg", width: 1080, height: 1440, price: 97, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ყვავილებით, მწვანე", color: "#5f9a63", image: "/artists/ivlisi/pomegranate-green-flowers-34.jpg", width: 1080, height: 1440, price: 97, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ორნამენტით, იისფერი", color: "#a367c4", image: "/artists/ivlisi/pomegranate-purple-34.jpg", width: 1080, height: 1440, price: 97, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ორნამენტით, მრავალფერი", color: "#b88a3a", image: "/artists/ivlisi/pomegranate-ornament-34.jpg", width: 1080, height: 1440, price: 97, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ლიმონებით", color: "#5c8a3c", image: "/artists/ivlisi/pomegranate-lemons-34.jpg", width: 1080, height: 1440, price: 97, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ოქროსფერი ფოთლებით, წითელი", color: "#c8281f", image: "/artists/ivlisi/pomegranate-gold-leaves-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ოქროსფერი წერტილებით", color: "#c8281f", image: "/artists/ivlisi/pomegranate-gold-dots-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ოქროსფერი ზოლით, წითელი", color: "#c8281f", image: "/artists/ivlisi/pomegranate-gold-band-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: ბროწეულის სანთლები ოქროსფერი ფოთლებით, თეთრი", color: "#efe6dc", image: "/artists/ivlisi/pomegranate-white-gold-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: ლიმონის ფორმის სანთლები, ყვითელი", color: "#d9c63a", image: "/artists/ivlisi/lemon-yellow-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: ლაიმის ფორმის სანთლები, მწვანე", color: "#7f9a3f", image: "/artists/ivlisi/lime-green-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: მანდარინის ფორმის სანთლები, ნარინჯისფერი", color: "#e2682c", image: "/artists/ivlisi/tangerine-orange-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: ხილის ფორმის სანთლები, წითელი", color: "#c8281f", image: "/artists/ivlisi/lemon-red-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: სანთლები მზის ორნამენტით, ნაცრისფერ-მწვანე", color: "#8fa79a", image: "/artists/ivlisi/sun-sage.jpg", width: 941, height: 1672, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: სანთლები მზის ორნამენტით, თეთრი", color: "#efe9de", image: "/artists/ivlisi/sun-white.jpg", width: 1283, height: 2000, price: 77, added: "2026-10-28" },
+      { title: "ნაკრები: სანთლები მზის ორნამენტით, ღია მწვანე", color: "#9acb2f", image: "/artists/ivlisi/sun-green-set-34.jpg", width: 1080, height: 1440, price: 77, added: "2026-10-28" },
+    ],
+    en: {
+      name: "Ivlisi",
+      city: "Tbilisi",
+      bio: "I am Natia Zakaradze, Mariam's mother, a mathematician by education and a former banking analyst with 20 years of experience. Now I make handmade decorations and candles: fully handmade candle holders with scented soy candles inside, in gift packaging. What matters most to me is quality, creativity and individuality. For orders, message me on Instagram. “Ivlisi” is a space where handmade decor, candles and light come together to bring more warmth and beauty to everyday life.",
+      workTitles: [
+        "Set: pomegranate candles with flowers, turquoise",
+        "Set: pomegranate candles with flowers, green",
+        "Set: pomegranate candles with ornament, purple",
+        "Set: pomegranate candles with ornament, multicolour",
+        "Set: pomegranate candles with lemons",
+        "Set: pomegranate candles with gold leaves, red",
+        "Set: pomegranate candles with gold dots",
+        "Set: pomegranate candles with a gold band, red",
+        "Set: pomegranate candles with gold leaves, white",
+        "Set: lemon-shaped candles, yellow",
+        "Set: lime-shaped candles, green",
+        "Set: tangerine-shaped candles, orange",
+        "Set: fruit-shaped candles, red",
+        "Set: candles with a sun ornament, grey-green",
+        "Set: candles with a sun ornament, white",
+        "Set: candles with a sun ornament, light green",
+      ],
+    },
+  },
 ];
 
 export function localizeArtist(artist: ArtistData, lang: Lang): Artist {
@@ -512,6 +686,16 @@ export function newestArtistsFirst<T extends ArtistData>(list: T[]): T[] {
     .map((artist, i) => ({ artist, i, t: time(artist) }))
     .sort((a, b) => b.t - a.t || b.i - a.i)
     .map((x) => x.artist);
+}
+
+// ფოტო ბარათზე (3:4) ბუნდოვანი არ გამოვა: ჰორიზონტალური ან პატარა ფოტო ბარათზე იჭრება და იზრდება, ამიტომ მთავარის „ახალ ნამუშევრებში“ მხოლოდ ასეთი ფოტოები ჩანს.
+// წესი: თანაფარდობა 0.4–0.9 და ბარათზე მოხვედრილი ნაწილი სულ მცირე 780 პიქსელი სიგანეში
+export function hasCardQualityPhoto(work: ArtistWork): boolean {
+  if (work.lowQuality || !work.image || !work.width || !work.height) return false;
+  const ratio = work.width / work.height;
+  if (ratio < 0.4 || ratio > 0.9) return false;
+  const visibleWidth = ratio >= 0.75 ? work.height * 0.75 : work.width;
+  return visibleWidth >= 780;
 }
 
 // ხელოვანი „ახალია“, თუ ბოლო 14 დღეში დაემატა

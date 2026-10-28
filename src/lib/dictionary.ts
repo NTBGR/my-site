@@ -249,7 +249,7 @@ const ka = {
     faqMore: "ვერ იპოვე პასუხი?",
     faqMoreText: "მოგვწერე და სწრაფად გიპასუხებთ.",
     faq: [
-      { q: "რა ღირს?", a: "არაფერი: რეგისტრაცია და განთავსება სრულიად უფასოა, ვალდებულების გარეშე. გაყიდვებზე პროცენტს არ ვიღებთ: ჩვენს საიტზე არაფერი იყიდება და მთელი შემოსავალი შენია." },
+      { q: "რა ღირს?", a: "არაფერი: რეგისტრაცია და განთავსება სრულიად უფასოა, ვალდებულების გარეშე. გაყიდვებზე პროცენტს არ ვიღებთ: ჩვენს საიტზე არაფერი იყიდება და მთელი შემოსავალი პარტნიორი ხელოვანისაა." },
       { q: "ჩამომაჭრიან თანხას ავტომატურად?", a: "არა. გადასახდელი არაფერია და ბარათის მონაცემებს არ გთხოვთ." },
       { q: "რას გააკეთებთ ჩემთვის?", a: "შენი გვერდი ნამუშევრებით, ფასებით და ინსტაგრამის/ფეისბუქის ღილაკებით, ადგილი კატეგორიებსა და ძიებაში, საჩუქრების გვერდებზე გამოჩენა და ჩვენი სოც ქსელებიდან გაცნობა." },
       { q: "როგორ გავიგებ, მუშაობს თუ არა?", a: "ყოველი თვის 1 რიცხვში გამოგიგზავნით რეპორტს: რამდენმა ადამიანმა აღმოაჩინა შენი გვერდი და რამდენი გადავიდა შენს ინსტაგრამზე ან ფეისბუქზე. ციფრები რეალურია და ზუსტად იმას აჩვენებს, რაც მოხდა." },
@@ -558,7 +558,7 @@ const en: Dict = {
     faqMore: "Did not find your answer?",
     faqMoreText: "Write to us and we will answer quickly.",
     faq: [
-      { q: "What does it cost?", a: "Nothing: signing up and listing is completely free, no strings attached. We take no commission: nothing is sold on our site and all the income is yours." },
+      { q: "What does it cost?", a: "Nothing: signing up and listing is completely free, no strings attached. We take no commission: nothing is sold on our site and all the income belongs to the partner maker." },
       { q: "Will you charge me automatically?", a: "No. There is nothing to pay and we do not ask for card details." },
       { q: "What do you do for me?", a: "Your page with your works, prices and Instagram/Facebook buttons, a place in categories and search, a spot on gift pages and promotion from our social media." },
       { q: "How will I know it works?", a: "On the 1st of every month we email you a report: how many people discovered your page and how many went to your Instagram or Facebook. The numbers are real and show exactly what happened." },
