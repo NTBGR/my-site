@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { TERMS_SUMMARY, TERMS_VERSION } from "@/app/terms/content";
 import { PRIVACY_VERSION } from "@/app/privacy/content";
-import { categoryNameKa, cities, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
+import { categoryNameKa, cities, MAX_JOIN_WORKS, OTHER_CATEGORY, OTHER_CITY } from "@/data/join-options";
 import { allowed, clientIp } from "@/lib/ratelimit";
+import { escapeHtml, signTicket, telegramApi } from "@/lib/telegram";
 
 export const runtime = "nodejs";
 
@@ -10,13 +11,6 @@ export const runtime = "nodejs";
 function field(data: FormData, name: string, max = 200) {
   const value = data.get(name);
   return typeof value === "string" ? value.trim().slice(0, max) : "";
-}
-
-function escapeHtml(text: string) {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 export async function POST(request: Request) {
@@ -66,8 +60,10 @@ export async function POST(request: Request) {
   const comment = field(data, "comment", 1000);
   // თანხმობის გამშვები უჯრა სავალდებულოა (კლიენტი ამას ისედაც ამოწმებს; აქ — პირდაპირი მოთხოვნებისთვის)
   const agreed = Boolean(field(data, "agree"));
+  // ნამუშევრების რაოდენობა (ფოტოები ცალკე მოთხოვნებით მოდის): მინიმუმ 1, მაქსიმუმ 15
+  const worksCount = Number(field(data, "worksCount", 3));
 
-  if (!name || !brand || !email || !city || !categoryName || !bio || !instagram || !agreed) {
+  if (!name || !brand || !email || !city || !categoryName || !bio || !instagram || !agreed || !Number.isInteger(worksCount) || worksCount < 1 || worksCount > MAX_JOIN_WORKS) {
     return NextResponse.json(
       { error: "required" },
       { status: 400 },
@@ -86,7 +82,7 @@ export async function POST(request: Request) {
 
   // თანხმობის ჩანაწერი: როდის და რომელ ვერსიას დათანხმდა (თბილისის დრო), რომ მოთხოვნისას დასტური გვქონდეს
   const consent = `პირობები ${TERMS_VERSION} (${TERMS_SUMMARY}), კონფიდენციალურობა ${PRIVACY_VERSION} · ${new Date().toLocaleString("en-GB", { timeZone: "Asia/Tbilisi" })} (თბილისის დრო)`;
-  const application = { name, brand, email, city, category: categoryName, instagram, facebook, bio, comment, consent };
+  const application = { name, brand, email, city, category: categoryName, instagram, facebook, bio, comment, consent, worksCount };
 
   const telegramOn = Boolean(
     process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
@@ -100,16 +96,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "unavailable" }, { status: 500 });
   }
 
-  const results = await Promise.all([
-    telegramOn ? sendToTelegram(application) : Promise.resolve(false),
-    emailOn ? sendToEmail(application) : Promise.resolve(false),
-  ]);
-
-  if (!results.some(Boolean)) {
-    return NextResponse.json({ error: "failed" }, { status: 502 });
+  // ფოტოები ტელეგრამით მოდის: თუ ის არ არის მორგებული, განაცხადს ფოტოების გარეშე არ ვიღებთ
+  if (!telegramOn) {
+    return NextResponse.json({ error: "unavailable" }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  const telegram = await sendToTelegram(application);
+  if (!telegram.ok) {
+    return NextResponse.json({ error: "failed" }, { status: 502 });
+  }
+  // იმეილი დამატებითი ასლია: მისი შეცდომა განაცხადს არ აფუჭებს
+  if (emailOn) await sendToEmail(application);
+
+  // ბილეთი ფოტოების გასაგზავნად: ფოტოები ამ შეტყობინების პასუხად ჩაჯდება
+  return NextResponse.json({ ok: true, ticket: telegram.messageId ? signTicket(telegram.messageId) : null });
 }
 
 type Application = {
@@ -123,12 +123,11 @@ type Application = {
   bio: string;
   comment: string;
   consent: string;
+  worksCount: number;
 };
 
-async function sendToTelegram(app: Application) {
-  const token = process.env.TELEGRAM_BOT_TOKEN as string;
+async function sendToTelegram(app: Application): Promise<{ ok: boolean; messageId?: number }> {
   const chatId = process.env.TELEGRAM_CHAT_ID as string;
-  const api = (method: string) => `https://api.telegram.org/bot${token}/${method}`;
 
   const text = [
     "<b>ახალი განაცხადი</b>",
@@ -145,11 +144,12 @@ async function sendToTelegram(app: Application) {
     escapeHtml(app.bio),
     ...(app.comment ? ["", "<b>კომენტარი:</b>", escapeHtml(app.comment)] : []),
     "",
+    `<b>ნამუშევრები:</b> ${app.worksCount} ფოტო (მოდის ქვემოთ, ამ შეტყობინების პასუხად)`,
     `<b>თანხმობა:</b> ${escapeHtml(app.consent)}`,
   ].join("\n");
 
   try {
-    const res = await fetch(api("sendMessage"), {
+    const res = await fetch(telegramApi("sendMessage"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -161,13 +161,14 @@ async function sendToTelegram(app: Application) {
     });
     if (!res.ok) {
       console.error("Telegram შეცდომა", res.status, await res.text());
-      return false;
+      return { ok: false };
     }
 
-    return true;
+    const json = (await res.json().catch(() => null)) as { result?: { message_id?: number } } | null;
+    return { ok: true, messageId: json?.result?.message_id };
   } catch (error) {
     console.error("Telegram ქსელის შეცდომა", error);
-    return false;
+    return { ok: false };
   }
 }
 

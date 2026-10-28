@@ -92,3 +92,6 @@ export function categoryNameKa(value: string): string | undefined {
   if (value === OTHER_CATEGORY) return "სხვა";
   return categories.find((c) => c.slug === value)?.name;
 }
+
+// განაცხადის ფორმაში ნამუშევრების მაქსიმუმი (თითო ნამუშევარი = ფოტო + დასახელება + ფასი)
+export const MAX_JOIN_WORKS = 15;

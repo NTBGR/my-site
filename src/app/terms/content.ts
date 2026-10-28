@@ -6,11 +6,11 @@ import { CONTACT_EMAIL } from "@/app/privacy/content";
 export { CONTACT_EMAIL };
 export const PRICE_GEL = 20;
 // ვერსია (დაემთხვევა updated თარიღს): განაცხადთან ერთად ინახება, რომ ვიცოდეთ, რომელ ტექსტს დათანხმდა ხელოვანი. პირობების შეცვლისას განაახლე აქაც და updated-შიც
-export const TERMS_VERSION = "2026-10-28";
+export const TERMS_VERSION = "2026-10-30";
 
 // რას ეთანხმება ხელოვანი მოკლედ: განაცხადის შეტყობინებაში ჩაიწერება თანხმობის დროსთან ერთად, რომ ვიცოდეთ ზუსტად რაზე დაეთანხმა. პირობების შეცვლისას განაახლე TERMS_VERSION-თან ერთად
 export const TERMS_SUMMARY =
-  "განთავსება სრულიად უფასოა; მხოლოდ ხელნაკეთი ნამუშევრები, ფოტოები და ტექსტები პარტნიორი ხელოვანისაა; ნამუშევრის ხარისხზე, ფასზე, შეკვეთასა და გადახდაზე, მიწოდებასა და დაბრუნებაზე სრულად პასუხისმგებელია პარტნიორი ხელოვანი, khelovani.ge გარიგებაში არ მონაწილეობს და დავაზე პასუხს არ აგებს; ხელოვანს შეუძლია ნებისმიერ დროს მოითხოვოს პროფილის მოხსნა";
+  "განთავსება სრულიად უფასოა; მხოლოდ ხელნაკეთი ნამუშევრები და ნამდვილი (არა AI-ით შექმნილი) ფოტოები; ფოტოები და ტექსტები პარტნიორი ხელოვანისაა; ნამუშევრის ხარისხზე, ფასზე, შეკვეთასა და გადახდაზე, მიწოდებასა და დაბრუნებაზე სრულად პასუხისმგებელია პარტნიორი ხელოვანი, khelovani.ge გარიგებაში არ მონაწილეობს და დავაზე პასუხს არ აგებს; ხელოვანს შეუძლია ნებისმიერ დროს მოითხოვოს პროფილის მოხსნა";
 
 type Section = { title: string; text?: string[]; items?: string[] };
 
@@ -21,7 +21,7 @@ export const terms: Record<
   ka: {
     title: "წესები და პირობები",
     intro: "მოკლედ და გასაგებად: რა გვაქვს შეთანხმებული პარტნიორ ხელოვანებთან და როგორ წყდება თანამშრომლობა.",
-    updated: "ბოლო განახლება: 28 ოქტომბერი, 2026",
+    updated: "ბოლო განახლება: 30 ოქტომბერი, 2026",
     sections: [
       {
         title: "რას ვაკეთებთ",
@@ -34,6 +34,7 @@ export const terms: Record<
         items: [
           "მხოლოდ ხელნაკეთ ნამუშევრებს ვაქვეყნებთ: ხელით ან ავტორის ორიგინალი ნახატით შექმნილს. ქარხნული ნაწარმი და გადაყიდვა არ გვაინტერესებს.",
           "ფოტოები და ტექსტები შენი უნდა იყოს, ან გქონდეს მათი გამოყენების უფლება.",
+          "ფოტოები ნამდვილი უნდა იყოს: ხელოვნური ინტელექტით (AI) შექმნილ ან გაფორმებულ სურათებს არ ვიღებთ.",
           "განაცხადში მითითებული ინფორმაცია (სახელი, ბმულები, ქალაქი) ზუსტი უნდა იყოს.",
           "გამოქვეყნებამდე განაცხადს ვამოწმებთ და უარის თქმის უფლებას ვიტოვებთ.",
         ],
@@ -86,7 +87,7 @@ export const terms: Record<
   en: {
     title: "Terms",
     intro: "In short and plainly: what we agree with partner makers and how it ends.",
-    updated: "Last updated: 28 October 2026",
+    updated: "Last updated: 30 October 2026",
     sections: [
       {
         title: "What we do",
@@ -99,6 +100,7 @@ export const terms: Record<
         items: [
           "Only handmade work: made by hand or from the maker's original drawing. Factory goods and resale are not accepted.",
           "Photos and texts must be yours, or you must have the right to use them.",
+          "Photos must be real: we do not accept images created or edited with artificial intelligence (AI).",
           "The information in your application (name, links, city) must be accurate.",
           "We review every application before publishing and may decline it.",
         ],

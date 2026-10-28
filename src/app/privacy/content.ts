@@ -4,7 +4,7 @@ import type { Lang } from "@/lib/dictionary";
 // განაცხადის ფორმა (ტელეგრამი/იმეილი), გადასვლების ანონიმური დათვლა (Upstash), ქუქები.
 // საიტის ქცევის შეცვლისას აქაც განაახლე და UPDATED თარიღი შეცვალე.
 // ვერსია (დაემთხვევა updated თარიღს): განაცხადთან ერთად ინახება. შეცვლისას განაახლე updated-იც
-export const PRIVACY_VERSION = "2026-10-19";
+export const PRIVACY_VERSION = "2026-10-30";
 export const CONTACT_EMAIL = "khelovani.ge@gmail.com";
 
 type Section = { title: string; text?: string[]; items?: string[] };
@@ -16,7 +16,7 @@ export const privacy: Record<
   ka: {
     title: "კონფიდენციალურობა",
     intro: "მოკლედ და გასაგებად: რა ინფორმაციას ვაგროვებთ, რატომ და როგორ ვიყენებთ.",
-    updated: "ბოლო განახლება: 19 ოქტომბერი, 2026",
+    updated: "ბოლო განახლება: 30 ოქტომბერი, 2026",
     sections: [
       {
         title: "ვინ ვართ",
@@ -39,7 +39,7 @@ export const privacy: Record<
       {
         title: "ხელოვანები (განაცხადის ფორმა)",
         text: [
-          "„გახდი პარტნიორი“ ფორმით ვიღებთ: სახელს და გვარს, ბრენდის ან მაღაზიის სახელს, იმეილს, ქალაქს, მიმართულებას, ინსტაგრამისა და ფეისბუქის ბმულებს, მოკლე ბიოგრაფიას. ამ ინფორმაციას ვიყენებთ განაცხადის განსახილველად, შენთან დასაკავშირებლად და პროფილის გამოსაქვეყნებლად.",
+          "„გახდი პარტნიორი“ ფორმით ვიღებთ: სახელს და გვარს, ბრენდის ან მაღაზიის სახელს, იმეილს, ქალაქს, მიმართულებას, ინსტაგრამისა და ფეისბუქის ბმულებს, მოკლე ბიოგრაფიას, ასევე ნამუშევრების ფოტოებს, დასახელებებსა და ფასებს (მაქსიმუმ 15). ამ ინფორმაციას ვიყენებთ განაცხადის განსახილველად, შენთან დასაკავშირებლად და პროფილის გამოსაქვეყნებლად.",
           "გამოქვეყნებულ პროფილზე საჯაროდ ჩანს სახელი, ქალაქი, მიმართულება, ბიოგრაფია, ნამუშევრები და სოციალური ქსელების ბმულები. იმეილი არასოდეს ქვეყნდება.",
         ],
       },
@@ -58,7 +58,7 @@ export const privacy: Record<
           "ხელოვანს: მხოლოდ ჯამურ რიცხვებს (რამდენი ადამიანი გადავიდა მის გვერდზე), არასოდეს ვინაობას.",
           "Vercel: საიტის ჰოსტინგი. მისი ტექნიკური ჟურნალები შეიძლება IP მისამართს მოკლე ვადით შეიცავდეს.",
           "Upstash: გადასვლების რიცხვების შესანახად (სერვერი ევროკავშირში, ფრანკფურტში).",
-          "Telegram და იმეილის სერვისი: განაცხადები ჩვენამდე ამ არხებით მოდის.",
+          "Telegram და იმეილის სერვისი: განაცხადები და ფორმაში ატვირთული ფოტოები (დასახელებებითა და ფასებით) ჩვენამდე ამ არხებით მოდის.",
           "მონაცემებს არავის ვყიდით.",
         ],
       },
@@ -88,7 +88,7 @@ export const privacy: Record<
   en: {
     title: "Privacy",
     intro: "In short and plainly: what we collect, why, and how we use it.",
-    updated: "Last updated: 19 October 2026",
+    updated: "Last updated: 30 October 2026",
     sections: [
       {
         title: "Who we are",
@@ -111,7 +111,7 @@ export const privacy: Record<
       {
         title: "Makers (application form)",
         text: [
-          "Through the \"Become a partner\" form we receive your name, brand or shop name, email, city, craft, Instagram and Facebook links and a short bio. We use this to review your application, contact you and publish your profile.",
+          "Through the \"Become a partner\" form we receive your name, brand or shop name, email, city, craft, Instagram and Facebook links, a short bio, and photos of your works with their names and prices (up to 15). We use this to review your application, contact you and publish your profile.",
           "A published profile shows your name, city, craft, bio, works and social links. Your email is never published.",
         ],
       },
@@ -130,7 +130,7 @@ export const privacy: Record<
           "Makers: only totals (how many people went to their page), never identities.",
           "Vercel: hosts the site. Its technical logs may briefly contain IP addresses.",
           "Upstash: stores the visit counts (servers in the EU, Frankfurt).",
-          "Telegram and an email service: applications reach us through these.",
+          "Telegram and an email service: applications and the photos uploaded in the form (with their names and prices) reach us through these.",
           "We never sell data.",
         ],
       },
